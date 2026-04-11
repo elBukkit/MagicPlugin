@@ -159,7 +159,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected ItemUtils createItemUtils() {
-        throw new IllegalStateException("Platform does not implement createItemUtils");
+        return new ItemUtilsBase(this);
     }
 
     protected InventoryUtils createInventoryUtils() {

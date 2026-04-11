@@ -39,64 +39,38 @@ public class CompatibilityLib extends PlatformInterpreter {
         }
         int majorVersion = version[0];
         int minorVersion = version[1];
-        if (majorVersion <= 1 && minorVersion < 9) {
+        if (majorVersion < 26) {
             logger.severe("Not compatible with version: " + versionDescription);
             return false;
         }
-        if (majorVersion >= 26) {
-            // Note that this does not support hotfix layers. Hopefully we won't ever need one of those!
-            logger.info("Finding modern compatibility layer for server version " + versionDescription);
-            boolean foundExact = true;
-            int[] layerVersion = {majorVersion, minorVersion, 0};
-            while (layerVersion[0] >= 26) {
-                try {
-                    String versionPackage = StringUtils.join(ArrayUtils.toObject(layerVersion), "_");
-                    Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
-                    Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
-                    platform = (Platform)platformConstructor.newInstance(controller);
-                    break;
-                } catch (Exception ignore) {
-                }
-                foundExact = false;
-                layerVersion[1]--;
-                if (layerVersion[1] < 0) {
-                    layerVersion[1] = 4;
-                    layerVersion[0]--;
-                }
-            }
-            if (!foundExact) {
-                String layerDescription = StringUtils.join(ArrayUtils.toObject(layerVersion), ".");
-                logger.log(Level.WARNING, "Using compatibility layer from version " + layerDescription + " for server version " + versionDescription + ". This may work fine, but if you run into issues please check for a plugin update or contact the developer.");
-            }
 
-            if (platform == null) {
-                logger.log(Level.SEVERE, "Failed to load compatibility layer, something went wrong");
-                return false;
-            }
-        } else if (majorVersion > 1 || minorVersion >= 17) {
-            logger.info("Loading modern compatibility layer for server version " + versionDescription);
+        // Note that this does not support hotfix layers. Hopefully we won't ever need one of those!
+        logger.info("Finding modern compatibility layer for server version " + versionDescription);
+        boolean foundExact = true;
+        int[] layerVersion = {majorVersion, minorVersion, 0};
+        while (layerVersion[0] >= 26) {
             try {
-                String versionPackage = StringUtils.join(ArrayUtils.toObject(version), "_");
+                String versionPackage = StringUtils.join(ArrayUtils.toObject(layerVersion), "_");
                 Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
                 Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
                 platform = (Platform)platformConstructor.newInstance(controller);
+                break;
             } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Failed to load compatibility layer, the plugin may need to be updated to work with your server version", ex);
-                return false;
+                logger.log(Level.INFO, "DEBUG", ex);
             }
-        } else {
-            versionDescription = version[0] + "." + version[1];
-            logger.info("Loading legacy compatibility layer for server version " + versionDescription);
-            try {
-                // No minor minor version numbers here
-                String versionPackage = version[0] + "_" + version[1];
-                Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
-                Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
-                platform = (Platform)platformConstructor.newInstance(controller);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Failed to load compatibility layer, this is unexpected for legacy versions, please report this error", ex);
-                return false;
+            foundExact = false;
+            layerVersion[1]--;
+            if (layerVersion[1] < 0) {
+                layerVersion[1] = 4;
+                layerVersion[0]--;
             }
+        }
+        if (platform == null) {
+            logger.log(Level.SEVERE, "Failed to load compatibility layer, something went wrong");
+            return false;
+        } else if (!foundExact) {
+            String layerDescription = StringUtils.join(ArrayUtils.toObject(layerVersion), ".");
+            logger.log(Level.WARNING, "Using compatibility layer from version " + layerDescription + " for server version " + versionDescription + ". This may work fine, but if you run into issues please check for a plugin update or contact the developer.");
         }
         return initialize(platform);
     }
