@@ -13,6 +13,7 @@
    - Force update wand lore on level up, in case mana is driven by Valhalla
    - Add a `magic` profile and associated skill, can be disabled via config
    - Add an OpenValhallaSkillTreeAction, used in the spellshop by the `valhalla` example
+   - Add a resource pack combining Valhalla and Magic resources
 
 # 10.11
 

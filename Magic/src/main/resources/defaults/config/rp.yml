@@ -88,6 +88,8 @@ alternate_resource_packs:
     url: "http://rp.elmakers.com/Magic-hires-robes-RP-26.1.zip"
   robes:
     url: "http://rp.elmakers.com/Magic-robes-RP-26.1.zip"
+  valhalla:
+    url: "http://rp.elmakers.com/Magic-valhalla-RP-26.1.zip"
   vanilla:
     url: "http://rp.elmakers.com/Magic-vanilla-RP-26.1.zip"
   vanilla-all:
