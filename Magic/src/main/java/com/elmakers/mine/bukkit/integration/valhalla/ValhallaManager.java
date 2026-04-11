@@ -53,12 +53,6 @@ public class ValhallaManager implements AttributeProvider, Listener {
             return;
         }
 
-        for (Skill skill : SkillRegistry.getAllSkills().values()) {
-            String skillId = skill.getType().toLowerCase(Locale.ROOT);
-            registeredSkills.put(skillId, skill);
-            attributes.add("valhalla_level_" + skillId);
-        }
-
         controller.getLogger().info("Integrated with ValhallaMMO:");
 
         ConfigurationSection profileConfig = config.getConfigurationSection("profile");
@@ -68,9 +62,15 @@ public class ValhallaManager implements AttributeProvider, Listener {
             String profileId = profileConfig.getString("id");
             if (skillId != null && profileId != null && !skillId.isEmpty() && !profileId.isEmpty()) {
                 ProfileRegistry.registerProfileType(new MagicProfile(profileId));
-                SkillRegistry.registerSkill(new MagicSkill(skillId, skillConfig.getInt("priority")));
+                SkillRegistry.registerSkill(new MagicSkill(controller, skillId, skillConfig.getInt("priority")));
                 controller.getLogger().info("  Added " + profileId + " profile using " + skillId + " skill ");
             }
+        }
+
+        for (Skill skill : SkillRegistry.getAllSkills().values()) {
+            String skillId = skill.getType().toLowerCase(Locale.ROOT);
+            registeredSkills.put(skillId, skill);
+            attributes.add("valhalla_level_" + skillId);
         }
 
         controller.getLogger().info("  Added " + attributes.size() + " ValhallaMMO levels as attributes: " + StringUtils.join(attributes, ","));
