@@ -10,11 +10,6 @@ public class Platform extends PlatformBase {
     }
 
     @Override
-    protected com.elmakers.mine.bukkit.utility.platform.NBTUtils createNBTUtils() {
-        return new NBTUtils(this);
-    }
-
-    @Override
     protected com.elmakers.mine.bukkit.utility.platform.ItemUtils createItemUtils() {
         return new ItemUtils(this);
     }

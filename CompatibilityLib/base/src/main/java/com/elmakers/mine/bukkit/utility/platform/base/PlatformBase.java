@@ -155,7 +155,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected NBTUtils createNBTUtils() {
-        throw new IllegalStateException("Platform does not implement createNBTUtils");
+       return new NBTUtilsBase(this);
     }
 
     protected ItemUtils createItemUtils() {

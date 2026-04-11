@@ -19,6 +19,8 @@ public interface NBTUtils {
 
     Object getTag(Object nbtBase, String tag);
 
+    Object getCompoundTagFromCustomData(Object customData);
+
     Object createTag(Object nbtBase, String tag);
 
     Object createTag(ItemStack stack, String tag);

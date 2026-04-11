@@ -43,7 +43,7 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
     }
 
     private CompoundTag getCompoundTagFromCustomData(CustomData customData) {
-        return ((NBTUtils)platform.getNBTUtils()).getCompoundTagFromCustomData(customData);
+        return (CompoundTag)platform.getNBTUtils().getCompoundTagFromCustomData(customData);
     }
 
     @Override
