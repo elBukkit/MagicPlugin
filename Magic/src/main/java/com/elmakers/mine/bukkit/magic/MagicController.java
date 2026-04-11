@@ -1905,10 +1905,16 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     private void loadIntegrations(ConfigurationSection configuration) {
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
         if (aureliumSkillsManager != null) {
-            ConfigurationSection aureliumSkillsConfiguration = configuration.getConfigurationSection("aurelium_skills");
-            aureliumSkillsManager.load(aureliumSkillsConfiguration);
-            costReduction += aureliumSkillsManager.getManaCostReduction();
+            Plugin aureliumSkillsPlugin = pluginManager.getPlugin("AuraSkills");
+            if (aureliumSkillsPlugin != null && aureliumSkillsPlugin.isEnabled()) {
+                ConfigurationSection aureliumSkillsConfiguration = configuration.getConfigurationSection("aurelium_skills");
+                aureliumSkillsManager.load(aureliumSkillsConfiguration);
+                costReduction += aureliumSkillsManager.getManaCostReduction();
+            } else {
+                aureliumSkillsManager = null;
+            }
         }
         if (tokenManager != null) {
             ConfigurationSection tokenManagerConfiguration = configuration.getConfigurationSection("token_manager");
@@ -1921,14 +1927,24 @@ public class MagicController implements MageController, ChunkLoadListener {
             auctionHouseManager.load(configuration.getConfigurationSection("action_house"));
         }
         if (heroesManager != null) {
-            heroesManager.load(configuration);
+            Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
+            if (heroesPlugin != null && heroesPlugin.isEnabled()) {
+                heroesManager.load(configuration);
+            } else {
+                heroesManager = null;
+            }
         }
         if (valhallaManager != null) {
-            ConfigurationSection valhallaConfiguration = configuration.getConfigurationSection("valhalla");
-            try {
-                valhallaManager.load(valhallaConfiguration);
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "There was an error integrating with ValhallaMMO, disabling integration", ex);
+            Plugin valhallaPlugin = pluginManager.getPlugin("ValhallaMMO");
+            if (valhallaPlugin != null && valhallaPlugin.isEnabled()) {
+                ConfigurationSection valhallaConfiguration = configuration.getConfigurationSection("valhalla");
+                try {
+                    valhallaManager.load(valhallaConfiguration);
+                } catch (Exception ex) {
+                    getLogger().log(Level.WARNING, "There was an error integrating with ValhallaMMO, disabling integration", ex);
+                    valhallaManager = null;
+                }
+            } else {
                 valhallaManager = null;
             }
         }
