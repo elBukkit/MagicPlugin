@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.integration;
+package com.elmakers.mine.bukkit.integration.valhalla;
 
 import org.bukkit.configuration.ConfigurationSection;
 

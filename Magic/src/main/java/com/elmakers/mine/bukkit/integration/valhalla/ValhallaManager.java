@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.integration;
+package com.elmakers.mine.bukkit.integration.valhalla;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.integration.valhalla.MagicProfile;
-import com.elmakers.mine.bukkit.integration.valhalla.MagicSkill;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
