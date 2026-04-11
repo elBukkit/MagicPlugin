@@ -167,7 +167,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected CompatibilityUtils createCompatibilityUtils() {
-        throw new IllegalStateException("Platform does not implement createCompatibilityUtils");
+        return new CompatibilityUtilsBase(this);
     }
 
     protected DeprecatedUtils createDeprecatedUtils() {
