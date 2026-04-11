@@ -7,6 +7,7 @@
    Sorry!
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
+   - Add `valhalla` example to enable the options found on the wiki: https://github.com/elBukkit/MagicPlugin/wiki/Valhalla
    - Combine profile and skill XP so there is just one read/write representation of both
    - The level attributes are now keyed by skill instead of profile
    - Force update wand lore on level up, in case mana is driven by Valhalla

@@ -1,0 +1,21 @@
+starting_perks: []
+
+experience:
+  max_level: 100
+  exp_level_curve: (%level% + 75 * 2^(%level%/7.6)) + 300
+  exp_multiplier_quality: 0.00334
+  multiplier_automated: 0.25
+  multiplier_manual: 2
+  daily_limit: -1
+  daily_limit_warning: "&cYou feel too exhausted to continue learning magic for today &8(daily limit reached)"
+
+special_perks: []
+
+commands: []
+
+messages:
+  - "&bMagic&7 leveled up to &d%level%"
+
+leveling_perks: []
+
+starting_coordinates: 2,0

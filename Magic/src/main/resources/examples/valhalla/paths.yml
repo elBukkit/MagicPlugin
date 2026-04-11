@@ -1,0 +1,2 @@
+default:
+  allow_property_overrides: false

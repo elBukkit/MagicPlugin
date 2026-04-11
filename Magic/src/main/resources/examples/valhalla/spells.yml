@@ -1,0 +1,11 @@
+# Change all spells to earn Valhalla XP instead of magic SP
+override:
+  earns_type: valhalla_xp_magic
+
+# Change the spell shop to open the Valhalla skill tree
+spellshop:
+  actions:
+    cast:
+      - class: com.elmakers.mine.bukkit.integration.valhalla.OpenValhallaSkillTreeAction
+  parameters:
+    target: self
