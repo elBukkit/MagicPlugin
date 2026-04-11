@@ -94,18 +94,7 @@ public class ValhallaManager implements AttributeProvider, Listener {
                 // We will rely on Valhalla to send messages
                 configuration.set("silent", true);
             }
-            controller.register(new ValhallaSkillCurrency(this, entry.getValue(), currencyId, configuration));
-            names.add(currencyId);
-        }
-
-        for (Map.Entry<String, Profile> entry : registeredProfiles.entrySet()) {
-            String profileId = entry.getKey();
-            String currencyId = "valhalla_xp_" + profileId;
-            ConfigurationSection configuration = currencyConfiguration.getConfigurationSection(profileId);
-            if (configuration == null) {
-                configuration = ConfigurationUtils.newConfigurationSection();
-            }
-            controller.register(new ValhallaProfileCurrency(this, entry.getValue(), profileId, configuration));
+            controller.register(new ValhallaCurrency(this, entry.getValue(), currencyId, configuration));
             names.add(currencyId);
         }
         controller.getLogger().info("  Added " + names.size() + " ValhallaMMO XP as currencies: " + StringUtils.join(names, ","));

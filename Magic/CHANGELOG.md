@@ -7,6 +7,7 @@
    Sorry!
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
+   - Combine profile and skill XP so there is just one read/write representation of both
    - Force update wand lore on level up, in case mana is driven by Valhalla
    - Add a `magic` profile and associated skill, can be disabled via config
 
