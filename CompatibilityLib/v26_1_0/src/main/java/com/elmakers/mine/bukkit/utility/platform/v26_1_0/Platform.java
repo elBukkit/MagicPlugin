@@ -25,11 +25,6 @@ public class Platform extends PlatformBase {
     }
 
     @Override
-    protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
-        return new EntityUtils(this);
-    }
-
-    @Override
     protected com.elmakers.mine.bukkit.utility.platform.MobUtils createMobUtils() {
         return new MobUtils(this);
     }

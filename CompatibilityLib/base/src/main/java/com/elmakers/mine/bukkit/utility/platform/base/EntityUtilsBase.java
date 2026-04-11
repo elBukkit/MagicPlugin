@@ -32,7 +32,10 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAbstractPigli
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityArmorStandData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAxolotlData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityBoggedData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCatData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityChickenData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCowData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCreeperData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityDroppedItemData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderDragonData;
@@ -50,6 +53,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityMuleData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPaintingData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityParrotData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPhantomData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPigData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityRabbitData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySheepData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityShulkerData;
@@ -57,6 +61,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySlimeData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityVillagerData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityWolfData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieNautilusData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieVillagerData;
 
 public class EntityUtilsBase implements EntityUtils {
@@ -144,6 +149,16 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityAxolotlData(entity);
             case EYE_OF_ENDER:
                 return new EntityEnderSignalData(entity);
+            case BOGGED:
+                return new EntityBoggedData(entity);
+            case CHICKEN:
+                return new EntityChickenData(entity);
+            case COW:
+                return new EntityCowData(entity);
+            case PIG:
+                return new EntityPigData(entity);
+            case ZOMBIE_NAUTILUS:
+                return new EntityZombieNautilusData(entity);
             default:
                 return getExtraDataByClass(controller, entity);
         }
@@ -213,6 +228,16 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityEnderSignalData(parameters, controller);
             case FROG:
                 return new EntityFrogData(parameters, controller);
+            case BOGGED:
+                return new EntityBoggedData(parameters, controller);
+            case CHICKEN:
+                return new EntityChickenData(parameters, controller);
+            case COW:
+                return new EntityCowData(parameters, controller);
+            case PIG:
+                return new EntityPigData(parameters, controller);
+            case ZOMBIE_NAUTILUS:
+                return new EntityZombieNautilusData(parameters, controller);
             default:
                 return null;
         }

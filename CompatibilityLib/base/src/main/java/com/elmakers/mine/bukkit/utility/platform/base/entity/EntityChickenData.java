@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v26_1_0.entity;
+package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
 import java.util.Locale;
 
@@ -9,7 +9,6 @@ import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityChickenData extends EntityAnimalData {
     private Chicken.Variant variant;
