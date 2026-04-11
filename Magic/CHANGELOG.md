@@ -3,6 +3,8 @@
 
 # 10.11.1
 
+ - Drop all pre-26.1 compatibility layers, Java 25 bytecode makes it impossible to run on older servers. 
+   Sorry!
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
    - Force update wand lore on level up, in case mana is driven by Valhalla
