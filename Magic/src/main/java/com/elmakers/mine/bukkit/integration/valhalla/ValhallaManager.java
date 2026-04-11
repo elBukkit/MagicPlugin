@@ -33,7 +33,6 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 public class ValhallaManager implements AttributeProvider, Listener {
     private final MagicController controller;
     private boolean enabled = false;
-    private final Map<String, Profile> registeredProfiles = new HashMap<>();
     private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
 
@@ -47,7 +46,6 @@ public class ValhallaManager implements AttributeProvider, Listener {
     }
 
     public void load(ConfigurationSection config) {
-        registeredProfiles.clear();
         attributes.clear();
         enabled = config.getBoolean("enabled");
         if (!enabled) {
@@ -55,15 +53,10 @@ public class ValhallaManager implements AttributeProvider, Listener {
             return;
         }
 
-        for (Profile profile : ProfileRegistry.getRegisteredProfiles().values()) {
-            String profileId = profile.getTableName().replace("profiles_", "");
-            registeredProfiles.put(profileId, profile);
-            attributes.add("valhalla_level_" + profileId);
-        }
-
         for (Skill skill : SkillRegistry.getAllSkills().values()) {
             String skillId = skill.getType().toLowerCase(Locale.ROOT);
             registeredSkills.put(skillId, skill);
+            attributes.add("valhalla_level_" + skillId);
         }
 
         controller.getLogger().info("Integrated with ValhallaMMO:");
@@ -115,11 +108,15 @@ public class ValhallaManager implements AttributeProvider, Listener {
 
         if (attribute.startsWith("valhalla_level_")) {
             String profileId = attribute.substring("valhalla_level_".length());
-            Profile profile = registeredProfiles.get(profileId);
-            if (profile == null) {
+            Skill skill = registeredSkills.get(profileId);
+            if (skill == null) {
                 return null;
             }
-            Profile playerProfile = ProfileCache.getOrCache(player, profile.getClass());
+            Class<? extends Profile> profileClass = skill.getProfileType();
+            if (profileClass == null) {
+                return null;
+            }
+            Profile playerProfile = ProfileCache.getOrCache(player, profileClass);
             if (playerProfile == null) {
                 return null;
             }
