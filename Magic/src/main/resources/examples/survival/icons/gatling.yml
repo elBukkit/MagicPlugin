@@ -6,5 +6,5 @@ gatling:
   url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
   type: spell
   glyph: "\uE951"
-  vanilla_item: 'chain{18001}'
-  vanilla_item_disabled: 'chain{18002}'
+  vanilla_item: 'iron_chain{18001}'
+  vanilla_item_disabled: 'iron_chain{18002}'

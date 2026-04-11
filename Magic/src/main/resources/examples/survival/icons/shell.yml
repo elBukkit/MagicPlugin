@@ -6,5 +6,5 @@ shell:
   url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
   type: spell
   glyph: "\uE9A3"
-  vanilla_item: 'scute{18001}'
-  vanilla_item_disabled: 'scute{18002}'
+  vanilla_item: 'turtle_scute{18001}'
+  vanilla_item_disabled: 'turtle_scute{18002}'
