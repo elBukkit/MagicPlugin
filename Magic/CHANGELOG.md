@@ -11,6 +11,7 @@
    - The level attributes are now keyed by skill instead of profile
    - Force update wand lore on level up, in case mana is driven by Valhalla
    - Add a `magic` profile and associated skill, can be disabled via config
+   - Add an OpenValhallaSkillTreeAction, used in the spellshop by the `valhalla` example
 
 # 10.11
 
