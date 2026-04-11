@@ -1,8 +1,5 @@
 # TODO
 
- - Check otherside example:
-   Is the otherside example broken? it just spawns me in the void. and there was no world creation
-
 # Actually Somewhat Recent
 
  - Magic mob spawner blocks don't work

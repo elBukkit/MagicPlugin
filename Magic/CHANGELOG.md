@@ -3,7 +3,8 @@
 
 # 10.11.1
 
- - Fix backwards compatibility by reverting plugin.yml api-version
+ - Fix backwards compatibility by reverting plugin.yml api-version (did this work?)
+ - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
    - Force update wand lore on level up, in case mana is driven by Valhalla
    - Add a `magic` profile and associated skill, can be disabled via config

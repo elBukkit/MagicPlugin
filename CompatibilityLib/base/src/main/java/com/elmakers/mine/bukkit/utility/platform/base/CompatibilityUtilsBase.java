@@ -492,7 +492,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (maxHeight == null) {
             maxHeight = world.getMaxHeight();
         }
-        return maxHeight;
+        // The max build height is one less than this value, so we subtract one since this is
+        // often used to prevent building above max height.
+        return maxHeight - 1;
     }
 
     @Override
