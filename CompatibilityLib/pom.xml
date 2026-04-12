@@ -42,8 +42,8 @@
 
     <modules>
         <module>common</module>
-        <module>base</module>
         <module>paper</module>
+        <module>base_v1_20_5</module>
         <module>v1_20_5</module>
         <module>v1_20_6</module>
         <module>v1_21_0</module>
