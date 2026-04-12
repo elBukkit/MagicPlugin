@@ -1,0 +1,14 @@
+help:
+  examples:
+    main: |-
+      `<li>``<help topic="instructions.example.valhalla" text="ValhallaMMO Integration">`
+
+examples:
+  valhalla:
+    instructions: |-
+      `<title text="ValhallaMMO Integration Instructions">`
+      `<p>`You should restart the server after enabling this example &r
+      `<p>`Afterward, you will see a new Magic skill in the skill tree &r
+      `<p>`Craft a wand or spellbook as normal &r
+      `<p>`Use Skill Points to unlock spells &r
+      `<p>`Level up to rank up your mana and magic abilities &r

@@ -71,7 +71,7 @@ public class ValhallaManager implements AttributeProvider, Listener {
             String profileId = profileConfig.getString("id");
             if (skillId != null && profileId != null && !skillId.isEmpty() && !profileId.isEmpty()) {
                 ProfileRegistry.registerProfileType(new MagicProfile(profileId));
-                magicSkill = new MagicSkill(controller, skillId, profileConfig.getString("class"), skillConfig.getInt("priority"));
+                magicSkill = new MagicSkill(controller, skillId, profileConfig.getString("class"), skillConfig);
                 registeredSkills.put(skillId, magicSkill);
                 controller.getLogger().info("  Added " + profileId + " profile using " + skillId + " skill ");
             }

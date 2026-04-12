@@ -13,3 +13,8 @@ add_resource_pack: valhalla
 valhalla:
   profile:
     enabled: true
+
+# Switch sp to currency, for buying stuff from the enchant table shop
+builtin_currency:
+  sp:
+    replacement: currency

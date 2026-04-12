@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -26,12 +30,14 @@ public class MagicSkill extends Skill {
     private final MageController controller;
     private final String id;
     private final int priority;
+    private final int levelsPerPath;
     private final String mageClass;
 
-    public MagicSkill(MageController controller, String skillId, String mageClass, int priority) {
+    public MagicSkill(MageController controller, String skillId, String mageClass, ConfigurationSection config) {
         super(skillId.toUpperCase());
         this.controller = controller;
-        this.priority = priority;
+        this.priority = config.getInt("priority");
+        this.levelsPerPath = config.getInt("levels_per_path");
         this.mageClass = mageClass;
         id = skillId;
     }
@@ -81,6 +87,13 @@ public class MagicSkill extends Skill {
             controller.getLogger().log(Level.WARNING, "Invalid mage class in Valhalla profile configs: " + this.mageClass);
             return;
         }
+        List<String> defaultPerks = new ArrayList<>();
+        defaultPerks.add(mageClass.getString("path"));
+        Collection<String> defaultSpells = mageClass.getStringList("spells");
+        defaultPerks.addAll(defaultSpells);
+        ConfigurationSection startingPerks = config.createSection("starting_perks");
+        startingPerks.set("perks_unlocked_add", defaultPerks);
+
         String defaultPathId = mageClass.getString("path");
         ProgressionPath path = controller.getPath(defaultPathId);
         if (path == null) {
@@ -88,11 +101,64 @@ public class MagicSkill extends Skill {
             return;
         }
 
+        int yLocation = 1;
+        int levelUnlock = 0;
+        Set<String> previousSpells = new HashSet<>();
         ConfigurationSection perks = config.createSection("perks");
+        ProgressionPath previousPath = null;
+        while (path != null) {
+            addRankPerk(perks, yLocation, path, previousPath, levelUnlock);
+            yLocation--;
+            previousPath = path;
+            addPathPerks(perks, yLocation, path, previousSpells);
+            path = path.getNextPath();
+            levelUnlock += levelsPerPath;
+            yLocation--;
+        }
+    }
+
+    protected void addRankPerk(ConfigurationSection perks, int yLocation, ProgressionPath path, ProgressionPath previousPath, int level) {
+        int xLocation = 2;
+        ConfigurationSection pathConfig = perks.createSection(path.getKey());
+        MaterialAndData spellIcon = path.getIcon();
+        Material material = spellIcon.getMaterial();
+        int customModelData = spellIcon.getCustomModelData();
+        MaterialAndData lockedIcon = path.getDisabledIcon();
+        int disabledData = lockedIcon.getCustomModelData();
+        if (disabledData == 0) {
+            disabledData = customModelData;
+        }
+        if (customModelData > 0) {
+            pathConfig.set("custom_model_data_unlockable", customModelData);
+            pathConfig.set("custom_model_data_unlocked", customModelData);
+            // Visible kind of means locked, since "unlockable" means not locked
+            pathConfig.set("custom_model_data_visible", disabledData);
+        }
+        pathConfig.set("icon", material.name());
+        pathConfig.set("name", path.getName());
+        pathConfig.set("description", path.getDescription());
+        pathConfig.set("cost", 0);
+        pathConfig.set("coords", xLocation + "," + yLocation);
+        pathConfig.set("required_lv", level);
+        if (previousPath != null) {
+            List<String> required = new ArrayList<>();
+            required.add(previousPath.getKey());
+            pathConfig.set("requireperk_all", required);
+        }
+    }
+
+    protected void addPathPerks(ConfigurationSection perks, int yLocation, ProgressionPath path, Set<String> previousSpells) {
         Collection<String> spells = path.getSpells();
-        int xLocation = 1;
-        int yLocation = 2;
+        Collection<String> newSpells = new HashSet<>();
         for (String spellKey : spells) {
+            if (previousSpells.contains(spellKey)) continue;
+            newSpells.add(spellKey);
+        }
+
+        int xLocation = -(int)Math.floor(newSpells.size() / 2) + 2;
+        for (String spellKey : newSpells) {
+            if (previousSpells.contains(spellKey)) continue;
+            previousSpells.add(spellKey);
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
             if (spell == null) continue;
             ConfigurationSection spellConfig = perks.createSection(spellKey);
@@ -115,6 +181,9 @@ public class MagicSkill extends Skill {
             spellConfig.set("description", spell.getDescription());
             spellConfig.set("cost", 1);
             spellConfig.set("coords", xLocation + "," + yLocation);
+            List<String> required = new ArrayList<>();
+            required.add(path.getKey());
+            spellConfig.set("requireperk_all", required);
             xLocation++;
         }
     }

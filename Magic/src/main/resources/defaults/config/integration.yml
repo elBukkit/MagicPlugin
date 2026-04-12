@@ -299,6 +299,7 @@ valhalla:
     skill:
       id: magic
       priority: 100
+      levels_per_path: 20
 
 # ModelEngine integration
 model_engine:

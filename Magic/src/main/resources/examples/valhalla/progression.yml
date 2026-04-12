@@ -1,5 +1,3 @@
-starting_perks: []
-
 experience:
   max_level: 100
   exp_level_curve: (%level% + 75 * 2^(%level%/7.6)) + 300
