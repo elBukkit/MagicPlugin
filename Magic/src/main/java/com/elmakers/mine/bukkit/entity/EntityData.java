@@ -63,7 +63,6 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -625,7 +624,7 @@ public class EntityData
             return null;
         }
         EntityData data = new EntityData(controller, entityType);
-        data.extraData = new EntityNMSData(CompatibilityLib.getPlatform(), tag);
+        data.extraData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
         data.relativeLocation = location.clone();
         return data;
     }

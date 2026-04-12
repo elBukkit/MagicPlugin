@@ -50,6 +50,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityItemFra
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityLlamaData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityMooshroomData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityMuleData;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityPaintingData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityParrotData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityPhantomData;
@@ -251,5 +252,10 @@ public class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getItemFrameData(ItemStack item, BlockFace direction, Rotation rotation) {
         return new EntityItemFrameData(item, direction, rotation);
+    }
+
+    @Override
+    public EntityExtraData getNMSData(MageController controller, Object tag) {
+        return new EntityNMSData(platform, tag);
     }
 }
