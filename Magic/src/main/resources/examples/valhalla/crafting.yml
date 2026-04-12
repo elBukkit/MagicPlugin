@@ -1,3 +1,5 @@
+# Disable some recipes
+
 magicbow:
   enabled: false
 

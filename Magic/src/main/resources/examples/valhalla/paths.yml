@@ -1,6 +1,3 @@
-default:
-  allow_property_overrides: false
-
 # Re-arrange spells to make it more balanced
 beginner:
   spells:
