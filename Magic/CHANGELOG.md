@@ -3,10 +3,12 @@
 
 # 10.11.1
 
- - Fix backwards compatibility by reverting plugin.yml api-version (did this work?)
+ - Fix backwards compatibility, back to 1.20.5 again
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
    - Add `valhalla` example to enable the options found on the wiki: https://github.com/elBukkit/MagicPlugin/wiki/Valhalla
+   - This will enable an out-of-the-box integration that presents a select set of spells as a new
+     skill set in Valhalla. New spells and path rankups are now learned via the skill tree.
    - Combine profile and skill XP so there is just one read/write representation of both
    - The level attributes are now keyed by skill instead of profile
    - Force update wand lore on level up, in case mana is driven by Valhalla
