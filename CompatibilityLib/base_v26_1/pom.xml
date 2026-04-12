@@ -12,7 +12,6 @@
     <properties>
         <!-- Note that I could not get spigot 26.1 to build to Maven, but it should be the same API so whatever -->
         <bukkit.version>26.1.1-R0.1-SNAPSHOT</bukkit.version>
-        <version.java>25</version.java>
     </properties>
 
     <dependencies>
