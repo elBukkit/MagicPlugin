@@ -73,8 +73,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.AnimalTamer;
@@ -270,7 +268,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
-                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, DamageSource.builder(DamageType.MAGIC).withCausingEntity(source).build(), new ArrayList<>());
+                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, new ArrayList<>());
                     Bukkit.getPluginManager().callEvent(deathEvent);
                     target.remove();
                 } else {
@@ -304,7 +302,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (potion == null) {
             potion = (ThrownPotion) world.spawnEntity(
                     location,
-                    EntityType.SPLASH_POTION);
+                    EntityType.POTION);
             potion.remove();
 
             ref = new WeakReference<>(potion);
