@@ -291,9 +291,9 @@ ultimate_clans:
 valhalla:
   enabled: true
 
-  # Turn this off to avoid adding a profile
+  # Turn this on to add a "magic" skill and profile
   profile:
-    enabled: true
+    enabled: false
     id: magic
     class: mage
     skill:
