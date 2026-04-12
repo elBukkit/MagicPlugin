@@ -99,11 +99,18 @@ public class MagicSkill extends Skill {
             MaterialAndData spellIcon = spell.getIcon();
             Material material = spellIcon.getMaterial();
             int customModelData = spellIcon.getCustomModelData();
-            String icon = material.name();
-            if (customModelData > 0) {
-                icon += ":" + customModelData;
+            MaterialAndData lockedIcon = spell.getDisabledIcon();
+            int disabledData = lockedIcon.getCustomModelData();
+            if (disabledData == 0) {
+                disabledData = customModelData;
             }
-            spellConfig.set("icon", icon);
+            if (customModelData > 0) {
+                spellConfig.set("custom_model_data_unlockable", customModelData);
+                spellConfig.set("custom_model_data_unlocked", customModelData);
+                // Visible kind of means locked, since "unlockable" means not locked
+                spellConfig.set("custom_model_data_visible", disabledData);
+            }
+            spellConfig.set("icon", material.name());
             spellConfig.set("name", spell.getName());
             spellConfig.set("description", spell.getDescription());
             spellConfig.set("cost", 1);
