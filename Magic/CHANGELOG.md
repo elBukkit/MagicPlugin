@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.11.2
+
 # 10.11.1
 
  - Fix backwards compatibility, back to 1.20.5 again
