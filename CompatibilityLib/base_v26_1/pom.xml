@@ -7,7 +7,7 @@
         <artifactId>CompatibilityLib-parent</artifactId>
         <version>10.11.1-SNAPSHOT</version>
     </parent>
-    <artifactId>CompatibilityLib-v26_1_0</artifactId>
+    <artifactId>CompatibilityLib-base_v26_1</artifactId>
 
     <properties>
         <!-- Note that I could not get spigot 26.1 to build to Maven, but it should be the same API so whatever -->
@@ -28,11 +28,38 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>6.0.54</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-base_v26_1</artifactId>
+            <artifactId>CompatibilityLib-common</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>CompatibilityLib-paper</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
 
+    <repositories>
+        <!-- This is here for Mojang authlib, which can be used directly without remapping -->
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
