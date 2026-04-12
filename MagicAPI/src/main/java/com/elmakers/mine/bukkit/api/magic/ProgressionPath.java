@@ -14,6 +14,7 @@ public interface ProgressionPath {
     String getKey();
     String getName();
     MaterialAndData getIcon();
+    MaterialAndData getDisabledIcon();
     boolean requiresSpell(String spellKey);
     boolean hasExtraSpell(String spellKey);
     String getDescription();

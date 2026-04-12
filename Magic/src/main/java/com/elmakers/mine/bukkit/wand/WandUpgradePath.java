@@ -82,6 +82,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private boolean hidden = false;
     private boolean earnsSP = true;
     private MaterialAndData icon;
+    private MaterialAndData disabledIcon;
     private MaterialAndData migrateIcon;
     private ConfigurationSection properties;
 
@@ -119,6 +120,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             this.earnsSP = inherit.earnsSP;
             this.levelMap = new TreeMap<>(inherit.levelMap);
             this.icon = inherit.icon;
+            this.disabledIcon = inherit.disabledIcon;
             this.migrateIcon = inherit.migrateIcon;
             this.maxMana = inherit.maxMana;
             this.manaRegeneration = inherit.manaRegeneration;
@@ -200,6 +202,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         // Icon information for upgrading/migrating wands
         icon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled()));
         migrateIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "migrate_icon"));
+        disabledIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "disabled_icon"));
 
         // Validate requirements - disabling a required spell disables the upgrade.
         for (PrerequisiteSpell requiredSpell : requiredSpells) {
@@ -606,6 +609,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon() {
         return icon;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon() {
+        return disabledIcon == null ? icon : disabledIcon;
     }
 
     public void upgraded(MageController controller, com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {
