@@ -1,5 +1,10 @@
 # TODO
 
+# Do it for real
+
+ - Fix backwards compatibility layers, dealing with serialized items.. somehow??
+ - See if we can bring the older layers back
+
 # Actually Somewhat Recent
 
  - Magic mob spawner blocks don't work

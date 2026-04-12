@@ -181,6 +181,8 @@ public class MagicSkill extends Skill {
             spellConfig.set("description", spell.getDescription());
             spellConfig.set("cost", 1);
             spellConfig.set("coords", xLocation + "," + yLocation);
+            ConfigurationSection rewards = spellConfig.createSection("perk_rewards");
+            rewards.set("learn_spell", spellKey);
             List<String> required = new ArrayList<>();
             required.add(path.getKey());
             spellConfig.set("requireperk_all", required);
@@ -208,5 +210,9 @@ public class MagicSkill extends Skill {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return priority;
+    }
+
+    public String getMageClass() {
+        return mageClass;
     }
 }

@@ -27,12 +27,14 @@ import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 
 public class ValhallaManager implements AttributeProvider, Listener {
     private final MagicController controller;
     private boolean enabled = false;
+    private boolean initialized = false;
     private MagicSkill magicSkill;
     private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
@@ -43,7 +45,10 @@ public class ValhallaManager implements AttributeProvider, Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    protected void buildData() {
+    public void finishInitialization() {
+        if (enabled) {
+            initialized = true;
+        }
     }
 
     public void load(ConfigurationSection config) {
@@ -89,12 +94,15 @@ public class ValhallaManager implements AttributeProvider, Listener {
     }
 
     public void registerSkill() {
-        if (enabled && magicSkill != null) {
+        if (enabled && magicSkill != null && !initialized) {
+            PerkRewardRegistry.register(new SpellPerkReward(controller, magicSkill.getMageClass(),"learn_spell"));
             SkillRegistry.registerSkill(magicSkill);
         }
     }
 
     public void registerCurrencies(ConfigurationSection currencyConfiguration) {
+        if (!enabled || initialized) return;
+
         List<String> names = new ArrayList<>();
         for (Map.Entry<String, Skill> entry : registeredSkills.entrySet()) {
             String skillId = entry.getKey();
