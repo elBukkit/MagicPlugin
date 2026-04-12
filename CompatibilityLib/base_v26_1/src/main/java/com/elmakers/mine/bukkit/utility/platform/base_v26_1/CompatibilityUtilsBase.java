@@ -248,6 +248,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         // This will be replaced, but adding it here lets us initialize the list to be the right size
         // There's probably a cleaner way to get a mutable pre-initialized list, but I couldn't figure it ou.
         blockBoundingBoxes.add(BLOCK_BOUNDING_BOX);
+        populateProjectileClasses();
     }
 
     @Override
