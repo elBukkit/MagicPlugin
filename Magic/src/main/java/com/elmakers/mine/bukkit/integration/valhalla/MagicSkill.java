@@ -149,6 +149,7 @@ public class MagicSkill extends Skill {
         pathConfig.set("coords", xLocation + "," + yLocation);
         pathConfig.set("required_lv", level);
         ConfigurationSection rewards = pathConfig.createSection("perk_rewards");
+        rewards.set("path_upgrade", path.getKey());
         if (previousPath != null) {
             List<String> required = new ArrayList<>();
             required.add(previousPath.getKey());

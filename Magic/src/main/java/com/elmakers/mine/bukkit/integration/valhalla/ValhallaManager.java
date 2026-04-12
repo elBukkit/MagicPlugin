@@ -89,6 +89,7 @@ public class ValhallaManager implements AttributeProvider, Listener {
         if (enabled && magicSkill != null && !registeredSkill) {
             PerkRewardRegistry.register(new SpellPerkReward(controller, magicSkill.getMageClass(),"learn_spell"));
             PerkRewardRegistry.register(new RecipePerkReward(controller, "discover_recipe"));
+            PerkRewardRegistry.register(new PathPerkReward(controller, magicSkill.getMageClass(), "path_upgrade"));
             SkillRegistry.registerSkill(magicSkill);
 
             Plugin plugin = controller.getPlugin();
