@@ -64,7 +64,7 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base_v1_21_4.CompatibilityUtilsBase_v1_21_4;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_21_4.CompatibilityUtilsBase;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -102,7 +102,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
+public class CompatibilityUtils extends CompatibilityUtilsBase {
     private final Map<String, net.minecraft.world.entity.EntityType<?>> projectileEntityTypes = new HashMap<>();
     private final Map<String, Class<? extends net.minecraft.world.entity.projectile.Projectile>> projectileClasses = new HashMap<>();
 

@@ -22,11 +22,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.Lootable;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.CompatibilityUtilsBase;
 
-public abstract class CompatibilityUtilsBase_v1_21_4 extends CompatibilityUtilsBase {
+public abstract class CompatibilityUtilsBase extends com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.CompatibilityUtilsBase {
 
-    public CompatibilityUtilsBase_v1_21_4(Platform platform) {
+    public CompatibilityUtilsBase(Platform platform) {
         super(platform);
     }
 
