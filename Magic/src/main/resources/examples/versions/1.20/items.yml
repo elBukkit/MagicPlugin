@@ -1,0 +1,1248 @@
+bigdragonwingleftred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18007
+
+bigdragonbodyred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18008
+
+bigdragonwingrightred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18009
+
+bigdragonwingleftblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18010
+
+bigdragonbodyblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18011
+
+bigdragonwingrightblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18012
+
+bigdragonwingleftgreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18013
+
+bigdragonbodygreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18014
+
+bigdragonwingrightgreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18015
+
+bigdragonwingleftgrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18016
+
+bigdragonbodygrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18017
+
+bigdragonwingrightgrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18018
+
+bigdragonwingleftpurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18019
+
+bigdragonbodypurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18020
+
+bigdragonwingrightpurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18021
+
+broomstick_handle:
+  replace_on_equip: true
+  tags:
+    unmoveable: true
+    unstashable: true
+    unswappable: true
+    undroppable: false
+    temporary: true
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: STICK
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Broomstick Handle
+      custom-model-data: 18047
+
+coffee1:
+  worth: 10.0
+  item: potion:A0522D
+  potion_effect_duration: 10 seconds
+  potion_effects:
+    speed: 1
+
+coffee2:
+  worth: 10.0
+  item: potion:8B4513
+  potion_effect_duration: 30 seconds
+  potion_effects:
+    speed: 2
+
+
+coffee3:
+  worth: 10.0
+  item: potion:800000
+  potion_effect_duration: 60 seconds
+  potion_effects:
+    speed: 3
+
+amethyst_shard:
+  worth: 100
+  discover_recipes:
+    - wand
+    - spellbook
+    - magicsword
+
+purple_wool:
+  worth: 3.43
+  discover_recipes:
+    - wizardhelmet
+    - wizardchestplate
+    - wizardleggings
+    - wizardboots
+
+phantom_membrane:
+  worth: 183.93
+  discover_recipes:
+    - broomstick
+
+conduit:
+  worth: 7458.79
+  discover_recipes:
+    - divinghelmet
+
+daylight_detector:
+  worth: 3
+  discover_recipes:
+    - camera
+
+emerald:
+  worth: 50
+  discover_recipes:
+    - emerald_sword
+    - wand
+    - spellbook
+
+diamond:
+  worth: 100
+  discover_recipes:
+    - wand
+    - spellbook
+
+dragonbodyblue:
+  item: leather_horse_armor{18001}
+  color:
+    red: 60
+    blue: 170
+    green: 68
+
+dragonbodybrown:
+  item: leather_horse_armor{18001}
+  color:
+    red: 131
+    blue: 50
+    green: 84
+
+dragonbodycyan:
+  item: leather_horse_armor{18001}
+  color:
+    red: 22
+    blue: 156
+    green: 156
+
+dragonbodygrey:
+  item: leather_horse_armor{18001}
+  color:
+    red: 128
+    blue: 128
+    green: 128
+
+dragonbodyblack:
+  item: leather_horse_armor{18001}
+  color:
+    red: 29
+    blue: 33
+    green: 29
+
+dragonbodygreen:
+  item: leather_horse_armor{18001}
+  color:
+    red: 94
+    blue: 22
+    green: 124
+
+dragonbodylightblue:
+  item: leather_horse_armor{18001}
+  color:
+    red: 58
+    blue: 218
+    green: 179
+
+dragonbodylightgrey:
+  item: leather_horse_armor{18001}
+  color:
+    red: 157
+    blue: 151
+    green: 157
+
+dragonbodylightred:
+  item: leather_horse_armor{18001}
+  color:
+    red: 176
+    blue: 38
+    green: 46
+
+dragonbodylime:
+  item: leather_horse_armor{18001}
+  color:
+    red: 128
+    blue: 31
+    green: 199
+
+dragonbodymagenta:
+  item: leather_horse_armor{18001}
+  color:
+    red: 199
+    blue: 189
+    green: 78
+
+dragonbodyorange:
+  item: leather_horse_armor{18001}
+  color:
+    red: 249
+    blue: 29
+    green: 128
+
+dragonbodypink:
+  item: leather_horse_armor{18001}
+  color:
+    red: 243
+    blue: 170
+    green: 139
+
+dragonbodypurple:
+  item: leather_horse_armor{18001}
+  color:
+    red: 137
+    blue: 184
+    green: 50
+
+dragonbodyred:
+  item: leather_horse_armor{18001}
+  color:
+    red: 176
+    blue: 38
+    green: 46
+
+dragonbodywhite:
+  item: leather_horse_armor{18001}
+  color:
+    red: 249
+    blue: 254
+    green: 255
+
+dragonbodyyellow:
+  item: leather_horse_armor{18001}
+  color:
+    red: 254
+    blue: 61
+    green: 216
+
+dragonleftgreen:
+  item: leather_horse_armor{18002}
+  color:
+    red: 94
+    blue: 22
+    green: 124
+
+dragonwingleftblack:
+  item: leather_horse_armor{18002}
+  color:
+    red: 29
+    blue: 33
+    green: 29
+
+dragonwingleftblue:
+  item: leather_horse_armor{18002}
+  color:
+    red: 60
+    blue: 170
+    green: 68
+
+dragonwingleftbrown:
+  item: leather_horse_armor{18002}
+  color:
+    red: 131
+    blue: 50
+    green: 84
+
+dragonwingleftcyan:
+  item: leather_horse_armor{18002}
+  color:
+    red: 22
+    blue: 156
+    green: 156
+
+dragonwingleftgrey:
+  item: leather_horse_armor{18002}
+  color:
+    red: 71
+    blue: 82
+    green: 79
+
+dragonwingleftgreen:
+  item: leather_horse_armor{18002}
+  color:
+    red: 94
+    blue: 22
+    green: 124
+
+dragonwingleftlightblue:
+  item: leather_horse_armor{18002}
+  color:
+    red: 22
+    blue: 156
+    green: 156
+
+dragonwingleftlightgrey:
+  item: leather_horse_armor{18002}
+  color:
+    red: 157
+    blue: 151
+    green: 157
+
+dragonwingleftlime:
+  item: leather_horse_armor{18002}
+  color:
+    red: 128
+    blue: 31
+    green: 199
+
+dragonwingleftmagenta:
+  item: leather_horse_armor{18002}
+  color:
+    red: 199
+    blue: 189
+    green: 78
+
+dragonwingleftorange:
+  item: leather_horse_armor{18002}
+  color:
+    red: 249
+    blue: 29
+    green: 128
+
+dragonwingleftpink:
+  item: leather_horse_armor{18002}
+  color:
+    red: 243
+    blue: 170
+    green: 139
+
+dragonwingleftpurple:
+  item: leather_horse_armor{18002}
+  color:
+    red: 137
+    blue: 184
+    green: 50
+
+dragonwingleftred:
+  item: leather_horse_armor{18002}
+  color:
+    red: 176
+    blue: 38
+    green: 46
+
+dragonwingleftwhite:
+  item: leather_horse_armor{18002}
+  color:
+    red: 249
+    blue: 254
+    green: 255
+
+dragonwingleftyellow:
+  item: leather_horse_armor{18002}
+  color:
+    red: 254
+    blue: 61
+    green: 216
+
+dragonwingrightblack:
+  item: leather_horse_armor{18003}
+  color:
+    red: 29
+    blue: 33
+    green: 29
+
+dragonwingrightblue:
+  item: leather_horse_armor{18003}
+  color:
+    red: 60
+    blue: 170
+    green: 68
+
+dragonwingrightbrown:
+  item: leather_horse_armor{18003}
+  color:
+    red: 131
+    blue: 50
+    green: 84
+
+dragonwingrightcyan:
+  item: leather_horse_armor{18003}
+  color:
+    red: 22
+    blue: 156
+    green: 156
+
+dragonwingrightgrey:
+  item: leather_horse_armor{18003}
+  color:
+    red: 71
+    blue: 82
+    green: 79
+
+dragonwingrightgreen:
+  item: leather_horse_armor{18003}
+  color:
+    red: 94
+    blue: 22
+    green: 124
+
+dragonwingrightlightblue:
+  item: leather_horse_armor{18003}
+  color:
+    red: 58
+    blue: 218
+    green: 179
+
+dragonwingrightlightgrey:
+  item: leather_horse_armor{18003}
+  color:
+    red: 157
+    blue: 151
+    green: 157
+
+dragonwingrightlightgreen:
+  item: leather_horse_armor{18003}
+  color:
+    red: 128
+    blue: 31
+    green: 199
+
+dragonwingrightlime:
+  item: leather_horse_armor{18003}
+  color:
+    red: 128
+    blue: 31
+    green: 199
+
+dragonwingrightmagenta:
+  item: leather_horse_armor{18003}
+  color:
+    red: 199
+    blue: 189
+    green: 78
+
+dragonwingrightorange:
+  item: leather_horse_armor{18003}
+  color:
+    red: 249
+    blue: 29
+    green: 128
+
+dragonwingrightpink:
+  item: leather_horse_armor{18003}
+  color:
+    red: 243
+    blue: 170
+    green: 139
+
+dragonwingrightpurple:
+  item: leather_horse_armor{18003}
+  color:
+    red: 137
+    blue: 184
+    green: 50
+
+dragonwingrightred:
+  item: leather_horse_armor{18003}
+  color:
+    red: 176
+    blue: 38
+    green: 46
+
+dragonwingrightwhite:
+  item: leather_horse_armor{18003}
+  color:
+    red: 249
+    blue: 254
+    green: 255
+
+dragonwingrightyellow:
+  item: leather_horse_armor{18003}
+  color:
+    red: 254
+    blue: 61
+    green: 216
+
+thorns:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 0
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3
+
+emerald_sword:
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
+  worth: 1000.0
+  attributes:
+    - type: GENERIC_ATTACK_DAMAGE
+      amount: 5.0
+      name: Equipment Modifier
+      slot: HAND
+      uuid: be7c088e-291d-4497-b54d-5b1b15979cd1
+      operation: 0
+    - type: GENERIC_ATTACK_SPEED
+      amount: 2.0
+      name: Equipment Modifier
+      slot: HAND
+      uuid: 5665f95b-de79-4453-a315-cc5874910086
+      operation: 0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: DIAMOND_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Emerald Sword
+      custom-model-data: 18001
+
+helmet_of_blinding:
+  worth: 750
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_HELMET
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Helmet of Blinding
+       lore:
+       - 'For use outside of water'
+       enchants:
+         WATER_WORKER: 10
+
+dwarven_battle_axe:
+  worth: 1000
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_AXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Dwarven Battle Axe
+       enchants:
+         DAMAGE_ALL: 8
+         DURABILITY: 5
+
+dwarven_spade:
+  worth: 200
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_SPADE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Dwarven Spade
+       lore:
+       - 'A spade used by many young dwarves'
+       enchants:
+         DIG_SPEED: 1
+         DURABILITY: 1
+
+dwarven_axe:
+  worth: 500
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_AXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Dwarven Axe
+       lore:
+       - 'An axe used by many young dwarves'
+       enchants:
+         DIG_SPEED: 1
+         DURABILITY: 1
+
+dwarven_pickaxe:
+  worth: 500
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Dwarven Pickaxe
+       enchants:
+         DIG_SPEED: 3
+         DURABILITY: 3
+
+dwarven_pickaxe_luck:
+  worth: 1337
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Dwarven Pickaxe of Luck
+       enchants:
+         DIG_SPEED: 3
+         DURABILITY: 3
+         LOOT_BONUS_BLOCKS: 3
+
+felicis_pickaxe:
+  worth: 2500
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Felicis Pickaxe
+       enchants:
+         LOOT_BONUS_BLOCKS: 5
+
+dwarven_felicis_pickaxe:
+  worth: 3333
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Dwarven Felicis Pickaxe
+       enchants:
+         DIG_SPEED: 5
+         DURABILITY: 5
+         LOOT_BONUS_BLOCKS: 5
+
+loot3_pickaxe:
+  worth: 1000
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       enchants:
+         LOOT_BONUS_BLOCKS: 3
+
+loot5_pickaxe:
+  worth: 2500
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       enchants:
+         LOOT_BONUS_BLOCKS: 5
+
+silk_touch_pickaxe:
+  worth: 3000
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_PICKAXE
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       enchants:
+         SILK_TOUCH: 1
+
+end_compass:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: COMPASS
+    meta:
+      ==: ItemMeta
+      meta-type: COMPASS
+      display-name: 'Magnetic Compass (The End)'
+      LodestonePosWorld: minecraft:the_end
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
+
+hylian_shield:
+  worth: 200
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: SHIELD
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: §aHylian Shield
+      lore:
+      - Link's Shield
+      internal: H4sIAAAAAAAAAHXOTQ5AMBQE4KFoVeJQxN7CBUrqJxpN9G3cnojFI7GcfDPJaECjrJwf1majhY7OTDlUa4jsvgUNIFOQT4YYei+Q1t75/SIJbqPjFnGL55lR8iIiRsWbwu/q80MgqUywdw0n1U4Sy9UAAAA=
+      blockMaterial: SHIELD
+
+invisible_item_frame:
+  item: item_frame
+  worth: 100
+  tags:
+    EntityTag:
+      Invisible: 1
+
+# Gear for mobs to wear
+
+warlock_boots:
+  worth: 500
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: CHAINMAIL_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_FALL: 10
+
+warlock_chestplate:
+  worth: 400
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: CHAINMAIL_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3
+
+warlock_leggings:
+  worth: 400
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: CHAINMAIL_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3
+
+warlock_wand:
+  worth: 200
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 2
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      ItemFlags: !!set
+        HIDE_ATTRIBUTES: null
+        HIDE_UNBREAKABLE: null
+      display-name: §aWarlock wand
+      lore:
+      - It has lost its power
+
+wizard_wand:
+  worth: 300
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 4
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      display-name: §aWizard wand
+      lore:
+      - It has lost its power
+
+madscientist_wand:
+  worth: 500
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 7
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      display-name: §aThe Wolf
+      lore:
+      - It has lost its power
+
+madscientist_helmet:
+  worth: 400
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 17
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3
+      Unbreakable: true
+
+archer_bow:
+  worth: 300
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: BOW
+    damage: 1
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      display-name: §aArcher Bow
+      lore:
+      - It has lost its power
+
+nether_compass:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: COMPASS
+    meta:
+      ==: ItemMeta
+      meta-type: COMPASS
+      display-name: 'Magnetic Compass (Nether)'
+      LodestonePosWorld: minecraft:the_nether
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
+
+nothing:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 42
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Nothing
+      Unbreakable: true
+      ItemFlags: !!set
+        HIDE_UNBREAKABLE: null
+        HIDE_PLACED_ON: null
+        HIDE_DESTROYS: null
+        HIDE_ATTRIBUTES: null
+        HIDE_POTION_EFFECTS: null
+
+overworld_compass:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: COMPASS
+    meta:
+      ==: ItemMeta
+      meta-type: COMPASS
+      display-name: 'Magnetic Compass'
+      LodestonePosWorld: minecraft:overworld
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
+
+potion_water:
+  worth: 2.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:water
+
+potion_splash_swiftness_long:
+  worth: 50
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: SPLASH_POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:long_swiftness
+
+
+# Spawn eggs
+philbertegg:
+  worth: 500.0
+  item:
+    type: CREEPER_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Philbert\"}"
+      EntityTag:
+        powered: true
+        CustomName: "{\"text\":\"Philbert\"}"
+
+mutantegg:
+  worth: 400.0
+  item:
+    type: ZOMBIE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Mutant\"}"
+      EntityTag:
+        BukkitValues:
+          magic:magicmob: mutant
+        CustomName: "{\"text\":\"Mutant\"}"
+        HandItems:
+          - id: "minecraft:iron_sword"
+            Count: true
+            Damage: 0
+        ArmorItems:
+          - id: minecraft:iron_boots
+            Count: true
+            Damage: 0
+          - id: minecraft:iron_leggings
+            Count: true
+            Damage: 0
+          - id: minecraft:iron_chestplate
+            Count: true
+            Damage: 0
+          - id: minecraft:iron_helmet
+            Count: true
+            Damage: 0
+
+witherarcheregg:
+  worth: 300.0
+  item:
+    type: WITHER_SKELETON_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Wither Archer\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Wither Archer\"}"
+        HandItems:
+          - id: "minecraft:bow"
+            Count: true
+            Damage: 0
+
+zombiehorseegg:
+  worth: 1000.0
+  item:
+    type: ZOMBIE_HORSE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Zombie Horse\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Zombie Horse\"}"
+        Age: 0
+        ForcedAge: 0
+        Tame: true
+        SaddleItem:
+          id: "minecraft:saddle"
+          Count: true
+          Damage: 0
+
+skelliehorseegg:
+  worth: 1000.0
+  item:
+    type: SKELETON_HORSE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Skellie Horse\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Skellie Horse\"}"
+        Age: 0
+        ForcedAge: 0
+        Tame: true
+        SaddleItem:
+          id: "minecraft:saddle"
+          Count: true
+          Damage: 0
+
+warlockegg:
+  worth: 2000.0
+  item:
+    type: ZOMBIE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Warlock\"}"
+      EntityTag:
+        BukkitValues:
+          magic:magicmob: warlock
+
+# Mob spawners
+warlockspawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Warlock Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:zombie"
+          BukkitValues:
+            magic:magicmob: warlock
+
+darkspiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Dark Spider Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:cave_spider"
+          BukkitValues:
+            magic:magicmob: dark_spider
+
+megaspiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Mega Spider Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:spider"
+          BukkitValues:
+            magic:magicmob: mega_spider
+
+cavespiderspawner:
+  worth: 5000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Cave Spider Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:cave_spider"
+
+spiderspawner:
+  worth: 5000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Spider Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:spider"
+
+zombiespawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Zombie Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:zombie"
+
+skeletonspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: "{\"text\":\"Skeleton Spawner\"}"
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        SpawnData:
+          id: "minecraft:skeleton"
+
+superelytra:
+  worth: 10000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: ELYTRA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Super Elytra
+      Unbreakable: true
+
+totem:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 40
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Totem
+      Unbreakable: true
+      ItemFlags: !!set
+        HIDE_UNBREAKABLE: null
+        HIDE_PLACED_ON: null
+        HIDE_DESTROYS: null
+        HIDE_ATTRIBUTES: null
+        HIDE_POTION_EFFECTS: null
+

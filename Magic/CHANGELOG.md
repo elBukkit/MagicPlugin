@@ -3,8 +3,6 @@
 
 # 10.11.1
 
- - Drop all pre-26.1 compatibility layers, Java 25 bytecode makes it impossible to run on older servers. 
-   Sorry!
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
    - Add `valhalla` example to enable the options found on the wiki: https://github.com/elBukkit/MagicPlugin/wiki/Valhalla
