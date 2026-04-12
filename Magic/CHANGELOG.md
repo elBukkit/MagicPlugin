@@ -3,6 +3,7 @@
 
 # 10.11.1
 
+ - Fix backwards compatibility by reverting plugin.yml api-version (did this work?)
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
    - Add `valhalla` example to enable the options found on the wiki: https://github.com/elBukkit/MagicPlugin/wiki/Valhalla
