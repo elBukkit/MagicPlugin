@@ -1,2 +1,52 @@
 default:
   allow_property_overrides: false
+
+# Re-arrange spells to make it more balanced
+beginner:
+  spells:
+    - missile
+    - arrow
+    - push
+    - blind
+    - reflect
+    - poison
+    - fire
+    - frost
+    - blast
+    - fireball
+
+student:
+  spells:
+    - blink
+    - fling
+    - heal
+    - lava
+    - stream
+    - wither
+    - blob
+    - whip
+    - curse
+
+apprentice:
+  spells:
+    - flamethrower
+    - wound
+    - harden
+    - homing
+    - lift
+    - laser
+    - chainlightning
+
+master:
+  spells:
+    - fury
+    - cluster
+    - meteor
+    - kill
+    - torture
+    - petrify
+    - singularity
+    - railgun
+    - levitate
+    - neutron
+    - mob
