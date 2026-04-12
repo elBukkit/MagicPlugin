@@ -55,6 +55,9 @@ public class ValhallaManager implements AttributeProvider, Listener {
         }
 
         controller.getLogger().info("Integrated with ValhallaMMO:");
+        if (!controller.getLoadedExamples().contains("valhalla")) {
+            controller.getLogger().info("  Use \"/mexample add valhalla\" to enable the magic skill in Valhalla");
+        }
 
         for (Skill skill : SkillRegistry.getAllSkills().values()) {
             String skillId = skill.getType().toLowerCase(Locale.ROOT);
