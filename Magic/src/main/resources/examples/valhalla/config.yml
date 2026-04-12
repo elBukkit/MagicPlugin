@@ -1,5 +1,10 @@
 # This is a modifier on the default survival configs
 require: survival
 
+# This will use vanilla items for spell icons, which is more compatible with the skill tree
+example_override: true
+vanilla_icons_enabled: true
+
+# Use a special RP combining Magic and Valhalla
 resource_pack: valhalla
 add_resource_pack: valhalla

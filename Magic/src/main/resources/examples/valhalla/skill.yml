@@ -1,6 +1,6 @@
 display_name: Magic
-icon: BLAZE_ROD
-icon_data: 0
+icon: STICK
+icon_data: 18001
 description: "&bWield a &3Magic &bwand, learn to cast powerful spells for combat and utility"
 
 levelbar_title: "&bMagic &dLV %lv_current% &5%exp_current%&7/&5%exp_next% &7(&d%exp%&7)"

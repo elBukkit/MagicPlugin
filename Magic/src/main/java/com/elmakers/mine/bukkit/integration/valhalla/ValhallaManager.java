@@ -33,6 +33,7 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 public class ValhallaManager implements AttributeProvider, Listener {
     private final MagicController controller;
     private boolean enabled = false;
+    private MagicSkill magicSkill;
     private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
 
@@ -55,6 +56,11 @@ public class ValhallaManager implements AttributeProvider, Listener {
 
         controller.getLogger().info("Integrated with ValhallaMMO:");
 
+        for (Skill skill : SkillRegistry.getAllSkills().values()) {
+            String skillId = skill.getType().toLowerCase(Locale.ROOT);
+            registeredSkills.put(skillId, skill);
+        }
+
         ConfigurationSection profileConfig = config.getConfigurationSection("profile");
         if (profileConfig != null && profileConfig.getBoolean("enabled")) {
             ConfigurationSection skillConfig = profileConfig.getConfigurationSection("skill");
@@ -62,18 +68,27 @@ public class ValhallaManager implements AttributeProvider, Listener {
             String profileId = profileConfig.getString("id");
             if (skillId != null && profileId != null && !skillId.isEmpty() && !profileId.isEmpty()) {
                 ProfileRegistry.registerProfileType(new MagicProfile(profileId));
-                SkillRegistry.registerSkill(new MagicSkill(controller, skillId, skillConfig.getInt("priority")));
+                magicSkill = new MagicSkill(controller, skillId, profileConfig.getString("class"), skillConfig.getInt("priority"));
+                registeredSkills.put(skillId, magicSkill);
                 controller.getLogger().info("  Added " + profileId + " profile using " + skillId + " skill ");
             }
         }
 
-        for (Skill skill : SkillRegistry.getAllSkills().values()) {
-            String skillId = skill.getType().toLowerCase(Locale.ROOT);
-            registeredSkills.put(skillId, skill);
+        registerAttributes();
+    }
+
+    protected void registerAttributes() {
+        for (String skillId : registeredSkills.keySet()) {
             attributes.add("valhalla_level_" + skillId);
         }
 
         controller.getLogger().info("  Added " + attributes.size() + " ValhallaMMO levels as attributes: " + StringUtils.join(attributes, ","));
+    }
+
+    public void registerSkill() {
+        if (enabled && magicSkill != null) {
+            SkillRegistry.registerSkill(magicSkill);
+        }
     }
 
     public void registerCurrencies(ConfigurationSection currencyConfiguration) {

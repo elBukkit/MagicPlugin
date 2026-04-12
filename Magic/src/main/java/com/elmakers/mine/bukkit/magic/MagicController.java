@@ -1951,8 +1951,13 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     private void loadPostIntegrations(ConfigurationSection configuration) {
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
         if (skillAPIManager != null) {
             skillAPIManager.load(configuration);
+        }
+        if (valhallaManager != null) {
+            valhallaManager.registerSkill();
         }
     }
 

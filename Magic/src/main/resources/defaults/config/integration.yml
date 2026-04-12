@@ -295,6 +295,7 @@ valhalla:
   profile:
     enabled: true
     id: magic
+    class: mage
     skill:
       id: magic
       priority: 100
