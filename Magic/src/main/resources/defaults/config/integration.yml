@@ -300,6 +300,9 @@ valhalla:
       id: magic
       priority: 100
       levels_per_path: 20
+      recipes:
+        - wand
+        - spellbook
 
 # ModelEngine integration
 model_engine:

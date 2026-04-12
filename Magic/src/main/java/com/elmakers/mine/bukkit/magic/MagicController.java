@@ -1958,8 +1958,6 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
         if (valhallaManager != null) {
             valhallaManager.registerSkill();
-            // Prevent re-initializing anything in Valhalla
-            valhallaManager.finishInitialization();
         }
     }
 

@@ -34,21 +34,13 @@ import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 public class ValhallaManager implements AttributeProvider, Listener {
     private final MagicController controller;
     private boolean enabled = false;
-    private boolean initialized = false;
+    private boolean registeredSkill = false;
     private MagicSkill magicSkill;
     private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
 
     public ValhallaManager(MagicController controller) {
         this.controller = controller;
-        Plugin plugin = controller.getPlugin();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-
-    public void finishInitialization() {
-        if (enabled) {
-            initialized = true;
-        }
     }
 
     public void load(ConfigurationSection config) {
@@ -94,14 +86,19 @@ public class ValhallaManager implements AttributeProvider, Listener {
     }
 
     public void registerSkill() {
-        if (enabled && magicSkill != null && !initialized) {
+        if (enabled && magicSkill != null && !registeredSkill) {
             PerkRewardRegistry.register(new SpellPerkReward(controller, magicSkill.getMageClass(),"learn_spell"));
+            PerkRewardRegistry.register(new RecipePerkReward(controller, "discover_recipe"));
             SkillRegistry.registerSkill(magicSkill);
+
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            registeredSkill = true;
         }
     }
 
     public void registerCurrencies(ConfigurationSection currencyConfiguration) {
-        if (!enabled || initialized) return;
+        if (!enabled) return;
 
         List<String> names = new ArrayList<>();
         for (Map.Entry<String, Skill> entry : registeredSkills.entrySet()) {

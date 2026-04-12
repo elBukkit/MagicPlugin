@@ -21,6 +21,8 @@ import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -32,12 +34,14 @@ public class MagicSkill extends Skill {
     private final int priority;
     private final int levelsPerPath;
     private final String mageClass;
+    private final List<String> recipes;
 
     public MagicSkill(MageController controller, String skillId, String mageClass, ConfigurationSection config) {
         super(skillId.toUpperCase());
         this.controller = controller;
         this.priority = config.getInt("priority");
         this.levelsPerPath = config.getInt("levels_per_path");
+        this.recipes = ConfigurationUtils.getStringList(config, "recipes");
         this.mageClass = mageClass;
         id = skillId;
     }
@@ -55,7 +59,7 @@ public class MagicSkill extends Skill {
             InputStream input = plugin.getResource(defaultsFileName);
             if (input != null)  {
                 try {
-                    config.load(new InputStreamReader(input, StandardCharsets.UTF_8.name()));
+                    config.load(new InputStreamReader(input, StandardCharsets.UTF_8));
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.SEVERE, "Error loading: " + defaultsFileName + " from builtin resources", ex);
                 }
@@ -88,9 +92,13 @@ public class MagicSkill extends Skill {
             return;
         }
         List<String> defaultPerks = new ArrayList<>();
-        defaultPerks.add(mageClass.getString("path"));
         Collection<String> defaultSpells = mageClass.getStringList("spells");
         defaultPerks.addAll(defaultSpells);
+        if (recipes.isEmpty()) {
+            // Maybe a weird distinction, but if there are rewards on the starting path
+            // We'll want the player to unlock it.
+            defaultPerks.add(mageClass.getString("path"));
+        }
         ConfigurationSection startingPerks = config.createSection("starting_perks");
         startingPerks.set("perks_unlocked_add", defaultPerks);
 
@@ -140,10 +148,13 @@ public class MagicSkill extends Skill {
         pathConfig.set("cost", 0);
         pathConfig.set("coords", xLocation + "," + yLocation);
         pathConfig.set("required_lv", level);
+        ConfigurationSection rewards = pathConfig.createSection("perk_rewards");
         if (previousPath != null) {
             List<String> required = new ArrayList<>();
             required.add(previousPath.getKey());
             pathConfig.set("requireperk_all", required);
+        } else if (recipes != null && !recipes.isEmpty()) {
+            rewards.set("discover_recipe", StringUtils.join(recipes, ","));
         }
     }
 
@@ -155,7 +166,7 @@ public class MagicSkill extends Skill {
             newSpells.add(spellKey);
         }
 
-        int xLocation = -(int)Math.floor(newSpells.size() / 2) + 2;
+        int xLocation = -newSpells.size() / 2 + 2;
         for (String spellKey : newSpells) {
             if (previousSpells.contains(spellKey)) continue;
             previousSpells.add(spellKey);
