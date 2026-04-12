@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Pig;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAnimalData;
 
 public class EntityPigData extends EntityAnimalData {
     private Pig.Variant variant;

@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.NBTUtilsBase;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.ByteArrayTag;

@@ -7,7 +7,7 @@ import org.bukkit.entity.EntityType;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.EntityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.EntityUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_11.entity.EntityBoggedData;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_11.entity.EntityChickenData;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_11.entity.EntityCowData;

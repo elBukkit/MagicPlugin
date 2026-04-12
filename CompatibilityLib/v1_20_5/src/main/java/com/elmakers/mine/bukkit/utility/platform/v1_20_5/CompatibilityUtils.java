@@ -83,7 +83,7 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.CompatibilityUtilsBase;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

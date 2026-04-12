@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.ItemUtilsBase;
 
 public abstract class ItemUtilsBase_v1_21_4 extends ItemUtilsBase {
     public ItemUtilsBase_v1_21_4(Platform platform) {

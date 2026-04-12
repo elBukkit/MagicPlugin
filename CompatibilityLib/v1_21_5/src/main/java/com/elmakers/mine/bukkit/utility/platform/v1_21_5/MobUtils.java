@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_5.goal.IdleGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_5.goal.MagicCheckOwnerGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_5.goal.MagicFindOwnerGoal;

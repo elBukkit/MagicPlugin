@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.ZombieNautilus;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAnimalData;
 
 public class EntityZombieNautilusData extends EntityAnimalData {
     private ZombieNautilus.Variant variant;

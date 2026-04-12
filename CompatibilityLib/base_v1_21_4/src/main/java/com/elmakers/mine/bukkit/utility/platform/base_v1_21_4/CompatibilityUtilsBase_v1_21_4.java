@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.Lootable;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.CompatibilityUtilsBase;
 
 public abstract class CompatibilityUtilsBase_v1_21_4 extends CompatibilityUtilsBase {
 
