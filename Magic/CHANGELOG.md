@@ -3,6 +3,8 @@
 
 # 10.11.2
 
+ - Allow giving multiple spells in a single Valhalla `learn_spell` perk reward
+
 # 10.11.1
 
  - Fix backwards compatibility, back to 1.20.5 again
@@ -11,6 +13,7 @@
    - Add `valhalla` example to enable the options found on the wiki: https://github.com/elBukkit/MagicPlugin/wiki/Valhalla
    - This will enable an out-of-the-box integration that presents a select set of spells as a new
      skill set in Valhalla. New spells and path rankups are now learned via the skill tree.
+   - Add `learn_spell`, `discover_recipe` and `path_upgrade` perk reward types
    - Combine profile and skill XP so there is just one read/write representation of both
    - The level attributes are now keyed by skill instead of profile
    - Force update wand lore on level up, in case mana is driven by Valhalla

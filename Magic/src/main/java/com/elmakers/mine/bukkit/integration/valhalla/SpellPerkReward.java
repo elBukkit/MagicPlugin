@@ -1,11 +1,15 @@
 package com.elmakers.mine.bukkit.integration.valhalla;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkReward;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
@@ -13,7 +17,7 @@ import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 public class SpellPerkReward extends PerkReward {
     private final MageController controller;
     private final String classKey;
-    private SpellTemplate spell;
+    private final List<SpellTemplate> spells = new ArrayList<>();
 
     public SpellPerkReward(MageController controller, String classKey, String name) {
         super(name);
@@ -25,9 +29,11 @@ public class SpellPerkReward extends PerkReward {
     public void apply(Player player) {
         Mage mage = controller.getMage(player);
         MageClass mageClass = mage.getClass(classKey);
-        if (mageClass != null && spell != null) {
+        if (mageClass != null) {
             controller.getPlugin().getServer().getScheduler().runTask(controller.getPlugin(), () -> {
-                mageClass.addSpell(spell.getKey());
+                for (SpellTemplate spell : spells) {
+                    mageClass.addSpell(spell.getKey());
+                }
             });
         }
     }
@@ -36,27 +42,36 @@ public class SpellPerkReward extends PerkReward {
     public void remove(Player player) {
         Mage mage = controller.getMage(player);
         MageClass mageClass = mage.getClass(classKey);
-        if (mageClass != null && spell != null) {
-            mageClass.removeSpell(spell.getKey());
+        if (mageClass != null) {
+            controller.getPlugin().getServer().getScheduler().runTask(controller.getPlugin(), () -> {
+                for (SpellTemplate spell : spells) {
+                    mageClass.removeSpell(spell.getKey());
+                }
+            });
         }
     }
 
     @Override
     public void parseArgument(Object argument) {
-        String spellKey = parseString(argument);
-        spell = controller.getSpellTemplate(spellKey);
+        List<String> keyList = ConfigurationUtils.getStringList(argument);
+        for (String spellKey : keyList) {
+            SpellTemplate spell = controller.getSpellTemplate(spellKey);
+            if (spell != null) {
+                spells.add(spell);
+            }
+        }
     }
 
     @Override
     public String rewardPlaceholder() {
-        if (spell == null) {
-            return "";
+        if (spells.size() == 1) {
+            return "Learn " + spells.get(0).getName();
         }
-        return "Learn " + spell.getName();
+        return "Learn " + spells.size() + " spells";
     }
 
     @Override
     public PerkRewardArgumentType getRequiredType() {
-        return PerkRewardArgumentType.STRING;
+        return PerkRewardArgumentType.STRING_LIST;
     }
 }

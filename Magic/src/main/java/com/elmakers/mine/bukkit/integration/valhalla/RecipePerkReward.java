@@ -55,6 +55,6 @@ public class RecipePerkReward extends PerkReward {
 
     @Override
     public PerkRewardArgumentType getRequiredType() {
-        return PerkRewardArgumentType.STRING;
+        return PerkRewardArgumentType.STRING_LIST;
     }
 }
