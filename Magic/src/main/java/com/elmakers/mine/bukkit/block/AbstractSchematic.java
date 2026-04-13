@@ -123,7 +123,7 @@ public abstract class AbstractSchematic implements Schematic {
                 BlockFace facing = getFacing(facingData);
                 EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(controller, position, art, facing);
                 entities.add(painting);
-            } else if (type.equalsIgnoreCase("ItemFrame")) {
+            } else if (type.equalsIgnoreCase("ItemFrame") || type.equalsIgnoreCase("item_frame")) {
                 byte facing = CompatibilityLib.getNBTUtils().getOptionalByte(entity, "Facing");
                 byte rotation = CompatibilityLib.getNBTUtils().getOptionalByte(entity, "ItemRotation");
                 Rotation rot = Rotation.NONE;
