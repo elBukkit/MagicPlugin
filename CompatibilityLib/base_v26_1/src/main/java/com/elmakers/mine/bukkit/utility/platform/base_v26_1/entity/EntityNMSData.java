@@ -34,6 +34,9 @@ public class EntityNMSData extends EntityExtraData {
             nbt.setTag(tag, "WorldUUIDLeast", nbt.getTag(currentTag, "WorldUUIDLeast"));
             nbt.setTag(tag, "UUID", nbt.getTag(currentTag, "UUID"));
             nbt.setTag(tag, "Pos", nbt.getTag(currentTag, "Pos"));
+            nbt.setTag(tag, "TileX", nbt.getTag(currentTag, "TileX"));
+            nbt.setTag(tag, "TileY", nbt.getTag(currentTag, "TileY"));
+            nbt.setTag(tag, "TileZ", nbt.getTag(currentTag, "TileZ"));
         }
         platform.getCompatibilityUtils().setEntityData(entity, tag);
     }
