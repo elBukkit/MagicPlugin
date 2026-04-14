@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import org.bukkit.Art;
 import org.bukkit.Location;
-import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
@@ -102,42 +99,23 @@ public abstract class AbstractSchematic implements Schematic {
             if (position == null) continue;
             position = position.subtract(origin).subtract(center);
 
+            Integer tileX = CompatibilityLib.getNBTUtils().getOptionalInt(entity, "TileX");
+            if (tileX != null) {
+                CompatibilityLib.getNBTUtils().setInt(entity, "TileX", tileX - center.getBlockX());
+            }
+            Integer tileY = CompatibilityLib.getNBTUtils().getOptionalInt(entity, "TileY");
+            if (tileY != null) {
+                CompatibilityLib.getNBTUtils().setInt(entity, "TileY", tileY - center.getBlockY());
+            }
+            Integer tileZ = CompatibilityLib.getNBTUtils().getOptionalInt(entity, "TileZ");
+            if (tileZ != null) {
+                CompatibilityLib.getNBTUtils().setInt(entity, "TileZ", tileZ - center.getBlockZ());
+            }
+
             if (type == null || type.isEmpty()) continue;
-            type = type.replace("minecraft:", "");
-
-            // Only doing paintings and item frames for now.
-            if (type.equalsIgnoreCase("Painting")) {
-                String motive = CompatibilityLib.getNBTUtils().getString(entity, "Motive");
-                motive = motive.replace("minecraft:", "");
-                motive = motive.replace("_", "");
-                motive = motive.toLowerCase();
-                Art art = Art.ALBAN;
-                for (Art test : Art.values()) {
-                    if (test.name().toLowerCase().replace("_", "").equals(motive)) {
-                        art = test;
-                        break;
-                    }
-                }
-
-                byte facingData = CompatibilityLib.getNBTUtils().getOptionalByte(entity, "Facing");
-                BlockFace facing = getFacing(facingData);
-                EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(controller, position, art, facing);
-                entities.add(painting);
-            } else if (type.equalsIgnoreCase("ItemFrame") || type.equalsIgnoreCase("item_frame")) {
-                byte facing = CompatibilityLib.getNBTUtils().getOptionalByte(entity, "Facing");
-                byte rotation = CompatibilityLib.getNBTUtils().getOptionalByte(entity, "ItemRotation");
-                Rotation rot = Rotation.NONE;
-                if (rotation < Rotation.values().length) {
-                    rot = Rotation.values()[rotation];
-                }
-                ItemStack item = CompatibilityLib.getItemUtils().getItem(CompatibilityLib.getNBTUtils().getTag(entity, "Item"));
-                EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(controller, position, item, getFacing(facing), rot);
-                entities.add(itemFrame);
-            } else {
-                EntityData nmsEntity = com.elmakers.mine.bukkit.entity.EntityData.loadNMS(controller, position, entity);
-                if (nmsEntity != null) {
-                    entities.add(nmsEntity);
-                }
+            EntityData nmsEntity = com.elmakers.mine.bukkit.entity.EntityData.loadNMS(controller, position, entity);
+            if (nmsEntity != null) {
+                entities.add(nmsEntity);
             }
         }
     }
