@@ -9,6 +9,10 @@
     </parent>
     <artifactId>CompatibilityLib-base_v1_20_5</artifactId>
 
+    <properties>
+        <bukkit.version>1.20.5-R0.1-SNAPSHOT</bukkit.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
