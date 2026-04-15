@@ -4,6 +4,7 @@
 # 10.11.2
 
  - Allow giving multiple spells in a single Valhalla `learn_spell` perk reward
+ - Add support for pasting entities via Volume-based actions
 
 # 10.11.1
 

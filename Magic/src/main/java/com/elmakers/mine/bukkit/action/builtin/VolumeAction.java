@@ -2,20 +2,27 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
@@ -64,6 +71,9 @@ public class VolumeAction extends CompoundAction
     private float pitch;
     private float yaw;
     private boolean checkChunk = false;
+    private boolean removeTargetEntities = false;
+    private BoundingBox affectedArea;
+    private Set<Chunk> affectedChunks = new HashSet<>();
 
     private Material replaceMaterial;
 
@@ -115,6 +125,7 @@ public class VolumeAction extends CompoundAction
         useBrushSize = parameters.getBoolean("use_brush_size", false);
         replaceTarget = parameters.getBoolean("replace", false);
         checkChunk = parameters.getBoolean("check_chunk", true);
+        removeTargetEntities = parameters.getBoolean("remove_target_entities", false);
         String typeString = parameters.getString("volume_type");
         if (typeString != null) {
             try {
@@ -394,6 +405,8 @@ public class VolumeAction extends CompoundAction
         }
         resetCounters();
         actionContext.setTargetCenterLocation(context.getTargetLocation());
+        affectedArea = new BoundingBox(context.getTargetLocation().toVector());
+        affectedChunks.clear();
         return SpellResult.NO_ACTION;
     }
 
@@ -465,13 +478,15 @@ public class VolumeAction extends CompoundAction
             if (replaceMaterial == null || targetBlock.getType() == replaceMaterial) {
                 actionContext.setTargetLocation(targetBlock.getLocation());
                 result = startActions();
+
+                affectedArea.contain(targetBlock.getLocation().toVector());
+                affectedChunks.add(targetBlock.getChunk());
             }
         }
         else
         {
             skippedActions(context);
         }
-
         return result;
     }
 
@@ -522,5 +537,39 @@ public class VolumeAction extends CompoundAction
     public int getActionCount() {
         int volume = (1 + xSizeCeil * 2) * (1 + ySizeCeil * 2) * (1 + zSizeCeil * 2);
         return volume * super.getActionCount();
+    }
+
+    @Override
+    protected void finishCompound(CastContext context) {
+        MaterialBrush brush = context.getBrush();
+        if (brush != null && brush.hasEntities() && context.getSpell().usesBrushEntities() && affectedArea != null) {
+            // Track entity changes/additions
+            UndoList undoList = context.getUndoList();
+            // Copy over new entities
+            Collection<EntityData> entities = brush.getEntities(affectedChunks);
+            if (removeTargetEntities) {
+                // Delete any entities already in the area, add them to the undo list.
+                Collection<Entity> targetEntities = brush.getTargetEntities();
+
+                if (targetEntities != null) {
+                    for (Entity entity : targetEntities) {
+                        if (affectedArea.contains(entity.getLocation().toVector())) {
+                            undoList.modify(entity);
+                            entity.remove();
+                        }
+                    }
+                }
+            }
+
+            // Paste entities from the brush
+            if (entities != null) {
+                for (EntityData entity : entities) {
+                    if (affectedArea.contains(entity.getLocation().toVector())) {
+                        undoList.add(entity.spawn());
+                    }
+                }
+            }
+        }
+        affectedChunks.clear();
     }
 }
