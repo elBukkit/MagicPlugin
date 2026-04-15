@@ -1,0 +1,6 @@
+divinghelmet:
+    potion_effects: water_breathing,night_vision
+    enchantments:
+      oxygen: 3
+      water_worker: 1
+      depth_strider: 3

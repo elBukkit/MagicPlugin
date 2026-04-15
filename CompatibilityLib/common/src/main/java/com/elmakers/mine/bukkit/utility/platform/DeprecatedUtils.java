@@ -2,17 +2,21 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.UUID;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
@@ -23,6 +27,18 @@ public interface DeprecatedUtils {
     void updateInventory(Player player);
 
     void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics);
+
+    @Deprecated
+    default byte getData(Block block) { return 0; }
+
+    @Deprecated
+    default byte getWoolData(DyeColor color) { return 0; }
+
+    @Deprecated
+    default int getId(Material material) { return 0; }
+
+    @Deprecated
+    default int getTypeId(Block block) { return 0; }
 
     MapView getMap(int id);
 
@@ -37,6 +53,15 @@ public interface DeprecatedUtils {
     Player getPlayer(String name);
 
     Player getPlayerExact(String name);
+
+    @Deprecated
+    default byte getRawData(BlockState state) { return 0; }
+
+    @Deprecated
+    default DyeColor getBaseColor(BannerMeta banner) { return DyeColor.WHITE; }
+
+    @Deprecated
+    default void setBaseColor(BannerMeta banner, DyeColor color) {}
 
     void setSkullOwner(ItemStack itemStack, String ownerName, SkullLoadedCallback callback);
 
