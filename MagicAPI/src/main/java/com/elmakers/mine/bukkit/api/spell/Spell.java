@@ -163,4 +163,8 @@ public interface Spell extends SpellTemplate {
         // This default is here to not break any plugins implementing custom spells from scratch
         throw new UnsupportedOperationException("Custom spell visibility is not implemented");
     }
+
+    default boolean usesBrushEntities() {
+        return false;
+    }
 }

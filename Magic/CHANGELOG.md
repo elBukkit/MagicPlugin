@@ -4,6 +4,7 @@
 # 10.9.9
 
  - Add support for loading schematics with entities in them
+- Add support for pasting entities via Volume-based actions
 
 # 10.9.8
 

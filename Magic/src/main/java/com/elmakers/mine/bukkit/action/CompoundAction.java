@@ -115,6 +115,7 @@ public abstract class CompoundAction extends BaseSpellAction
             }
 
             if (!next(context)) {
+                finishCompound(context);
                 break;
             }
 
@@ -126,6 +127,10 @@ public abstract class CompoundAction extends BaseSpellAction
             }
         }
         return result;
+    }
+
+    protected void finishCompound(CastContext context) {
+
     }
 
     @Override

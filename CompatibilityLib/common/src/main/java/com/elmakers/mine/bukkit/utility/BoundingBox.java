@@ -15,6 +15,12 @@ public class BoundingBox
         this.max = new Vector(Math.max(min.getX(), max.getX()), Math.max(min.getY(), max.getY()), Math.max(min.getZ(), max.getZ()));
     }
 
+    public BoundingBox(Vector single)
+    {
+        this.min = new Vector(Math.min(single.getX(), single.getX()), Math.min(single.getY(), single.getY()), Math.min(single.getZ(), single.getZ()));
+        this.max = new Vector(Math.max(single.getX(), single.getX()), Math.max(single.getY(), single.getY()), Math.max(single.getZ(), single.getZ()));
+    }
+
     public BoundingBox(double dMinX, double dMaxX, double dMinY, double dMaxY, double dMinZ, double dMaxZ)
     {
         this.min = new Vector(dMinX, dMinY, dMinZ);
@@ -48,6 +54,15 @@ public class BoundingBox
         return this.min.getX() <= point.getX() && point.getX() <= this.max.getX()
                 && this.min.getY() <= point.getY() && point.getY() <= this.max.getY()
                 && this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
+    }
+
+    public void contain(Vector point) {
+        this.min.setX(Math.min(this.min.getX(), point.getX()));
+        this.min.setY(Math.min(this.min.getY(), point.getY()));
+        this.min.setZ(Math.min(this.min.getZ(), point.getZ()));
+        this.max.setX(Math.max(this.max.getX(), point.getX()));
+        this.max.setY(Math.max(this.max.getY(), point.getY()));
+        this.max.setZ(Math.max(this.max.getZ(), point.getZ()));
     }
 
     public BoundingBox scale(double scale)
