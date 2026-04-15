@@ -615,7 +615,8 @@ public class EntityData
     @Nullable
     public static EntityData loadNMS(MageController controller, Vector location, Object tag) {
         // We need a world for the registry, hopefully it doesn't matter what world?
-        World mainWorld = Bukkit.getWorlds().getFirst();
+        List<World> worlds = Bukkit.getWorlds();
+        World mainWorld = worlds.isEmpty() ? null : worlds.get(0);
         if (mainWorld == null) {
             return null;
         }
