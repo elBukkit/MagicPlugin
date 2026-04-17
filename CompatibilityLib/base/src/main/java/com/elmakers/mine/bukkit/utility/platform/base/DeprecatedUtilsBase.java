@@ -145,10 +145,10 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
+                    PlayerProfile playerProfile = response.getPlayerProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        platform.getInventoryUtils().setSkullProfile(meta, gameProfile);
+                        playerProfile.update((SkullMeta)meta);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -165,10 +165,10 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
+                    PlayerProfile playerProfile = response.getPlayerProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        platform.getInventoryUtils().setSkullProfile(meta, gameProfile);
+                        playerProfile.update((SkullMeta)meta);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -185,8 +185,8 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
-                    platform.getInventoryUtils().setSkullProfile(skull, gameProfile);
+                    PlayerProfile playerProfile = response.getPlayerProfile();
+                    playerProfile.update(skull);
                 }
                 skull.update(true, false);
             }
@@ -199,8 +199,8 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
-                    platform.getInventoryUtils().setSkullProfile(skull, gameProfile);
+                    PlayerProfile playerProfile = response.getPlayerProfile();
+                    playerProfile.update(skull);
                 }
                 skull.update(true, false);
             }

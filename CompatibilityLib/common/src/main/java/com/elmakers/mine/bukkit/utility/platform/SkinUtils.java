@@ -2,9 +2,12 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.UUID;
 
+import org.bukkit.block.Skull;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.profile.PlayerProfile;
+import org.bukkit.inventory.meta.SkullMeta;
 
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 
 public interface SkinUtils {
@@ -16,5 +19,9 @@ public interface SkinUtils {
 
     void fetchProfile(UUID uuid, ProfileCallback callback);
 
-    String toDisguiseFormat(PlayerProfile profile);
+    PlayerProfile parsePlayerProfile(ConfigurationSection config);
+
+    PlayerProfile getPlayerProfile(SkullMeta meta);
+
+    PlayerProfile getPlayerProfile(Skull block);
 }

@@ -227,7 +227,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public String getSkullURL(ItemStack skull) {
-        return platform.getSkinUtils().getProfileURL(getSkullProfile(skull.getItemMeta()));
+        return ((SkinUtilsBase)platform.getSkinUtils()).getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
     @Override

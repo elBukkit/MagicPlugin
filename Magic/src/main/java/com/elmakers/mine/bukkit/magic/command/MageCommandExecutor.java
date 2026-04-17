@@ -18,7 +18,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -37,6 +36,7 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.StringUtils;

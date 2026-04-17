@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.base_v1_20_5;
 
 import java.io.File;
-import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,10 +8,12 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Skull;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.OfflinePlayerCallback;
@@ -21,8 +21,6 @@ import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 
 public class SkinUtilsBase implements SkinUtils {
     protected final Platform platform;
@@ -30,14 +28,6 @@ public class SkinUtilsBase implements SkinUtils {
     protected final Map<String, Object> loadingUUIDs = new HashMap<>();
     protected final Map<UUID, Object> loadingProfiles = new HashMap<>();
     protected long holdoff = 0;
-    private static Gson gson;
-
-    protected static Gson getGson() {
-        if (gson == null) {
-            gson = new Gson();
-        }
-        return gson;
-    }
 
     protected SkinUtilsBase(final Platform platform) {
         this.platform = platform;
@@ -45,9 +35,8 @@ public class SkinUtilsBase implements SkinUtils {
 
     @Override
     public String getOnlineSkinURL(Player player) {
-        PlayerProfile playerProfile = player.getPlayerProfile();
-        URL skinURL = playerProfile == null ? null : playerProfile.getTextures().getSkin();
-        return skinURL == null ? null : skinURL.toString();
+        PlayerProfile playerProfile = new PlayerProfile(player.getPlayerProfile());
+        return playerProfile == null ? null : playerProfile.getSkinURL();
     }
 
     @Override
@@ -157,6 +146,7 @@ public class SkinUtilsBase implements SkinUtils {
         }
 
         // Check for the updated profile, fetch if necessary, then cache it
+        final SkinUtils skinUtils = this;
         final Plugin plugin = platform.getPlugin();
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
             @Override
@@ -190,7 +180,7 @@ public class SkinUtilsBase implements SkinUtils {
                     final File playerCache = new File(cacheFolder, uuid + ".yml");
                     if (playerCache.exists()) {
                         YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
-                        ProfileResponse fromCache = new ProfileResponse(config);
+                        ProfileResponse fromCache = new ProfileResponse(skinUtils, config);
                         // Check for updated data that contains player profile
                         if (isComplete(fromCache.getPlayerProfile())) {
                             synchronized (responseCache) {
@@ -202,7 +192,7 @@ public class SkinUtilsBase implements SkinUtils {
                     }
 
                     // Now we will have to fetch the profile and update the cache
-                    PlayerProfile offlineProfile = offlinePlayer.getPlayerProfile();
+                    PlayerProfile offlineProfile = new PlayerProfile(offlinePlayer);
                     if (!isComplete(offlineProfile)) {
                         if (CompatibilityConstants.DEBUG) {
                             platform.getLogger().info("Fetching offline player data for " + uuid);
@@ -210,7 +200,7 @@ public class SkinUtilsBase implements SkinUtils {
 
                         try {
                             // We are already in a separate thread so we can update this synchronously
-                            offlineProfile = offlineProfile.update().get();
+                            offlineProfile = offlineProfile.update();
                         } catch (Exception ex) {
                             if (CompatibilityConstants.DEBUG) {
                                 platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
@@ -232,8 +222,8 @@ public class SkinUtilsBase implements SkinUtils {
                     }
 
                     // Update cache
-                    platform.getLogger().info("Got skin URL: " + offlineProfile.getTextures().getSkin() + " for " + offlineProfile.getName());
-                    ProfileResponse response = new ProfileResponse(offlineProfile);
+                    platform.getLogger().info("Got skin URL: " + offlineProfile.getSkinURL() + " for " + offlineProfile.getName());
+                    ProfileResponse response = new ProfileResponse(skinUtils, offlineProfile);
                     synchronized (responseCache) {
                         responseCache.put(uuid, response);
                     }
@@ -251,23 +241,30 @@ public class SkinUtilsBase implements SkinUtils {
         }, holdoff / 50);
     }
 
-    private boolean isComplete(PlayerProfile playerProfile) {
-        // The Spigot implementation of this looks correct, but when running on Paper
-        // it seems to do something different and will return true for an unloaded profile.
-        // return playerProfile.isComplete()
-        return playerProfile != null && playerProfile.getUniqueId() != null
-                && playerProfile.getName() != null && !playerProfile.getTextures().isEmpty();
+    private boolean isComplete(com.elmakers.mine.bukkit.utility.PlayerProfile playerProfile) {
+        return playerProfile != null && playerProfile.isComplete();
     }
 
-    public String toDisguiseFormat(PlayerProfile profile) {
-        Gson gson = getGson();
-        String bukkitFormat = gson.toJson(profile);
-        Type objectMapType = new TypeToken<Map<String, Object>>(){}.getType();
-        Map<String, Object> bukkitMap = gson.fromJson(bukkitFormat, objectMapType);
-        Map<String, Object> disguiseMap = new HashMap<>();
-        disguiseMap.put("uuid", profile.getUniqueId());
-        disguiseMap.put("name", profile.getName());
-        disguiseMap.put("textureProperties", bukkitMap.get("properties"));
-        return gson.toJson(disguiseMap);
+    @Override
+    public PlayerProfile parsePlayerProfile(ConfigurationSection config) {
+        return new PlayerProfile(config);
+    }
+
+    @Override
+    public PlayerProfile getPlayerProfile(SkullMeta skullMeta) {
+        org.bukkit.profile.PlayerProfile profile = skullMeta.getOwnerProfile();
+        if (profile != null) {
+            return new PlayerProfile(profile);
+        }
+        return null;
+    }
+
+    @Override
+    public PlayerProfile getPlayerProfile(Skull skullBlock) {
+        org.bukkit.profile.PlayerProfile profile = skullBlock.getOwnerProfile();
+        if (profile != null) {
+            return new PlayerProfile(profile);
+        }
+        return null;
     }
 }
