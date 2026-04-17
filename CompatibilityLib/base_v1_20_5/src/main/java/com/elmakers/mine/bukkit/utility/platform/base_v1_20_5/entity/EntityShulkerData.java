@@ -5,7 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Shulker;
 
-import com.elmakers.mine.bukkit.entity.EntityExtraData;
 
 public class EntityShulkerData extends EntityExtraData {
     private DyeColor color;

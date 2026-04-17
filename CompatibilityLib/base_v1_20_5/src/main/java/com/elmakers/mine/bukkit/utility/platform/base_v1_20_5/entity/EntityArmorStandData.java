@@ -7,7 +7,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
-import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityArmorStandData extends EntityExtraData {

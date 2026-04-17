@@ -12,7 +12,6 @@ import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
