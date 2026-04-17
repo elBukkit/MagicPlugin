@@ -3024,7 +3024,9 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public BoundingBox getHitbox(Entity entity) {
         org.bukkit.util.BoundingBox boundingBox = entity.getBoundingBox();
-        return new BoundingBox(boundingBox);
+        Vector min = boundingBox.getMin().clone();
+        Vector max = boundingBox.getMax().clone();
+        return new BoundingBox(min, max);
     }
 
     @Override
