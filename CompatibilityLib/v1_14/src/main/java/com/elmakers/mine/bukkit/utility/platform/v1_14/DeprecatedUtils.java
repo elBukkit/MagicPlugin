@@ -13,10 +13,8 @@ public class DeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.l
     }
 
     @Override
-    public short getMapId(MapView mapView) {
-        // MapView id is now an int- we proabably should update our own code
-        // and change this to an int
-        return (short)mapView.getId();
+    public int getMapId(MapView mapView) {
+        return mapView.getId();
     }
 
     @Override

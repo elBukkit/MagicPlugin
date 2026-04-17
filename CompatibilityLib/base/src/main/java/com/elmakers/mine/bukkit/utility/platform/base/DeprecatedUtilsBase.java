@@ -76,7 +76,7 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     }
 
     @Override
-    public short getMapId(MapView mapView) {
+    public int getMapId(MapView mapView) {
         return mapView.getId();
     }
 
