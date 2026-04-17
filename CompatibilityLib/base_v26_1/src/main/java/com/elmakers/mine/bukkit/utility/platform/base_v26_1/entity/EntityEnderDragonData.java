@@ -8,7 +8,6 @@ import org.bukkit.entity.EnderDragon.Phase;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.entity.EntityExtraData;
 
 public class EntityEnderDragonData extends EntityExtraData {
     public Phase phase;

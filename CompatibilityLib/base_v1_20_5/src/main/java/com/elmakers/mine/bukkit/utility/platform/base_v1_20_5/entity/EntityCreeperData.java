@@ -4,7 +4,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityCreeperData extends EntityExtraData {

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity;
 
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
