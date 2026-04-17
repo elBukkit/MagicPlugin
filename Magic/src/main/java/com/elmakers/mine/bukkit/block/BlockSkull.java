@@ -1,7 +1,8 @@
 package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.block.BlockFace;
-import org.bukkit.profile.PlayerProfile;
+
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 
 public class BlockSkull extends MaterialExtraData {
     private BlockFace rotation = null;

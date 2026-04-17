@@ -19,13 +19,13 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.google.common.collect.ImmutableSet;
 
@@ -474,7 +474,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             PlayerProfile profile = null;
             if (populatedMeta instanceof SkullMeta) {
                 SkullMeta skullMeta = (SkullMeta)populatedMeta;
-                profile = skullMeta.getOwnerProfile();
+                profile = CompatibilityLib.getSkinUtils().getPlayerProfile(skullMeta);
             }
             for (PendingUpdate update : pending) {
                 // We're assuming the only thing that changes here is skull profile
@@ -483,7 +483,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                     ItemMeta updateMeta = item.getItemMeta();
                     if (updateMeta instanceof SkullMeta) {
                         SkullMeta updateSkullMeta = (SkullMeta)updateMeta;
-                        updateSkullMeta.setOwnerProfile(profile);
+                        profile.update(updateSkullMeta);
                         item.setItemMeta(updateMeta);
                     }
                 }
