@@ -22,10 +22,10 @@ import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.event.EntityLoadEventHandler;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.event.EntityPickupListener;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.event.ResourcePackListener;
+import com.elmakers.mine.bukkit.utility.spigot.SpigotUtils;
 
 public abstract class PlatformBase implements Platform {
     protected final MageController controller;
@@ -139,7 +139,7 @@ public abstract class PlatformBase implements Platform {
             Class<?> bungeeColor = Class.forName("net.md_5.bungee.api.ChatColor");
             bungeeColor.getMethod("of", String.class);
             logger.info("Chat component API found");
-            return new spigot.SpigotUtils(this);
+            return new SpigotUtils(this);
         } catch (Throwable ignore) {
         }
         // null SpigotUtils is OK

@@ -34,6 +34,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>CompatibilityLib-spigot</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>CompatibilityLib-paper</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
