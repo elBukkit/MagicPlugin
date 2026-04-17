@@ -723,9 +723,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             World targetWorld = cloneTarget.getWorld();
             List<Entity> targetEntities = targetWorld.getEntities();
             for (Entity entity : targetEntities) {
-                // Schematics currently only deal with Hanging entities
-                if (mode == BrushMode.SCHEMATIC && !(entity instanceof Hanging)) continue;
-
                 // Note that we ignore players and NPCs
                 if (!(entity instanceof Player) && !mage.getController().isNPC(entity)) {
                     targetData.add(entity);
