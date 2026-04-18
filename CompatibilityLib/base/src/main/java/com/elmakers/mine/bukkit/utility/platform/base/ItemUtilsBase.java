@@ -134,5 +134,25 @@ public abstract class ItemUtilsBase implements ItemUtils {
     public Object getOrCreateTag(ItemStack itemStack) {
         return getTag(itemStack);
     }
+
+    @Override
+    public String getItemModel(ItemStack itemStack) {
+        return "";
+    }
+
+    @Override
+    public void setItemModel(ItemStack itemStack, String model) {
+
+    }
+
+    @Override
+    public Object getEquippable(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setEquippable(ItemStack itemStack, Object equippable) {
+
+    }
 }
 
