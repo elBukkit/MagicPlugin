@@ -24,16 +24,20 @@ public class RecipePerkReward extends PerkReward {
 
     @Override
     public void apply(Player player) {
-        for (NamespacedKey recipeKey : recipeKeys) {
-            player.discoverRecipe(recipeKey);
-        }
+        controller.getPlugin().getServer().getScheduler().runTask(controller.getPlugin(), () -> {
+            for (NamespacedKey recipeKey : recipeKeys) {
+                player.discoverRecipe(recipeKey);
+            }
+        });
     }
 
     @Override
     public void remove(Player player) {
-        for (NamespacedKey recipeKey : recipeKeys) {
-            player.undiscoverRecipe(recipeKey);
-        }
+        controller.getPlugin().getServer().getScheduler().runTask(controller.getPlugin(), () -> {
+            for (NamespacedKey recipeKey : recipeKeys) {
+                player.undiscoverRecipe(recipeKey);
+            }
+        });
     }
 
     @Override
