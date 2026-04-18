@@ -32,7 +32,9 @@ public class SpellPerkReward extends PerkReward {
         if (mageClass != null) {
             controller.getPlugin().getServer().getScheduler().runTask(controller.getPlugin(), () -> {
                 for (SpellTemplate spell : spells) {
-                    mageClass.addSpell(spell.getKey());
+                    if (!mageClass.hasSpell(spell.getKey())) {
+                        mageClass.addSpell(spell.getKey());
+                    }
                 }
             });
         }
