@@ -17,7 +17,7 @@ import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 public class SpellPerkReward extends PerkReward {
     private final MageController controller;
     private final String classKey;
-    private final List<SpellTemplate> spells = new ArrayList<>();
+    private List<SpellTemplate> spells = new ArrayList<>();
 
     public SpellPerkReward(MageController controller, String classKey, String name) {
         super(name);
@@ -73,5 +73,12 @@ public class SpellPerkReward extends PerkReward {
     @Override
     public PerkRewardArgumentType getRequiredType() {
         return PerkRewardArgumentType.STRING_LIST;
+    }
+
+    @Override
+    public SpellPerkReward clone() throws CloneNotSupportedException {
+        SpellPerkReward reward = (SpellPerkReward)super.clone();
+        reward.spells = new ArrayList<>(reward.spells);
+        return reward;
     }
 }

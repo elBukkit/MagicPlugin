@@ -15,7 +15,7 @@ import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardArgumentType;
 
 public class RecipePerkReward extends PerkReward {
     private final MageController controller;
-    private final List<NamespacedKey> recipeKeys = new ArrayList<>();
+    private List<NamespacedKey> recipeKeys = new ArrayList<>();
 
     public RecipePerkReward(MageController controller, String name) {
         super(name);
@@ -56,5 +56,12 @@ public class RecipePerkReward extends PerkReward {
     @Override
     public PerkRewardArgumentType getRequiredType() {
         return PerkRewardArgumentType.STRING_LIST;
+    }
+
+    @Override
+    public RecipePerkReward clone() throws CloneNotSupportedException {
+        RecipePerkReward reward = (RecipePerkReward)super.clone();
+        reward.recipeKeys = new ArrayList<>(reward.recipeKeys);
+        return reward;
     }
 }
