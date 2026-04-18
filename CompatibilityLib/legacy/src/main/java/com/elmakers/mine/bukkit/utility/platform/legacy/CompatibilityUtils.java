@@ -6,8 +6,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -57,6 +59,7 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -73,6 +76,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
@@ -85,6 +89,7 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.google.common.io.BaseEncoding;
 
 /**
@@ -103,6 +108,12 @@ import com.google.common.io.BaseEncoding;
 public class CompatibilityUtils extends CompatibilityUtilsBase {
     public static int OFFHAND_BROADCAST_RANGE = 32;
     private final WeakReference<Thread> primaryThread;
+
+    private static final PotionEffectType[] _negativeEffects =
+            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
+                    PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
+                    PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
+    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
     public CompatibilityUtils(Platform platform) {
         super(platform);
@@ -1735,7 +1746,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         li.setMaxHealth(maxHealth);
     }
 
-    @Override
     public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
@@ -1763,12 +1773,10 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return materialData.getItemType();
     }
 
-    @Override
     public boolean hasLegacyMaterials() {
         return NMSUtils.class_Material_isLegacyMethod != null;
     }
 
-    @Override
     public boolean isLegacy(Material material) {
         if (NMSUtils.class_Material_isLegacyMethod == null) {
             return false;
@@ -1781,7 +1789,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return false;
     }
 
-    @Override
     public Material getLegacyMaterial(String materialName) {
         if (NMSUtils.class_Material_getLegacyMethod != null) {
             try {
@@ -1841,7 +1848,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return false;
     }
 
-    @Override
     public boolean hasBlockDataSupport() {
         return NMSUtils.class_Block_getBlockDataMethod != null;
     }
@@ -2274,7 +2280,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return false;
     }
 
-    @Override
     public boolean isLegacyRecipes() {
         return NMSUtils.class_RecipeChoice_ExactChoice == null || NMSUtils.class_NamespacedKey == null;
     }
@@ -2566,7 +2571,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
     {
         try {
-            Set<String> keys = platform.getInventoryUtils().getTagKeys(tag);
+            Set<String> keys = ((InventoryUtilsBase)platform.getInventoryUtils()).getTagKeys(tag);
             if (keys == null) return false;
 
             for (String tagName : keys) {
@@ -2576,7 +2581,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                         ConfigurationSection newSection = tags.createSection(tagName);
                         loadAllTagsFromNBT(newSection, metaBase);
                     } else {
-                        tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
+                        tags.set(tagName, ((InventoryUtilsBase)platform.getInventoryUtils()).getTagValue(metaBase));
                     }
                 }
             }
@@ -2759,5 +2764,20 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         List<String> serializedLore = spigot.serializeLore(lore);
         return setRawLore(itemStack, serializedLore);
+    }
+
+    @Override
+    public Set<PotionEffectType> getNegativeEffects() {
+        return negativeEffects;
+    }
+
+    @Override
+    public boolean isDestructive(EntityExplodeEvent explosion) {
+        return true;
+    }
+
+    @Override
+    public Attribute getMinecraftAttribute(String attributeKey) {
+        return Attribute.valueOf(attributeKey.toUpperCase());
     }
 }

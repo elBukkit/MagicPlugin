@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.bukkit.util.VoxelShape;
@@ -40,6 +41,10 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public Runnable getTaskRunnable(BukkitTask task) {
+        return null;
+    }
+
+    public Object getProfile(Player player) {
         return null;
     }
 }

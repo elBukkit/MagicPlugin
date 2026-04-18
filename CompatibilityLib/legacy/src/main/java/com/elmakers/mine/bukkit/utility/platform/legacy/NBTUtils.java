@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -408,5 +409,27 @@ public class NBTUtils extends NBTUtilsBase {
             platform.getLogger().log(Level.WARNING, "Error creating new Compoundtag", ex);
         }
         return tag;
+    }
+
+    @Override
+    public void convertIntegers(Map<String, Object> m) {
+        for (Map.Entry<String, Object> entry : m.entrySet()) {
+            Object value = entry.getValue();
+            if (value != null && value instanceof Double) {
+                double d = (Double) value;
+                if (d == (int)d) {
+                    entry.setValue((int)d);
+                }
+            } else if (value != null && value instanceof Float) {
+                float f = (Float) value;
+                if (f == (int)f) {
+                    entry.setValue((int)f);
+                }
+            } else if (value != null && value instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> map = (Map<String, Object>)value;
+                convertIntegers(map);
+            }
+        }
     }
 }

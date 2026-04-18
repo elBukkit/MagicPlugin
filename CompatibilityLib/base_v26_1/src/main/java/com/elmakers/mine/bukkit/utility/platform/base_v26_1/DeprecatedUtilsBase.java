@@ -96,7 +96,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
                 if (response != null) {
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        ((SkullMeta)meta).setOwnerProfile(response.getPlayerProfile());
+                        response.getPlayerProfile().update((SkullMeta)meta);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -115,7 +115,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
                 if (response != null) {
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        ((SkullMeta)meta).setOwnerProfile(response.getPlayerProfile());
+                        response.getPlayerProfile().update((SkullMeta)meta);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -132,7 +132,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    skull.setOwnerProfile(response.getPlayerProfile());
+                    response.getPlayerProfile().update(skull);
                 }
                 skull.update(true, false);
             }
@@ -145,7 +145,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    skull.setOwnerProfile(response.getPlayerProfile());
+                    response.getPlayerProfile().update(skull);
                 }
                 skull.update(true, false);
             }

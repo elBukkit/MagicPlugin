@@ -35,6 +35,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderDragonDa
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFallingBlockData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityItemFrameData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPaintingData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityRabbitData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySheepData;
@@ -135,5 +136,10 @@ public abstract class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getItemFrameData(ItemStack item, BlockFace direction, Rotation rotation) {
         return new EntityItemFrameData(item, direction, rotation);
+    }
+
+    @Override
+    public EntityExtraData getNMSData(MageController controller, Object tag) {
+        return new EntityNMSData(platform, tag);
     }
 }

@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.utility.platform.legacy;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
+import com.elmakers.mine.bukkit.utility.platform.base.SkinUtilsBase;
 
 public class LegacyPlatform extends PlatformBase {
 
@@ -52,7 +54,7 @@ public class LegacyPlatform extends PlatformBase {
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.SkinUtils createSkinUtils() {
-        return new SkinUtils(this);
+        return new SkinUtilsBase(this);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class LegacyPlatform extends PlatformBase {
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.InventoryUtils createInventoryUtils() {
-        return new InventoryUtils(this);
+        return new InventoryUtilsBase(this);
     }
 
     @Override
@@ -83,5 +85,10 @@ public class LegacyPlatform extends PlatformBase {
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils createDeprecatedUtils() {
         return new DeprecatedUtils(this);
+    }
+
+    @Override
+    public CompatibilityUtils getCompatibilityUtils() {
+        return (CompatibilityUtils)compatibilityUtils;
     }
 }

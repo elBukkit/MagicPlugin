@@ -267,4 +267,24 @@ public class ItemUtils extends ItemUtilsBase {
         }
         return null;
     }
+
+    @Override
+    public String getItemModel(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setItemModel(ItemStack itemStack, String model) {
+
+    }
+
+    @Override
+    public Object getEquippable(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setEquippable(ItemStack itemStack, Object equippable) {
+
+    }
 }

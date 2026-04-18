@@ -228,8 +228,8 @@ public abstract class PlatformBase implements Platform {
     }
 
     @Override
-    public InventoryUtils getInventoryUtils() {
-        return inventoryUtils;
+    public InventoryUtilsBase getInventoryUtils() {
+        return (InventoryUtilsBase)inventoryUtils;
     }
 
     @Override

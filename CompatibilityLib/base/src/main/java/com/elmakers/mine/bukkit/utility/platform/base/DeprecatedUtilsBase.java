@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
@@ -116,7 +117,6 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
         return Bukkit.getPlayerExact(name);
     }
 
-    @Override
     public FallingBlock spawnFallingBlock(Location location,
                                           Material material, byte data) {
         // @deprecated Magic value

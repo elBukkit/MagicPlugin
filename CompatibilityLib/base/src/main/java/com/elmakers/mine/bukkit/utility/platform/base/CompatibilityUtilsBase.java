@@ -79,7 +79,6 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
-import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
@@ -104,9 +103,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected final EnteredStateTracker isDamaging = new EnteredStateTracker();
     protected final Map<World, WeakReference<ThrownPotion>> worldPotions = new WeakHashMap<>();
     public Map<Integer, Material> materialIdMap;
-    protected final Platform platform;
+    protected final PlatformBase platform;
 
-    protected CompatibilityUtilsBase(final Platform platform) {
+    protected CompatibilityUtilsBase(final PlatformBase platform) {
         this.platform = platform;
         // This will be replaced, but adding it here lets us initialize the list to be the right size
         // There's probably a cleaner way to get a mutable pre-initialized list, but I couldn't figure it ou.
@@ -676,7 +675,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return teleporting;
     }
 
-    @Override
     public void playRecord(Location location, Material record) {
         if (platform.isLegacy()) {
             location.getWorld().playEffect(location, Effect.RECORD_PLAY,
@@ -686,7 +684,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
     }
 
-    @Override
     public void cancelDismount(EntityDismountEvent event) {
         // This event can't be cancelled in this version of Spigot
     }

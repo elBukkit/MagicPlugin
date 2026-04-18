@@ -59,7 +59,7 @@ public class ModernSkinUtils extends SkinUtilsBase {
 
     @Override
     public Object getProfile(Player player) {
-        return platform.getCompatibilityUtils().getProfile(player);
+        return ((ModernCompatibilityUtils)platform.getCompatibilityUtils()).getProfile(player);
     }
 
     @Override

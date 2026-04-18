@@ -68,6 +68,16 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
     }
 
     @Override
+    public void update(Skull skull) {
+        skull.setOwnerProfile(playerProfile);
+    }
+
+    @Override
+    public void update(SkullMeta skullMeta) {
+        skullMeta.setOwnerProfile(playerProfile);
+    }
+
+    @Override
     public String getDisguiseFormat() {
         Gson gson = getGson();
         String bukkitFormat = gson.toJson(playerProfile);
@@ -78,15 +88,5 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
         disguiseMap.put("name", playerProfile.getName());
         disguiseMap.put("textureProperties", bukkitMap.get("properties"));
         return gson.toJson(disguiseMap);
-    }
-
-    @Override
-    public void update(Skull skull) {
-        skull.setOwnerProfile(playerProfile);
-    }
-
-    @Override
-    public void update(SkullMeta skullMeta) {
-        skullMeta.setOwnerProfile(playerProfile);
     }
 }
