@@ -5,6 +5,7 @@
 
  - Allow giving multiple spells in a single Valhalla `learn_spell` perk reward
  - Add support for pasting entities via Volume-based actions
+ - Change Valhalla perk rewards to be "p:" permanent by default
 
 # 10.11.1
 

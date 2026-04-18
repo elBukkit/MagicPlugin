@@ -149,13 +149,13 @@ public class MagicSkill extends Skill {
         pathConfig.set("coords", xLocation + "," + yLocation);
         pathConfig.set("required_lv", level);
         ConfigurationSection rewards = pathConfig.createSection("perk_rewards");
-        rewards.set("path_upgrade", path.getKey());
+        rewards.set("p:path_upgrade", path.getKey());
         if (previousPath != null) {
             List<String> required = new ArrayList<>();
             required.add(previousPath.getKey());
             pathConfig.set("requireperk_all", required);
         } else if (recipes != null && !recipes.isEmpty()) {
-            rewards.set("discover_recipe", StringUtils.join(recipes, ","));
+            rewards.set("p:discover_recipe", StringUtils.join(recipes, ","));
         }
     }
 
@@ -194,7 +194,7 @@ public class MagicSkill extends Skill {
             spellConfig.set("cost", 1);
             spellConfig.set("coords", xLocation + "," + yLocation);
             ConfigurationSection rewards = spellConfig.createSection("perk_rewards");
-            rewards.set("learn_spell", spellKey);
+            rewards.set("p:learn_spell", spellKey);
             List<String> required = new ArrayList<>();
             required.add(path.getKey());
             spellConfig.set("requireperk_all", required);
