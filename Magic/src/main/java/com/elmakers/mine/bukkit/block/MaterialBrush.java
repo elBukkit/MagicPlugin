@@ -724,7 +724,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             List<Entity> targetEntities = targetWorld.getEntities();
             for (Entity entity : targetEntities) {
                 // Note that we ignore players and NPCs
-                if (!(entity instanceof Player) && !mage.getController().isNPC(entity)) {
+                if (!(entity instanceof Player) && !mage.getController().isNPC(entity) && !mage.getController().isPet(entity)) {
                     targetData.add(entity);
                 }
             }
