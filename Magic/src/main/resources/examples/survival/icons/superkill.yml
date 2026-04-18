@@ -7,4 +7,5 @@ superkill:
   type: spell
   glyph: "\uE9C4"
   vanilla_item: 'bone{18001}'
+  vanilla_item_enabled: 'bone{19001}'
   vanilla_item_disabled: 'bone{18002}'

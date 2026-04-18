@@ -7,4 +7,5 @@ mine:
   type: spell
   glyph: "\uE970"
   vanilla_item: 'iron_pickaxe{18001}'
+  vanilla_item_enabled: 'iron_pickaxe{19001}'
   vanilla_item_disabled: 'iron_pickaxe{18002}'

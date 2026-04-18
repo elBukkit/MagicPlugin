@@ -7,4 +7,5 @@ laser:
   type: spell
   glyph: "\uE964"
   vanilla_item: 'bamboo{18001}'
+  vanilla_item_enabled: 'bamboo{19001}'
   vanilla_item_disabled: 'bamboo{18002}'

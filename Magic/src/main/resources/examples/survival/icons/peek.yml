@@ -7,4 +7,5 @@ peek:
   type: spell
   glyph: "\uE97B"
   vanilla_item: 'glass_pane{18001}'
+  vanilla_item_enabled: 'glass_pane{19001}'
   vanilla_item_disabled: 'glass_pane{18002}'

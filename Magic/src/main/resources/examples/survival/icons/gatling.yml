@@ -7,4 +7,5 @@ gatling:
   type: spell
   glyph: "\uE951"
   vanilla_item: 'iron_chain{18001}'
+  vanilla_item_enabled: 'iron_chain{19001}'
   vanilla_item_disabled: 'iron_chain{18002}'

@@ -7,4 +7,5 @@ homing:
   type: spell
   glyph: "\uE95D"
   vanilla_item: 'lime_dye{18001}'
+  vanilla_item_enabled: 'lime_dye{19001}'
   vanilla_item_disabled: 'lime_dye{18002}'

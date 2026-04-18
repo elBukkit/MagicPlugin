@@ -7,4 +7,5 @@ upgrades:
   type: spell
   glyph: "\uE9DB"
   vanilla_item: 'rabbit_foot{18001}'
+  vanilla_item_enabled: 'rabbit_foot{19001}'
   vanilla_item_disabled: 'rabbit_foot{18002}'

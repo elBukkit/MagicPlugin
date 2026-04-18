@@ -7,4 +7,5 @@ sticky:
   type: spell
   glyph: "\uE9B2"
   vanilla_item: 'baked_potato{18001}'
+  vanilla_item_enabled: 'baked_potato{19001}'
   vanilla_item_disabled: 'baked_potato{18002}'

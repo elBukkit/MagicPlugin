@@ -7,4 +7,5 @@ railgun:
   type: spell
   glyph: "\uE992"
   vanilla_item: 'prismarine_shard{18003}'
+  vanilla_item_enabled: 'prismarine_shard{19003}'
   vanilla_item_disabled: 'prismarine_shard{18004}'

@@ -7,4 +7,5 @@ cure:
   type: spell
   glyph: "\uE932"
   vanilla_item: 'milk_bucket{18001}'
+  vanilla_item_enabled: 'milk_bucket{19001}'
   vanilla_item_disabled: 'milk_bucket{18002}'

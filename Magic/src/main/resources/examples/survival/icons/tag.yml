@@ -7,4 +7,5 @@ tag:
   type: spell
   glyph: "\uE9CC"
   vanilla_item: 'oak_sign{18003}'
+  vanilla_item_enabled: 'oak_sign{19003}'
   vanilla_item_disabled: 'oak_sign{18004}'

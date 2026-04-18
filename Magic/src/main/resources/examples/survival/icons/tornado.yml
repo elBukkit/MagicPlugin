@@ -7,4 +7,5 @@ tornado:
   type: spell
   glyph: "\uE9D4"
   vanilla_item: 'hopper{18001}'
+  vanilla_item_enabled: 'hopper{19001}'
   vanilla_item_disabled: 'hopper{18002}'

@@ -7,4 +7,5 @@ testdummy:
   type: spell
   glyph: "\uE9D0"
   vanilla_item: 'totem_of_undying{18001}'
+  vanilla_item_enabled: 'totem_of_undying{19001}'
   vanilla_item_disabled: 'totem_of_undying{18002}'

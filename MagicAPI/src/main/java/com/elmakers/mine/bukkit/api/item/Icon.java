@@ -29,7 +29,13 @@ public interface Icon {
     MaterialAndData getItemMaterial(boolean isLegacy);
 
     /**
-     * Automatically get the URL, legacy or modern version of this icon, depending on icon and server settings
+     * Automatically get the URL, legacy or modern version of this icon when enabled, depending on icon and server settings
+     */
+    @Nullable
+    MaterialAndData getItemEnabledMaterial(MageController controller);
+
+    /**
+     * Automatically get the URL, legacy or modern version of this icon when disabled, depending on icon and server settings
      */
     @Nullable
     MaterialAndData getItemDisabledMaterial(MageController controller);

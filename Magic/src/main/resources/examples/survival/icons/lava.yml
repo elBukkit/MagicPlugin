@@ -7,4 +7,5 @@ lava:
   type: spell
   glyph: "\uE965"
   vanilla_item: 'lava_bucket{18001}'
+  vanilla_item_enabled: 'lava_bucket{19001}'
   vanilla_item_disabled: 'lava_bucket{18002}'

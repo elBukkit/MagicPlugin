@@ -7,4 +7,5 @@ torch:
   type: spell
   glyph: "\uE9D3"
   vanilla_item: 'torch{18001}'
+  vanilla_item_enabled: 'torch{19001}'
   vanilla_item_disabled: 'torch{18002}'

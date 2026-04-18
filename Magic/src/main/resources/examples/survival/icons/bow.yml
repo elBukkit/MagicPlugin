@@ -7,4 +7,5 @@ bow:
   type: spell
   glyph: "\uE91D"
   vanilla_item: 'bow{18010}'
+  vanilla_item_enabled: 'bow{19010}'
   vanilla_item_disabled: 'bow{18011}'

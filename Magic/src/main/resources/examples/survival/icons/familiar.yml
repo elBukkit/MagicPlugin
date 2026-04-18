@@ -7,4 +7,5 @@ familiar:
   type: spell
   glyph: "\uE93E"
   vanilla_item: 'egg{18001}'
+  vanilla_item_enabled: 'egg{19001}'
   vanilla_item_disabled: 'egg{18002}'

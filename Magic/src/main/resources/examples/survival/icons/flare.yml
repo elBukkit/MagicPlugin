@@ -7,4 +7,5 @@ flare:
   type: spell
   glyph: "\uE945"
   vanilla_item: 'firework_star{18001}'
+  vanilla_item_enabled: 'firework_star{19001}'
   vanilla_item_disabled: 'firework_star{18002}'

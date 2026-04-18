@@ -7,4 +7,5 @@ fling:
   type: spell
   glyph: "\uE948"
   vanilla_item: 'feather{18001}'
+  vanilla_item_enabled: 'feather{19001}'
   vanilla_item_disabled: 'feather{18002}'

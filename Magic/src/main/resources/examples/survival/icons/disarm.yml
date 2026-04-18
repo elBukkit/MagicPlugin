@@ -7,4 +7,5 @@ disarm:
   type: spell
   glyph: "\uE936"
   vanilla_item: 'warped_fungus_on_a_stick{18001}'
+  vanilla_item_enabled: 'warped_fungus_on_a_stick{19001}'
   vanilla_item_disabled: 'warped_fungus_on_a_stick{18002}'

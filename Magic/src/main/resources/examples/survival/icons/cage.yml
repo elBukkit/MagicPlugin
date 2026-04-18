@@ -7,4 +7,5 @@ cage:
   type: spell
   glyph: "\uE925"
   vanilla_item: 'iron_bars{18001}'
+  vanilla_item_enabled: 'iron_bars{19001}'
   vanilla_item_disabled: 'iron_bars{18002}'

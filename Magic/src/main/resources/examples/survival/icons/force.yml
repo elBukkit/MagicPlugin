@@ -7,4 +7,5 @@ force:
   type: spell
   glyph: "\uE94A"
   vanilla_item: 'leather{18001}'
+  vanilla_item_enabled: 'leather{19001}'
   vanilla_item_disabled: 'leather{18002}'

@@ -7,4 +7,5 @@ blast:
   type: spell
   glyph: "\uE913"
   vanilla_item: 'gunpowder{18001}'
+  vanilla_item_enabled: 'gunpowder{19001}'
   vanilla_item_disabled: 'gunpowder{18002}'

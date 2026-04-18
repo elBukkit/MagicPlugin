@@ -7,4 +7,5 @@ glide:
   type: spell
   glyph: "\uE954"
   vanilla_item: 'elytra{18001}'
+  vanilla_item_enabled: 'elytra{19001}'
   vanilla_item_disabled: 'elytra{18002}'

@@ -7,4 +7,5 @@ protection_fire:
   type: spell
   glyph: "\uE98C"
   vanilla_item: 'shield{18016}'
+  vanilla_item_enabled: 'shield{19016}'
   vanilla_item_disabled: 'shield{18017}'

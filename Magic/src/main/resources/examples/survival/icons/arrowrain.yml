@@ -7,4 +7,5 @@ arrowrain:
   type: spell
   glyph: "\uE911"
   vanilla_item: 'spectral_arrow{18028}'
+  vanilla_item_enabled: 'spectral_arrow{19028}'
   vanilla_item_disabled: 'spectral_arrow{18029}'

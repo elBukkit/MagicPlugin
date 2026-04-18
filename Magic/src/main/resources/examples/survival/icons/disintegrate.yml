@@ -7,4 +7,5 @@ disintegrate:
   type: spell
   glyph: "\uE937"
   vanilla_item: 'cocoa_beans{18001}'
+  vanilla_item_enabled: 'cocoa_beans{19001}'
   vanilla_item_disabled: 'cocoa_beans{18002}'

@@ -7,4 +7,5 @@ growth:
   type: spell
   glyph: "\uE985"
   vanilla_item: 'oak_sapling{18001}'
+  vanilla_item_enabled: 'oak_sapling{19001}'
   vanilla_item_disabled: 'oak_sapling{18002}'

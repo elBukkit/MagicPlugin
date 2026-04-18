@@ -7,4 +7,5 @@ shuriken:
   type: spell
   glyph: "\uE9A5"
   vanilla_item: 'emerald{18002}'
+  vanilla_item_enabled: 'emerald{19002}'
   vanilla_item_disabled: 'emerald{18003}'

@@ -7,4 +7,5 @@ boom:
   type: spell
   glyph: "\uE91A"
   vanilla_item: 'blaze_powder{18001}'
+  vanilla_item_enabled: 'blaze_powder{19001}'
   vanilla_item_disabled: 'blaze_powder{18002}'

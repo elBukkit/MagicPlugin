@@ -7,4 +7,5 @@ fireball:
   type: spell
   glyph: "\uE943"
   vanilla_item: 'fire_charge{18001}'
+  vanilla_item_enabled: 'fire_charge{19001}'
   vanilla_item_disabled: 'fire_charge{18002}'

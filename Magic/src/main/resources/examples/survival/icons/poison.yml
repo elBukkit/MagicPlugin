@@ -7,4 +7,5 @@ poison:
   type: spell
   glyph: "\uE984"
   vanilla_item: 'fermented_spider_eye{18001}'
+  vanilla_item_enabled: 'fermented_spider_eye{19001}'
   vanilla_item_disabled: 'fermented_spider_eye{18002}'

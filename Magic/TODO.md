@@ -2,12 +2,9 @@
 
 # Do it for real
 
- - Prevent Valhalla perks from spamming on login, don't re-add spells+paths?
- - 
  - Fix backwards compatibility layers, dealing with serialized items.. somehow??
  - See if we can bring the older layers back
  - Vanilla crafting table item is broken in RP
- - Something broken in the discover recipe toast also, maybe the same thing idk
 
 # Actually Somewhat Recent
 

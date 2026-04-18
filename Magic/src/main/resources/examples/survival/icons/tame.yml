@@ -7,4 +7,5 @@ tame:
   type: spell
   glyph: "\uE9CD"
   vanilla_item: 'salmon{18001}'
+  vanilla_item_enabled: 'salmon{19001}'
   vanilla_item_disabled: 'salmon{18002}'

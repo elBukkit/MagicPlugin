@@ -7,4 +7,5 @@ entangle:
   type: spell
   glyph: "\uE93C"
   vanilla_item: 'birch_fence{18001}'
+  vanilla_item_enabled: 'birch_fence{19001}'
   vanilla_item_disabled: 'birch_fence{18002}'

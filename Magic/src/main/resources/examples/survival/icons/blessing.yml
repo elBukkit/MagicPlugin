@@ -7,4 +7,5 @@ blessing:
   type: spell
   glyph: "\uE915"
   vanilla_item: 'honey_bottle{18001}'
+  vanilla_item_enabled: 'honey_bottle{19001}'
   vanilla_item_disabled: 'honey_bottle{18002}'

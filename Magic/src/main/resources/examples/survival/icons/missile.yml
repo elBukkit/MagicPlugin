@@ -7,4 +7,5 @@ missile:
   type: spell
   glyph: "\uE971"
   vanilla_item: 'prismarine_shard{18001}'
+  vanilla_item_enabled: 'prismarine_shard{19001}'
   vanilla_item_disabled: 'prismarine_shard{18002}'

@@ -7,4 +7,5 @@ meteor:
   type: spell
   glyph: "\uE96F"
   vanilla_item: 'melon_seeds{18001}'
+  vanilla_item_enabled: 'melon_seeds{19001}'
   vanilla_item_disabled: 'melon_seeds{18002}'

@@ -83,6 +83,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private boolean earnsSP = true;
     private MaterialAndData icon;
     private MaterialAndData disabledIcon;
+    private MaterialAndData enabledIcon;
     private MaterialAndData migrateIcon;
     private ConfigurationSection properties;
 
@@ -121,6 +122,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             this.levelMap = new TreeMap<>(inherit.levelMap);
             this.icon = inherit.icon;
             this.disabledIcon = inherit.disabledIcon;
+            this.enabledIcon = inherit.enabledIcon;
             this.migrateIcon = inherit.migrateIcon;
             this.maxMana = inherit.maxMana;
             this.manaRegeneration = inherit.manaRegeneration;
@@ -203,6 +205,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         icon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled()));
         migrateIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "migrate_icon"));
         disabledIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "disabled_icon"));
+        enabledIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "enabled_icon"));
 
         // Validate requirements - disabling a required spell disables the upgrade.
         for (PrerequisiteSpell requiredSpell : requiredSpells) {
@@ -614,6 +617,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon() {
         return disabledIcon == null ? icon : disabledIcon;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getEnabledIcon() {
+        return enabledIcon == null ? icon : enabledIcon;
     }
 
     public void upgraded(MageController controller, com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {

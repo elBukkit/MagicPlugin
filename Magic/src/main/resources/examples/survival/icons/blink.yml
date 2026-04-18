@@ -7,4 +7,5 @@ blink:
   type: spell
   glyph: "\uE917"
   vanilla_item: 'ender_pearl{18001}'
+  vanilla_item_enabled: 'ender_pearl{19001}'
   vanilla_item_disabled: 'ender_pearl{18002}'

@@ -7,4 +7,5 @@ wand:
   type: spell
   glyph: "\uE9E0"
   vanilla_item: 'blaze_rod{18045}'
+  vanilla_item_enabled: 'blaze_rod{19045}'
   vanilla_item_disabled: 'blaze_rod{18046}'

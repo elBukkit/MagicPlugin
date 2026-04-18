@@ -7,4 +7,5 @@ blind:
   type: spell
   glyph: "\uE916"
   vanilla_item: 'ink_sac{18001}'
+  vanilla_item_enabled: 'ink_sac{19001}'
   vanilla_item_disabled: 'ink_sac{18002}'

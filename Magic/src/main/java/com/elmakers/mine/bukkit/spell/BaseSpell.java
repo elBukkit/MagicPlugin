@@ -194,6 +194,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private List<SpellKey> removesSpells;
     private MaterialAndData iconMaterial =  null;
     private MaterialAndData disabledIconMaterial = null;
+    private MaterialAndData enabledIconMaterial = null;
     private com.elmakers.mine.bukkit.api.item.Icon icon;
     protected Set<EntityType> friendlyEntityTypes = null;
     private double requiredHealth;
@@ -1090,6 +1091,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         iconMaterial = icon.getItemMaterial(controller);
         disabledIconMaterial = icon.getItemDisabledMaterial(controller);
+        enabledIconMaterial = icon.getItemEnabledMaterial(controller);
 
         color = ConfigurationUtils.getColor(node, "color", null);
         if (node.contains("worth_sp")) {
@@ -2419,6 +2421,12 @@ public class BaseSpell implements MageSpell, Cloneable {
     public final com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon()
     {
         return disabledIconMaterial;
+    }
+
+    @Override
+    public final com.elmakers.mine.bukkit.api.block.MaterialAndData getEnabledIcon()
+    {
+        return enabledIconMaterial;
     }
 
     @Override

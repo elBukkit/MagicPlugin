@@ -7,4 +7,5 @@ airscooter:
   type: spell
   glyph: "\uE903"
   vanilla_item: 'bone_meal{18001}'
+  vanilla_item_enabled: 'bone_meal{19001}'
   vanilla_item_disabled: 'bone_meal{18002}'

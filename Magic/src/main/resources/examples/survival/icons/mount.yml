@@ -7,4 +7,5 @@ mount:
   type: spell
   glyph: "\uE974"
   vanilla_item: 'saddle{18003}'
+  vanilla_item_enabled: 'saddle{19003}'
   vanilla_item_disabled: 'saddle{18004}'

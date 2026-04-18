@@ -7,4 +7,5 @@ platform:
   type: spell
   glyph: "\uE983"
   vanilla_item: 'magenta_dye{18001}'
+  vanilla_item_enabled: 'magenta_dye{19001}'
   vanilla_item_disabled: 'magenta_dye{18002}'

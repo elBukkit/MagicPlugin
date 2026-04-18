@@ -7,4 +7,5 @@ dragonball:
   type: spell
   glyph: "\uE938"
   vanilla_item: 'dragon_head{18001}'
+  vanilla_item_enabled: 'dragon_head{19001}'
   vanilla_item_disabled: 'dragon_head{18002}'

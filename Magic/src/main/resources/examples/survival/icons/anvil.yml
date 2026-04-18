@@ -7,4 +7,5 @@ anvil:
   type: spell
   glyph: "\uE906"
   vanilla_item: 'anvil{18001}'
+  vanilla_item_enabled: 'anvil{19001}'
   vanilla_item_disabled: 'anvil{18002}'

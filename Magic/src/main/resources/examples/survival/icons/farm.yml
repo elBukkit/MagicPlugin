@@ -7,4 +7,5 @@ farm:
   type: spell
   glyph: "\uE93F"
   vanilla_item: 'melon_slice{18001}'
+  vanilla_item_enabled: 'melon_slice{19001}'
   vanilla_item_disabled: 'melon_slice{18002}'

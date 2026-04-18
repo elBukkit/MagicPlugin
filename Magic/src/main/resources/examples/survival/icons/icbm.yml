@@ -7,4 +7,5 @@ icbm:
   type: spell
   glyph: "\uE95F"
   vanilla_item: 'potato{18001}'
+  vanilla_item_enabled: 'potato{19001}'
   vanilla_item_disabled: 'potato{18002}'

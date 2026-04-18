@@ -7,4 +7,5 @@ heal:
   type: spell
   glyph: "\uE95B"
   vanilla_item: 'apple{18001}'
+  vanilla_item_enabled: 'apple{19001}'
   vanilla_item_disabled: 'apple{18002}'

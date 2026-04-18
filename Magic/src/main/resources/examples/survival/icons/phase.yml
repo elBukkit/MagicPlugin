@@ -7,4 +7,5 @@ phase:
   type: spell
   glyph: "\uE97E"
   vanilla_item: 'crimson_door{18001}'
+  vanilla_item_enabled: 'crimson_door{19001}'
   vanilla_item_disabled: 'crimson_door{18002}'

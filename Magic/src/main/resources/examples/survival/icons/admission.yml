@@ -7,4 +7,5 @@ admission:
   type: spell
   glyph: "\uE902"
   vanilla_item: 'oak_door{18001}'
+  vanilla_item_enabled: 'oak_door{19001}'
   vanilla_item_disabled: 'oak_door{18002}'

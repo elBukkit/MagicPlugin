@@ -5,8 +5,10 @@
 
  - Allow giving multiple spells in a single Valhalla `learn_spell` perk reward
  - Add support for pasting entities via Volume-based actions
- - Change Valhalla perk rewards to be "p:" permanent by default
  - Prevent re-rewarding perk rewards
+ - Change Valhalla perk rewards to be "p:" permanent by default
+ - Add "enabled" icon variants to the vanilla and valhalla RP, used for showing when a spell has been unlocked
+ - You will need to delete the ValhallaMMO/skills/magic_progression.yml file for the above changes to take affect
 
 # 10.11.1
 

@@ -7,4 +7,5 @@ weather:
   type: spell
   glyph: "\uE9E3"
   vanilla_item: 'popped_chorus_fruit{18001}'
+  vanilla_item_enabled: 'popped_chorus_fruit{19001}'
   vanilla_item_disabled: 'popped_chorus_fruit{18002}'

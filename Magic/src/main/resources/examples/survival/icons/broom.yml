@@ -7,4 +7,5 @@ broom:
   type: spell
   glyph: "\uE921"
   vanilla_item: 'acacia_sapling{18002}'
+  vanilla_item_enabled: 'acacia_sapling{19002}'
   vanilla_item_disabled: 'acacia_sapling{18003}'

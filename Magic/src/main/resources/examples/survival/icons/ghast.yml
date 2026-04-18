@@ -7,4 +7,5 @@ ghast:
   type: spell
   glyph: "\uE952"
   vanilla_item: 'pufferfish{18001}'
+  vanilla_item_enabled: 'pufferfish{19001}'
   vanilla_item_disabled: 'pufferfish{18002}'

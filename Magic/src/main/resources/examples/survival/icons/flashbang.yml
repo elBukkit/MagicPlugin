@@ -7,4 +7,5 @@ flashbang:
   type: spell
   glyph: "\uE946"
   vanilla_item: 'soul_campfire{18001}'
+  vanilla_item_enabled: 'soul_campfire{19001}'
   vanilla_item_disabled: 'soul_campfire{18002}'

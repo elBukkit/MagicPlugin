@@ -136,9 +136,14 @@ public class MagicSkill extends Skill {
         if (disabledData == 0) {
             disabledData = customModelData;
         }
+        MaterialAndData enabledIcon = path.getEnabledIcon();
+        int enabledData = enabledIcon.getCustomModelData();
+        if (enabledData == 0) {
+            enabledData = customModelData;
+        }
         if (customModelData > 0) {
             pathConfig.set("custom_model_data_unlockable", customModelData);
-            pathConfig.set("custom_model_data_unlocked", customModelData);
+            pathConfig.set("custom_model_data_unlocked", enabledData);
             // Visible kind of means locked, since "unlockable" means not locked
             pathConfig.set("custom_model_data_visible", disabledData);
         }
@@ -182,9 +187,14 @@ public class MagicSkill extends Skill {
             if (disabledData == 0) {
                 disabledData = customModelData;
             }
+            MaterialAndData enabledIcon = spell.getEnabledIcon();
+            int enabledData = enabledIcon.getCustomModelData();
+            if (enabledData == 0) {
+                enabledData = customModelData;
+            }
             if (customModelData > 0) {
                 spellConfig.set("custom_model_data_unlockable", customModelData);
-                spellConfig.set("custom_model_data_unlocked", customModelData);
+                spellConfig.set("custom_model_data_unlocked", enabledData);
                 // Visible kind of means locked, since "unlockable" means not locked
                 spellConfig.set("custom_model_data_visible", disabledData);
             }

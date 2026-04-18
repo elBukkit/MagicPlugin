@@ -7,4 +7,5 @@ recall:
   type: spell
   glyph: "\uE996"
   vanilla_item: 'jungle_door{18001}'
+  vanilla_item_enabled: 'jungle_door{19001}'
   vanilla_item_disabled: 'jungle_door{18002}'

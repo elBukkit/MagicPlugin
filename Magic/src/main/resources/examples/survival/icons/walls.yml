@@ -7,4 +7,5 @@ walls:
   type: spell
   glyph: "\uE9DF"
   vanilla_item: 'terracotta{18001}'
+  vanilla_item_enabled: 'terracotta{19001}'
   vanilla_item_disabled: 'terracotta{18002}'

@@ -62,6 +62,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getUsage();
     MaterialAndData getIcon();
     MaterialAndData getDisabledIcon();
+    MaterialAndData getEnabledIcon();
     String getIconURL();
     String getDisabledIconURL();
     @Nullable

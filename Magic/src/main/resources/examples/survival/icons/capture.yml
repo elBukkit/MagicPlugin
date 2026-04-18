@@ -7,4 +7,5 @@ capture:
   type: spell
   glyph: "\uE927"
   vanilla_item: 'turtle_egg{18001}'
+  vanilla_item_enabled: 'turtle_egg{19001}'
   vanilla_item_disabled: 'turtle_egg{18002}'

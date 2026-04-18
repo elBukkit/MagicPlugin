@@ -7,4 +7,5 @@ whip:
   type: spell
   glyph: "\uE9E5"
   vanilla_item: 'lead{18001}'
+  vanilla_item_enabled: 'lead{19001}'
   vanilla_item_disabled: 'lead{18002}'

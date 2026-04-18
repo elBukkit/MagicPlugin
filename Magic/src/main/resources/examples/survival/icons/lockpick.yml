@@ -7,4 +7,5 @@ lockpick:
   type: spell
   glyph: "\uE96C"
   vanilla_item: 'tripwire_hook{18001}'
+  vanilla_item_enabled: 'tripwire_hook{19001}'
   vanilla_item_disabled: 'tripwire_hook{18002}'

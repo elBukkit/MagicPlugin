@@ -7,4 +7,5 @@ horse:
   type: spell
   glyph: "\uE974"
   vanilla_item: 'saddle{18001}'
+  vanilla_item_enabled: 'saddle{19001}'
   vanilla_item_disabled: 'saddle{18002}'

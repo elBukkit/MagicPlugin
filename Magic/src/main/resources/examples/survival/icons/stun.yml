@@ -7,4 +7,5 @@ stun:
   type: spell
   glyph: "\uE9B4"
   vanilla_item: 'blue_dye{18001}'
+  vanilla_item_enabled: 'blue_dye{19001}'
   vanilla_item_disabled: 'blue_dye{18002}'

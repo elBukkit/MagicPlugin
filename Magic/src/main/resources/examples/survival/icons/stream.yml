@@ -7,4 +7,5 @@ stream:
   type: spell
   glyph: "\uE9B3"
   vanilla_item: 'lapis_lazuli{18001}'
+  vanilla_item_enabled: 'lapis_lazuli{19001}'
   vanilla_item_disabled: 'lapis_lazuli{18002}'

@@ -7,4 +7,5 @@ smite:
   type: spell
   glyph: "\uE9AB"
   vanilla_item: 'sea_pickle{18001}'
+  vanilla_item_enabled: 'sea_pickle{19001}'
   vanilla_item_disabled: 'sea_pickle{18002}'

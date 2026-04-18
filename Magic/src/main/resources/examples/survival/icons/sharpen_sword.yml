@@ -7,4 +7,5 @@ sharpen_sword:
   type: spell
   glyph: "\uE9A2"
   vanilla_item: 'diamond_sword{18104}'
+  vanilla_item_enabled: 'diamond_sword{19104}'
   vanilla_item_disabled: 'diamond_sword{18105}'

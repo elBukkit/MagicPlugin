@@ -7,4 +7,5 @@ invincible:
   type: spell
   glyph: "\uE961"
   vanilla_item: 'golden_apple{18001}'
+  vanilla_item_enabled: 'golden_apple{19001}'
   vanilla_item_disabled: 'golden_apple{18002}'

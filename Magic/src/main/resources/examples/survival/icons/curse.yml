@@ -7,4 +7,5 @@ curse:
   type: spell
   glyph: "\uE933"
   vanilla_item: 'rotten_flesh{18001}'
+  vanilla_item_enabled: 'rotten_flesh{19001}'
   vanilla_item_disabled: 'rotten_flesh{18002}'

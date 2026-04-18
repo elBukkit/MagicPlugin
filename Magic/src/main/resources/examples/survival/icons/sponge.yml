@@ -7,4 +7,5 @@ sponge:
   type: spell
   glyph: "\uE9B0"
   vanilla_item: 'sponge{18001}'
+  vanilla_item_enabled: 'sponge{19001}'
   vanilla_item_disabled: 'sponge{18002}'

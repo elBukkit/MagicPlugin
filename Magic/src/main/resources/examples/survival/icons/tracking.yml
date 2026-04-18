@@ -7,4 +7,5 @@ tracking:
   type: spell
   glyph: "\uE9D7"
   vanilla_item: 'ender_eye{18001}'
+  vanilla_item_enabled: 'ender_eye{19001}'
   vanilla_item_disabled: 'ender_eye{18002}'

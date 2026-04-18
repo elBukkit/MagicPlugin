@@ -7,4 +7,5 @@ polymorph:
   type: spell
   glyph: "\uE986"
   vanilla_item: 'pufferfish_bucket{18001}'
+  vanilla_item_enabled: 'pufferfish_bucket{19001}'
   vanilla_item_disabled: 'pufferfish_bucket{18002}'

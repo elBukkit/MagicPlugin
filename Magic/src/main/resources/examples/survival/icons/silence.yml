@@ -7,4 +7,5 @@ silence:
   type: spell
   glyph: "\uE9A6"
   vanilla_item: 'music_disc_11{18002}'
+  vanilla_item_enabled: 'music_disc_11{19002}'
   vanilla_item_disabled: 'music_disc_11{18003}'
