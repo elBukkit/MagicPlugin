@@ -38,6 +38,7 @@ public class RecipePerkReward extends PerkReward {
 
     @Override
     public void parseArgument(Object argument) {
+        recipeKeys = new ArrayList<>();
         List<String> keyList = ConfigurationUtils.getStringList(argument);
         for (String key : keyList) {
             if (key.contains(":")) {
@@ -56,12 +57,5 @@ public class RecipePerkReward extends PerkReward {
     @Override
     public PerkRewardArgumentType getRequiredType() {
         return PerkRewardArgumentType.STRING_LIST;
-    }
-
-    @Override
-    public RecipePerkReward clone() throws CloneNotSupportedException {
-        RecipePerkReward reward = (RecipePerkReward)super.clone();
-        reward.recipeKeys = new ArrayList<>(reward.recipeKeys);
-        return reward;
     }
 }

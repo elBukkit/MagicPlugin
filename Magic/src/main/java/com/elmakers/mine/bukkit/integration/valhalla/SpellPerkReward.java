@@ -55,6 +55,7 @@ public class SpellPerkReward extends PerkReward {
 
     @Override
     public void parseArgument(Object argument) {
+        spells = new ArrayList<>();
         List<String> keyList = ConfigurationUtils.getStringList(argument);
         for (String spellKey : keyList) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
@@ -75,12 +76,5 @@ public class SpellPerkReward extends PerkReward {
     @Override
     public PerkRewardArgumentType getRequiredType() {
         return PerkRewardArgumentType.STRING_LIST;
-    }
-
-    @Override
-    public SpellPerkReward clone() throws CloneNotSupportedException {
-        SpellPerkReward reward = (SpellPerkReward)super.clone();
-        reward.spells = new ArrayList<>(reward.spells);
-        return reward;
     }
 }
