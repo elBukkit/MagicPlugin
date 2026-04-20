@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -225,6 +226,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         for (String flag : BOOLEAN_FLAGS) {
             if (configuration.contains(flag)) {
+                item = CompatibilityLib.getItemUtils().makeReal(item);
                 nbtUtils.setBoolean(item, flag, configuration.getBoolean(flag));
             }
         }
@@ -305,18 +307,17 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 enchantments.put(enchantment, enchantSection.getInt(enchantKey));
             }
         } else {
-            List<String> enchantList = configuration.getStringList("enchants");
+            List<String> enchantList = configuration.getStringList("enchantments");
             if (enchantList != null) {
                 for (String enchantKey : enchantList) {
                     int level = 1;
                     String[] pieces = StringUtils.split(enchantKey, ":");
                     if (pieces.length > 1) {
                         try {
-                            level = Integer.parseInt(pieces[1]);
-                            enchantKey = pieces[0];
-                        } catch (Exception ex) {
-                            controller.getLogger().warning("Invalid enchantment level: " + enchantKey);
-                            continue;
+                            level = Integer.parseInt(pieces[pieces.length - 1]);
+                            String[] keyPieces = Arrays.copyOf(pieces, pieces.length - 1);
+                            enchantKey = StringUtils.join(keyPieces, ":");
+                        } catch (Exception ignore) {
                         }
                     }
                     Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
