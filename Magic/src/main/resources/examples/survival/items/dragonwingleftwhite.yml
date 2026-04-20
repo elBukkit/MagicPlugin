@@ -1,0 +1,7 @@
+dragonwingleftwhite:
+  item: leather_horse_armor
+  custom_model_data: 18002
+  color:
+    red: 249
+    green: 255
+    blue: 254
