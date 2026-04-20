@@ -72,6 +72,15 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("convertall"))
+        {
+            if (!api.hasPermission(sender, "magic.commands.mitem.convertall")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            return onConvertAll(sender);
+        }
+
         if (args[0].equalsIgnoreCase("spawn"))
         {
             if (!api.hasPermission(sender, "magic.commands.mitem.spawn")) {
@@ -136,6 +145,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mitem.", "damage");
             addIfPermissible(sender, options, "magic.commands.mitem.", "skull");
             addIfPermissible(sender, options, "magic.commands.mitem.", "spawn");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "convertall");
         }
 
         if (args.length == 2)
@@ -616,6 +626,61 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         if (itemInHand == null || itemInHand.getType() == Material.AIR) {
             sender.sendMessage(api.getMessages().get("item.no_item"));
             return false;
+        }
+        return true;
+    }
+
+    public boolean onConvertAll(CommandSender sender) {
+        MageController controller = api.getController();
+        Collection<String> itemKeys = controller.getItemKeys();
+        File itemFolder = new File(controller.getConfigFolder(), "items");
+        for (String itemKey : itemKeys) {
+            ItemData existing = controller.getItem(itemKey);
+            ItemStack item = existing.getItemStack();
+            YamlConfiguration itemConfig = new YamlConfiguration();
+            ConfigurationSection itemSection = itemConfig.createSection(itemKey);
+            boolean invalid = false;
+            if (item == null || item.getType() == Material.AIR) {
+                sender.sendMessage(ChatColor.RED + "Skipping invalid item: " + ChatColor.AQUA + itemKey);
+                invalid = true;
+                itemSection.set("notes", "Invalid Item");
+            } else {
+                if (!item.hasItemMeta()) {
+                    // sender.sendMessage(ChatColor.RED + "Skipping simple item: " + ChatColor.AQUA + itemKey);
+                    continue;
+                }
+                String creatorId = existing.getCreatorId();
+                String creator = existing.getCreator();
+                double worth = existing.getWorth();
+                double earns = existing.getEarns();
+
+                itemSection.set("creator_id", creatorId);
+                itemSection.set("creator", creator);
+                if (worth > 0) {
+                    itemSection.set("worth", worth);
+                }
+                if (existing.hasCustomEarns()) {
+                    itemSection.set("earns", earns);
+                }
+
+                ItemData itemData = new com.elmakers.mine.bukkit.item.ItemData(item, controller);
+                ItemStack itemStack = itemData.save(itemSection);
+                invalid = itemStack.hasItemMeta() || itemSection.contains("tags");
+            }
+            File targetFolder = itemFolder;
+            if (invalid) {
+                targetFolder = new File(targetFolder, "unsupported");
+            } else {
+                targetFolder = new File(targetFolder, "converted");
+            }
+            targetFolder.mkdirs();
+            File itemFile = new File(targetFolder, itemKey + ".yml");
+            try {
+                itemConfig.save(itemFile);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                sender.sendMessage(ChatColor.RED + "Can't write to file " + itemFile.getName());
+            }
         }
         return true;
     }

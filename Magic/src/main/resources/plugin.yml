@@ -247,6 +247,7 @@ commands:
         /mitem damage     Change the damage state of an item
         /mitem export     Export all items, names and worth a CSV file
         /mitem spawn      Spawn a specific item at a location
+        /mitem convertall Convert all saved items to current format
     permission: magic.commands.mitem
   "mitem add":
     description: Add enchantments, attributes or lore to an item
@@ -286,6 +287,11 @@ commands:
       /mitem serialize mycustomitem
       /mitem serialize mycustomitem 1000
     permission: magic.commands.mitem.serialize
+  "mitem convertall":
+    description: Convert all items and save them as new files (dev command)
+    usage: |
+      /mitem convertall
+    permission: magic.commands.mitem.convertall
   "mitem export":
     description: Save a list of items to a CSV file
     usage: |
