@@ -50,7 +50,9 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
     @Override
     public void save(ConfigurationSection configuration) {
         super.save(configuration);
-        configuration.set(CONFIG_KEY, playerProfile);
+        if (saveProfile) {
+            configuration.set(CONFIG_KEY, playerProfile);
+        }
     }
 
     @Override

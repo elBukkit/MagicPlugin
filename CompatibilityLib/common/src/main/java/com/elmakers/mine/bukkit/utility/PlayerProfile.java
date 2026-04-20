@@ -12,6 +12,7 @@ public abstract class PlayerProfile {
     protected UUID uniqueId;
     protected String name;
     protected String skinURL;
+    protected boolean saveProfile = true;
 
     protected PlayerProfile(UUID uniqueId, String name, String skinURL) {
         this.uniqueId = uniqueId;
@@ -51,5 +52,9 @@ public abstract class PlayerProfile {
 
     public String getName() {
         return name;
+    }
+
+    public void setSaveProfile(boolean saveProfile) {
+        this.saveProfile = saveProfile;
     }
 }
