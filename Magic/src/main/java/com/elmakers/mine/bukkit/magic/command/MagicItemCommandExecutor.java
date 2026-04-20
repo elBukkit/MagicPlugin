@@ -126,6 +126,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mitem.", "duplicate");
             addIfPermissible(sender, options, "magic.commands.mitem.", "amount");
             addIfPermissible(sender, options, "magic.commands.mitem.", "save");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "serialize");
             addIfPermissible(sender, options, "magic.commands.mitem.", "delete");
             addIfPermissible(sender, options, "magic.commands.mitem.", "destroy");
             addIfPermissible(sender, options, "magic.commands.mitem.", "clean");
@@ -318,6 +319,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         {
             return onItemSave(sender, player, item, args);
         }
+        else if (subCommand.equalsIgnoreCase("serialize"))
+        {
+            return onItemSerialize(sender, player, item, args);
+        }
         else if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc"))
         {
             return onItemDescribe(sender, player, item, args);
@@ -479,14 +484,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             ex.printStackTrace();
         }
         inventory.setItem(itemSlot, item);
-        return true;
-    }
-
-    public boolean onItemSerialize(CommandSender sender, Player player, ItemStack item) {
-        YamlConfiguration configuration = new YamlConfiguration();
-        configuration.set("item", item);
-        String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
-        sender.sendMessage(itemString);
         return true;
     }
 
@@ -711,7 +708,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters)
+    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters, boolean serialize)
     {
         if (parameters.length < 1) {
             sender.sendMessage("Use: /mitem save <filename> [worth] [earns]");
@@ -766,7 +763,15 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             itemSection.set("earns", existing.getEarns());
         }
 
-        itemSection.set("item", item);
+        if (serialize) {
+            itemSection.set("item", item);
+        } else {
+            ItemData itemData = new com.elmakers.mine.bukkit.item.ItemData(item, controller);
+            ItemStack itemStack = itemData.save(itemSection);
+            if (itemStack.hasItemMeta() || itemSection.contains("tags")) {
+                sender.sendMessage(ChatColor.RED + "Item had custom data, you may want to use " + ChatColor.AQUA + "/mitem serialize " + ChatColor.RED + "instead: " + ChatColor.GRAY + item.getItemMeta());
+            }
+        }
 
         File itemFolder = new File(controller.getConfigFolder(), "items");
         File itemFile = new File(itemFolder, template + ".yml");
@@ -792,6 +797,16 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(message);
         }
         return true;
+    }
+
+    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters)
+    {
+        return onItemSave(sender, player, item, parameters, false);
+    }
+
+    public boolean onItemSerialize(CommandSender sender, Player player, ItemStack item, String[] parameters)
+    {
+        return onItemSave(sender, player, item, parameters, true);
     }
 
     public boolean onItemName(CommandSender sender, Player player, ItemStack item, String[] parameters)
@@ -964,7 +979,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         ItemStack newItem = CompatibilityLib.getItemUtils().makeReal(item);
         CompatibilityLib.getCompatibilityUtils().removeItemAttribute(newItem, attribute);
-        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal(), UUID.randomUUID())) {
+        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.name(), UUID.randomUUID())) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";
             }

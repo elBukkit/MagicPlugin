@@ -239,6 +239,7 @@ commands:
         /mitem clean      Strip any custom Magic data from an item
         /mitem skull      Create a custom skull based on data in a book
         /mitem save       Save an item as a new template
+        /mitem serialize  Save an item as a new template using Bukkit serialization
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
         /mitem earns      Show the value of an item when sold
@@ -256,6 +257,7 @@ commands:
        /mitem add flag <flag>
        /mitem add lore <some text>
        /mitem add unbreakable
+    permission: magic.commands.mitem.add
   "mitem remove":
     description: Remove enchantments, attributes or lore from an item
     usage: |
@@ -276,14 +278,24 @@ commands:
        /mitem save <key> [worth] [earns]
        /mitem save mycustomitem
        /mitem save mycustomitem 1000
+    permission: magic.commands.mitem.save
+  "mitem serialize":
+    description: Save an item to a template using Bukkit serialization
+    usage: |
+      /mitem serialize <key> [worth] [earns]
+      /mitem serialize mycustomitem
+      /mitem serialize mycustomitem 1000
+    permission: magic.commands.mitem.serialize
   "mitem export":
     description: Save a list of items to a CSV file
     usage: |
        /mitem export items
+    permission: magic.commands.mitem.export
   "mitem skull":
     description: Convert a book containing skull profile data to a skull
     usage: |
        /mitem skull
+    permission: magic.commands.mitem.skull
   "mitem type":
     description: Change the type of an item
     usage: |

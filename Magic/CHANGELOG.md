@@ -5,10 +5,13 @@
 
  - Allow giving multiple spells in a single Valhalla `learn_spell` perk reward
  - Add support for pasting entities via Volume-based actions
+ - Change `/mitem save` to store most item components as config and try to avoid serializing items
+ - Add `/mitem serialize` to use only Bukkit serialization to save an item
  - Prevent re-rewarding perk rewards
  - Change Valhalla perk rewards to be "p:" permanent by default
  - Add "enabled" icon variants to the vanilla and valhalla RP, used for showing when a spell has been unlocked
  - You will need to delete the ValhallaMMO/skills/magic_progression.yml file for the above changes to take affect
+ - Fix lots of broken items in the vanilla/valhalla RP (thanks to Stiktabulous for checking!)
 
 # 10.11.1
 
