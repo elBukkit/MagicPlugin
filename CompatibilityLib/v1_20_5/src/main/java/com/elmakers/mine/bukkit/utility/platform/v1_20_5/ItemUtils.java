@@ -35,12 +35,16 @@ public class ItemUtils extends ItemUtilsBase {
         return ReflectionUtils.getHandle(platform.getLogger(), stack, CraftItemStack.class);
     }
 
+    private CompoundTag getCompoundTagFromCustomData(CustomData customData) {
+        return (CompoundTag)platform.getNBTUtils().getCompoundTagFromCustomData(customData);
+    }
+
     @Override
     public CompoundTag getTag(Object mcItemStack) {
         if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
         CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
-        return customData == null ? null : customData.getUnsafe();
+        return customData == null ? null : getCompoundTagFromCustomData(customData);
     }
 
     @Override
@@ -73,10 +77,11 @@ public class ItemUtils extends ItemUtilsBase {
             tag = new CompoundTag();
             // This makes a copy
             customData = CustomData.of(tag);
-            tag = customData.getUnsafe();
+            tag = getCompoundTagFromCustomData(customData);
+
             ((net.minecraft.world.item.ItemStack)mcItemStack).set(DataComponents.CUSTOM_DATA, customData);
         } else {
-            tag = customData.getUnsafe();
+            tag = getCompoundTagFromCustomData(customData);
         }
         return tag;
     }
@@ -225,5 +230,12 @@ public class ItemUtils extends ItemUtilsBase {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void removeCustomData(ItemStack itemStack) {
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)getHandle(itemStack);
+        if (mcItemStack == null) return;
+        mcItemStack.remove(DataComponents.CUSTOM_DATA);
     }
 }

@@ -562,4 +562,10 @@ public class NBTUtils extends NBTUtilsBase {
 
         return value;
     }
+
+    @SuppressWarnings("deprecated")
+    @Override
+    public CompoundTag getCompoundTagFromCustomData(Object customData) {
+        return customData == null || !(customData instanceof CustomData) ? null : (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
+    }
 }

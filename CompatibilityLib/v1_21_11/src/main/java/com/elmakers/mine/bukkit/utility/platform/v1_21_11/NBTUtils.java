@@ -47,8 +47,9 @@ public class NBTUtils extends NBTUtilsBase {
         super(platform);
     }
 
-    protected CompoundTag getCompoundTagFromCustomData(CustomData customData) {
-        return customData == null ? null : (CompoundTag)ReflectionUtils.getPrivateWithFallback(platform.getLogger(), customData, CustomData.class, "tag", "e");
+    @Override
+    public CompoundTag getCompoundTagFromCustomData(Object customData) {
+        return customData == null || !(customData instanceof CustomData)? null : (CompoundTag)ReflectionUtils.getPrivateWithFallback(platform.getLogger(), customData, CustomData.class, "tag", "e");
     }
 
     @Override

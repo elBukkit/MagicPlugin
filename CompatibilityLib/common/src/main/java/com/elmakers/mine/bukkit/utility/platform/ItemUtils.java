@@ -75,4 +75,6 @@ public interface ItemUtils {
     Object getEquippable(ItemStack itemStack);
 
     void setEquippable(ItemStack itemStack, Object equippable);
+
+    void removeCustomData(ItemStack itemStack);
 }

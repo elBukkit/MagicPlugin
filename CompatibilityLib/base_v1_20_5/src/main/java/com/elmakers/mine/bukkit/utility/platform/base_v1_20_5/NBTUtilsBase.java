@@ -26,11 +26,6 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public Object getCompoundTagFromCustomData(Object customData) {
-        return null;
-    }
-
-    @Override
     public String getString(ItemStack stack, String tag, String defaultValue) {
         String result = getString(stack, tag);
         return result == null ? defaultValue : result;
