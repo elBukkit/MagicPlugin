@@ -52,6 +52,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -242,9 +243,11 @@ public interface CompatibilityUtils {
 
     boolean removeItemAttributes(ItemStack item);
 
-    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation);
+    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation);
 
-    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID);
+    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID);
+
+    EquipmentSlotGroup parseEquipmentSlotGroup(String slot);
 
     void sendExperienceUpdate(Player player, float experience, int level);
 

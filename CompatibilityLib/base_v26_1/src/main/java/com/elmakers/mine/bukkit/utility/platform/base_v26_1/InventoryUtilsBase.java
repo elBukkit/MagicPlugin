@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -171,22 +170,14 @@ public class InventoryUtilsBase implements InventoryUtils {
             // entity vs item modifiers work, enough that it makes sense to keep the two separate
             try {
                 double value = 0;
-                int operation = 0;
+                String operation = null;
                 UUID uuid = null;
                 ConfigurationSection attributeConfiguration = attributeConfig.getConfigurationSection(attributeKey);
                 if (attributeConfiguration != null) {
                     attributeKey = attributeConfiguration.getString("attribute", attributeKey);
                     value = attributeConfiguration.getDouble("value");
                     slot = attributeConfiguration.getString("slot", slot);
-                    String operationKey = attributeConfiguration.getString("operation");
-                    if (operationKey != null && !operationKey.isEmpty()) {
-                        try {
-                            AttributeModifier.Operation eOperation = AttributeModifier.Operation.valueOf(operationKey.toUpperCase());
-                            operation = eOperation.ordinal();
-                        } catch (Exception ex) {
-                            platform.getLogger().warning("Invalid operation " + operationKey);
-                        }
-                    }
+                    operation = attributeConfiguration.getString("operation");
                     String uuidString = attributeConfiguration.getString("uuid");
                     if (uuidString != null && !uuidString.isEmpty()) {
                         try {

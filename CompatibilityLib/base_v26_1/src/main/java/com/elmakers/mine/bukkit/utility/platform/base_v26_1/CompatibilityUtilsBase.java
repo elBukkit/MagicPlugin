@@ -2407,38 +2407,49 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
+    public EquipmentSlotGroup parseEquipmentSlotGroup(String slot) {
+        EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
+        if (slot != null && !slot.isEmpty()) {
+            try {
+                if (slot.equalsIgnoreCase("mainhand")) {
+                    equipmentSlotGroup = EquipmentSlotGroup.MAINHAND;
+                } else if (slot.equalsIgnoreCase("offhand")) {
+                    equipmentSlotGroup = EquipmentSlotGroup.OFFHAND;
+                } else {
+                    equipmentSlotGroup = EquipmentSlotGroup.getByName(slot.toUpperCase());
+                }
+            } catch (Throwable ex) {
+                platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
+            }
+        }
+        return equipmentSlotGroup;
+    }
+
+    @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation) {
         return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
     }
 
     @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
         try {
-            AttributeModifier.Operation operation;
-            try {
-                operation = AttributeModifier.Operation.values()[attributeOperation];
-            } catch (Throwable ex) {
-                platform.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
-                return false;
-            }
-            EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
-            if (slot != null && !slot.isEmpty()) {
+            AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
+            if (attributeOperation != null && !attributeOperation.isEmpty()) {
                 try {
-                    if (slot.equalsIgnoreCase("mainhand")) {
-                        equipmentSlotGroup = EquipmentSlotGroup.MAINHAND;
-                    } else if (slot.equalsIgnoreCase("offhand")) {
-                        equipmentSlotGroup = EquipmentSlotGroup.OFFHAND;
-                    } else {
-                        equipmentSlotGroup = EquipmentSlotGroup.getByName(slot.toUpperCase());
+                    int operationIndex = Integer.parseInt(attributeOperation);
+                    operation = AttributeModifier.Operation.values()[operationIndex];
+                } catch (Throwable ignore) {
+                    try {
+                        operation = AttributeModifier.Operation.valueOf(attributeOperation.toUpperCase());
+                    } catch (Throwable ex) {
+                        platform.getLogger().warning("Invalid operation " + attributeOperation);
                     }
-                } catch (Throwable ex) {
-                    platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
-                    return false;
                 }
             }
+            EquipmentSlotGroup equipmentSlotGroup = parseEquipmentSlotGroup(slot);
             AttributeModifier modifier = createAttributeModifier(attributeUUID, value, operation, equipmentSlotGroup);
             meta.addAttributeModifier(attribute, modifier);
             item.setItemMeta(meta);
