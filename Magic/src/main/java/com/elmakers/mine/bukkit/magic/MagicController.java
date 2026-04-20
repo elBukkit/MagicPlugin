@@ -5709,6 +5709,11 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Nullable
+    public ItemStack createForItemData(String magicItemKey, ItemUpdatedCallback callback) {
+        return createItem(magicItemKey, null, false, callback, false, false);
+    }
+
+    @Nullable
     @Override
     public ItemStack createItem(String magicItemKey, Mage mage) {
         return createItem(magicItemKey, mage, false, null);
@@ -5734,6 +5739,11 @@ public class MagicController implements MageController, ChunkLoadListener {
 
     @Nullable
     public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback, boolean disabled) {
+        return createItem(magicItemKey, mage, brief, callback, disabled, true);
+    }
+
+    @Nullable
+    public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback, boolean disabled, boolean lookupGeneric) {
         ItemStack itemStack = null;
         if (magicItemKey == null || magicItemKey.isEmpty()) {
             if (callback != null) {
@@ -5942,7 +5952,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (itemStack == null && items != null) {
             try {
                 // try generic item first
-                ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback);
+                ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback, lookupGeneric);
                 if (genericItem != null) {
                     // NOTE: getGenericItemStack calls the callback and sets the amount.
                     return genericItem;
@@ -6030,14 +6040,16 @@ public class MagicController implements MageController, ChunkLoadListener {
         return spawnEgg;
     }
 
-    protected ItemStack getGenericItemStack(String magicItemKey, int amount, ItemUpdatedCallback callback) {
-        ItemData customItem = items.get(magicItemKey);
-        if (customItem != null) {
-            ItemStack itemStack = customItem.getItemStack(amount);
-            if (callback != null) {
-                callback.updated(itemStack);
+    protected ItemStack getGenericItemStack(String magicItemKey, int amount, ItemUpdatedCallback callback, boolean allowCustom) {
+        if (allowCustom) {
+            ItemData customItem = items.get(magicItemKey);
+            if (customItem != null) {
+                ItemStack itemStack = customItem.getItemStack(amount);
+                if (callback != null) {
+                    callback.updated(itemStack);
+                }
+                return itemStack;
             }
-            return itemStack;
         }
         MaterialAndData item = new MaterialAndData(magicItemKey);
         if (item.isValid()) {
@@ -6051,7 +6063,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     public ItemStack createGenericItem(String key) {
         ConfigurationSection template = getWandTemplateConfiguration(key);
         if (template == null || !template.contains("icon")) {
-            return getGenericItemStack(key, 1, null);
+            return getGenericItemStack(key, 1, null, true);
         }
         MaterialAndData icon = ConfigurationUtils.toMaterialAndData(template.getString("icon"));
         ItemStack item = icon.getItemStack(1);

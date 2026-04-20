@@ -685,7 +685,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 }
             } else {
                 try {
-                    item = controller.createItem(materialKey, null, false, this);
+                    item = controller.createForItemData(materialKey, this);
                 } catch (Exception ex) {
                     controller.info("There was an error creating an item of type: " + materialKey);
                 }

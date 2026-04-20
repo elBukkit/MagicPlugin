@@ -128,6 +128,8 @@ public interface MageController {
     @Nullable
     ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback);
     @Nullable
+    ItemStack createForItemData(String magicItemKey, ItemUpdatedCallback callback);
+    @Nullable
     ItemStack createGenericItem(String itemKey);
     Wand createUpgrade(String wandKey);
     @Nullable
