@@ -556,7 +556,7 @@ public class NBTUtils extends NBTUtilsBase {
         return value;
     }
 
-    @SuppressWarnings("deprecated")
+    @SuppressWarnings("deprecation")
     @Override
     public CompoundTag getCompoundTagFromCustomData(Object customData) {
         return customData == null || !(customData instanceof CustomData) ? null : ((CustomData)customData).getUnsafe();

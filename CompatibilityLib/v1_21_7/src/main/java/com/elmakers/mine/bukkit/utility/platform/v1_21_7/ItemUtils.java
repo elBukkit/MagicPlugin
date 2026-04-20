@@ -202,4 +202,11 @@ public class ItemUtils extends ItemUtilsBase {
         }
         return null;
     }
+
+    @Override
+    public void removeCustomData(ItemStack itemStack) {
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)getHandle(itemStack);
+        if (mcItemStack == null) return;
+        mcItemStack.remove(DataComponents.CUSTOM_DATA);
+    }
 }
