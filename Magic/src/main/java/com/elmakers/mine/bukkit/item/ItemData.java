@@ -504,9 +504,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             List<String> flagIds = new ArrayList<>();
             for (ItemFlag flag : flags) {
                 flagIds.add(flag.name());
+                itemMeta.removeItemFlags(flag);
             }
             configuration.set("flags", flagIds);
-            itemMeta.removeItemFlags();
         }
 
         Multimap<Attribute, AttributeModifier> attributeModifiers = itemMeta.getAttributeModifiers();
