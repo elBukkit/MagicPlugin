@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.item;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -11,14 +13,26 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -27,11 +41,16 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback, Cloneable {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
     public static double EARN_SCALE = 0.5;
+    private static final String[] BOOLEAN_FLAGS = {"temporary", "unstashable", "undroppable", "unswappable", "unmoveable"};
 
     private static class PendingUpdate {
         public ItemStack item;
@@ -115,6 +134,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     private ItemStack createItemFromConfiguration() throws InvalidMaterialException {
+        SkinUtils skinUtils = CompatibilityLib.getSkinUtils();
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+        NBTUtils nbtUtils = CompatibilityLib.getNBTUtils();
         ConfigurationSection configuration = this.configuration;
         // Save this configuration for later if we're not caching the item, otherwise we are done with it.
         if (cache) {
@@ -138,7 +160,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
             if (tagSection != null) {
                 item = CompatibilityLib.getItemUtils().makeReal(item);
-                CompatibilityLib.getNBTUtils().saveTagsToItem(tagSection, item);
+                nbtUtils.saveTagsToItem(tagSection, item);
             }
         } else {
             String materialKey = configuration.getString("item", key);
@@ -177,7 +199,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                     if (uuid == null) {
                         uuid = UUID.randomUUID();
                     }
-                    int operation = attributeConfig.getInt("operation", 0);
+                    String operation = attributeConfig.getString("operation");
                     if (!CompatibilityLib.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation, uuid)) {
                         Bukkit.getLogger().warning("Failed to set attribute: " + attributeKey);
                     }
@@ -193,58 +215,340 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
 
         // Convenience methods for top-level name, lore and tags
+        // Actually, let's just do everything this way now.
+
+        // Perform non-meta operations first so the changes are already in the item meta
         ConfigurationSection tagSection = configuration.getConfigurationSection("tags");
         if (tagSection != null) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            CompatibilityLib.getNBTUtils().saveTagsToItem(tagSection, item);
+            nbtUtils.saveTagsToItem(tagSection, item);
         }
+        for (String flag : BOOLEAN_FLAGS) {
+            if (configuration.contains(flag)) {
+                nbtUtils.setBoolean(item, flag, configuration.getBoolean(flag));
+            }
+        }
+        int customModelData = configuration.getInt("custom_model_data");
+        if (customModelData > 0) {
+            CompatibilityLib.getItemUtils().setCustomModelData(item, customModelData);
+        }
+
+        // Only ItemMeta operations from here
+        ItemMeta itemMeta = item.getItemMeta();
         String customName = configuration.getString("name");
         if (customName == null) {
             customName = controller.getMessages().getIfSet("items." + key + ".name");
         }
         if (customName != null) {
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(customName));
-            item.setItemMeta(meta);
+            itemMeta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(customName));
         }
         List<String> lore = configuration.getStringList("lore");
         if (lore == null) {
             lore = controller.getMessages().getAll("items." + key + ".lore");
         }
         if (lore != null && !lore.isEmpty()) {
-            ItemMeta meta = item.getItemMeta();
             for (int i = 0; i < lore.size(); i++) {
                 lore.set(i, CompatibilityLib.getCompatibilityUtils().translateColors(lore.get(i)));
             }
-            meta.setLore(lore);
-            item.setItemMeta(meta);
+            itemMeta.setLore(lore);
         }
-        ConfigurationSection color = configuration.getConfigurationSection("color");
-        if (color != null) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta instanceof LeatherArmorMeta) {
-                int red = color.getInt("red");
-                int green = color.getInt("green");
-                int blue = color.getInt("blue");
-                LeatherArmorMeta leather = (LeatherArmorMeta)meta;
-                leather.setColor(Color.fromRGB(red, green, blue));
-                item.setItemMeta(meta);
+        ConfigurationSection colorConfig = configuration.getConfigurationSection("color");
+        if (colorConfig != null) {
+            int red = colorConfig.getInt("red");
+            int green = colorConfig.getInt("green");
+            int blue = colorConfig.getInt("blue");
+            final Color color = Color.fromRGB(red, green, blue);
+            if (itemMeta instanceof LeatherArmorMeta) {
+                LeatherArmorMeta leather = (LeatherArmorMeta)itemMeta;
+                leather.setColor(color);
+            } else if (itemMeta instanceof PotionMeta) {
+                PotionMeta potion = (PotionMeta)itemMeta;
+                potion.setColor(color);
             }
         }
         ConfigurationSection potionEffects = configuration.getConfigurationSection("potion_effects");
         if (potionEffects != null) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta instanceof PotionMeta) {
-                PotionMeta potion = (PotionMeta)meta;
+            if (itemMeta instanceof PotionMeta) {
+                PotionMeta potion = (PotionMeta)itemMeta;
                 int potionEffectDuration = configuration.getInt("potion_effect_duration");
                 Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffects(potionEffects, potionEffectDuration);
-                for (PotionEffect effect : effects) {
-                    potion.addCustomEffect(effect, true);
+                if (effects != null && !effects.isEmpty()) {
+                    for (PotionEffect effect : effects) {
+                        potion.addCustomEffect(effect, true);
+                    }
                 }
-                item.setItemMeta(potion);
             }
         }
+
+        String potionKey = configuration.getString("potion");
+        if (potionKey != null && !potionKey.isEmpty()) {
+            Registry<PotionType> registry = controller.getPlugin().getServer().getRegistry(PotionType.class);
+            if (itemMeta instanceof PotionMeta && registry != null) {
+                NamespacedKey key = NamespacedKey.fromString(potionKey);
+                PotionType effectType = registry.get(key);
+                if (effectType != null) {
+                    ((PotionMeta)itemMeta).setBasePotionType(effectType);
+                }
+            }
+        }
+
+        // Enchantments can present as a list or a section
+        final Map<Enchantment, Integer> enchantments = new HashMap<>();
+        ConfigurationSection enchantSection = configuration.getConfigurationSection("enchantments");
+        if (enchantSection != null) {
+            for (String enchantKey : enchantSection.getKeys(false)) {
+                Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
+                if (enchantment == null) {
+                    controller.getLogger().warning("Invalid enchantment: " + enchantKey);
+                    continue;
+                }
+                enchantments.put(enchantment, enchantSection.getInt(enchantKey));
+            }
+        } else {
+            List<String> enchantList = configuration.getStringList("enchants");
+            if (enchantList != null) {
+                for (String enchantKey : enchantList) {
+                    int level = 1;
+                    String[] pieces = StringUtils.split(enchantKey, ":");
+                    if (pieces.length > 1) {
+                        try {
+                            level = Integer.parseInt(pieces[1]);
+                            enchantKey = pieces[0];
+                        } catch (Exception ex) {
+                            controller.getLogger().warning("Invalid enchantment level: " + enchantKey);
+                            continue;
+                        }
+                    }
+                    Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
+                    if (enchantment == null) {
+                        controller.getLogger().warning("Invalid enchantment: " + enchantKey);
+                        continue;
+                    }
+                    enchantments.put(enchantment, level);
+                }
+            }
+        }
+        if (!enchantments.isEmpty()) {
+            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                itemMeta.addEnchant(entry.getKey(), entry.getValue(), true);
+            }
+        }
+
+        int damage = configuration.getInt("damage");
+        if (damage > 0) {
+            if (itemMeta instanceof Damageable) {
+                Damageable damageable = (Damageable)itemMeta;
+                damageable.setDamage(damage);
+            }
+        }
+
+        ConfigurationSection playerConfig = configuration.getConfigurationSection("player");
+        if (playerConfig != null) {
+            if (itemMeta instanceof SkullMeta) {
+                SkullMeta skullMeta = (SkullMeta)itemMeta;
+                PlayerProfile playerProfile = skinUtils.parsePlayerProfile(playerConfig);
+                playerProfile.update(skullMeta);
+            }
+        }
+
+        if (configuration.getBoolean("unbreakable")) {
+            itemMeta.setUnbreakable(true);
+        }
+        List<String> flagKeys = configuration.getStringList("flags");
+        for (String flagKey : flagKeys) {
+            try {
+                itemMeta.addItemFlags(ItemFlag.valueOf(flagKey.toUpperCase()));
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid flag: " + flagKey);
+            }
+        }
+
+        String blockDataString = configuration.getString("block");
+        if (blockDataString != null && !blockDataString.isEmpty() && itemMeta instanceof BlockStateMeta) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
+            BlockData blockData = controller.getPlugin().getServer().createBlockData(blockDataString);
+            BlockState blockState = blockData == null ? null : blockData.createBlockState();
+            if (blockState != null) {
+                blockStateMeta.setBlockState(blockState);
+            }
+        }
+
+        // Finally apply item meta changes
+        item.setItemMeta(itemMeta);
+
         return item;
+    }
+
+    // Returns an item with any unsaved data in it
+    @Override
+    public ItemStack save(ConfigurationSection configuration) {
+        NBTUtils nbtUtils = CompatibilityLib.getNBTUtils();
+        SkinUtils skinUtils = CompatibilityLib.getSkinUtils();
+        ItemStack itemStack = getItemStack();
+        configuration.set("item", itemStack.getType().name().toLowerCase());
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta.hasDisplayName()) {
+            configuration.set("name", itemMeta.getDisplayName());
+            itemMeta.setDisplayName(null);
+        }
+        if (itemMeta.hasLore()) {
+            configuration.set("lore", itemMeta.getLore());
+            itemMeta.setLore(null);
+        }
+        if (itemMeta.hasCustomModelData()) {
+            configuration.set("custom_model_data", itemMeta.getCustomModelData());
+            itemMeta.setCustomModelData(null);
+        }
+        if (itemMeta instanceof LeatherArmorMeta) {
+            LeatherArmorMeta leather = (LeatherArmorMeta)itemMeta;
+            ConfigurationSection colorSection = configuration.createSection("color");
+            Color color = leather.getColor();
+            colorSection.set("red", color.getRed());
+            colorSection.set("green", color.getGreen());
+            colorSection.set("blue", color.getBlue());
+            leather.setColor(null);
+        }
+        if (itemMeta.isUnbreakable()) {
+            configuration.set("unbreakable", true);
+            itemMeta.setUnbreakable(false);
+        }
+
+        if (itemMeta instanceof PotionMeta) {
+            PotionMeta potion = (PotionMeta)itemMeta;
+            List<PotionEffect> effects = potion.getCustomEffects();
+            ConfigurationSection potionSection = configuration.createSection("potion_effects");
+            for (PotionEffect effect : effects) {
+                PotionEffectType effectType = effect.getType();
+                String effectParameters = effect.getDuration() + "," + effect.getAmplifier();
+                potionSection.set(effectType.getKey().toString(), effectParameters);
+            }
+            if (potionSection.getKeys(false).isEmpty()) {
+                configuration.set("potion_effects", null);
+            }
+            if (potion.hasColor()) {
+                ConfigurationSection colorSection = configuration.createSection("color");
+                Color color = potion.getColor();
+                colorSection.set("red", color.getRed());
+                colorSection.set("green", color.getGreen());
+                colorSection.set("blue", color.getBlue());
+                potion.setColor(null);
+            }
+            if (potion.hasBasePotionType()) {
+                PotionType baseType = potion.getBasePotionType();
+                configuration.set("potion", baseType.getKey().toString());
+                potion.setBasePotionType(null);
+            }
+
+            potion.clearCustomEffects();
+        }
+
+        final Map<Enchantment, Integer> enchantments = itemMeta.getEnchants();
+        if (!enchantments.isEmpty()) {
+            // Prefer to save as list if all level one
+            boolean simple = true;
+            for (Integer level : enchantments.values()) {
+                if (level > 1) {
+                    simple = false;
+                    break;
+                }
+            }
+            if (simple) {
+                List<String> enchantIds = new ArrayList<>();
+                for (Enchantment enchantment : enchantments.keySet()) {
+                    enchantIds.add(enchantment.getKey().toString());
+                }
+                configuration.set("enchantments", enchantIds);
+            } else {
+                ConfigurationSection enchantSection = configuration.createSection("enchantments");
+                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    enchantSection.set(entry.getKey().getKey().toString(), entry.getValue());
+                }
+            }
+            itemMeta.removeEnchantments();
+        }
+
+        for (String flag : BOOLEAN_FLAGS) {
+            if (nbtUtils.containsTag(itemStack, flag)) {
+                configuration.set(flag, nbtUtils.getBoolean(itemStack, flag, false));
+                nbtUtils.removeMeta(itemStack, flag);
+            }
+        }
+
+        ConfigurationSection tagSection = configuration.createSection("tags");
+        if (!ConfigurationUtils.loadAllTagsFromNBT(tagSection, itemStack) || tagSection.getKeys(false).isEmpty()) {
+            configuration.set("tags", null);
+        }
+
+        if (itemMeta instanceof SkullMeta) {
+            SkullMeta skullMeta = (SkullMeta)itemMeta;
+            PlayerProfile playerProfile = skinUtils.getPlayerProfile(skullMeta);
+            if (playerProfile != null) {
+                // Don't save the full profile here
+                playerProfile.setSaveProfile(false);
+                ConfigurationSection playerConfig = configuration.createSection("player");
+                playerProfile.save(playerConfig);
+            }
+            skullMeta.setOwnerProfile(null);
+        }
+
+        if (itemMeta instanceof Damageable) {
+            Damageable damageable = (Damageable)itemMeta;
+            if (damageable.hasDamage()) {
+                configuration.set("damage", damageable.getDamage());
+                damageable.setDamage(0);
+            }
+        }
+
+        Set<ItemFlag> flags = itemMeta.getItemFlags();
+        if (!flags.isEmpty()) {
+            List<String> flagIds = new ArrayList<>();
+            for (ItemFlag flag : flags) {
+                flagIds.add(flag.name());
+            }
+            configuration.set("flags", flagIds);
+            itemMeta.removeItemFlags();
+        }
+
+        Multimap<Attribute, AttributeModifier> attributeModifiers = itemMeta.getAttributeModifiers();
+        if (attributeModifiers != null && !attributeModifiers.isEmpty()) {
+            List<ConfigurationSection> modifierList = new ArrayList<>();
+            for (Map.Entry<Attribute, AttributeModifier> entry : attributeModifiers.entries()) {
+                Attribute attribute = entry.getKey();
+                ConfigurationSection attributeModifier = new MemoryConfiguration();
+                attributeModifier.set("attribute", attribute.getKey().toString());
+                AttributeModifier modifier = entry.getValue();
+                attributeModifier.set("amount", modifier.getAmount());
+                attributeModifier.set("slot", modifier.getSlotGroup().toString());
+                attributeModifier.set("operation", modifier.getOperation().toString());
+                attributeModifier.set("uuid", modifier.getUniqueId().toString());
+                attributeModifier.set("name", modifier.getName());
+                modifierList.add(attributeModifier);
+                itemMeta.removeAttributeModifier(attribute, modifier);
+            }
+            configuration.set("attributes", modifierList);
+        }
+
+        if (itemMeta instanceof BlockStateMeta) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
+            if (blockStateMeta.hasBlockState()) {
+                BlockState blockState = blockStateMeta.getBlockState();
+                configuration.set("block", blockState);
+                // Replace with default block state to make it s empty as possible
+                blockStateMeta.setBlockState(Bukkit.createBlockData(itemStack.getType()).createBlockState());
+            }
+        }
+
+        itemStack.setItemMeta(itemMeta);
+
+        // Always remove custom data, this is saved in the tags section
+        // Do this after resetting item meta since the custom data is stored there, too
+        CompatibilityLib.getItemUtils().removeCustomData(itemStack);
+
+        if (itemStack.hasItemMeta()) {
+            // Save the remainder as a serialized item
+            configuration.set("item", itemStack);
+        }
+        return itemStack;
     }
 
     private void setKey(String key) {

@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -42,4 +43,7 @@ public interface ItemData {
     @Nullable
     @Deprecated
     org.bukkit.material.MaterialData getMaterialData();
+
+    // Returns an ItemStack with any metadata remaining that was not able to be saved
+    ItemStack save(ConfigurationSection configuration);
 }
