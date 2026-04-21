@@ -36,6 +36,7 @@ public class ValhallaManager implements AttributeProvider, Listener {
     private boolean enabled = false;
     private boolean registeredSkill = false;
     private MagicSkill magicSkill;
+    private MagicProfile magicProfile;
     private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
 
@@ -67,7 +68,7 @@ public class ValhallaManager implements AttributeProvider, Listener {
             String skillId = skillConfig == null ? null : skillConfig.getString("id");
             String profileId = profileConfig.getString("id");
             if (skillId != null && profileId != null && !skillId.isEmpty() && !profileId.isEmpty()) {
-                ProfileRegistry.registerProfileType(new MagicProfile(profileId));
+                magicProfile = new MagicProfile(profileId);
                 magicSkill = new MagicSkill(controller, skillId, profileConfig.getString("class"), skillConfig);
                 registeredSkills.put(skillId, magicSkill);
                 controller.getLogger().info("  Added " + profileId + " profile using " + skillId + " skill ");
@@ -87,6 +88,7 @@ public class ValhallaManager implements AttributeProvider, Listener {
 
     public void registerSkill() {
         if (enabled && magicSkill != null && !registeredSkill) {
+            ProfileRegistry.registerProfileType(magicProfile);
             PerkRewardRegistry.register(new SpellPerkReward(controller, magicSkill.getMageClass(),"learn_spell"));
             PerkRewardRegistry.register(new RecipePerkReward(controller, "discover_recipe"));
             PerkRewardRegistry.register(new PathPerkReward(controller, magicSkill.getMageClass(), "path_upgrade"));
@@ -161,5 +163,9 @@ public class ValhallaManager implements AttributeProvider, Listener {
             // Force lore update in case mana or other properties are based on level
             wand.updated();
         }
+    }
+
+    public void disable() {
+        this.enabled = false;
     }
 }
