@@ -9241,6 +9241,11 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Override
+    public boolean onEntityDismount(Entity entity) {
+        return mobs.onEntityDismount(entity);
+    }
+
+    @Override
     public List<String> getResourcePackPlugins() {
         return resourcePackPlugins;
     }

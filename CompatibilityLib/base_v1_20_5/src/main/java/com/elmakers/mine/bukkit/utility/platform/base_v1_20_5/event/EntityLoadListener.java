@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.base_v26_1.event;
+package com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -7,10 +7,10 @@ import org.bukkit.event.world.EntitiesLoadEvent;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class EntityLoadEventHandler implements Listener {
+public class EntityLoadListener implements Listener {
     private final MageController controller;
 
-    public EntityLoadEventHandler(MageController controller) {
+    public EntityLoadListener(MageController controller) {
         this.controller = controller;
     }
 

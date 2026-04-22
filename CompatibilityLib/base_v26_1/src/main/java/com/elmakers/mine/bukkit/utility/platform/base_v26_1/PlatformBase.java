@@ -23,7 +23,8 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
-import com.elmakers.mine.bukkit.utility.platform.base_v26_1.event.EntityLoadEventHandler;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.event.EntityDismountListener;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.event.EntityLoadListener;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.event.EntityPickupListener;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.event.ResourcePackListener;
 
@@ -101,12 +102,13 @@ public abstract class PlatformBase implements Platform {
             paperUtils.registerEvents(controller, pm);
         }
         pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
+        pm.registerEvents(new EntityDismountListener(controller), controller.getPlugin());
 
         ResourcePackListener timeListener = new ResourcePackListener(controller);
         pm.registerEvents(timeListener, controller.getPlugin());
 
         if (hasEntityLoadEvent()) {
-            pm.registerEvents(new EntityLoadEventHandler(controller), controller.getPlugin());
+            pm.registerEvents(new EntityLoadListener(controller), controller.getPlugin());
         }
     }
 

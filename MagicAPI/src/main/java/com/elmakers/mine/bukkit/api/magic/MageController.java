@@ -891,6 +891,7 @@ public interface MageController {
     Icon getDefaultIcon();
     void onEntitiesLoaded(Chunk chunk, List<Entity> entities);
     boolean onEntityPickupItem(Entity entity, Item item);
+    boolean onEntityDismount(Entity entity);
     Collection<Requirement> getRequirements(ConfigurationSection configuration);
 
     boolean isDebugConfigurationFiles();
