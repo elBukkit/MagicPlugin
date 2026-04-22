@@ -3524,7 +3524,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         castManagers.clear();
         playerWarpManagers.clear();
         targetingProviders.clear();
-        registeredAttributes.clear();
+
+        // Specifically avoiding clearing attributes so we don't have
+        // load-order issues when reloading
+        // registeredAttributes.clear();
     }
 
     protected void registerHandlers(ConfigurationSection configuration) {
