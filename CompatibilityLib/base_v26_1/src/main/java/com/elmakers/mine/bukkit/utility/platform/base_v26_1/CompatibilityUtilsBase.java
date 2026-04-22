@@ -2406,7 +2406,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return true;
     }
 
-    @Override
     public EquipmentSlotGroup parseEquipmentSlotGroup(String slot) {
         EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
         if (slot != null && !slot.isEmpty()) {

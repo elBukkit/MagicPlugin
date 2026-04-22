@@ -1897,7 +1897,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlotGroup);
     }
 
-    @Override
     public EquipmentSlotGroup parseEquipmentSlotGroup(String slot) {
         EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
         if (slot != null && !slot.isEmpty()) {
