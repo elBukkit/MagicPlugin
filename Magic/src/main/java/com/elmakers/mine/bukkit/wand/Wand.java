@@ -231,6 +231,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private double effectParticleRadius = 0;
     private double effectParticleOffset = 0;
     private boolean effectBubbles = false;
+    public Particle effectBubblesParticle = null;
     private boolean activeEffectsOnly = false;
     private EffectRing effectPlayer = null;
 
@@ -2045,6 +2046,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             quietLevel = 1;
         }
         effectBubbles = getBoolean("effect_bubbles");
+        String effectBubblesParticleString = getString("effect_bubbles_particle", "entity_effect");
+        effectBubblesParticle = ConfigurationUtils.toParticleEffect(effectBubblesParticleString);
+
         glow = getBoolean("glow");
         spellGlow = getBoolean("spell_glow");
         maxEnchantCount = getInt("max_enchant_count");
@@ -4741,14 +4745,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Player player = mage.getPlayer();
         if (player == null) return;
 
-        // Update Bubble effects effects
+        // Update Bubble effects
         Color effectColor = getEffectColor();
-        if (effectBubbles && effectColor != null) {
+        if (effectBubbles && effectColor != null && effectBubblesParticle != null) {
             Location potionEffectLocation = player.getLocation();
             potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
             potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
             potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
-            EffectPlayer.displayParticle(Particle.ENTITY_EFFECT, potionEffectLocation, 0, 0, 0,
+            EffectPlayer.displayParticle(effectBubblesParticle, potionEffectLocation, 0, 0, 0,
             0, 0, 1, effectColor, null, (byte)0, 24);
         }
 
@@ -7182,7 +7186,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             for (Sound sound : sounds) {
                 options.add(sound.name().toLowerCase());
             }
-        } else if (key.equals("effect_particle")) {
+        } else if (key.equals("effect_particle") || key.equals("effect_bubbles_particle")) {
             for (Particle particleType : Particle.values()) {
                 options.add(particleType.name().toLowerCase());
             }

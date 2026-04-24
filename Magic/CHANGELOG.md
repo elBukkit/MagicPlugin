@@ -21,6 +21,7 @@
  - Add support for pasting entities via Volume-based actions
  - Add "enabled" icon variants to the vanilla and valhalla RP, used for showing when a spell has been unlocked
    - You will need to delete the ValhallaMMO/skills/magic_progression.yml file for the above changes to take affect
+ - Add `effect_bubbles_particle` config option to wands, defaults to entity_effect
 
 # 10.11.1
 
