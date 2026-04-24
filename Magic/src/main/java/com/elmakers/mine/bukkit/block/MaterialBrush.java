@@ -37,10 +37,11 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.map.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
 
@@ -604,7 +605,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                         Player player = fromMage != null ? fromMage.getPlayer() : null;
                         List<MapRenderer> renderers = mapView.getRenderers();
                         if (renderers.size() > 0) {
-                            mapCanvas = new BufferedMapCanvas();
+                            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+                            mapCanvas = compatibilityUtils.createMapCanvas();
                             MapRenderer renderer = renderers.get(0);
                             // This is mainly here as a hack for my own urlmaps that do their own caching
                             // Bukkit *seems* to want to do caching at the MapView level, but looking at the code-
@@ -612,7 +614,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                             // Anyway render gets called constantly so I'm not re-rendering on each render... but then
                             // how to force a render to a canvas? So we re-initialize.
                             renderer.initialize(mapView);
-                            renderer.render(mapView, mapCanvas, player);
+                            compatibilityUtils.renderMap(renderer, mapView, mapCanvas, player);
                         }
                     }
                 } catch (Exception ex) {

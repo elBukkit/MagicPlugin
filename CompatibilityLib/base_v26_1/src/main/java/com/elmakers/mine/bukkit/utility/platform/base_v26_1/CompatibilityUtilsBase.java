@@ -144,6 +144,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.loot.Lootable;
+import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -172,6 +173,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.map.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
@@ -3151,5 +3153,15 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             case RESISTANCE: return PotionEffectType.RESISTANCE;
             default: throw new RuntimeException("Unhandled PotionEffectType: " + type);
         }
+    }
+
+    @Override
+    public void renderMap(MapRenderer renderer, MapView map, com.elmakers.mine.bukkit.map.BufferedMapCanvas canvas, Player player) {
+        renderer.render(map, (BufferedMapCanvas)canvas, player);
+    }
+
+    @Override
+    public BufferedMapCanvas createMapCanvas() {
+        return new BufferedMapCanvas();
     }
 }

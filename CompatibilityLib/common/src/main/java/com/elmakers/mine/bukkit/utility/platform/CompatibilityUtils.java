@@ -61,6 +61,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -70,6 +71,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.map.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 
@@ -548,4 +550,8 @@ public interface CompatibilityUtils {
     Attribute getMinecraftAttribute(String attributeKey);
 
     PotionEffectType getPotionEffectType(VersionedPotionEffectType type);
+
+    void renderMap(MapRenderer renderer, MapView map, BufferedMapCanvas canvas, Player player);
+
+    BufferedMapCanvas createMapCanvas();
 }
