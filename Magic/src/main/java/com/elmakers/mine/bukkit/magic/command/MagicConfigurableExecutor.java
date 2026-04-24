@@ -41,10 +41,13 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
             if (i != 1) value = value + " ";
             value = value + parameters[i];
         }
+        boolean parseable = true;
         if (value.isEmpty()) {
+            parseable = false;
             value = null;
-        } else if (value.equals("\"\"")) {
-            value = "";
+        } else if (value.startsWith("\"") && value.endsWith("\"")) {
+            parseable = false;
+            value = value.substring(1, value.length() - 1);
         }
         if (value != null) {
             value = value.replace("\\n", "\n");
@@ -61,13 +64,15 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
             ConfigurationSection node = ConfigurationUtils.newConfigurationSection();
 
             double transformed = Double.NaN;
-            try {
-                transformed = Double.parseDouble(value);
-            } catch (Exception ex) {
-                MageConfigureParameters mageParameters = new MageConfigureParameters(mage, "configure", target, parameters[0]);
-                Double testTransformed = mageParameters.evaluate(value, parameters[0]);
-                if (testTransformed != null && Double.isFinite(testTransformed)) {
-                    transformed = testTransformed;
+            if (parseable) {
+                try {
+                    transformed = Double.parseDouble(value);
+                } catch (Exception ex) {
+                    MageConfigureParameters mageParameters = new MageConfigureParameters(mage, "configure", target, parameters[0]);
+                    Double testTransformed = mageParameters.evaluate(value, parameters[0]);
+                    if (testTransformed != null && Double.isFinite(testTransformed)) {
+                        transformed = testTransformed;
+                    }
                 }
             }
 
