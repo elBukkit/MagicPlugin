@@ -14,6 +14,9 @@
 - Change `/mitem save` to store most item components as config and try to avoid serializing items
 - Add `/mitem serialize` to use only Bukkit serialization to save an item
 - Change Valhalla perk rewards to be "p:" permanent by default
+- Change Valhalla XP rewards to use the `SKILL_ACTION` reason by default (was `PLUGIN`)
+  - This will make them react to XP multipliers
+  - This can be reconfigured per currency using `gain_reason`
 
 ## Improvements
 
