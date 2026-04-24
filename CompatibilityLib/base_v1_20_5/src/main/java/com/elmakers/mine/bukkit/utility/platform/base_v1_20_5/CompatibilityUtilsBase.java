@@ -145,6 +145,7 @@ import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
@@ -1309,11 +1310,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public PotionEffectType getJumpPotionEffectType() {
-        return PotionEffectType.JUMP_BOOST;
-    }
-
-    @Override
     public Set<PotionEffectType> getNegativeEffects() {
         return negativeEffects;
     }
@@ -2352,5 +2348,15 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean isDestructive(EntityExplodeEvent explosion) {
         return true;
+    }
+
+    @Override
+    public PotionEffectType getPotionEffectType(VersionedPotionEffectType type) {
+        switch (type) {
+            case NAUSEA: return PotionEffectType.NAUSEA;
+            case JUMP_BOOST: return PotionEffectType.JUMP_BOOST;
+            case RESISTANCE: return PotionEffectType.RESISTANCE;
+            default: throw new RuntimeException("Unhandled PotionEffectType: " + type);
+        }
     }
 }

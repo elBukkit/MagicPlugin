@@ -541,11 +541,11 @@ public interface CompatibilityUtils {
 
     Enchantment getPowerEnchantment();
 
-    PotionEffectType getJumpPotionEffectType();
-
     Set<PotionEffectType> getNegativeEffects();
 
     boolean isDestructive(EntityExplodeEvent explosion);
 
     Attribute getMinecraftAttribute(String attributeKey);
+
+    PotionEffectType getPotionEffectType(VersionedPotionEffectType type);
 }

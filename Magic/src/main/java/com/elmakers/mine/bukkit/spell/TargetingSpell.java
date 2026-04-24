@@ -45,6 +45,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 
 public class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
@@ -447,11 +448,12 @@ public class TargetingSpell extends BaseSpell {
 
         if (damageResistanceProtection > 0 && entity instanceof LivingEntity)
         {
+            PotionEffectType resistance = CompatibilityLib.getCompatibilityUtils().getPotionEffectType(VersionedPotionEffectType.RESISTANCE);
             LivingEntity living = (LivingEntity)entity;
-            if (living.hasPotionEffect(PotionEffectType.RESISTANCE)) {
+            if (living.hasPotionEffect(resistance)) {
                 Collection<PotionEffect> effects = living.getActivePotionEffects();
                 for (PotionEffect effect : effects) {
-                    if (effect.getType().equals(PotionEffectType.RESISTANCE) && effect.getAmplifier() >= damageResistanceProtection) {
+                    if (effect.getType().equals(resistance) && effect.getAmplifier() >= damageResistanceProtection) {
                         mage.sendDebugMessage("Entity skipped due to damage resistance", 30);
                         return false;
                     }

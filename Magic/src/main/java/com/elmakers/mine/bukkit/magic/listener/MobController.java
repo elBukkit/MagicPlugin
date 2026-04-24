@@ -46,6 +46,7 @@ import com.elmakers.mine.bukkit.tasks.CheckEntitySpawnTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 
 public class MobController implements Listener, ChunkLoadListener {
     public static boolean REMOVE_INVULNERABLE = false;
@@ -151,7 +152,7 @@ public class MobController implements Listener, ChunkLoadListener {
             String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
             if (npcId != null) {
                 checkNPC(entity, npcId);
-            } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.ITEM
+            } else if (REMOVE_INVULNERABLE && entity.getType() != CompatibilityLib.getEntityUtils().getEntityType(VersionedEntityType.ITEM)
                 && CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity)) {
                 // Don't remove invulnerable items since those could be dropped wands
                 Location location = entity.getLocation();

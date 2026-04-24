@@ -88,6 +88,7 @@ import com.elmakers.mine.bukkit.utility.ArrayUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -1402,7 +1403,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassWeakness = workingParameters.getBoolean("bypass_weakness", bypassWeakness);
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !mage.isSuperPowered()) {
-            if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.NAUSEA)) {
+            if (!bypassConfusion && livingEntity.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getPotionEffectType(VersionedPotionEffectType.NAUSEA))) {
                 processResult(SpellResult.CURSED, workingParameters);
                 sendCastDebugMessage(SpellResult.CURSED, " (no cast)");
                 return false;

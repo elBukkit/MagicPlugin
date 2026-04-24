@@ -133,6 +133,7 @@ import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 import com.elmakers.mine.bukkit.wand.ActiveWandSet;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -1991,7 +1992,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Avoid getting kicked for large jump effects
             // It'd be nice to filter this by amplitude, but as
             // it turns out that is not easy to check efficiently.
-            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getJumpPotionEffectType()))
+            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getPotionEffectType(VersionedPotionEffectType.JUMP_BOOST)))
             {
                 controller.addFlightExemption(player, JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION);
             }

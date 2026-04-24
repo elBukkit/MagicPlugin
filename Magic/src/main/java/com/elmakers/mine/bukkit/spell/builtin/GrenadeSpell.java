@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 
 @Deprecated
 public class GrenadeSpell extends BlockSpell
@@ -46,7 +47,8 @@ public class GrenadeSpell extends BlockSpell
                 targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * count) - count);
                 targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * count) - count);
             }
-            TNTPrimed grenade = (TNTPrimed)getWorld().spawnEntity(targetLoc, EntityType.TNT);
+            EntityType tntType = CompatibilityLib.getEntityUtils().getEntityType(VersionedEntityType.TNT);
+            TNTPrimed grenade = (TNTPrimed)getWorld().spawnEntity(targetLoc, tntType);
             if (grenade == null) {
                 return SpellResult.FAIL;
             }

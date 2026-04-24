@@ -171,6 +171,7 @@ import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
@@ -1491,11 +1492,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Enchantment getPowerEnchantment() {
         return Enchantment.POWER;
-    }
-
-    @Override
-    public PotionEffectType getJumpPotionEffectType() {
-        return PotionEffectType.JUMP_BOOST;
     }
 
     @Override
@@ -3145,5 +3141,15 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                 ? (net.minecraft.world.entity.LivingEntity)nmsDamaged : null;
         livingDamaged.setLastHurtByMob(livingDamager);
         return true;
+    }
+
+    @Override
+    public PotionEffectType getPotionEffectType(VersionedPotionEffectType type) {
+        switch (type) {
+            case NAUSEA: return PotionEffectType.NAUSEA;
+            case JUMP_BOOST: return PotionEffectType.JUMP_BOOST;
+            case RESISTANCE: return PotionEffectType.RESISTANCE;
+            default: throw new RuntimeException("Unhandled PotionEffectType: " + type);
+        }
     }
 }

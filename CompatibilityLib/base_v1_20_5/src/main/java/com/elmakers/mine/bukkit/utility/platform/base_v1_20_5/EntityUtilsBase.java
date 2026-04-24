@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAbstractPiglinData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityArmorStandData;
@@ -227,6 +228,15 @@ public class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getItemFrameData(ItemStack item, BlockFace direction, Rotation rotation) {
         return new EntityItemFrameData(item, direction, rotation);
+    }
+
+    @Override
+    public EntityType getEntityType(VersionedEntityType entityType) {
+        switch (entityType) {
+            case TNT: return EntityType.TNT;
+            case ITEM: return EntityType.ITEM;
+            default: return EntityType.UNKNOWN;
+        }
     }
 
     @Override

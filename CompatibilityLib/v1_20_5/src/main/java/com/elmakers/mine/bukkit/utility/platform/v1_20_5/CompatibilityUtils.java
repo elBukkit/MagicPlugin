@@ -72,7 +72,6 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.loot.Lootable;
 import org.bukkit.map.MapView;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
@@ -1205,10 +1204,5 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public Enchantment getPowerEnchantment() {
         return Enchantment.POWER;
-    }
-
-    @Override
-    public PotionEffectType getJumpPotionEffectType() {
-        return PotionEffectType.JUMP_BOOST;
     }
 }

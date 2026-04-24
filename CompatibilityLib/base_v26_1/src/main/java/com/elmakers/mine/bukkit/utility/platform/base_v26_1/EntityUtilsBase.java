@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityAbstractPiglinData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityArmorStandData;
@@ -257,5 +258,14 @@ public class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getNMSData(MageController controller, Object tag) {
         return new EntityNMSData(platform, tag);
+    }
+
+    @Override
+    public EntityType getEntityType(VersionedEntityType entityType) {
+        switch (entityType) {
+            case TNT: return EntityType.TNT;
+            case ITEM: return EntityType.ITEM;
+            default: return EntityType.UNKNOWN;
+        }
     }
 }
