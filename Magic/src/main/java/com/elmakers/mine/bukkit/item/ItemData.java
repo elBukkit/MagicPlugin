@@ -14,26 +14,17 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -46,7 +37,6 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback, Cloneable {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
@@ -282,18 +272,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             }
         }
 
-        String potionKey = configuration.getString("potion");
-        if (potionKey != null && !potionKey.isEmpty()) {
-            Registry<PotionType> registry = controller.getPlugin().getServer().getRegistry(PotionType.class);
-            if (itemMeta instanceof PotionMeta && registry != null) {
-                NamespacedKey key = NamespacedKey.fromString(potionKey);
-                PotionType effectType = registry.get(key);
-                if (effectType != null) {
-                    ((PotionMeta)itemMeta).setBasePotionType(effectType);
-                }
-            }
-        }
-
         // Enchantments can present as a list or a section
         final Map<Enchantment, Integer> enchantments = new HashMap<>();
         ConfigurationSection enchantSection = configuration.getConfigurationSection("enchantments");
@@ -364,15 +342,8 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             }
         }
 
-        String blockDataString = configuration.getString("block");
-        if (blockDataString != null && !blockDataString.isEmpty() && itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
-            BlockData blockData = controller.getPlugin().getServer().createBlockData(blockDataString);
-            BlockState blockState = blockData == null ? null : blockData.createBlockState();
-            if (blockState != null) {
-                blockStateMeta.setBlockState(blockState);
-            }
-        }
+        // Version-specific data handling
+        CompatibilityLib.getItemUtils().loadMeta(controller, itemMeta, configuration);
 
         // Finally apply item meta changes
         item.setItemMeta(itemMeta);
@@ -384,7 +355,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     @Override
     public ItemStack save(ConfigurationSection configuration) {
         NBTUtils nbtUtils = CompatibilityLib.getNBTUtils();
-        SkinUtils skinUtils = CompatibilityLib.getSkinUtils();
         ItemStack itemStack = getItemStack();
         configuration.set("item", itemStack.getType().name().toLowerCase());
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -414,60 +384,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             itemMeta.setUnbreakable(false);
         }
 
-        if (itemMeta instanceof PotionMeta) {
-            PotionMeta potion = (PotionMeta)itemMeta;
-            List<PotionEffect> effects = potion.getCustomEffects();
-            ConfigurationSection potionSection = configuration.createSection("potion_effects");
-            for (PotionEffect effect : effects) {
-                PotionEffectType effectType = effect.getType();
-                String effectParameters = effect.getDuration() + "," + effect.getAmplifier();
-                potionSection.set(effectType.getKey().toString(), effectParameters);
-            }
-            if (potionSection.getKeys(false).isEmpty()) {
-                configuration.set("potion_effects", null);
-            }
-            if (potion.hasColor()) {
-                ConfigurationSection colorSection = configuration.createSection("color");
-                Color color = potion.getColor();
-                colorSection.set("red", color.getRed());
-                colorSection.set("green", color.getGreen());
-                colorSection.set("blue", color.getBlue());
-                potion.setColor(null);
-            }
-            if (potion.hasBasePotionType()) {
-                PotionType baseType = potion.getBasePotionType();
-                configuration.set("potion", baseType.getKey().toString());
-                potion.setBasePotionType(null);
-            }
-
-            potion.clearCustomEffects();
-        }
-
-        final Map<Enchantment, Integer> enchantments = itemMeta.getEnchants();
-        if (!enchantments.isEmpty()) {
-            // Prefer to save as list if all level one
-            boolean simple = true;
-            for (Integer level : enchantments.values()) {
-                if (level > 1) {
-                    simple = false;
-                    break;
-                }
-            }
-            if (simple) {
-                List<String> enchantIds = new ArrayList<>();
-                for (Enchantment enchantment : enchantments.keySet()) {
-                    enchantIds.add(enchantment.getKey().toString());
-                }
-                configuration.set("enchantments", enchantIds);
-            } else {
-                ConfigurationSection enchantSection = configuration.createSection("enchantments");
-                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                    enchantSection.set(entry.getKey().getKey().toString(), entry.getValue());
-                }
-            }
-            itemMeta.removeEnchantments();
-        }
-
         for (String flag : BOOLEAN_FLAGS) {
             if (nbtUtils.containsTag(itemStack, flag)) {
                 configuration.set(flag, nbtUtils.getBoolean(itemStack, flag, false));
@@ -478,18 +394,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         ConfigurationSection tagSection = configuration.createSection("tags");
         if (!ConfigurationUtils.loadAllTagsFromNBT(tagSection, itemStack) || tagSection.getKeys(false).isEmpty()) {
             configuration.set("tags", null);
-        }
-
-        if (itemMeta instanceof SkullMeta) {
-            SkullMeta skullMeta = (SkullMeta)itemMeta;
-            PlayerProfile playerProfile = skinUtils.getPlayerProfile(skullMeta);
-            if (playerProfile != null) {
-                // Don't save the full profile here
-                playerProfile.setSaveProfile(false);
-                ConfigurationSection playerConfig = configuration.createSection("player");
-                playerProfile.save(playerConfig);
-            }
-            skullMeta.setOwnerProfile(null);
         }
 
         if (itemMeta instanceof Damageable) {
@@ -510,34 +414,8 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             configuration.set("flags", flagIds);
         }
 
-        Multimap<Attribute, AttributeModifier> attributeModifiers = itemMeta.getAttributeModifiers();
-        if (attributeModifiers != null && !attributeModifiers.isEmpty()) {
-            List<ConfigurationSection> modifierList = new ArrayList<>();
-            for (Map.Entry<Attribute, AttributeModifier> entry : attributeModifiers.entries()) {
-                Attribute attribute = entry.getKey();
-                ConfigurationSection attributeModifier = new MemoryConfiguration();
-                attributeModifier.set("attribute", attribute.getKey().toString());
-                AttributeModifier modifier = entry.getValue();
-                attributeModifier.set("amount", modifier.getAmount());
-                attributeModifier.set("slot", modifier.getSlotGroup().toString());
-                attributeModifier.set("operation", modifier.getOperation().toString());
-                attributeModifier.set("uuid", modifier.getUniqueId().toString());
-                attributeModifier.set("name", modifier.getName());
-                modifierList.add(attributeModifier);
-                itemMeta.removeAttributeModifier(attribute, modifier);
-            }
-            configuration.set("attributes", modifierList);
-        }
-
-        if (itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
-            if (blockStateMeta.hasBlockState()) {
-                BlockState blockState = blockStateMeta.getBlockState();
-                configuration.set("block", blockState);
-                // Replace with default block state to make it s empty as possible
-                blockStateMeta.setBlockState(Bukkit.createBlockData(itemStack.getType()).createBlockState());
-            }
-        }
+        // Version-specific data handling
+        CompatibilityLib.getItemUtils().saveMeta(controller, itemMeta, configuration);
 
         itemStack.setItemMeta(itemMeta);
 

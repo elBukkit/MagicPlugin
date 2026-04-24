@@ -4,7 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface ItemUtils {
     Object getHandle(org.bukkit.inventory.ItemStack stack);
@@ -77,4 +81,9 @@ public interface ItemUtils {
     void setEquippable(ItemStack itemStack, Object equippable);
 
     void removeCustomData(ItemStack itemStack);
+
+    void loadMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration);
+
+    // Note that this removes meta that was saved from the itemMeta!
+    void saveMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration);
 }

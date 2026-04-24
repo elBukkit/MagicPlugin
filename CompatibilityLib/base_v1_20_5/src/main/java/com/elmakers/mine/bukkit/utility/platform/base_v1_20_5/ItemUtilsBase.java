@@ -1,16 +1,39 @@
 package com.elmakers.mine.bukkit.utility.platform.base_v1_20_5;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.google.common.collect.Multimap;
 
 public abstract class ItemUtilsBase implements ItemUtils {
     protected final Platform platform;
@@ -201,5 +224,132 @@ public abstract class ItemUtilsBase implements ItemUtils {
     }
 
     public void setEquippable(ItemStack itemStack, Object equippable) {
+    }
+
+    @Override
+    public void loadMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration) {
+        String potionKey = configuration.getString("potion");
+        if (potionKey != null && !potionKey.isEmpty()) {
+            Registry<PotionType> registry = controller.getPlugin().getServer().getRegistry(PotionType.class);
+            if (itemMeta instanceof PotionMeta && registry != null) {
+                NamespacedKey key = NamespacedKey.fromString(potionKey);
+                PotionType effectType = registry.get(key);
+                if (effectType != null) {
+                    ((PotionMeta)itemMeta).setBasePotionType(effectType);
+                }
+            }
+        }
+
+        // TODO: Make this work...
+        String blockDataString = configuration.getString("block");
+        if (blockDataString != null && !blockDataString.isEmpty() && itemMeta instanceof BlockStateMeta) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
+            BlockData blockData = controller.getPlugin().getServer().createBlockData(blockDataString);
+            BlockState blockState = blockData == null ? null : blockData.createBlockState();
+            if (blockState != null) {
+                blockStateMeta.setBlockState(blockState);
+            }
+        }
+    }
+
+    @Override
+    public void saveMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration) {
+        if (itemMeta instanceof PotionMeta) {
+            PotionMeta potion = (PotionMeta)itemMeta;
+            List<PotionEffect> effects = potion.getCustomEffects();
+            ConfigurationSection potionSection = configuration.createSection("potion_effects");
+            for (PotionEffect effect : effects) {
+                PotionEffectType effectType = effect.getType();
+                String effectParameters = effect.getDuration() + "," + effect.getAmplifier();
+                potionSection.set(effectType.getKey().toString(), effectParameters);
+            }
+            if (potionSection.getKeys(false).isEmpty()) {
+                configuration.set("potion_effects", null);
+            }
+            if (potion.hasColor()) {
+                ConfigurationSection colorSection = configuration.createSection("color");
+                Color color = potion.getColor();
+                colorSection.set("red", color.getRed());
+                colorSection.set("green", color.getGreen());
+                colorSection.set("blue", color.getBlue());
+                potion.setColor(null);
+            }
+            if (potion.hasBasePotionType()) {
+                PotionType baseType = potion.getBasePotionType();
+                configuration.set("potion", baseType.getKey().toString());
+                potion.setBasePotionType(null);
+            }
+
+            potion.clearCustomEffects();
+        }
+
+        final Map<Enchantment, Integer> enchantments = itemMeta.getEnchants();
+        if (!enchantments.isEmpty()) {
+            // Prefer to save as list if all level one
+            boolean simple = true;
+            for (Integer level : enchantments.values()) {
+                if (level > 1) {
+                    simple = false;
+                    break;
+                }
+            }
+            if (simple) {
+                List<String> enchantIds = new ArrayList<>();
+                for (Enchantment enchantment : enchantments.keySet()) {
+                    enchantIds.add(enchantment.getKey().toString());
+                }
+                configuration.set("enchantments", enchantIds);
+            } else {
+                ConfigurationSection enchantSection = configuration.createSection("enchantments");
+                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    enchantSection.set(entry.getKey().getKey().toString(), entry.getValue());
+                }
+            }
+            itemMeta.removeEnchantments();
+        }
+
+        if (itemMeta instanceof SkullMeta) {
+            SkullMeta skullMeta = (SkullMeta)itemMeta;
+            SkinUtils skinUtils = platform.getSkinUtils();
+            PlayerProfile playerProfile = skinUtils.getPlayerProfile(skullMeta);
+            if (playerProfile != null) {
+                // Don't save the full profile here
+                playerProfile.setSaveProfile(false);
+                ConfigurationSection playerConfig = configuration.createSection("player");
+                playerProfile.save(playerConfig);
+            }
+            skullMeta.setOwnerProfile(null);
+        }
+
+
+        Multimap<Attribute, AttributeModifier> attributeModifiers = itemMeta.getAttributeModifiers();
+        if (attributeModifiers != null && !attributeModifiers.isEmpty()) {
+            List<ConfigurationSection> modifierList = new ArrayList<>();
+            for (Map.Entry<Attribute, AttributeModifier> entry : attributeModifiers.entries()) {
+                Attribute attribute = entry.getKey();
+                ConfigurationSection attributeModifier = new MemoryConfiguration();
+                attributeModifier.set("attribute", attribute.getKey().toString());
+                AttributeModifier modifier = entry.getValue();
+                attributeModifier.set("amount", modifier.getAmount());
+                attributeModifier.set("slot", modifier.getSlotGroup().toString());
+                attributeModifier.set("operation", modifier.getOperation().toString());
+                attributeModifier.set("uuid", modifier.getUniqueId().toString());
+                attributeModifier.set("name", modifier.getName());
+                modifierList.add(attributeModifier);
+                itemMeta.removeAttributeModifier(attribute, modifier);
+            }
+            configuration.set("attributes", modifierList);
+        }
+
+        // TODO: Make this work
+        if (itemMeta instanceof BlockStateMeta) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
+            if (blockStateMeta.hasBlockState()) {
+                BlockState blockState = blockStateMeta.getBlockState();
+                configuration.set("block", blockState);
+                // Replace with default block state to make it as empty as possible
+                // blockStateMeta.setBlockState(Bukkit.createBlockData(itemStack.getType()).createBlockState());
+            }
+        }
     }
 }
