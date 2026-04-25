@@ -526,7 +526,7 @@ public class NMSUtils {
             class_NBTTagCompound_getByteMethod = class_NBTTagCompound.getMethod("getByte", String.class);
             class_NBTTagCompound_getByteArrayMethod = class_NBTTagCompound.getMethod("getByteArray", String.class);
             class_NBTTagCompound_getListMethod = class_NBTTagCompound.getMethod("getList", String.class, Integer.TYPE);
-            class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
+            class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
             class_CraftItemStack_asBukkitCopyMethod = class_CraftItemStack.getMethod("asBukkitCopy", class_ItemStack);
             class_CraftItemStack_mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", class_ItemStack);
             class_World_addEntityMethod = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
@@ -850,11 +850,11 @@ public class NMSUtils {
                 class_Material_isLegacyMethod = null;
             }
             try {
-                class_Bukkit_getMapMethod = Bukkit.class.getMethod("getMap", Integer.TYPE);
+                class_Bukkit_getMapMethod = org.bukkit.Bukkit.class.getMethod("getMap", Integer.TYPE);
                 legacyMaps = false;
             } catch (Throwable not13) {
                 try {
-                    class_Bukkit_getMapMethod = Bukkit.class.getMethod("getMap", Short.TYPE);
+                    class_Bukkit_getMapMethod = org.bukkit.Bukkit.class.getMethod("getMap", Short.TYPE);
                     legacyMaps = true;
                 } catch (Exception ex) {
                     logger.warning("Could not bind to getMap method, magic maps will not work");
@@ -862,7 +862,7 @@ public class NMSUtils {
                 }
             }
             try {
-                class_Bukkit_selectEntitiesMethod = Bukkit.class.getMethod("selectEntities", CommandSender.class, String.class);
+                class_Bukkit_selectEntitiesMethod = org.bukkit.Bukkit.class.getMethod("selectEntities", CommandSender.class, String.class);
             } catch (Throwable not13) {
                 logger.warning("Could not bind to selectEntities method, command target selectors may not work");
                 class_Bukkit_selectEntitiesMethod = null;
@@ -1799,7 +1799,7 @@ public class NMSUtils {
         return NMSUtils.class.getClassLoader().loadClass(className);
     }
 
-    public static Object getHandle(Server server) {
+    public static Object getHandle(org.bukkit.Server server) {
         Object handle = null;
         try {
             handle = class_CraftServer_getServerMethod.invoke(server);
@@ -1809,7 +1809,7 @@ public class NMSUtils {
         return handle;
     }
 
-    public static Object getHandle(World world) {
+    public static Object getHandle(org.bukkit.World world) {
         if (world == null) return null;
         Object handle = null;
         try {
@@ -1820,7 +1820,7 @@ public class NMSUtils {
         return handle;
     }
 
-    public static Object getHandle(Entity entity) {
+    public static Object getHandle(org.bukkit.entity.Entity entity) {
         if (entity == null) return null;
         Object handle = null;
         try {
@@ -1831,7 +1831,7 @@ public class NMSUtils {
         return handle;
     }
 
-    public static Object getHandle(LivingEntity entity) {
+    public static Object getHandle(org.bukkit.entity.LivingEntity entity) {
         if (entity == null) return null;
         Object handle = null;
         try {
@@ -1842,7 +1842,7 @@ public class NMSUtils {
         return handle;
     }
 
-    public static Object getHandle(Chunk chunk) {
+    public static Object getHandle(org.bukkit.Chunk chunk) {
         Object handle = null;
         try {
             handle = class_CraftChunk_getHandleMethod.invoke(chunk);
@@ -1852,7 +1852,7 @@ public class NMSUtils {
         return handle;
     }
 
-    public static Object getHandle(Player player) {
+    public static Object getHandle(org.bukkit.entity.Player player) {
         Object handle = null;
         try {
             handle = class_CraftPlayer_getHandleMethod.invoke(player);

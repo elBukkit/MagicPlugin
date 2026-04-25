@@ -1,7 +1,6 @@
-package com.elmakers.mine.bukkit.utility.platform.legacy;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
 
 /**
  * Makes deprecation warnings useful again by suppressing all bukkit 'magic

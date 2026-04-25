@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.legacy;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.google.common.collect.Multimap;
 
 public class InventoryUtils extends InventoryUtilsBase {

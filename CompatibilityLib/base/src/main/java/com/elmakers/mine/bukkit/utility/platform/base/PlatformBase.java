@@ -23,7 +23,8 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.listener.PlayerPickupListener;
+import com.elmakers.mine.bukkit.utility.platform.base.listener.EntityPickupListener;
+import com.elmakers.mine.bukkit.utility.platform.base.listener.ResourcePackListener;
 
 public abstract class PlatformBase implements Platform {
     protected final MageController controller;
@@ -98,14 +99,16 @@ public abstract class PlatformBase implements Platform {
             paperUtils.registerEvents(controller, pm);
         }
         registerPickupEvent(pm);
+        ResourcePackListener rpListener = new ResourcePackListener(controller);
+        pm.registerEvents(rpListener, controller.getPlugin());
     }
 
     protected void registerPickupEvent(PluginManager pm) {
-        pm.registerEvents(new PlayerPickupListener(controller), controller.getPlugin());
+        pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
     }
 
     protected EntityMetadataUtils createEntityMetadataUtils() {
-        throw new IllegalStateException("Platform does not implement createEntityMetadataUtils");
+        return new PersistentEntityMetadataUtils(this.getPlugin());
     }
 
     protected EntityUtils createEntityUtils() {
@@ -141,11 +144,11 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected SkinUtils createSkinUtils() {
-        throw new IllegalStateException("Platform does not implement createSkinUtils");
+        return new com.elmakers.mine.bukkit.utility.platform.base.SkinUtils(this);
     }
 
     protected SchematicUtils createSchematicUtils() {
-        throw new IllegalStateException("Platform does not implement createSchematicUtils");
+        return new com.elmakers.mine.bukkit.utility.platform.base.SchematicUtils(this);
     }
 
     protected NBTUtils createNBTUtils() {
@@ -165,7 +168,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected DeprecatedUtils createDeprecatedUtils() {
-        throw new IllegalStateException("Platform does not implement createDeprecatedUtils");
+        return new com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtils(this);
     }
 
     protected MobUtils createMobUtils() {

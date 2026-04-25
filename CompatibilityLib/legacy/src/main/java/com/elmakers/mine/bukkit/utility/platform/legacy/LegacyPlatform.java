@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform.legacy;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 
 public class LegacyPlatform extends PlatformBase {
@@ -12,32 +13,32 @@ public class LegacyPlatform extends PlatformBase {
 
     @Override
     protected boolean initialize() {
-        return NMSUtils.initialize(this);
+        return com.elmakers.mine.bukkit.utility.platform.base.NMSUtils.initialize(this);
     }
 
     @Override
     public boolean isLegacy() {
-        return NMSUtils.legacy;
+        return com.elmakers.mine.bukkit.utility.platform.base.NMSUtils.legacy;
     }
 
     @Override
     public boolean isCurrentVersion() {
-        return NMSUtils.isModernVersion;
+        return com.elmakers.mine.bukkit.utility.platform.base.NMSUtils.isModernVersion;
     }
 
     @Override
     public boolean hasStatistics() {
-        return NMSUtils.hasStatistics;
+        return com.elmakers.mine.bukkit.utility.platform.base.NMSUtils.hasStatistics;
     }
 
     @Override
     public boolean hasEntityTransformEvent() {
-        return NMSUtils.hasEntityTransformEvent;
+        return com.elmakers.mine.bukkit.utility.platform.base.NMSUtils.hasEntityTransformEvent;
     }
 
     @Override
     public boolean hasTimeSkipEvent() {
-        return NMSUtils.hasTimeSkipEvent;
+        return com.elmakers.mine.bukkit.utility.platform.base.NMSUtils.hasTimeSkipEvent;
     }
 
     @Override
@@ -52,32 +53,32 @@ public class LegacyPlatform extends PlatformBase {
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.SkinUtils createSkinUtils() {
-        return new SkinUtils(this);
+        return new com.elmakers.mine.bukkit.utility.platform.base.SkinUtils(this);
     }
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.SchematicUtils createSchematicUtils() {
-        return new SchematicUtils(this);
+        return new com.elmakers.mine.bukkit.utility.platform.base.SchematicUtils(this);
     }
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.NBTUtils createNBTUtils() {
-        return new NBTUtils(this);
+        return new com.elmakers.mine.bukkit.utility.platform.base.NBTUtils(this);
     }
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.ItemUtils createItemUtils() {
-        return new ItemUtils(this);
+        return new com.elmakers.mine.bukkit.utility.platform.base.ItemUtils(this);
     }
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.InventoryUtils createInventoryUtils() {
-        return new InventoryUtils(this);
+        return new com.elmakers.mine.bukkit.utility.platform.base.InventoryUtils(this);
     }
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils createCompatibilityUtils() {
-        return new CompatibilityUtils(this);
+        return new com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtils(this);
     }
 
     @Override

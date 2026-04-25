@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.legacy;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.SchematicUtilsBase;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 
 @SuppressWarnings("unchecked")

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.legacy;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
 public class NBTUtils extends NBTUtilsBase {
     public NBTUtils(Platform platform) {

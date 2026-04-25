@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.legacy;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
@@ -111,7 +111,6 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.google.common.io.BaseEncoding;
 
 /**

@@ -471,7 +471,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
     }
 
     @Override
-    public JsonElement getProfileJson(Object profile) {
+    public JsonElement getProfileJson(Object profile) throws IllegalAccessException {
         if (!(profile instanceof GameProfile)) return null;
         GameProfile gameProfile = (GameProfile)profile;
         JsonElement profileJson = getGson().toJsonTree(gameProfile);

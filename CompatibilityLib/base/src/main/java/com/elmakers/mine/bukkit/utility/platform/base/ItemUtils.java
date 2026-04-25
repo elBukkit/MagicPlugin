@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.legacy;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
 public class ItemUtils extends ItemUtilsBase {
     public ItemUtils(Platform platform) {
