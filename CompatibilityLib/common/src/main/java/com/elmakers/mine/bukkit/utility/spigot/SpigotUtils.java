@@ -1,4 +1,4 @@
-package spigot;
+package com.elmakers.mine.bukkit.utility.spigot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
