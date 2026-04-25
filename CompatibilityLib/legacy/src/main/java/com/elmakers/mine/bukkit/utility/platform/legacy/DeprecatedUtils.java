@@ -1,9 +1,13 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
@@ -20,27 +24,38 @@ public class DeprecatedUtils extends DeprecatedUtilsBase {
     }
 
     @Override
+    public short getMapId(MapView mapView) {
+        // MapView id is now an int- we proabably should update our own code
+        // and change this to an int
+        return (short)mapView.getId();
+    }
+
+    @Override
+    public DyeColor getBaseColor(BannerMeta banner) {
+        return DyeColor.WHITE;
+    }
+
+    @Override
+    public void setBaseColor(BannerMeta banner, DyeColor color) {
+        // Can't actually do this anymore, different banner colors are different materials
+    }
+
+    @Override
+    public Biome getBiome(Location location) {
+        return location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
+    @Override
     public void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics) {
-        // @deprecated Magic value
-        if (NMSUtils.class_Block_setTypeIdAndDataMethod != null) {
-            try {
-                NMSUtils.class_Block_setTypeIdAndDataMethod.invoke(block, material.getId(), data, applyPhysics);
-            } catch (Exception ex) {
-                block.setType(material, applyPhysics);
-                ex.printStackTrace();
-            }
-        } else {
-            block.setType(material, applyPhysics);
-        }
+        block.setType(material, applyPhysics);
     }
 
     @Override
     public void setSkullType(Skull skullBlock, short skullType) {
-        skullBlock.setSkullType(SkullType.values()[skullType]);
     }
 
     @Override
     public short getSkullType(Skull skullBlock) {
-        return (short)skullBlock.getSkullType().ordinal();
+        return 0;
     }
 }
