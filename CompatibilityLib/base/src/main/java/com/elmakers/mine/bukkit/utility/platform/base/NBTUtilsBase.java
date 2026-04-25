@@ -27,18 +27,6 @@ public class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public String getString(ItemStack stack, String tag, String defaultValue) {
-        String result = getString(stack, tag);
-        return result == null ? defaultValue : result;
-    }
-
-    @Override
-    public String getString(Object node, String tag, String defaultValue) {
-        String meta = getString(node, tag);
-        return meta == null || meta.length() == 0 ? defaultValue : meta;
-    }
-
-    @Override
     public short getShort(Object node, String tag, short defaultValue) {
         Short meta = getOptionalShort(node, tag);
         return meta == null ? defaultValue : meta;
@@ -80,6 +68,16 @@ public class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
+    public void setInt(Object node, String tag, int value) {
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        try {
+            NMSUtils.class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public void removeMeta(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return;
 
@@ -89,6 +87,16 @@ public class NBTUtilsBase implements NBTUtils {
             Object tagObject = platform.getItemUtils().getTag(craft);
             if (tagObject == null) return;
             removeMeta(tagObject, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeMeta(Object node, String tag) {
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        try {
+            NMSUtils.class_NBTTagCompound_removeMethod.invoke(node, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -129,6 +137,16 @@ public class NBTUtilsBase implements NBTUtils {
             Object tagObject = platform.getItemUtils().getOrCreateTag(craft);
             if (tagObject == null) return;
             setBoolean(tagObject, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setBoolean(Object node, String tag, boolean value) {
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        try {
+            NMSUtils.class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -225,6 +243,18 @@ public class NBTUtilsBase implements NBTUtils {
             }
         }
         return outputObject;
+    }
+
+    @Override
+    public String getString(ItemStack stack, String tag, String defaultValue) {
+        String result = getString(stack, tag);
+        return result == null ? defaultValue : result;
+    }
+
+    @Override
+    public String getString(Object node, String tag, String defaultValue) {
+        String meta = getString(node, tag);
+        return meta == null || meta.length() == 0 ? defaultValue : meta;
     }
 
     @Override
@@ -352,30 +382,10 @@ public class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public void setBoolean(Object node, String tag, boolean value) {
-        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
-        try {
-            NMSUtils.class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
     public void setDouble(Object node, String tag, double value) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public void setInt(Object node, String tag, int value) {
-        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
-        try {
-            NMSUtils.class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -404,16 +414,6 @@ public class NBTUtilsBase implements NBTUtils {
     @Override
     public void setEmptyList(Object tag, String key) {
         // Not in legacy versions
-    }
-
-    @Override
-    public void removeMeta(Object node, String tag) {
-        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
-        try {
-            NMSUtils.class_NBTTagCompound_removeMethod.invoke(node, tag);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override

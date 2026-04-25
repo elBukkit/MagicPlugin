@@ -120,16 +120,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return true;
     }
 
-    @Override
-    public boolean saveTagsToNBT(ConfigurationSection tags, Object node) {
-        return saveTagsToNBT(tags, node, null);
-    }
-
-    @Override
-    public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
-        return saveTagsToNBT(ConfigUtils.toMap(tags), node, tagNames);
-    }
-
     protected byte[] makeByteArray(List<Object> list) {
         byte[] a = new byte[list.size()];
 
@@ -196,43 +186,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         if (o instanceof Byte) return (double)(Byte)o;
         if (o instanceof String) return Double.parseDouble((String)o);
         return null;
-    }
-
-    @Override
-    public ItemStack setSkullURL(ItemStack itemStack, String url) {
-        try {
-            // Using a deterministic non-random UUID derived from the skull url here so skulls of the same type can stack
-            return setSkullURL(itemStack, new URL(url), UUID.nameUUIDFromBytes(url.getBytes()));
-        } catch (MalformedURLException e) {
-            platform.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
-        }
-        return itemStack;
-    }
-
-    @Override
-    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
-        // Old versions of Bukkit would NPE trying to save a skull without an owner name
-        // So we'll use MHF_Question, why not.
-        return setSkullURL(itemStack, url, id, "MHF_Question");
-    }
-
-    @Override
-    public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
-        try {
-            itemStack = platform.getItemUtils().makeReal(itemStack);
-            Object skullOwner = platform.getNBTUtils().createTag(itemStack, "SkullOwner");
-            platform.getNBTUtils().setString(skullOwner, "Name", ownerName);
-            return setSkullURL(itemStack, url, id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return itemStack;
-    }
-
-    @Override
-    public String getSkullURL(ItemStack skull) {
-        return platform.getSkinUtils().getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
     @Override
@@ -596,6 +549,16 @@ public class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
+    public boolean saveTagsToNBT(ConfigurationSection tags, Object node) {
+        return saveTagsToNBT(tags, node, null);
+    }
+
+    @Override
+    public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
+        return saveTagsToNBT(ConfigUtils.toMap(tags), node, tagNames);
+    }
+
+    @Override
     public boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
@@ -819,6 +782,43 @@ public class InventoryUtilsBase implements InventoryUtils {
             ex.printStackTrace();
         }
         return itemStack;
+    }
+
+    @Override
+    public ItemStack setSkullURL(ItemStack itemStack, String url) {
+        try {
+            // Using a deterministic non-random UUID derived from the skull url here so skulls of the same type can stack
+            return setSkullURL(itemStack, new URL(url), UUID.nameUUIDFromBytes(url.getBytes()));
+        } catch (MalformedURLException e) {
+            platform.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+        }
+        return itemStack;
+    }
+
+    @Override
+    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
+        // Old versions of Bukkit would NPE trying to save a skull without an owner name
+        // So we'll use MHF_Question, why not.
+        return setSkullURL(itemStack, url, id, "MHF_Question");
+    }
+
+    @Override
+    public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
+        try {
+            itemStack = platform.getItemUtils().makeReal(itemStack);
+            Object skullOwner = platform.getNBTUtils().createTag(itemStack, "SkullOwner");
+            platform.getNBTUtils().setString(skullOwner, "Name", ownerName);
+            return setSkullURL(itemStack, url, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return itemStack;
+    }
+
+    @Override
+    public String getSkullURL(ItemStack skull) {
+        return platform.getSkinUtils().getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
     @Override

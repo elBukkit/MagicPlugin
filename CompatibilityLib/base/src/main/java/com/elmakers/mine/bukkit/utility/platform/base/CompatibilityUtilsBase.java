@@ -87,11 +87,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.ThrownPotion;
-import org.bukkit.entity.TippedArrow;
 import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -118,7 +116,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
-import org.bukkit.material.Torch;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -222,6 +219,16 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public void setInvulnerable(Entity entity, boolean flag) {
+        try {
+            Object handle = NMSUtils.getHandle(entity);
+            NMSUtils.class_Entity_invulnerableField.set(handle, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public void setInvulnerable(Entity entity) {
         setInvulnerable(entity, true);
     }
@@ -249,16 +256,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             ex.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public void setInvulnerable(Entity entity, boolean flag) {
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_invulnerableField.set(handle, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -467,6 +464,35 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Runnable getTaskRunnable(BukkitTask task) {
         return null;
+    }
+
+    @Override
+    public void damage(Damageable target, double amount, Entity source, String damageType) {
+        if (target == null || target.isDead()) return;
+        if (damageType.equalsIgnoreCase("direct")) {
+            double health = target.getHealth() - amount;
+            target.setHealth(Math.max(health, 0));
+            return;
+        }
+        if (damageType.equalsIgnoreCase("magic")) {
+            magicDamage(target, amount, source);
+            return;
+        }
+        Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase());
+        if (damageSource == null || NMSUtils.class_EntityLiving_damageEntityMethod == null) {
+            magicDamage(target, amount, source);
+            return;
+        }
+
+        try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
+            damaging.touch();
+            Object targetHandle = NMSUtils.getHandle(target);
+            if (targetHandle == null) return;
+
+            NMSUtils.class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float) amount);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -688,11 +714,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
-        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
-    }
-
-    @Override
     public void applyItemData(ItemStack item, Block block) {
         try {
             Object entityDataTag = platform.getNBTUtils().getTag(item, "BlockEntityTag");
@@ -738,11 +759,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             }
             sendBreaking(player, getBlockEntityId(block), location, breakAmount);
         }
-    }
-
-    @Override
-    public boolean setBlockFast(Block block, Material material, int data) {
-        return setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
     }
 
     @Override
@@ -793,6 +809,11 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         } catch (Exception ignore) {
         }
         return null;
+    }
+
+    @Override
+    public Material getMaterial(FallingBlock falling) {
+        return falling.getMaterial();
     }
 
     @Override
@@ -957,35 +978,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                             (float) amount);
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public void damage(Damageable target, double amount, Entity source, String damageType) {
-        if (target == null || target.isDead()) return;
-        if (damageType.equalsIgnoreCase("direct")) {
-            double health = target.getHealth() - amount;
-            target.setHealth(Math.max(health, 0));
-            return;
-        }
-        if (damageType.equalsIgnoreCase("magic")) {
-            magicDamage(target, amount, source);
-            return;
-        }
-        Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase());
-        if (damageSource == null || NMSUtils.class_EntityLiving_damageEntityMethod == null) {
-            magicDamage(target, amount, source);
-            return;
-        }
-
-        try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
-            damaging.touch();
-            Object targetHandle = NMSUtils.getHandle(target);
-            if (targetHandle == null) return;
-
-            NMSUtils.class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float) amount);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1798,6 +1790,11 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
+        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
+    }
+
+    @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
         if (NMSUtils.class_ItemMeta_addAttributeModifierMethod != null) {
             try {
@@ -2296,6 +2293,11 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public boolean setBlockFast(Block block, Material material, int data) {
+        return setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
+    }
+
+    @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
         if (!(projectile instanceof Arrow)) return false;
@@ -2577,11 +2579,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
         }
         return data;
-    }
-
-    @Override
-    public Material getMaterial(FallingBlock falling) {
-        return falling.getMaterial();
     }
 
     @Override
