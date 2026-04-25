@@ -2,6 +2,14 @@
 
 # Do it for real
 
+ - Look into EffectLib explode effect
+
+1: setting "unstashable" on a wand does not prevent it from being stashed if i'm holding the wand in my mainhand when opening a container
+
+2: setting up "spell blocks" in config currently, got one looking like this:
+
+https://discord.com/channels/580099743875727363/580101207364861954/1496487669323141304
+
  - Fix backwards compatibility layers, dealing with serialized items.. somehow??
  - See if we can bring the older layers back
  - Vanilla crafting table item is broken in RP
