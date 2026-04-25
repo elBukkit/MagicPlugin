@@ -10,7 +10,7 @@
     <artifactId>CompatibilityLib-v1_11</artifactId>
 
     <properties>
-        <bukkit.version>1.11.2-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.17-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>

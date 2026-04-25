@@ -1,9 +1,13 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_14.entity;
+package com.elmakers.mine.bukkit.utility.platform.v1_12.entity;
 
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fox;
 
@@ -12,6 +16,8 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityFoxData extends EntityAnimalData {
+    protected UUID firstTrusted;
+    protected UUID secondTrusted;
     private Fox.Type type;
     private Boolean crouching;
 
@@ -27,6 +33,23 @@ public class EntityFoxData extends EntityAnimalData {
             }
         }
         crouching = ConfigUtils.getOptionalBoolean(parameters, "crouching");
+
+        String trusted = parameters.getString("trusted");
+        if (trusted != null && !trusted.isEmpty()) {
+            try {
+                firstTrusted = UUID.fromString(trusted);
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Invalid trusted UUID: " + trusted, ex);
+            }
+        }
+        String secondTrusted = parameters.getString("second_trusted");
+        if (secondTrusted != null && !secondTrusted.isEmpty()) {
+            try {
+                this.secondTrusted = UUID.fromString(secondTrusted);
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Invalid trusted UUID: " + secondTrusted, ex);
+            }
+        }
     }
 
     public EntityFoxData(Entity entity) {
@@ -35,6 +58,15 @@ public class EntityFoxData extends EntityAnimalData {
             Fox fox = (Fox)entity;
             type = fox.getFoxType();
             crouching = fox.isCrouching();
+
+            AnimalTamer trusted = fox.getFirstTrustedPlayer();
+            if (trusted != null) {
+                firstTrusted = trusted.getUniqueId();
+            }
+            AnimalTamer second = fox.getSecondTrustedPlayer();
+            if (second != null) {
+                secondTrusted = second.getUniqueId();
+            }
         }
     }
 
@@ -47,6 +79,19 @@ public class EntityFoxData extends EntityAnimalData {
                 fox.setFoxType(type);
             }
             if (crouching != null) fox.setCrouching(crouching);
+
+            if (firstTrusted != null) {
+                OfflinePlayer trusted = Bukkit.getOfflinePlayer(firstTrusted);
+                if (trusted != null) {
+                    fox.setFirstTrustedPlayer(trusted);
+                }
+            }
+            if (secondTrusted != null) {
+                OfflinePlayer trusted = Bukkit.getOfflinePlayer(secondTrusted);
+                if (trusted != null) {
+                    fox.setSecondTrustedPlayer(trusted);
+                }
+            }
         }
     }
 

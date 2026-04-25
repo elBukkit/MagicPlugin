@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_0.entity.EntityAxolotlData;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_0.entity.EntityGoatData;
 
-public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16.EntityUtils  {
+public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.base.EntityUtilsBase  {
     public EntityUtils(final Platform platform) {
         super(platform);
     }
