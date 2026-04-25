@@ -34,7 +34,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 
-public abstract class SkinUtilsBase implements SkinUtils {
+public class SkinUtilsBase implements SkinUtils {
     protected final Platform platform;
     protected final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
     protected final Map<String, UUID> uuidCache = new HashMap<>();

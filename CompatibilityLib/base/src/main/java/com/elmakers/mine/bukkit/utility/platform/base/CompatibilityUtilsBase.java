@@ -145,7 +145,7 @@ import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.google.common.io.BaseEncoding;
 
-public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
+public class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
     // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
     // So putting some lower number on this will trigger a lot of false-positives.

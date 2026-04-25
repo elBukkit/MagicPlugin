@@ -36,7 +36,7 @@ import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.common.collect.Multimap;
 
-public abstract class InventoryUtilsBase implements InventoryUtils {
+public class InventoryUtilsBase implements InventoryUtils {
     protected final Platform platform;
 
     protected InventoryUtilsBase(final Platform platform) {

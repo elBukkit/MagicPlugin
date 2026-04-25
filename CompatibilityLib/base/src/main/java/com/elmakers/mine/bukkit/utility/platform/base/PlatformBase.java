@@ -112,7 +112,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected EntityUtils createEntityUtils() {
-        throw new IllegalStateException("Platform does not implement createEntityUtils");
+        return new EntityUtilsBase(this);
     }
 
     protected PaperUtils createPaperUtils() {
@@ -144,31 +144,31 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected SkinUtils createSkinUtils() {
-        return new com.elmakers.mine.bukkit.utility.platform.base.SkinUtils(this);
+        return new SkinUtilsBase(this);
     }
 
     protected SchematicUtils createSchematicUtils() {
-        return new com.elmakers.mine.bukkit.utility.platform.base.SchematicUtils(this);
+        return new SchematicUtilsBase(this);
     }
 
     protected NBTUtils createNBTUtils() {
-        throw new IllegalStateException("Platform does not implement createNBTUtils");
+        return new NBTUtilsBase(this);
     }
 
     protected ItemUtils createItemUtils() {
-        throw new IllegalStateException("Platform does not implement createItemUtils");
+        return new ItemUtilsBase(this);
     }
 
     protected InventoryUtils createInventoryUtils() {
-        throw new IllegalStateException("Platform does not implement createInventoryUtils");
+        return new InventoryUtilsBase(this);
     }
 
     protected CompatibilityUtils createCompatibilityUtils() {
-        throw new IllegalStateException("Platform does not implement createCompatibilityUtils");
+        return new CompatibilityUtilsBase(this);
     }
 
     protected DeprecatedUtils createDeprecatedUtils() {
-        return new com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtils(this);
+        return new DeprecatedUtilsBase(this);
     }
 
     protected MobUtils createMobUtils() {

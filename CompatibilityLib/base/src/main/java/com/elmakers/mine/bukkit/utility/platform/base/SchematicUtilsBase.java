@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
 
-public abstract class SchematicUtilsBase implements SchematicUtils {
+public class SchematicUtilsBase implements SchematicUtils {
     protected final Platform platform;
 
     protected SchematicUtilsBase(final Platform platform) {

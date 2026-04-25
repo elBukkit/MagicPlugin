@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
-public abstract class ItemUtilsBase implements ItemUtils {
+public class ItemUtilsBase implements ItemUtils {
     protected final Platform platform;
 
     protected ItemUtilsBase(final Platform platform) {

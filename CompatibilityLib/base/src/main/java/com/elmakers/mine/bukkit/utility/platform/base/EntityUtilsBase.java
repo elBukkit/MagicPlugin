@@ -52,7 +52,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityWolfData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieVillagerData;
 
-public abstract class EntityUtilsBase implements EntityUtils {
+public class EntityUtilsBase implements EntityUtils {
     protected final Platform platform;
 
     protected EntityUtilsBase(final Platform platform) {
