@@ -7,4 +7,5 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     public CompatibilityUtils(Platform platform) {
         super(platform);
     }
+
 }
