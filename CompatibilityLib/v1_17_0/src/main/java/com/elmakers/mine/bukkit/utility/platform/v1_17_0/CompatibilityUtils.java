@@ -98,7 +98,7 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.CompatibilityUtilsBase;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.core.BlockPos;

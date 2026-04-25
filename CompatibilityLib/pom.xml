@@ -42,7 +42,7 @@
 
     <modules>
         <module>common</module>
-        <module>base</module>
+        <module>base_v1_17_0</module>
         <module>paper</module>
         <module>v1_17_0</module>
         <module>v1_17_1</module>

@@ -6,7 +6,7 @@ import org.bukkit.entity.Goat;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityAnimalData;
 
 public class EntityGoatData extends EntityAnimalData {
     public Boolean screaming;

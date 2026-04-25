@@ -62,7 +62,7 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityNMSData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 

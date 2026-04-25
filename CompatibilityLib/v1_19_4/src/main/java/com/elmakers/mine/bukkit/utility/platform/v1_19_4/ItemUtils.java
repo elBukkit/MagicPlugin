@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.ItemUtilsBase;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;

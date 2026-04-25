@@ -21,7 +21,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.InventoryUtilsBase;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;

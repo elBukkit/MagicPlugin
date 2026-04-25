@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.NBTUtilsBase;
 
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;

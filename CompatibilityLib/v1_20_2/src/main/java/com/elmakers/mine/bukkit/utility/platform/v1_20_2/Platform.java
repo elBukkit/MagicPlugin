@@ -5,7 +5,7 @@ import org.bukkit.plugin.PluginManager;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.PlatformBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_2.event.EntityLoadEventHandler;
 
 public class Platform extends PlatformBase {

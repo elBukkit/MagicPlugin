@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-base</artifactId>
+            <artifactId>CompatibilityLib-base_v1_17_0</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

@@ -109,7 +109,7 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.CompatibilityUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_2.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
