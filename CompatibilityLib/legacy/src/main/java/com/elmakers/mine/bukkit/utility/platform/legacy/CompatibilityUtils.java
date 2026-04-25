@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -23,6 +25,7 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
 import org.bukkit.Sound;
@@ -32,9 +35,23 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.AnaloguePowerable;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.Powerable;
+import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Dispenser;
+import org.bukkit.block.data.type.Door;
+import org.bukkit.block.data.type.Piston;
+import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.Snow;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
@@ -44,6 +61,7 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Fox;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -58,31 +76,40 @@ import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.BlastingRecipe;
+import org.bukkit.inventory.CampfireRecipe;
+import org.bukkit.inventory.CookingRecipe;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.SmithingRecipe;
+import org.bukkit.inventory.SmokingRecipe;
+import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
-import org.bukkit.material.Door;
 import org.bukkit.material.MaterialData;
-import org.bukkit.material.PistonBaseMaterial;
-import org.bukkit.material.RedstoneWire;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
+import org.bukkit.util.VoxelShape;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.google.common.io.BaseEncoding;
@@ -113,24 +140,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public Inventory createInventory(InventoryHolder holder, int size, final String name) {
         size = (int) (Math.ceil((double) size / 9) * 9);
         size = Math.min(size, 54);
-
-        String shorterName = name;
-        if (shorterName.length() > 32) {
-            shorterName = shorterName.substring(0, 31);
-        }
-        shorterName = translateColors(shorterName);
-
-        // TODO: Is this even still necessary?
-        if (NMSUtils.class_CraftInventoryCustom_constructor == null) {
-            return Bukkit.createInventory(holder, size, shorterName);
-        }
-        Inventory inventory = null;
-        try {
-            inventory = (Inventory) NMSUtils.class_CraftInventoryCustom_constructor.newInstance(holder, size, shorterName);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return inventory;
+        String translatedName = translateColors(name);
+        return Bukkit.createInventory(holder, size, translatedName);
     }
 
     @Override
@@ -360,16 +371,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public Runnable getTaskRunnable(BukkitTask task) {
-        Runnable runnable = null;
-        try {
-            Field taskField = NMSUtils.class_CraftTask.getDeclaredField("task");
-            taskField.setAccessible(true);
-            runnable = (Runnable) taskField.get(task);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-
-        return runnable;
+        return null;
     }
 
     @Override
@@ -1444,9 +1446,50 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
+    public boolean isTopBlock(Block block) {
+        // Yes this is an ugly way to do it.
+        BlockData blockData = block.getBlockData();
+        if (blockData instanceof Slab) {
+            Slab slab = (Slab)blockData;
+            Slab.Type slabType = slab.getType();
+            return slabType != Slab.Type.BOTTOM;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean tame(Entity entity, Player tamer) {
+        if (entity instanceof Fox) {
+            if (tamer == null) return false;
+            Fox fox = (Fox)entity;
+            AnimalTamer current = fox.getFirstTrustedPlayer();
+            if (current != null && current.getUniqueId().equals(tamer.getUniqueId())) {
+                return false;
+            }
+            fox.setFirstTrustedPlayer(tamer);
+        }
+        return super.tame(entity, tamer);
+    }
+
+    @Override
+    public Recipe createSmithingRecipe(String key, ItemStack item, ItemStack source, ItemStack addition) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
+        try {
+            RecipeChoice choice = new RecipeChoice.ExactChoice(source);
+            RecipeChoice additionChoice = new RecipeChoice.ExactChoice(addition);
+            return new SmithingRecipe(namespacedKey, item, choice, additionChoice);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating smithing recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
     public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
-        // TODO: New Player.sendTitle in 1.11
-        player.sendTitle(title, subTitle);
+        player.sendTitle(title, subTitle, fadeIn, stay, fadeOut);
     }
 
     @Override
@@ -1948,19 +1991,35 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
+    public boolean setTorchFacingDirection(Block block, BlockFace facing) {
+        BlockData blockData = block.getBlockData();
+        if (!(blockData instanceof Directional)) {
+            return false;
+        }
+        Directional directional = (Directional)blockData;
+        directional.setFacing(facing);
+        block.setBlockData(directional);
+        return true;
+    }
+
+    @Override
+    public void cancelDismount(EntityDismountEvent event) {
+        event.setCancelled(true);
+    }
+
+    @Override
     public boolean canToggleBlockPower(Block block) {
-        if (isPowerable(block)) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null) {
+            return false;
+        }
+        if (blockData instanceof Powerable) {
             return true;
         }
-
-        Material material = block.getType();
-        if (material == Material.REDSTONE_TORCH_OFF || material == Material.REDSTONE_TORCH_ON) {
+        if (blockData instanceof Lightable) {
             return true;
         }
-
-        BlockState blockState = block.getState();
-        MaterialData data = blockState.getData();
-        if (data instanceof RedstoneWire) {
+        if (blockData instanceof AnaloguePowerable) {
             return true;
         }
         return false;
@@ -1968,12 +2027,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public boolean extendPiston(Block block) {
-        BlockState blockState = block.getState();
-        MaterialData data = blockState.getData();
-        if (data instanceof PistonBaseMaterial) {
-            PistonBaseMaterial pistonData = (PistonBaseMaterial)data;
-            pistonData.setPowered(true);
-            blockState.update();
+        BlockData blockData = block.getBlockData();
+        if (blockData == null) {
+            return false;
+        }
+        if (blockData instanceof Piston) {
+            Piston piston = (Piston)blockData;
+            piston.setExtended(true);
+            block.setBlockData(piston, true);
             return true;
         }
         return false;
@@ -1981,145 +2042,73 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public boolean toggleBlockPower(Block block) {
-        if (isPowerable(block)) {
-            setPowered(block, !isPowered(block));
+        BlockData blockData = block.getBlockData();
+        if (blockData == null) {
+            return false;
+        }
+        if (blockData instanceof Powerable) {
+            Powerable powerable = (Powerable)blockData;
+            powerable.setPowered(!powerable.isPowered());
+            block.setBlockData(powerable, true);
             return true;
         }
-
-        Material material = block.getType();
-        if (material == Material.REDSTONE_TORCH_OFF) {
-            block.setType(Material.REDSTONE_TORCH_ON);
+        if (blockData instanceof Lightable) {
+            Lightable lightable = (Lightable)blockData;
+            lightable.setLit(!lightable.isLit());
+            block.setBlockData(lightable, true);
             return true;
         }
-        if (material == Material.REDSTONE_TORCH_ON) {
-            block.setType(Material.REDSTONE_TORCH_OFF);
+        if (blockData instanceof AnaloguePowerable) {
+            AnaloguePowerable powerable = (AnaloguePowerable)blockData;
+            powerable.setPower(powerable.getMaximumPower() - powerable.getPower());
+            block.setBlockData(powerable, true);
             return true;
         }
-
-        BlockState blockState = block.getState();
-        MaterialData data = blockState.getData();
-        if (data instanceof RedstoneWire) {
-            RedstoneWire wireData = (RedstoneWire)data;
-            wireData.setData((byte)(15 - wireData.getData()));
-            blockState.update();
-            return true;
+        if (blockData instanceof Dispenser) {
+            Dispenser dispenser = (Dispenser)blockData;
+            dispenser.setTriggered(!dispenser.isTriggered());
         }
         return false;
     }
 
     @Override
     public boolean isPowerable(Block block) {
-        if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return isPowerableLegacy(block);
-        }
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            return blockData != null && NMSUtils.class_Powerable.isAssignableFrom(blockData.getClass());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
-    protected boolean isPowerableLegacy(Block block) {
-        BlockState blockState = block.getState();
-        org.bukkit.material.MaterialData data = blockState.getData();
-        return data instanceof org.bukkit.material.Button
-                || data instanceof org.bukkit.material.Lever
-                || data instanceof org.bukkit.material.PistonBaseMaterial
-                || data instanceof org.bukkit.material.PoweredRail;
+        BlockData blockData = block.getBlockData();
+        return blockData != null && blockData instanceof Powerable;
     }
 
     @Override
     public boolean isPowered(Block block) {
-        if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return isPoweredLegacy(block);
-        }
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            if (blockData == null) return false;
-            if (!NMSUtils.class_Powerable.isAssignableFrom(blockData.getClass())) return false;
-            return (boolean) NMSUtils.class_Powerable_isPoweredMethod.invoke(blockData);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
-    protected boolean isPoweredLegacy(Block block) {
-        BlockState blockState = block.getState();
-        org.bukkit.material.MaterialData data = blockState.getData();
-        if (data instanceof org.bukkit.material.Button) {
-            org.bukkit.material.Button powerData = (org.bukkit.material.Button)data;
-            return powerData.isPowered();
-        } else if (data instanceof org.bukkit.material.Lever) {
-            org.bukkit.material.Lever powerData = (org.bukkit.material.Lever)data;
-            return powerData.isPowered();
-        } else if (data instanceof org.bukkit.material.PistonBaseMaterial) {
-            org.bukkit.material.PistonBaseMaterial powerData = (org.bukkit.material.PistonBaseMaterial)data;
-            return powerData.isPowered();
-        } else if (data instanceof org.bukkit.material.PoweredRail) {
-            org.bukkit.material.PoweredRail powerData = (org.bukkit.material.PoweredRail)data;
-            return powerData.isPowered();
-        }
-        return false;
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Powerable)) return false;
+        Powerable powerable = (Powerable)blockData;
+        return powerable.isPowered();
     }
 
     @Override
     public boolean setPowered(Block block, boolean powered) {
-        if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null
-                || NMSUtils.class_Block_setBlockDataMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return setPoweredLegacy(block, powered);
-        }
-
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            if (blockData == null) return false;
-            if (!NMSUtils.class_Powerable.isAssignableFrom(blockData.getClass())) return false;
-            NMSUtils.class_Powerable_setPoweredMethod.invoke(blockData, powered);
-            NMSUtils.class_Block_setBlockDataMethod.invoke(block, blockData, true);
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Powerable)) return false;
+        Powerable powerable = (Powerable)blockData;
+        powerable.setPowered(powered);
+        block.setBlockData(powerable, true);
+        return true;
     }
 
     @Override
     public boolean isWaterLoggable(Block block) {
-        if (NMSUtils.class_Waterlogged == null || NMSUtils.class_Waterlogged_setWaterloggedMethod == null
-            || NMSUtils.class_Block_setBlockDataMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return false;
-        }
-
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            if (blockData == null) return false;
-            return NMSUtils.class_Waterlogged.isAssignableFrom(blockData.getClass());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        BlockData blockData = block.getBlockData();
+        return blockData != null && blockData instanceof Waterlogged;
     }
 
     @Override
     public boolean setWaterlogged(Block block, boolean waterlogged) {
-        if (NMSUtils.class_Waterlogged == null || NMSUtils.class_Waterlogged_setWaterloggedMethod == null
-            || NMSUtils.class_Block_setBlockDataMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return false;
-        }
-
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            if (blockData == null) return false;
-            if (!NMSUtils.class_Waterlogged.isAssignableFrom(blockData.getClass())) return false;
-            NMSUtils.class_Waterlogged_setWaterloggedMethod.invoke(blockData, waterlogged);
-            NMSUtils.class_Block_setBlockDataMethod.invoke(block, blockData, true);
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Waterlogged)) return false;
+        Waterlogged waterlogger = (Waterlogged)blockData;
+        waterlogger.setWaterlogged(waterlogged);
+        block.setBlockData(waterlogger, true);
+        return true;
     }
 
     protected boolean setPoweredLegacy(Block block, boolean powered) {
@@ -2151,19 +2140,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public boolean setTopHalf(Block block) {
-        if (NMSUtils.class_Bisected == null) {
-            return setTopHalfLegacy(block);
-        }
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            if (blockData == null || !NMSUtils.class_Bisected.isAssignableFrom(blockData.getClass())) return false;
-            NMSUtils.class_Bisected_setHalfMethod.invoke(blockData, NMSUtils.enum_BisectedHalf_TOP);
-            NMSUtils.class_Block_setBlockDataMethod.invoke(block, blockData, false);
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Bisected)) return false;
+        Bisected bisected = (Bisected)blockData;
+        bisected.setHalf(Bisected.Half.TOP);
+        block.setBlockData(bisected, false);
+        return true;
     }
 
     protected boolean setTopHalfLegacy(Block block) {
@@ -2244,14 +2226,186 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean setRecipeGroup(Recipe recipe, String group) {
-        if (!(recipe instanceof ShapedRecipe)) return false;
-        if (NMSUtils.class_Recipe_setGroupMethod == null) return false;
+    public void setMaterialCooldown(Player player, Material material, int duration) {
+        player.setCooldown(material, duration);
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material, String blockData) {
+        if (blockData != null) {
+            player.sendBlockChange(location, platform.getPlugin().getServer().createBlockData(blockData));
+        } else {
+            super.sendBlockChange(player, location, material, blockData);
+        }
+    }
+
+    @Override
+    @Nonnull
+    public FallingBlock spawnFallingBlock(Location location, Material material, String blockDataString) {
+        if (blockDataString != null && !blockDataString.isEmpty()) {
+            BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
+            return location.getWorld().spawnFallingBlock(location, blockData);
+        }
+
+        return super.spawnFallingBlock(location, material, blockDataString);
+    }
+
+    @Override
+    public void setSnowLevel(Block block, int level) {
+        BlockData blockData = block.getBlockData();
+        if (blockData instanceof Snow) {
+            Snow snow = (Snow)blockData;
+            snow.setLayers(level);
+            block.setBlockData(blockData);
+        }
+    }
+
+    @Override
+    public int getSnowLevel(Block block) {
+        int level = 0;
+        BlockData blockData = block.getBlockData();
+        if (blockData instanceof Snow) {
+            Snow snow = (Snow)blockData;
+            level = snow.getLayers();
+        }
+        return level;
+    }
+
+    @Override
+    public boolean isArrow(Entity projectile) {
+        return projectile instanceof AbstractArrow;
+    }
+
+    @SuppressWarnings("deprecation")
+    protected RecipeChoice getChoice(ItemStack item, boolean ignoreDamage) {
+        RecipeChoice.ExactChoice exactChoice;
+        short maxDurability = item.getType().getMaxDurability();
+        if (ignoreDamage && maxDurability > 0) {
+            List<ItemStack> damaged = new ArrayList<>();
+            for (short damage = 0; damage < maxDurability; damage++) {
+                item = item.clone();
+                ItemMeta meta = item.getItemMeta();
+                if (meta == null || !(meta instanceof org.bukkit.inventory.meta.Damageable))  break;
+                org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable)meta;
+                damageable.setDamage(damage);
+                item.setItemMeta(meta);
+                damaged.add(item);
+            }
+            // Not really deprecated, just a draft API at this point but it works.
+            exactChoice = new RecipeChoice.ExactChoice(damaged);
+        } else {
+            exactChoice = new RecipeChoice.ExactChoice(item);
+        }
+        return exactChoice;
+    }
+
+    @Override
+    public FurnaceRecipe createFurnaceRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
         try {
-            NMSUtils.class_Recipe_setGroupMethod.invoke(recipe, group);
+            RecipeChoice choice = getChoice(source, ignoreDamage);
+            return new FurnaceRecipe(namespacedKey, item, choice, experience, cookingTime);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating furnace recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Recipe createBlastingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
+        try {
+            RecipeChoice choice = getChoice(source, ignoreDamage);
+            return new BlastingRecipe(namespacedKey, item, choice, experience, cookingTime);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating blasting recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Recipe createCampfireRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
+        try {
+            RecipeChoice choice = getChoice(source, ignoreDamage);
+            return new CampfireRecipe(namespacedKey, item, choice, experience, cookingTime);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating campfire recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Recipe createSmokingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
+        try {
+            RecipeChoice choice = getChoice(source, ignoreDamage);
+            return new SmokingRecipe(namespacedKey, item, choice, experience, cookingTime);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating smoking recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Recipe createStonecuttingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
+        try {
+            RecipeChoice choice = getChoice(source, ignoreDamage);
+            return new StonecuttingRecipe(namespacedKey, item, choice);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating stonecutting recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public ShapelessRecipe createShapelessRecipe(String key, ItemStack item, Collection<ItemStack> ingredients, boolean ignoreDamage) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null) {
+            return null;
+        }
+        ShapelessRecipe recipe;
+        try {
+            recipe = new ShapelessRecipe(namespacedKey, item);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating shapeless recipe", ex);
+            return null;
+        }
+        for (ItemStack ingredient : ingredients) {
+            recipe.addIngredient(getChoice(ingredient, ignoreDamage));
+        }
+        return recipe;
+    }
+
+    @Override
+    public boolean setRecipeGroup(Recipe recipe, String group) {
+        if (recipe instanceof ShapedRecipe) {
+            ((ShapedRecipe)recipe).setGroup(group);
             return true;
-        } catch (Throwable e) {
-            e.printStackTrace();
+        }
+        if (recipe instanceof CookingRecipe) {
+            ((CookingRecipe<?>)recipe).setGroup(group);
+            return true;
+        }
+        if (recipe instanceof StonecuttingRecipe) {
+            ((StonecuttingRecipe)recipe).setGroup(group);
+            return true;
         }
         return false;
     }
@@ -2589,6 +2743,26 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
+    public Collection<BoundingBox> getBoundingBoxes(Block block) {
+        VoxelShape voxelShape = block.getCollisionShape();
+        Collection<org.bukkit.util.BoundingBox> boxes = voxelShape.getBoundingBoxes();
+        if (boxes.isEmpty()) {
+            return super.getBoundingBoxes(block);
+        }
+        List<BoundingBox> converted = new ArrayList<>(boxes.size());
+        Vector center = block.getLocation().toVector();
+
+        for (org.bukkit.util.BoundingBox bukkitBB : boxes) {
+            converted.add(new BoundingBox(center,
+                    bukkitBB.getMinX(), bukkitBB.getMaxX(),
+                    bukkitBB.getMinY(), bukkitBB.getMaxY(),
+                    bukkitBB.getMinZ(), bukkitBB.getMaxZ())
+            );
+        }
+        return converted;
+    }
+
+    @Override
     public BoundingBox getHitbox(Entity entity) {
         if (NMSUtils.class_Entity_getBoundingBox != null) {
             try {
@@ -2620,13 +2794,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType) {
-        BlockState blockState = doorBlocks[0].getState();
-        MaterialData data = blockState.getData();
-        if (!(data instanceof Door)) {
+        BlockData blockData = doorBlocks[0].getBlockData();
+        if (!(blockData instanceof org.bukkit.block.data.type.Door)) {
             return false;
         }
-        Door doorData = (Door)data;
-
+        org.bukkit.block.data.type.Door doorData = (Door)blockData;
         switch (actionType) {
             case OPEN:
                 if (doorData.isOpen()) {
@@ -2645,19 +2817,18 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             default:
                 return false;
         }
-        blockState.setData(doorData);
-        blockState.update();
+        // Going to assume we only need to update one of them?
+        doorBlocks[0].setBlockData(doorData);
         return true;
     }
 
     @Override
     public boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType) {
-        BlockState blockState = doorBlocks[0].getState();
-        MaterialData data = blockState.getData();
-        if (!(data instanceof Door)) {
+        BlockData blockData = doorBlocks[0].getBlockData();
+        if (!(blockData instanceof org.bukkit.block.data.type.Door)) {
             return false;
         }
-        Door doorData = (Door)data;
+        org.bukkit.block.data.type.Door doorData = (org.bukkit.block.data.type.Door)blockData;
         switch (actionType) {
             case OPEN:
                 return !doorData.isOpen();
@@ -2672,14 +2843,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public Block[] getDoorBlocks(Block targetBlock) {
-        BlockState blockState = targetBlock.getState();
-        MaterialData data = blockState.getData();
-        if (!(data instanceof Door)) {
+        BlockData blockData = targetBlock.getBlockData();
+        if (!(blockData instanceof org.bukkit.block.data.type.Door)) {
             return null;
         }
+        org.bukkit.block.data.type.Door doorData = (org.bukkit.block.data.type.Door)blockData;
         Block[] doorBlocks = new Block[2];
-        Door doorData = (Door)data;
-        if (doorData.isTopHalf()) {
+        if (doorData.getHalf() == Bisected.Half.TOP) {
             doorBlocks[1] = targetBlock;
             doorBlocks[0] = targetBlock.getRelative(BlockFace.DOWN);
         } else {
@@ -2706,7 +2876,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public boolean isFilledMap(Material material) {
-        return material == Material.MAP;
+        return material == Material.FILLED_MAP;
     }
 
     @Override
