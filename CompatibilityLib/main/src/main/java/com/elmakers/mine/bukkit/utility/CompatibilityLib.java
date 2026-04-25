@@ -10,6 +10,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.event.EntityTransformListener;
+import com.elmakers.mine.bukkit.utility.event.TimeListener;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
@@ -22,8 +24,6 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.event.EntityTransformController;
-import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.event.TimeListener;
 
 public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
@@ -255,8 +255,8 @@ public class CompatibilityLib extends PlatformInterpreter {
         if (platform != null) {
             MageController controller = platform.getController();
             if (hasEntityTransformEvent()) {
-                EntityTransformController transformController = new EntityTransformController(controller);
-                pm.registerEvents(transformController, controller.getPlugin());
+                EntityTransformListener transformListener = new EntityTransformListener(controller);
+                pm.registerEvents(transformListener, controller.getPlugin());
             }
 
             if (hasTimeSkipEvent()) {
