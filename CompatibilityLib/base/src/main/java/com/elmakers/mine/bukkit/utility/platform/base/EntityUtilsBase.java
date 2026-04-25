@@ -11,14 +11,12 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Slime;
-import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
@@ -27,21 +25,32 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAbstractPiglinData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityArmorStandData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCatData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCreeperData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityDroppedItemData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderDragonData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEndermiteData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFallingBlockData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFoxData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityItemFrameData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityLlamaData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityMooshroomData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityMuleData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPaintingData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityParrotData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityRabbitData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySheepData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityShulkerData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySlimeData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityVillagerData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityWolfData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieVillagerData;
 
 public abstract class EntityUtilsBase implements EntityUtils {
     protected final Platform platform;
@@ -52,39 +61,71 @@ public abstract class EntityUtilsBase implements EntityUtils {
 
     @Override
     public EntityExtraData getExtraData(MageController controller, Entity entity) {
-        EntityExtraData extraData = null;
-        if (entity instanceof Horse) {
-            extraData = new EntityHorseData((Horse)entity, controller);
-        } else if (entity instanceof Villager) {
-            extraData = new EntityVillagerData((Villager)entity);
-        } else if (entity instanceof Wolf) {
-            extraData = new EntityWolfData(entity);
-        } else if (entity instanceof Rabbit) {
-            extraData = new EntityRabbitData(entity);
-        } else if (entity instanceof ArmorStand) {
-            extraData = new EntityArmorStandData((ArmorStand)entity);
-        } else if (entity instanceof Zombie) {
-            extraData = new EntityZombieData((Zombie)entity);
-        } else if (entity instanceof AreaEffectCloud) {
-            extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
-        } else if (entity instanceof Slime) {
-            extraData = new EntitySlimeData((Slime)entity);
-        } else if (entity instanceof FallingBlock) {
-            extraData = new EntityFallingBlockData(entity, controller);
-        } else if (entity instanceof EnderDragon) {
-            extraData = new EntityEnderDragonData(entity);
-        } else if (entity instanceof Creeper) {
-            extraData = new EntityCreeperData(entity);
-        } else if (entity instanceof Painting) {
-            extraData = new EntityPaintingData(entity);
-        } else if (entity instanceof ItemFrame) {
-            extraData = new EntityItemFrameData(entity);
-        } else if (entity instanceof Item) {
-            extraData = new EntityDroppedItemData(entity);
-        } else if (entity instanceof Sheep) {
-            extraData = new EntitySheepData(entity);
+
+        switch (entity.getType()) {
+            case HORSE:
+                return new EntityHorseData(entity, controller);
+            case LLAMA:
+                return new EntityLlamaData(entity, controller);
+            case MULE:
+                return new EntityMuleData(entity, controller);
+            case ZOMBIE_VILLAGER:
+                return new EntityZombieVillagerData(entity);
+            case PARROT:
+                return new EntityParrotData(entity);
+            case SHULKER:
+                return new EntityShulkerData(entity);
+            case FALLING_BLOCK:
+                // Falling blocks overridden here to use BlockData
+                return new EntityFallingBlockData(entity, controller);
+            case FOX:
+                return new EntityFoxData(entity);
+            case CAT:
+                return new EntityCatData(entity);
+            case PHANTOM:
+                return new EntityPhantomData(entity);
+            case ENDERMITE:
+                return new EntityEndermiteData(entity);
+            case VILLAGER:
+                return new EntityVillagerData(entity);
+            case PIGLIN:
+            case PIGLIN_BRUTE:
+                return new EntityAbstractPiglinData(entity);
+            case MUSHROOM_COW:
+                return new EntityMooshroomData(entity);
+            default: {
+                // TODO: Make these part of the switch
+                EntityExtraData extraData = null;
+                if (entity instanceof Wolf) {
+                    extraData = new EntityWolfData(entity);
+                } else if (entity instanceof Rabbit) {
+                    extraData = new EntityRabbitData(entity);
+                } else if (entity instanceof ArmorStand) {
+                    extraData = new EntityArmorStandData((ArmorStand)entity);
+                } else if (entity instanceof Zombie) {
+                    extraData = new EntityZombieData((Zombie)entity);
+                } else if (entity instanceof AreaEffectCloud) {
+                    extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
+                } else if (entity instanceof Slime) {
+                    extraData = new EntitySlimeData((Slime)entity);
+                } else if (entity instanceof FallingBlock) {
+                    extraData = new EntityFallingBlockData(entity, controller);
+                } else if (entity instanceof EnderDragon) {
+                    extraData = new EntityEnderDragonData(entity);
+                } else if (entity instanceof Creeper) {
+                    extraData = new EntityCreeperData(entity);
+                } else if (entity instanceof Painting) {
+                    extraData = new EntityPaintingData(entity);
+                } else if (entity instanceof ItemFrame) {
+                    extraData = new EntityItemFrameData(entity);
+                } else if (entity instanceof Item) {
+                    extraData = new EntityDroppedItemData(entity);
+                } else if (entity instanceof Sheep) {
+                    extraData = new EntitySheepData(entity);
+                }
+                return extraData;
+            }
         }
-        return extraData;
     }
 
     @Override
@@ -99,7 +140,7 @@ public abstract class EntityUtilsBase implements EntityUtils {
             case RABBIT:
                 return new EntityRabbitData(parameters, controller);
             case ZOMBIE:
-            case PIG_ZOMBIE:
+            case ZOMBIFIED_PIGLIN:
                 return new EntityZombieData(parameters);
             case ARMOR_STAND:
                 return new EntityArmorStandData(parameters);
@@ -122,6 +163,29 @@ public abstract class EntityUtilsBase implements EntityUtils {
                 return new EntityDroppedItemData(parameters, controller);
             case SHEEP:
                 return new EntitySheepData(parameters, controller);
+            case MULE:
+                return new EntityMuleData(parameters, controller);
+            case LLAMA:
+                return new EntityLlamaData(parameters, controller);
+            case ZOMBIE_VILLAGER:
+                return new EntityZombieVillagerData(parameters, controller);
+            case PARROT:
+                return new EntityParrotData(parameters, controller);
+            case SHULKER:
+                return new EntityShulkerData(parameters);
+            case CAT:
+                return new EntityCatData(parameters, controller);
+            case FOX:
+                return new EntityFoxData(parameters, controller);
+            case PHANTOM:
+                return new EntityPhantomData(parameters);
+            case ENDERMITE:
+                return new EntityEndermiteData(parameters);
+            case PIGLIN:
+            case PIGLIN_BRUTE:
+                return new EntityAbstractPiglinData(parameters, controller);
+            case MUSHROOM_COW:
+                return new EntityMooshroomData(parameters, controller);
             default:
                 return null;
         }

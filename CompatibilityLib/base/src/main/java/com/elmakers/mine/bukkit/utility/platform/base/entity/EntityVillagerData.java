@@ -8,10 +8,14 @@ import org.bukkit.entity.Villager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
 public class EntityVillagerData extends EntityExtraData {
     protected Villager.Profession profession;
+    protected Villager.Type type;
+    protected Integer level;
+    protected Integer experience;
     protected boolean randomProfession;
 
     public EntityVillagerData(ConfigurationSection parameters, MageController controller) {
@@ -28,10 +32,26 @@ public class EntityVillagerData extends EntityExtraData {
                 }
             }
         }
+        String typeKey = parameters.getString("villager_type");
+        if (typeKey != null && !typeKey.isEmpty()) {
+            typeKey = typeKey.toUpperCase();
+            try {
+                type = Villager.Type.valueOf(typeKey);
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid villager_type: " + typeKey);
+            }
+        }
+        level = ConfigUtils.getOptionalInteger(parameters, "villager_level");
+        experience = ConfigUtils.getOptionalInteger(parameters, "villager_experience");
     }
 
-    public EntityVillagerData(Villager villager) {
+    public EntityVillagerData(Entity entity) {
+        if (!(entity instanceof Villager)) return;
+        Villager villager = (Villager)entity;
         profession = villager.getProfession();
+        level = villager.getVillagerLevel();
+        experience = villager.getVillagerExperience();
+        type = villager.getVillagerType();
         randomProfession = false;
     }
 
@@ -44,6 +64,15 @@ public class EntityVillagerData extends EntityExtraData {
             villager.setProfession(profession);
         } else if (profession != null) {
             villager.setProfession(profession);
+        }
+        if (level != null) {
+            villager.setVillagerLevel(level);
+        }
+        if (experience != null) {
+            villager.setVillagerExperience(experience);
+        }
+        if (type != null) {
+            villager.setVillagerType(type);
         }
     }
 

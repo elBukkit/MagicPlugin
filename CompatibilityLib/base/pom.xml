@@ -10,7 +10,7 @@
     <artifactId>CompatibilityLib-base</artifactId>
 
     <properties>
-        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.17-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>
@@ -31,6 +31,12 @@
             <artifactId>CompatibilityLib-paper</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.25</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
