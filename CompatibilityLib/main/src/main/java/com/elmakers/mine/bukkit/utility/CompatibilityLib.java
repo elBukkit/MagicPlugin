@@ -11,6 +11,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.event.EntityTransformListener;
+import com.elmakers.mine.bukkit.utility.event.TimeListener;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
@@ -23,8 +25,6 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.event.EntityTransformListener;
-import com.elmakers.mine.bukkit.utility.event.TimeListener;
 
 public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
