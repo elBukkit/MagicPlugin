@@ -5,10 +5,10 @@ import org.bukkit.plugin.PluginManager;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
+import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_3.event.EntityLoadEventHandler;
 
-public class Platform extends ModernPlatform {
+public class Platform extends PlatformBase {
     private Boolean hasEntityLoadEvent;
 
     public Platform(MageController controller) {

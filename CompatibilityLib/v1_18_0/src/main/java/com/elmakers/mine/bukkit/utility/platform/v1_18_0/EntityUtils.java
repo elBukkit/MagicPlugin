@@ -7,11 +7,12 @@ import org.bukkit.entity.EntityType;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.EntityUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_0.entity.EntityAxolotlData;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_0.entity.EntityEnderSignalData;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_0.entity.EntityGoatData;
 
-public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.base.EntityUtilsBase  {
+public class EntityUtils extends EntityUtilsBase {
     public EntityUtils(final Platform platform) {
         super(platform);
     }

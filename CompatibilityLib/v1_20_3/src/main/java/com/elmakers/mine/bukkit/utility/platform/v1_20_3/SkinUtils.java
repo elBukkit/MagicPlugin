@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_20_3;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernSkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.SkinUtilsBase;
 import com.mojang.authlib.properties.Property;
 
-public class SkinUtils extends ModernSkinUtils {
+public class SkinUtils extends SkinUtilsBase {
 
     public SkinUtils(Platform platform) {
         super(platform);
