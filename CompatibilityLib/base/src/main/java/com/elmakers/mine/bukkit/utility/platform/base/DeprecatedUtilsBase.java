@@ -77,7 +77,9 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public short getMapId(MapView mapView) {
-        return mapView.getId();
+        // MapView id is now an int- we proabably should update our own code
+        // and change this to an int
+        return (short)mapView.getId();
     }
 
     @Override
@@ -131,12 +133,12 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public DyeColor getBaseColor(BannerMeta banner) {
-        return banner.getBaseColor();
+        return DyeColor.WHITE;
     }
 
     @Override
     public void setBaseColor(BannerMeta banner, DyeColor color) {
-        banner.setBaseColor(color);
+        // Can't actually do this anymore, different banner colors are different materials
     }
 
     @Override
@@ -261,11 +263,25 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public Biome getBiome(Location location) {
-        return location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
+        return location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     @Override
     public ItemStack createItemStack(Material material, int amount, short legacyData) {
         return new ItemStack(material, amount, legacyData);
+    }
+
+    @Override
+    public void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics) {
+        block.setType(material, applyPhysics);
+    }
+
+    @Override
+    public void setSkullType(Skull skullBlock, short skullType) {
+    }
+
+    @Override
+    public short getSkullType(Skull skullBlock) {
+        return 0;
     }
 }

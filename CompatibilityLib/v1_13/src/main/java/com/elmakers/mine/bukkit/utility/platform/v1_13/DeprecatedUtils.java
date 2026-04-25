@@ -8,14 +8,5 @@ public class DeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.l
     public DeprecatedUtils(Platform platform) {
         super(platform);
     }
-
-    @Override
-    public void setSkullType(Skull skullBlock, short skullType) {
-    }
-
-    @Override
-    public short getSkullType(Skull skullBlock) {
-        return 0;
-    }
 }
 
