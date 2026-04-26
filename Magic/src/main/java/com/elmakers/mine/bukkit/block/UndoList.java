@@ -199,8 +199,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         // TODO: Special handling for pistons?
         // Maybe beds too?
-        // Doors .. could be a lot of special-caees here that don't rely on
-        // prxomity searches
+        // Doors .. could be a lot of special-cses here that don't rely on
+        // proximity searches
         clearAttachables(block, BlockFace.NORTH, attachablesWall);
         clearAttachables(block, BlockFace.SOUTH, attachablesWall);
         clearAttachables(block, BlockFace.EAST, attachablesWall);
