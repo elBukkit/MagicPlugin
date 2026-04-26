@@ -1799,103 +1799,60 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation) {
-        return false;
+        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
     }
 
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID) {
-        return false;
-    }
-
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
-        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
-    }
-
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
-        if (NMSUtils.class_ItemMeta_addAttributeModifierMethod != null) {
-            try {
-                AttributeModifier.Operation operation;
-                try {
-                     operation = AttributeModifier.Operation.values()[attributeOperation];
-                } catch (Throwable ex) {
-                    platform.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
-                    return false;
-                }
-                ItemMeta meta = item.getItemMeta();
-                AttributeModifier modifier;
-                if (slot != null && !slot.isEmpty()) {
-                    EquipmentSlot equipmentSlot;
-                    try {
-                        if (slot.equalsIgnoreCase("mainhand")) {
-                            equipmentSlot = EquipmentSlot.HAND;
-                        } else if (slot.equalsIgnoreCase("offhand")) {
-                            equipmentSlot = EquipmentSlot.OFF_HAND;
-                        } else {
-                            equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
-                        }
-                    } catch (Throwable ex) {
-                        platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
-                        return false;
-                    }
-
-                    modifier = (AttributeModifier) NMSUtils.class_AttributeModifier_constructor.newInstance(
-                        attributeUUID, "Equipment Modifier", value, operation, equipmentSlot);
-                } else {
-                    modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation);
-                }
-                NMSUtils.class_ItemMeta_addAttributeModifierMethod.invoke(meta, attribute, modifier);
-                item.setItemMeta(meta);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
-            return true;
-        }
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
         try {
-            Object handle = platform.getItemUtils().getHandle(item);
-            if (handle == null) {
-                return false;
-            }
-            Object tag = platform.getItemUtils().getOrCreateTag(handle);
-            if (tag == null) return false;
-
-            Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");
-            Object attributeNode = null;
-
-            String attributeName = toMinecraftAttribute(attribute);
-            if (attributesNode == null) {
-                attributesNode = NMSUtils.class_NBTTagList_constructor.newInstance();
-                NMSUtils.class_NBTTagCompound_setMethod.invoke(tag, "AttributeModifiers", attributesNode);
-            } else {
-                int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(attributesNode);
-                for (int i = 0; i < size; i++) {
-                    Object candidate = NMSUtils.class_NBTTagList_getMethod.invoke(attributesNode, i);
-                    String key = platform.getNBTUtils().getString(candidate, "AttributeName");
-                    if (key.equals(attributeName)) {
-                        attributeNode = candidate;
-                        break;
+            AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
+            if (attributeOperation != null && !attributeOperation.isEmpty()) {
+                try {
+                    int operationIndex = Integer.parseInt(attributeOperation);
+                    operation = AttributeModifier.Operation.values()[operationIndex];
+                } catch (Throwable ignore) {
+                    try {
+                        operation = AttributeModifier.Operation.valueOf(attributeOperation.toUpperCase());
+                    } catch (Throwable ex) {
+                        platform.getLogger().warning("Invalid operation " + attributeOperation);
                     }
                 }
             }
-            if (attributeNode == null) {
-                attributeNode = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-                platform.getNBTUtils().setString(attributeNode, "AttributeName", attributeName);
-                platform.getNBTUtils().setString(attributeNode, "Name", "Equipment Modifier");
-                platform.getNBTUtils().setInt(attributeNode, "Operation", attributeOperation);
-                platform.getNBTUtils().setLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
-                platform.getNBTUtils().setLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
-                if (slot != null) {
-                    platform.getNBTUtils().setString(attributeNode, "Slot", slot);
-                }
 
-                platform.getNBTUtils().addToList(attributesNode, attributeNode);
-            }
-            platform.getNBTUtils().setDouble(attributeNode, "Amount", value);
+            EquipmentSlot equipmentSlot = parseEquipmentSlotGroup(slot);
+            AttributeModifier modifier = createAttributeModifier(attributeUUID, value, operation, equipmentSlot);
+            meta.addAttributeModifier(attribute, modifier);
+            item.setItemMeta(meta);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public EquipmentSlot parseEquipmentSlotGroup(String slot) {
+        EquipmentSlot equipmentSlotGroup = null;
+        if (slot != null && !slot.isEmpty()) {
+            try {
+                if (slot.equalsIgnoreCase("mainhand")) {
+                    equipmentSlotGroup = EquipmentSlot.HAND;
+                } else if (slot.equalsIgnoreCase("offhand")) {
+                    equipmentSlotGroup = EquipmentSlot.OFF_HAND;
+                } else {
+                    equipmentSlotGroup = EquipmentSlot.valueOf(slot.toUpperCase());
+                }
+            } catch (Throwable ex) {
+                platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
+            }
+        }
+        return equipmentSlotGroup;
+    }
+
+    protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlot equipmentSlot) {
+        return new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlot);
     }
 
     @Override
