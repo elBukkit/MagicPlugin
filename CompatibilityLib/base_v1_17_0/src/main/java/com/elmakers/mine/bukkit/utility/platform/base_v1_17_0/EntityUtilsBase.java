@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityAbstractPiglinData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityArmorStandData;
@@ -40,6 +41,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityItemF
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityLlamaData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityMooshroomData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityMuleData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityPaintingData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityParrotData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity.EntityPhantomData;
@@ -199,5 +201,19 @@ public class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getItemFrameData(ItemStack item, BlockFace direction, Rotation rotation) {
         return new EntityItemFrameData(item, direction, rotation);
+    }
+
+    @Override
+    public EntityType getEntityType(VersionedEntityType entityType) {
+        switch (entityType) {
+            case TNT: return EntityType.PRIMED_TNT;
+            case ITEM: return EntityType.DROPPED_ITEM;
+            default: return EntityType.UNKNOWN;
+        }
+    }
+
+    @Override
+    public EntityExtraData getNMSData(MageController controller, Object tag) {
+        return new EntityNMSData(platform, tag);
     }
 }

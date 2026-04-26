@@ -11,8 +11,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -94,6 +96,7 @@ import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.BlastingRecipe;
@@ -114,6 +117,7 @@ import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
@@ -140,6 +144,8 @@ import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.map.BufferedMapCanvas;
 import com.google.common.io.BaseEncoding;
 
 public class CompatibilityUtilsBase implements CompatibilityUtils {
@@ -167,6 +173,12 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     protected final Map<World, WeakReference<ThrownPotion>> worldPotions = new WeakHashMap<>();
     public Map<Integer, Material> materialIdMap;
     protected final Platform platform;
+
+    private static final PotionEffectType[] _negativeEffects =
+            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
+                    PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
+                    PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
+    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
     protected CompatibilityUtilsBase(final Platform platform) {
         this.platform = platform;
@@ -761,7 +773,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         }
     }
 
-    @Override
     @SuppressWarnings("deprecation")
     public Material getMaterial(int id, byte data) {
         Material material = getMaterial(id);
@@ -774,7 +785,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return material;
     }
 
-    @Override
     @SuppressWarnings("deprecation")
     public Material getMaterial(int id) {
         if (materialIdMap == null) {
@@ -816,13 +826,11 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return falling.getMaterial();
     }
 
-    @Override
     @SuppressWarnings("deprecation")
     public Material migrateMaterial(Material material, byte data) {
         return fromLegacy(new org.bukkit.material.MaterialData(material, data));
     }
 
-    @Override
     @SuppressWarnings("deprecation")
     public String migrateMaterial(String materialKey) {
         if (materialKey == null || materialKey.isEmpty()) return materialKey;
@@ -1790,11 +1798,19 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation) {
+        return false;
+    }
+
+    @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID) {
+        return false;
+    }
+
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
         return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
     }
 
-    @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
         if (NMSUtils.class_ItemMeta_addAttributeModifierMethod != null) {
             try {
@@ -2126,17 +2142,16 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return teleporting;
     }
 
-    @Override
     public void playRecord(Location location, Material record) {
         if (platform.isLegacy()) {
+            DeprecatedUtilsBase deprecatedUtils = ((DeprecatedUtilsBase)platform.getDeprecatedUtils());
             location.getWorld().playEffect(location, Effect.RECORD_PLAY,
-                    platform.getDeprecatedUtils().getId(record));
+                    deprecatedUtils.getId(record));
         } else {
             location.getWorld().playEffect(location, Effect.RECORD_PLAY, record);
         }
     }
 
-    @Override
     public void cancelDismount(EntityDismountEvent event) {
         event.setCancelled(true);
     }
@@ -2456,7 +2471,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         li.setMaxHealth(maxHealth);
     }
 
-    @Override
     public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
@@ -2484,12 +2498,10 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return materialData.getItemType();
     }
 
-    @Override
     public boolean hasLegacyMaterials() {
         return NMSUtils.class_Material_isLegacyMethod != null;
     }
 
-    @Override
     public boolean isLegacy(Material material) {
         if (NMSUtils.class_Material_isLegacyMethod == null) {
             return false;
@@ -2502,7 +2514,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return false;
     }
 
-    @Override
     public Material getLegacyMaterial(String materialName) {
         if (NMSUtils.class_Material_getLegacyMethod != null) {
             try {
@@ -2562,7 +2573,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return false;
     }
 
-    @Override
     public boolean hasBlockDataSupport() {
         return NMSUtils.class_Block_getBlockDataMethod != null;
     }
@@ -2832,12 +2842,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         Bisected bisected = (Bisected)blockData;
         bisected.setHalf(Bisected.Half.TOP);
         block.setBlockData(bisected, false);
-        return true;
-    }
-
-    protected boolean setTopHalfLegacy(Block block) {
-        byte data = platform.getDeprecatedUtils().getData(block);
-        platform.getDeprecatedUtils().setTypeAndData(block, block.getType(), (byte)(data | 8), false);
         return true;
     }
 
@@ -3453,7 +3457,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return false;
     }
 
-    @Override
     public boolean isLegacyRecipes() {
         return NMSUtils.class_RecipeChoice_ExactChoice == null || NMSUtils.class_NamespacedKey == null;
     }
@@ -3745,7 +3748,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
     {
         try {
-            Set<String> keys = platform.getInventoryUtils().getTagKeys(tag);
+            InventoryUtilsBase inventoryUtils = ((InventoryUtilsBase)platform.getInventoryUtils());
+            Set<String> keys = inventoryUtils.getTagKeys(tag);
             if (keys == null) return false;
 
             for (String tagName : keys) {
@@ -3755,7 +3759,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                         ConfigurationSection newSection = tags.createSection(tagName);
                         loadAllTagsFromNBT(newSection, metaBase);
                     } else {
-                        tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
+                        tags.set(tagName, inventoryUtils.getTagValue(metaBase));
                     }
                 }
             }
@@ -3892,7 +3896,37 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public PotionEffectType getJumpPotionEffectType() {
-        return PotionEffectType.JUMP;
+    public Set<PotionEffectType> getNegativeEffects() {
+        return negativeEffects;
+    }
+
+    @Override
+    public boolean isDestructive(EntityExplodeEvent explosion) {
+        return true;
+    }
+
+    @Override
+    public Attribute getMinecraftAttribute(String attributeKey) {
+        return Attribute.valueOf(attributeKey.toUpperCase());
+    }
+
+    @Override
+    public PotionEffectType getPotionEffectType(VersionedPotionEffectType type) {
+        switch (type) {
+            case NAUSEA: return PotionEffectType.CONFUSION;
+            case JUMP_BOOST: return PotionEffectType.JUMP;
+            case RESISTANCE: return PotionEffectType.DAMAGE_RESISTANCE;
+            default: throw new RuntimeException("Unhandled PotionEffectType: " + type);
+        }
+    }
+
+    @Override
+    public void renderMap(MapRenderer renderer, MapView map, com.elmakers.mine.bukkit.map.BufferedMapCanvas canvas, Player player) {
+        renderer.render(map, (BufferedMapCanvas)canvas, player);
+    }
+
+    @Override
+    public BufferedMapCanvas createMapCanvas() {
+        return new BufferedMapCanvas();
     }
 }

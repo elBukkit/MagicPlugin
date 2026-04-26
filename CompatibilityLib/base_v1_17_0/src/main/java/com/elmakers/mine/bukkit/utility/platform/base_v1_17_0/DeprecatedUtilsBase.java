@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
@@ -45,25 +46,21 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
         player.updateInventory();
     }
 
-    @Override
     public byte getData(Block block) {
         // @deprecated Magic value
         return block.getData();
     }
 
-    @Override
     public byte getWoolData(DyeColor color) {
         // @deprecated Magic value
         return color.getWoolData();
     }
 
-    @Override
     public int getId(Material material) {
         // @deprecated Magic value
         return material.getId();
     }
 
-    @Override
     public int getTypeId(Block block) {
         // @deprecated Magic value
         return block.getType().getId();
@@ -76,10 +73,10 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     }
 
     @Override
-    public short getMapId(MapView mapView) {
+    public int getMapId(MapView mapView) {
         // MapView id is now an int- we proabably should update our own code
         // and change this to an int
-        return (short)mapView.getId();
+        return mapView.getId();
     }
 
     @Override
@@ -118,39 +115,33 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
         return Bukkit.getPlayerExact(name);
     }
 
-    @Override
     public FallingBlock spawnFallingBlock(Location location,
                                           Material material, byte data) {
         // @deprecated Magic value
         return location.getWorld().spawnFallingBlock(location, material, data);
     }
 
-    @Override
     public byte getRawData(BlockState state) {
         // @deprecated Magic value
         return state.getRawData();
     }
 
-    @Override
     public DyeColor getBaseColor(BannerMeta banner) {
         return DyeColor.WHITE;
     }
 
-    @Override
     public void setBaseColor(BannerMeta banner, DyeColor color) {
         // Can't actually do this anymore, different banner colors are different materials
-    }
-
-    @Override
+    }@Override
     public void setSkullOwner(final ItemStack itemStack, String ownerName, final SkullLoadedCallback callback) {
         platform.getSkinUtils().fetchProfile(ownerName, new ProfileCallback() {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
+                    PlayerProfile playerProfile = response.getPlayerProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        platform.getInventoryUtils().setSkullProfile(meta, gameProfile);
+                        playerProfile.update((SkullMeta)meta);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -167,10 +158,10 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
+                    PlayerProfile playerProfile = response.getPlayerProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        platform.getInventoryUtils().setSkullProfile(meta, gameProfile);
+                        playerProfile.update((SkullMeta)meta);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -187,8 +178,8 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
-                    platform.getInventoryUtils().setSkullProfile(skull, gameProfile);
+                    PlayerProfile playerProfile = response.getPlayerProfile();
+                    playerProfile.update(skull);
                 }
                 skull.update(true, false);
             }
@@ -201,8 +192,8 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
-                    platform.getInventoryUtils().setSkullProfile(skull, gameProfile);
+                    PlayerProfile playerProfile = response.getPlayerProfile();
+                    playerProfile.update(skull);
                 }
                 skull.update(true, false);
             }

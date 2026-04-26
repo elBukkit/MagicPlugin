@@ -2,11 +2,15 @@ package com.elmakers.mine.bukkit.utility.platform.base_v1_17_0;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -168,7 +172,7 @@ public class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
         return setTag(spawnEgg, "EntityTag", entityData);
     }
 
@@ -544,5 +548,60 @@ public class NBTUtilsBase implements NBTUtils {
             platform.getLogger().log(Level.WARNING, "Error creating new Compoundtag", ex);
         }
         return tag;
+    }
+
+    @Override
+    public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
+        return false;
+    }
+
+    @Override
+    public boolean saveTagsToNBT(ConfigurationSection tags, Object node) {
+        return false;
+    }
+
+    @Override
+    public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
+        return false;
+    }
+
+    @Override
+    public boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames) {
+        return false;
+    }
+
+    @Override
+    public boolean addTagsToNBT(Map<String, Object> tags, Object node) {
+        return false;
+    }
+
+    @Override
+    public Object wrapInTag(Object value) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        return null;
+    }
+
+    @Override
+    public Set<String> getTagKeys(Object tag) {
+        return Set.of();
+    }
+
+    @Override
+    public Object getMetaObject(Object tag, String key) {
+        return null;
+    }
+
+    @Override
+    public Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
+        return null;
+    }
+
+    @Override
+    public void convertIntegers(Map<String, Object> m) {
+
+    }
+
+    @Override
+    public Object getCompoundTagFromCustomData(Object customData) {
+        return null;
     }
 }

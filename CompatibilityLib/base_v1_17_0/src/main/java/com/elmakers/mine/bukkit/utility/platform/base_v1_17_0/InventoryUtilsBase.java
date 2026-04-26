@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -64,7 +63,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return null;
     }
 
-    @Override
     public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
         Object handle = platform.getItemUtils().getHandle(item);
         if (handle == null) return false;
@@ -74,7 +72,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return addTagsToNBT(ConfigUtils.toMap(tags), tag);
     }
 
-    @Override
     public boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
     {
         Object handle = platform.getItemUtils().getHandle(item);
@@ -211,22 +208,14 @@ public class InventoryUtilsBase implements InventoryUtils {
             // entity vs item modifiers work, enough that it makes sense to keep the two separate
             try {
                 double value = 0;
-                int operation = 0;
+                String operation = null;
                 UUID uuid = null;
                 ConfigurationSection attributeConfiguration = attributeConfig.getConfigurationSection(attributeKey);
                 if (attributeConfiguration != null) {
                     attributeKey = attributeConfiguration.getString("attribute", attributeKey);
                     value = attributeConfiguration.getDouble("value");
                     slot = attributeConfiguration.getString("slot", slot);
-                    String operationKey = attributeConfiguration.getString("operation");
-                    if (operationKey != null && !operationKey.isEmpty()) {
-                        try {
-                            AttributeModifier.Operation eOperation = AttributeModifier.Operation.valueOf(operationKey.toUpperCase());
-                            operation = eOperation.ordinal();
-                        } catch (Exception ex) {
-                            platform.getLogger().warning("Invalid operation " + operationKey);
-                        }
-                    }
+                    operation = attributeConfiguration.getString("operation");
                     String uuidString = attributeConfiguration.getString("uuid");
                     if (uuidString != null && !uuidString.isEmpty()) {
                         try {
@@ -383,7 +372,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return mapItem;
     }
 
-    @Override
     public void convertIntegers(Map<String, Object> m) {
         for (Map.Entry<String, Object> entry : m.entrySet()) {
             Object value = entry.getValue();
@@ -522,7 +510,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return null;
     }
 
-    @Override
     public boolean addTagsToNBT(Map<String, Object> tags, Object node)
     {
         if (node == null) {
@@ -548,17 +535,14 @@ public class InventoryUtilsBase implements InventoryUtils {
         return true;
     }
 
-    @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node) {
         return saveTagsToNBT(tags, node, null);
     }
 
-    @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
         return saveTagsToNBT(ConfigUtils.toMap(tags), node, tagNames);
     }
 
-    @Override
     public boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
@@ -606,7 +590,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return true;
     }
 
-    @Override
     public Object wrapInTag(Object value)
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
         if (value == null) return null;
@@ -675,7 +658,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return wrappedValue;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public Set<String> getTagKeys(Object tag) {
         if (tag == null || NMSUtils.class_NBTTagCompound_getKeysMethod == null) {
@@ -690,7 +672,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return null;
     }
 
-    @Override
     public Object getMetaObject(Object tag, String key) {
         try {
             Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
@@ -701,7 +682,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return null;
     }
 
-    @Override
     public Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
         if (tag == null) return null;
         Object value = null;
@@ -802,7 +782,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return setSkullURL(itemStack, url, id, "MHF_Question");
     }
 
-    @Override
     public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
             itemStack = platform.getItemUtils().makeReal(itemStack);
@@ -818,7 +797,7 @@ public class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public String getSkullURL(ItemStack skull) {
-        return platform.getSkinUtils().getProfileURL(getSkullProfile(skull.getItemMeta()));
+        return ((SkinUtilsBase)platform.getSkinUtils()).getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
     @Override
@@ -829,7 +808,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return NMSUtils.class_CraftMetaSkull.isInstance(meta);
     }
 
-    @Override
     public Object getSkullProfile(ItemMeta itemMeta)
     {
         Object profile = null;
@@ -842,7 +820,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return profile;
     }
 
-    @Override
     public Object getSkullProfile(Skull state)
     {
         Object profile = null;
@@ -855,7 +832,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return profile;
     }
 
-    @Override
     public boolean setSkullProfile(ItemMeta itemMeta, Object data)
     {
         try {
@@ -872,7 +848,6 @@ public class InventoryUtilsBase implements InventoryUtils {
         return false;
     }
 
-    @Override
     public boolean setSkullProfile(Skull state, Object data)
     {
         try {
