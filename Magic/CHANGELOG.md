@@ -1,7 +1,12 @@
 
 # CHANGELOG
 
-# 10.11.2
+# 11.0
+
+## Backwards Compatibility
+
+ - Requires Java 17 to run
+ - Compatible from Spigot/Paper 1.17 up
 
 ## FIXES
 
