@@ -15,8 +15,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,7 +23,6 @@ import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -448,17 +445,6 @@ public class ItemUtilsBase implements ItemUtils {
                 }
             }
         }
-
-        // TODO: Make this work...
-        String blockDataString = configuration.getString("block");
-        if (blockDataString != null && !blockDataString.isEmpty() && itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
-            BlockData blockData = controller.getPlugin().getServer().createBlockData(blockDataString);
-            BlockState blockState = blockData == null ? null : blockData.createBlockState();
-            if (blockState != null) {
-                blockStateMeta.setBlockState(blockState);
-            }
-        }
     }
 
     @Override
@@ -546,17 +532,6 @@ public class ItemUtilsBase implements ItemUtils {
                 itemMeta.removeAttributeModifier(attribute, modifier);
             }
             configuration.set("attributes", modifierList);
-        }
-
-        // TODO: Make this work
-        if (itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
-            if (blockStateMeta.hasBlockState()) {
-                BlockState blockState = blockStateMeta.getBlockState();
-                configuration.set("block", blockState);
-                // Replace with default block state to make it as empty as possible
-                // blockStateMeta.setBlockState(Bukkit.createBlockData(itemStack.getType()).createBlockState());
-            }
         }
     }
 }

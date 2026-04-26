@@ -832,10 +832,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             itemSection.set("item", item);
         } else {
             ItemData itemData = new com.elmakers.mine.bukkit.item.ItemData(item, controller);
-            ItemStack itemStack = itemData.save(itemSection);
-            if (itemStack.hasItemMeta() || itemSection.contains("tags")) {
-                sender.sendMessage(ChatColor.RED + "Item had custom data, you may want to use " + ChatColor.AQUA + "/mitem serialize " + ChatColor.RED + "instead: " + ChatColor.GRAY + item.getItemMeta());
-            }
+            itemData.save(itemSection);
         }
 
         File itemFolder = new File(controller.getConfigFolder(), "items");

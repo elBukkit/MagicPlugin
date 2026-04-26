@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -16,6 +17,8 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -138,20 +141,37 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
             ConfigurationSection itemConfiguration = configuration.getConfigurationSection("item");
-            String materialKey = itemConfiguration.getString("type", key);
-            materialKey = cleanMinecraftItemName(materialKey);
-            MaterialAndData material = new MaterialAndData(materialKey);
-            if (material.isValid()) {
-                item = material.getItemStack(1);
-            }
-            if (item == null) {
-                throw new InvalidMaterialException("Invalid item key: " + materialKey);
-            }
+            if (itemConfiguration.getBoolean("bukkit")) {
+                // See note below on why this is serialized this way.
+                // This works around a huge headache with builtin serialized items and
+                // backwards compatibility.
+                // It is super hacky, but it works!
+                YamlConfiguration itemConfig = new YamlConfiguration();
+                itemConfig.set("item", itemConfiguration);
+                String itemConfigString = itemConfig.saveToString();
+                itemConfigString = itemConfigString.replace("bukkit: true", "==: org.bukkit.inventory.ItemStack");
+                try {
+                    itemConfig.loadFromString(itemConfigString);
+                    item = itemConfig.getItemStack("item");
+                } catch (InvalidConfigurationException ex) {
+                    controller.getLogger().log(Level.WARNING, "Failed to convert load serialized item from config", ex);
+                }
+            } else {
+                String materialKey = itemConfiguration.getString("type", key);
+                materialKey = cleanMinecraftItemName(materialKey);
+                MaterialAndData material = new MaterialAndData(materialKey);
+                if (material.isValid()) {
+                    item = material.getItemStack(1);
+                }
+                if (item == null) {
+                    throw new InvalidMaterialException("Invalid item key: " + materialKey);
+                }
 
-            ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
-            if (tagSection != null) {
-                item = CompatibilityLib.getItemUtils().makeReal(item);
-                nbtUtils.saveTagsToItem(tagSection, item);
+                ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
+                if (tagSection != null) {
+                    item = CompatibilityLib.getItemUtils().makeReal(item);
+                    nbtUtils.saveTagsToItem(tagSection, item);
+                }
             }
         } else {
             String materialKey = configuration.getString("item", key);
@@ -424,8 +444,22 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         CompatibilityLib.getItemUtils().removeCustomData(itemStack);
 
         if (itemStack.hasItemMeta()) {
-            // Save the remainder as a serialized item
-            configuration.set("item", itemStack);
+            // Save the remainder as a serialized item config
+            // Not an actual serialized item though because then we can't layer configs over it
+            // without bukkit throwing errors
+            YamlConfiguration itemConfig = new YamlConfiguration();
+            itemConfig.set("item", itemStack);
+
+            // This is so hacky, yo
+            String itemConfigString = itemConfig.saveToString();
+            itemConfigString = itemConfigString.replace("==: org.bukkit.inventory.ItemStack", "bukkit: true");
+            try {
+                itemConfig.loadFromString(itemConfigString);
+                configuration.set("item", itemConfig.getConfigurationSection("item"));
+            } catch (InvalidConfigurationException ex) {
+                controller.getLogger().log(Level.WARNING, "Failed to convert item to bukkit serialized format, saving as serialized item instead", ex);
+                configuration.set("item", itemStack);
+            }
         }
         return itemStack;
     }

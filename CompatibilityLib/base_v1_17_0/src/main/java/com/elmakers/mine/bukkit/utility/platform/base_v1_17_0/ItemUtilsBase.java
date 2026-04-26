@@ -11,13 +11,11 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -500,7 +498,6 @@ public class ItemUtilsBase implements ItemUtils {
             }
         }
 
-
         Multimap<Attribute, AttributeModifier> attributeModifiers = itemMeta.getAttributeModifiers();
         if (attributeModifiers != null && !attributeModifiers.isEmpty()) {
             List<ConfigurationSection> modifierList = new ArrayList<>();
@@ -518,17 +515,6 @@ public class ItemUtilsBase implements ItemUtils {
                 itemMeta.removeAttributeModifier(attribute, modifier);
             }
             configuration.set("attributes", modifierList);
-        }
-
-        // TODO: Make this work
-        if (itemMeta instanceof BlockStateMeta) {
-            BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
-            if (blockStateMeta.hasBlockState()) {
-                BlockState blockState = blockStateMeta.getBlockState();
-                configuration.set("block", blockState);
-                // Replace with default block state to make it as empty as possible
-                // blockStateMeta.setBlockState(Bukkit.createBlockData(itemStack.getType()).createBlockState());
-            }
         }
     }
 }
