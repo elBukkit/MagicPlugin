@@ -112,6 +112,7 @@ import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.CompatibilityUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.InventoryUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_2.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
@@ -1524,7 +1525,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     {
         if (!(tag instanceof CompoundTag)) return false;
         CompoundTag compoundTag = (CompoundTag) tag;
-        Set<String> keys = platform.getInventoryUtils().getTagKeys(tag);
+        InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
+        Set<String> keys = inventoryUtils.getTagKeys(tag);
         if (keys == null) return false;
         for (String tagName : keys) {
             Tag metaBase = compoundTag.get(tagName);
@@ -1534,7 +1536,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                     loadAllTagsFromNBT(newSection, metaBase);
                 } else {
                     try {
-                        tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
+                        tags.set(tagName, inventoryUtils.getTagValue(metaBase));
                     } catch (Exception ex) {
                         platform.getLogger().log(Level.SEVERE, "Failed to load NBT tags", ex);
                         return false;
@@ -1663,7 +1665,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         ((org.bukkit.entity.Mob)entity).setAware(aware);
     }
 
-    @Override
     public Object getProfile(Player player) {
         return ((CraftPlayer)player).getProfile();
     }
