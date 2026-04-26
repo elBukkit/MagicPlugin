@@ -282,8 +282,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                 break;
                             case "custom_model_data":
                             case "CustomModelData":
-                                if (value instanceof Integer) {
-                                    customModelData = (int)(Integer)value;
+                                if (value instanceof Number) {
+                                    customModelData = ((Number)value).intValue();
                                 } else {
                                     Bukkit.getLogger().info("[Magic] [" + originalKey + "] Unsupported CustomModelData value: " + value);
                                 }
