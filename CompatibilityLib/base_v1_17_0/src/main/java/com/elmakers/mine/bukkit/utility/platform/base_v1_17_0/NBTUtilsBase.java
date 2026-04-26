@@ -552,52 +552,52 @@ public class NBTUtilsBase implements NBTUtils {
 
     @Override
     public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
-        return false;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).saveTagsToItem(tags, item);
     }
 
     @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node) {
-        return false;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).saveTagsToNBT(tags, node);
     }
 
     @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
-        return false;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).saveTagsToNBT(tags, node, tagNames);
     }
 
     @Override
     public boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames) {
-        return false;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).saveTagsToNBT(tags, node, tagNames);
     }
 
     @Override
     public boolean addTagsToNBT(Map<String, Object> tags, Object node) {
-        return false;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).addTagsToNBT(tags, node);
     }
 
     @Override
     public Object wrapInTag(Object value) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        return null;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).wrapInTag(value);
     }
 
     @Override
     public Set<String> getTagKeys(Object tag) {
-        return Set.of();
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).getTagKeys(tag);
     }
 
     @Override
     public Object getMetaObject(Object tag, String key) {
-        return null;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).getMetaObject(tag, key);
     }
 
     @Override
     public Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
-        return null;
+        return ((InventoryUtilsBase)platform.getInventoryUtils()).getTagValue(tag);
     }
 
     @Override
-    public void convertIntegers(Map<String, Object> m) {
-
+    public void convertIntegers(Map<String, Object> map) {
+        ((InventoryUtilsBase)platform.getInventoryUtils()).convertIntegers(map);
     }
 
     @Override
