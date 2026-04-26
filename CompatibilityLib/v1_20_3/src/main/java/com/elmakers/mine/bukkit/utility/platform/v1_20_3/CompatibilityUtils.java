@@ -82,7 +82,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -896,48 +895,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             meta.removeAttributeModifier(attribute);
         }
         item.setItemMeta(meta);
-        return true;
-    }
-
-    @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
-        if (item == null) return false;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return false;
-        try {
-            AttributeModifier.Operation operation;
-            try {
-                operation = AttributeModifier.Operation.values()[attributeOperation];
-            } catch (Throwable ex) {
-                platform.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
-                return false;
-            }
-            AttributeModifier modifier;
-            if (slot != null && !slot.isEmpty()) {
-                EquipmentSlot equipmentSlot;
-                try {
-                    if (slot.equalsIgnoreCase("mainhand")) {
-                        equipmentSlot = EquipmentSlot.HAND;
-                    } else if (slot.equalsIgnoreCase("offhand")) {
-                        equipmentSlot = EquipmentSlot.OFF_HAND;
-                    } else {
-                        equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
-                    }
-                } catch (Throwable ex) {
-                    platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
-                    return false;
-                }
-
-                modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlot);
-            } else {
-                modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation);
-            }
-            meta.addAttributeModifier(attribute, modifier);
-            item.setItemMeta(meta);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
         return true;
     }
 
