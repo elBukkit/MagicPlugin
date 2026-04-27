@@ -5952,12 +5952,17 @@ public class MagicController implements MageController, ChunkLoadListener {
         // Final fallback, may be a plain item without any data, a
         // custom item key, or some form of MaterialAnData
         // also as some fallbacks for wands and classes wtihout a prefix
+        boolean debug = MaterialAndData.DEBUG;
         if (itemStack == null && items != null) {
             try {
+                // Prevent debug errors unless we get to the end of the method with creating an item
+                MaterialAndData.DEBUG = false;
+
                 // try generic item first
                 ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback, lookupGeneric);
                 if (genericItem != null) {
                     // NOTE: getGenericItemStack calls the callback and sets the amount.
+                    MaterialAndData.DEBUG = debug;
                     return genericItem;
                 }
 
@@ -5991,7 +5996,14 @@ public class MagicController implements MageController, ChunkLoadListener {
                         }
                     }
                 }
+
+                // Restore debug state, print message on failure
+                MaterialAndData.DEBUG = debug;
+                if (debug && itemStack == null) {
+                    getLogger().log(Level.WARNING, "Invalid item key: " + magicItemKey);
+                }
             } catch (Exception ex) {
+                MaterialAndData.DEBUG = debug;
                 getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
             }
         }
