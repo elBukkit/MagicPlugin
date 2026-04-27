@@ -141,7 +141,8 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
             ConfigurationSection itemConfiguration = configuration.getConfigurationSection("item");
-            if (itemConfiguration.getBoolean("bukkit")) {
+            String bukkitClass = itemConfiguration.getString("bukkit_class", "");
+            if (bukkitClass.equals("org.bukkit.inventory.ItemStack")) {
                 // See note below on why this is serialized this way.
                 // This works around a huge headache with builtin serialized items and
                 // backwards compatibility.
@@ -149,7 +150,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 YamlConfiguration itemConfig = new YamlConfiguration();
                 itemConfig.set("item", itemConfiguration);
                 String itemConfigString = itemConfig.saveToString();
-                itemConfigString = itemConfigString.replace("bukkit: true", "==: org.bukkit.inventory.ItemStack");
+                itemConfigString = itemConfigString.replace("bukkit_class:", "==:");
                 try {
                     itemConfig.loadFromString(itemConfigString);
                     item = itemConfig.getItemStack("item");
@@ -452,7 +453,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
             // This is so hacky, yo
             String itemConfigString = itemConfig.saveToString();
-            itemConfigString = itemConfigString.replace("==: org.bukkit.inventory.ItemStack", "bukkit: true");
+            itemConfigString = itemConfigString.replace("==:", "bukkit_class:");
             try {
                 itemConfig.loadFromString(itemConfigString);
                 configuration.set("item", itemConfig.getConfigurationSection("item"));
