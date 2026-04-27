@@ -52,12 +52,9 @@ architect:
       - lava
       - water
       - soul_sand
-      - wood
-      - log
       - vine
-      - mycel
+      - mycelium
       - quartz_block
-      - leaves
       - ice
       - packed_ice
       - obsidian

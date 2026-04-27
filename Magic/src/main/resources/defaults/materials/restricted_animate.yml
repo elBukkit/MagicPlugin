@@ -1,10 +1,10 @@
 # Which materials the AnimateSpell can't be cast on
 # This generally means Automata cannot be made out of these materials.
 restricted_animate:
-- grass
+- grass_block
 - short_grass
 - dirt
-- mycel
+- mycelium
 - glowstone
 - ender_stone
 - all_lava
