@@ -117,7 +117,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
                 double defaultValue = property.defaultValue == null ? 0 : property.defaultValue;
                 double originalDouble = originalValue == null ? defaultValue : NumberConversions.toDouble(originalValue);
 
-                Double transformedValue = SpellUtils.modifyProperty(originalDouble, (String)property.value, originalVariable, extraParameters);
+                Double transformedValue = SpellUtils.modifyProperty(originalDouble, (String)property.value, originalVariable, extraParameters, extraParameters.getParameters());
                 if (transformedValue != null) {
                     if (property.max != null) {
                         if (originalDouble >= property.max && transformedValue >= property.max) continue;

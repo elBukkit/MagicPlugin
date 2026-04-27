@@ -14,6 +14,11 @@
  - Prevent re-rewarding Valhalla perk rewards
  - Fix lots of broken items in the vanilla/valhalla RP (thanks to Stiktabulous for checking!)
  - Fix custom spawn eggs and spawners
+ - Attribute values will not be fetched from the wand and class
+   - This should fixes various issues with attributes which get set to the class, such as with the
+     `/mage attribute` command.
+ - Fix using variables in the ModifyAttributes and ModifyProperties actions
+ - Fix EffectLib's ExplodeEffect and BigBangEffect
 
 ## Changes
 

@@ -78,6 +78,10 @@ public class SpellParameters extends MageParameters {
         return value == null || Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }
 
+    protected Set<String> getWorkingParameters() {
+        return allParameters;
+    }
+
     @Override
     public Set<String> getParameters() {
         if (castVariables != null) {

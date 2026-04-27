@@ -48,7 +48,7 @@ public class ModifyAttributeAction extends BaseSpellAction
         Double value = null;
         Double original = properties.getAttribute(attribute);
         if (original != null && valueString != null && spellParameters != null) {
-            Double transformedValue = SpellUtils.modifyProperty(original, valueString, originalVariable, spellParameters);
+            Double transformedValue = SpellUtils.modifyProperty(original, valueString, originalVariable, spellParameters, spellParameters.getParameters());
             if (transformedValue != null) {
                 value = transformedValue;
             }

@@ -133,7 +133,12 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
     @Override
     @Nullable
     public Double getVariable(String variable) {
-        return workingParameters != null && workingParameters.contains(variable) ? getParameter(variable) : null;
+        Set<String> parameters = getWorkingParameters();
+        return parameters != null && parameters.contains(variable) ? getParameter(variable) : null;
+    }
+
+    protected Set<String> getWorkingParameters() {
+        return workingParameters;
     }
 
     protected abstract Set<String> getParameters();
