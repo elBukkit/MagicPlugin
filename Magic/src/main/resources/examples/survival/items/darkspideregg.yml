@@ -1,0 +1,12 @@
+darkspideregg:
+  worth: 200.0
+  name: Dark Spider Spawn Egg
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:cave_spider_spawn_egg
+    count: 1
+    components:
+      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"dark_spider"},CanPickUpLoot:0b,CustomName:{extra:["Dark
+        Spider"],text:""},DeathTime:0s,FallFlying:0b,Fire:0s,Health:20.0f,HurtByTimestamp:0,HurtTime:0s,Invulnerable:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[96.0d,63.0d,4.0d],Paper.OriginWorld:[I;-1698484138,400246832,-1257053634,-1100401284],Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:17,WorldUUIDLeast:-5399004244153387652L,WorldUUIDMost:-7294933825084504016L,active_effects:[{ambient:1b,duration:42949655,id:"minecraft:speed",show_icon:0b,show_particles:0b}],attributes:[{base:20.0d,id:"minecraft:max_health"},{base:0.30000001192092896d,id:"minecraft:movement_speed",modifiers:[{amount:0.20000000298023224d,id:"minecraft:effect.speed",operation:"add_multiplied_total"}]}],current_impulse_context_reset_grace_time:0,fall_distance:0.0d,id:"minecraft:cave_spider"}'
+    schema_version: 1

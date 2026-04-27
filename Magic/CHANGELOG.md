@@ -13,6 +13,7 @@
  - Fix setting string properties via configure commands, broken in 10.11
  - Prevent re-rewarding Valhalla perk rewards
  - Fix lots of broken items in the vanilla/valhalla RP (thanks to Stiktabulous for checking!)
+ - Fix custom spawn eggs and spawners
 
 ## Changes
 
@@ -30,6 +31,7 @@
  - Add "enabled" icon variants to the vanilla and valhalla RP, used for showing when a spell has been unlocked
    - You will need to delete the ValhallaMMO/skills/magic_progression.yml file for the above changes to take affect
  - Add `effect_bubbles_particle` config option to wands, defaults to entity_effect
+ - Add `wither_archer` mob to go along with pre-existing spawner
 
 # 10.11.1
 

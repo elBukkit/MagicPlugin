@@ -1,11 +1,11 @@
 philbertegg:
   worth: 500.0
+  name: Philbert Spawn Egg
   item:
-    ==: org.bukkit.inventory.ItemStack
+    bukkit_class: org.bukkit.inventory.ItemStack
     DataVersion: 4325
     id: minecraft:creeper_spawn_egg
     count: 1
     components:
-      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"philbert"},CanPickUpLoot:0b,CustomName:{extra:["Philbert"],text:""},DeathTime:0s,ExplosionRadius:3b,FallFlying:0b,Fire:-1s,Fuse:30s,Health:20.0f,HurtByTimestamp:0,HurtTime:0s,Invulnerable:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[280.0d,69.0d,90.0d],Paper.OriginWorld:[I;-554194265,-986362692,-1403414853,1011945568],Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:97,WorldUUIDLeast:-6027620895343701920L,WorldUUIDMost:-2380246240497152836L,attributes:[{base:0.25d,id:"minecraft:movement_speed"}],fall_distance:0.0d,id:"minecraft:creeper",ignited:0b,powered:0b}'
-      minecraft:custom_name: '{extra:["Philbert Spawn Egg"],text:""}'
+      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"philbert"},CanPickUpLoot:0b,CustomName:{extra:["Philbert"],text:""},DeathTime:0s,ExplosionRadius:3b,FallFlying:0b,Fire:0s,Fuse:30s,Health:20.0f,HurtByTimestamp:0,HurtTime:0s,Invulnerable:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[98.0d,63.0d,5.0d],Paper.OriginWorld:[I;-1698484138,400246832,-1257053634,-1100401284],Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:442,WorldUUIDLeast:-5399004244153387652L,WorldUUIDMost:-7294933825084504016L,attributes:[{base:20.0d,id:"minecraft:max_health"},{base:0.25d,id:"minecraft:movement_speed"}],current_impulse_context_reset_grace_time:0,fall_distance:0.0d,id:"minecraft:creeper",ignited:0b,powered:0b}'
     schema_version: 1

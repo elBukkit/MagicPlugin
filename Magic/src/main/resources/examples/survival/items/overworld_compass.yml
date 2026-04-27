@@ -1,10 +1,11 @@
 overworld_compass:
+  name: Magnetic Compass
   worth: 100.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
     DataVersion: 4325
     id: minecraft:compass
     count: 1
+    schema_version: 1
     components:
       minecraft:lodestone_tracker: '{target:{dimension:"minecraft:overworld",pos:[I;0,128,-60000000]},tracked:0b}'
-  name: Magnetic Compass

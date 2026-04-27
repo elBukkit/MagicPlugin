@@ -1,10 +1,11 @@
 invisible_item_frame:
+  name: Invisible Item Frame
   worth: 100.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
     DataVersion: 4325
     id: minecraft:item_frame
     count: 1
+    schema_version: 1
     components:
       minecraft:entity_data: '{Invisible:1,id:"minecraft:item_frame"}'
-  name: Invisible Item Frame

@@ -1,0 +1,11 @@
+witherarcherspawner:
+  worth: 20000.0
+  name: Wither Archer Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:spawner
+    count: 1
+    components:
+      minecraft:block_entity_data: '{Delay:100s,MaxNearbyEntities:5s,MaxSpawnDelay:500s,MinSpawnDelay:200s,RequiredPlayerRange:12s,SpawnCount:4s,SpawnData:{entity:{id:"minecraft:wither_skeleton"}},SpawnPotentials:[],SpawnRange:8s,id:"minecraft:mob_spawner"}'
+    schema_version: 1
