@@ -351,7 +351,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
                 if (nodeValue != null) {
                     combined.set(key, nodeYaml.get(key));
                 } else {
-                    platform.getLogger().log(Level.SEVERE, " The node " + entry.getKey() + " from " + fileName + " was empty");
+                    platform.getLogger().log(Level.INFO, " The node " + entry.getKey() + " from " + fileName + " was empty");
                 }
             } catch (Throwable ex) {
                 platform.getLogger().log(Level.SEVERE, " Error loading " + entry.getKey() + " from " + fileName + ": " + ex.getMessage());
