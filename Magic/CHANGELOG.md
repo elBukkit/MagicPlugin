@@ -37,6 +37,7 @@
    - You will need to delete the ValhallaMMO/skills/magic_progression.yml file for the above changes to take affect
  - Add `effect_bubbles_particle` config option to wands, defaults to entity_effect
  - Add `wither_archer` mob to go along with pre-existing spawner
+ - Add `earns_multiplier` option to spells, for easily scaling SP earn
 
 # 10.11.1
 

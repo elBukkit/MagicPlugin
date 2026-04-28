@@ -1109,6 +1109,10 @@ public class BaseSpell implements MageSpell, Cloneable {
             String earnsType = node.getString("earns_type", "sp");
             earns = Cost.parseCost(controller, node.getString("earns"), earnsType);
         }
+        if (earns != null) {
+            double earnsMultiplier = node.getDouble("earns_multiplier", 1);
+            earns.scale(earnsMultiplier);
+        }
         earnCooldown = node.getInt("earns_cooldown", 0);
         double earnCooldownScale = node.getDouble("earns_cooldown_scale", 1);
         earnCooldown = (int)Math.ceil(earnCooldownScale * earnCooldown);
