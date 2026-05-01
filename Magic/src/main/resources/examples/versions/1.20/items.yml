@@ -17,7 +17,7 @@ invisible_item_frame:
   worth: 100.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: ITEM_FRAME
     meta:
       bukkit_class: ItemMeta
@@ -31,7 +31,7 @@ nether_compass:
   worth: 100.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: COMPASS
     meta:
       bukkit_class: ItemMeta
@@ -48,7 +48,7 @@ overworld_compass:
   worth: 100.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: COMPASS
     meta:
       bukkit_class: ItemMeta
@@ -67,7 +67,7 @@ end_compass:
   worth: 100.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: COMPASS
     meta:
       bukkit_class: ItemMeta
@@ -83,105 +83,233 @@ end_compass:
 philbertegg:
   inherit: false
   worth: 500.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: CREEPER_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/21Sy27TQBS9TpzgmD4osGCBEPK6RKrEKggRJ6W0UkqitCkLhKpJfOuM4pkxM9dpqwoJ8Rfs+AK+AIlf4Bf4BhYsy0ycFAlhefyYmXPvmXNOCBBCiJI4XT4hlgawNWA56uZRzs7lEJlREurd0dFx/7ACjV1kND3mAh1srVPMZpxOWFagCWBDsJRPWounUGMI8inPxqgJqnC33Nos8oQR9nCOGQBUPAh7eEb7TCaYgAdBX77SqpCJV4M78dgonRNXMhZ2jiwAGhDGRJqPC0ITuhIB+K+Z5fNQcIkTzc6olaJEzSdNwS5Op8gymtbB7zCD7adQXivQ4/+A1ByF1ePU5IjJEvjixxLowdqBnBeZ3cvGGVoRah3NuAwhECiU5mgcybVSw77mKZd1i6u2T9qLAu3+x/L94KbgUpr4nGn0GrDp1NjVKu9OmZygqblTPv96/8qNhpVF2z7/rPur9dWo2jKFps6l88oQE7lr5sP6G6WzZDQ62D1Uhn4Pn33+2e7EAYTdwpASpShXEeEFRa0o2o7sh2ZR6200WJoZvftQAX+vMAiPnBuOzQGhWLjhlx413BFuJivursZce9tV2DrKeaqoSXwyMz0+t7YD7Hiw+fIiz5SxZg9ZwgtTdU24xutrHzZuSPdsHun77NeO+PRtEECFJ7D118KJRrSy315FuJR/AXbcVqdd4T24xVPJaZG89S6TA8tplPeUIqhBfX+RnPiLYx84McvY28jusSzbyy65TO3fvQFqww2h9WKI7wvL2XX7A6PvnulYAwAA
+  item: CREEPER_SPAWN_EGG
   name: Philbert Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: philbert
+    Attributes:
+      - Base: 0.25
+        Name: minecraft:generic.movement_speed
+      - Base: 20.0
+        Name: minecraft:generic.max_health
+    CustomName: '{"text":"","extra":["Philbert"]}'
+    Fuse: 30
+    ExplosionRadius: 0
+    id: minecraft:creeper
+    Health: 20.0
+
 
 mutantegg:
   inherit: false
   worth: 400.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: ZOMBIFIED_PIGLIN_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/3VU227TQBCdXJWkF1poVXERlDyXSEg8FSGai0ojpbRqG3hAKNrYU2cV767ZXacNFRLiL3hD4p0vQIIf4B/gG3jgEcZ23JYQLNmJvefMzM45OxWAClRQWm7H9yzzSrC8zwLUtcOAncgDZEZJKDa7h0d7u1kot5DZwREXGNHmG+FwyO0z5odoSrAomMedzfgpVB+KIrRMWsjB1QRYCwOXWezgCH0AyGag0sFju8Okiy5koLQnn2gVSjdTgKV63ygdWK5kXdA3SwSCFNumwfpjKEOlbq3m/dCiqdBSoQT5p4zquiO4REezY7vpoUTNnRqzljnDnsuoNCxCvsEMbq1AcqW8uzN4Wijdsyr0BhKNmTABppi3/mUKdtobIPPtIE33YIq0PoOkRihIiZ4JEN0J8fG34OP3y8S1/9SZJkqry8B8W45CnyCs7yPJVWhoxmUFSgIJz9EAtXE+UXtPc4/LIvFyW92vcYCtvbfJ7/p5wImM9ROmMVOGK5FyLa2C5oBJB00hEvXRp5Wz6C6ThFFdU+v5dD29cxQm1LYxjlxlLBNBkmyhyWRDIxu2lNIG8rDwXGnf7XbbrV1l7K+Dh+9/bDXqJag0Q2OViJtz+6xq8dRWN6vVjSr90ay6+aK6G/uw+vJNDsp16aFODEx7hbm2fE6WjL/8pivyVVR126KIfZUvQZa7sHLRda6V7PWVsiYHBWdiTTJvjFubwvnoUV+9WdDrU1BnQNsPfKpmBnh1CjxAX6C9DKRT7CgRKEkOonRLF4TE95E2keDlSLTz7WVnb8+cKO3+VQaRc3WuMxs5WD4MuKdszXJnaDp8RGcX4GYW8ttcUxPzsHiuVIfmh/0y/HlfvPu8n6S6cZHqtRJ9fszR7VFAn8u5dPYkboyjRBKkWqeBClDciQ9X/UPqlH2qpRt0SBUSdZU8dyLRbSo5Qm1ohKTyZqEUmS3Rn8bPNvP9bX9MCtHbtf0IbCySVw/wVUi7iabS6mQeDlTou41Qy7ZssTF15A+B/E7zOwUAAA==
+  item: ZOMBIFIED_PIGLIN_SPAWN_EGG
   name: Mutant Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: mutant
+    Attributes:
+      - Base: 2.0
+        Name: minecraft:generic.armor
+      - Base: 5.0
+        Name: minecraft:generic.attack_damage
+      - Base: 0.23000000417232513
+        Name: minecraft:generic.movement_speed
+      - Base: 20.0
+        Name: minecraft:generic.max_health
+      - Base: 0.0
+        Name: minecraft:generic.armor_toughness
+    CustomName: '{"text":"","extra":["Mutant"]}'
+    ArmorItems:
+      - count: 1
+        id: minecraft:iron_boots
+      - count: 1
+        id: minecraft:iron_leggings
+      - count: 1
+        id: minecraft:iron_chestplate
+      - count: 1
+        id: minecraft:iron_helmet
+    HandItems:
+      - count: 1
+        id: minecraft:iron_sword
+    id: minecraft:zombified_piglin
+    Health: 20.0
 
 witherarcheregg:
   inherit: false
   worth: 300.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: WITHER_SKELETON_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/21T3WoTQRQ+m2xCsjbV+nMhKJQF72pA8CoiZpNQG0hNaBt7IVImu6fJkN2ZdeZs0lAE8S288wl8AsFX8BV8Bi+8rDO7SQviwuzszpzvO2e+74wH4IGHgjitnhKb1mBnxFJUzeOULcURMi0FVLvj45PhYQnqPWQ0O+EJWthWJ5vPOb1lcYa6BtsJm/Kwlb8TOYHGktMM1RlToZmgDHeL+GaWRoxwgAuMAaDkgDfAczpgIsIIHKgNxWslMxE5FbgTTLRUKXEpgsSskQFAHbyASPFJRqg9S1ED9w0zRT1KuMBQsXNqTVGg4mEzYRdnM2QxzargdpjG9nMong1o9z8gucDEiHKmU8RoDXz1cw10YKsvFllsYtkkRqNEpaMYFx7UEkyk4qhtkVuFkEPFp1xUDa7cHhcE7eGnYvavCdfSBEum0KnDbatGT8m0O2MiRF2xp3z57f6lHXUjizJ5/tl3N/ubUTY0maLOyhqmiSWpTeZC41SqOBqP+71DqenP0Ysvv9qdoAZeN9Mkk1yUJ5c+4QX5Ld/f882HYn7rnX+aO7ob5I767z9aJ2wlfcIkd8It/Knb8q8XjT0lHkHjRueJXJahEq4NdUwIlAOunL0y7BynfCqpSTyc6wFfmJYAeOzC9nXRA9OU9GP++1ny+fuooH54Q71uOj3HGEmKErj7XOHV1a1NYxd+5Gy24M3xN4QONLpMjEz2cTqQkqAC1YO8f4Kvts6albS4AaZx91kc78crLqbm794Ileaa0DhyhB8yk9f284P1hZrJLI46mRJ90WMrc+i/cCCpwXwDAAA=
+  item: WITHER_SKELETON_SPAWN_EGG
   name: Wither Archer Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: wither_archer
+    LeftHanded: true
+    Attributes:
+      - Base: 0.25
+        Name: minecraft:generic.movement_speed
+      - Base: 20.0
+        Name: minecraft:generic.max_health
+    CustomName: '{"text":"","extra":["Wither Archer"]}'
+    HandItems:
+      - count: 1
+        id: minecraft:bow
+    id: minecraft:wither_skeleton
+    Health: 20.0
 
 zombiehorseegg:
-  inherit: true
+  inherit: false
   worth: 1000.0
+  item: ZOMBIE_HORSE_SPAWN_EGG
   name: Tamed Zombie Horse Spawn Egg
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: ZOMBIE_HORSE_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/21TsW4TQRCd852NzyQhBgQNBRISFViiBSF8jnFi6RxbSSzKaH03Oa98t3vsrp0YGkTHJ7jjCyhoQaLmM1JSI5QyzPrsRELc3harmbfvzZvZGkANaigMN/OnhiVVqA9YjqpxmLNTcYBMSwE3dvq9XrDfLoHfRmbGRzxDABfut6aTCTeNHjtrywy14REznAAAsQu3V9FpHjODIc4wpUCJ6A5ZHKfYNZhVocRj2M64wEixE/NcL0MulCM5FYbyHVq1EE/MHhMxxnSq9sWuomjslGE7GGmpcksaZCsEpfhBgqGMJpTvQy0wRvHR1KCuWQFV8PYZFfDgmjVBgYpHjYydHY+RpWZcAa/FNDYbUHxr0MP/gOQMM3LwWOeI8Qr46udi8bkQs9EVs2lKuWyUIrldbinGRQ2qGWZScdRAIjcK1/uKJ1xUCOc2hxu7vxaf6s3+h6WC5uPzbxd/vpKxLlW3unplcXDKFDo+3LImtZXMd8ZMRKjLtt6XX+6+t9sntxQx/hP31vH1dumaqTKtuW2zNizLLZkLfkeqCOMVuQebb6RK4+Gw2+5JbS4OXizOm63A+m1ZbHeXfnsFunKEGVVoDz74VudVRsn+bsCV88SF+mHOE2kaNEsTHfIZtRDgEeG7IiSjLf7mekYLt5YyLNFawo/J72fZx+8DB7wj6pnjwdaV1JAm2qwTium7d93SdzIbcTweS6WR0C1F7CXwOlzh5aUDmztMDEjXMA+lNFCGyt5yWILcVlC1rhVPg0a2w9K0k865SOh0Z4BKc22QTD/At1OulpO89Zqei0j22JxsjiZUw1/GqtaXjwMAAA==
+  entity:
+    SaddleItem:
+      id: minecraft:saddle
+      count: 1
+    Attributes:
+      - Base: 0.2
+        Name: minecraft:generic.movement_speed
+      - Base: 15.0
+        Name: minecraft:generic.max_health
+    Tame: true
+    id: minecraft:zombie_horse
+    Health: 15.0
 
 skelliehorseegg:
-  name: Tamed Skellie Horse Spawn Egg
+  inherit: false
   worth: 1000.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: SKELETON_HORSE_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/21TsW4TQRCd852NzySQABIgUUAPlpCoQCg+x5hYOsdWbENBEW3uJvbKd7vH7tqJRYP4i0gUVJR8ARItFBSIkopvoKAMs75ziBDn22I98/zevHmuAdSghsJws7hn2LgKm32WoaoPMnYk9pBpKeDCdq/bDXZbJfBbyMxkyFMEcOF6czadclPvsuOWTFEbHjHDCQAQu3ClqM6ymBkMcY4JFUpEN2BxnGDHYFqFEo9hI+UCI8UOzUO9LLlQjuRMGOp36FML8dDsMBFjTLdqTzxVVI2dMmwEB1qqzJIGaYGgFj8YYyijKfX7UAuMUfxgZlDXrIAqeLuMBrj1l3WMAhWP6ik73p8gS8ykAl6TaWzUIX9WoNv/Ack5puTgvs4Q4wK49eXk5F0uZq0j5rOEetlBguR2uakYFzWopphKxVFbKzcGU0zQSDFULMv9BdK+li+jp/iYiwp95TZGWz/eB99uNnqvl8Iadz5/f/Hs7VcXXBq6YCycD46YQseHy9a7lpLZ9oSJCHXZ2vD4w7VX9vhkoiIh/9S9VX11XPqZmTLNhVWnDUszS+aC35Yqwrgg92D9uVRJPBp1Wl2pze+9Ryc/G83ArsGy2KUv1+Dl6MoQU5own9a3Os86SvZ1A66cuy5sDjI+lqZOEZvqkM9pswAPCN8RIflv8RdX0c3dWsqwRCsJn6a/7qdvPvYd8Ia0SseDS2dSQwq6WTXkobxxLpTFbvYnUmkkfFMRfwm8Nld4eurA+jYTfVI2ykIpDZShsrNMUZDZGarWt3ynlOU2S5J2suBiTLerfVSaa4Nk+x6+nHG1jPja+TTQ/dIT+l+J8Q5bkPHRlKb6AwPXTxG4AwAA
+  item: SKELETON_HORSE_SPAWN_EGG
+  name: Tamed Skellie Horse Spawn Egg
+  entity:
+    SaddleItem:
+      id: minecraft:saddle
+      count: 1
+    Attributes:
+      - Base: 0.2
+        Name: minecraft:generic.movement_speed
+      - Base: 15.0
+        Name: minecraft:generic.max_health
+    Tame: true
+    id: minecraft:skeleton_horse
+    Health: 15.0
 
 warlockegg:
   inherit: false
   worth: 2000.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: ZOMBIE_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/7VVy47jRBS9zosk09M9AzQIGEHwuicS2yBE56GmI2Xoph/0Ao2isn0Tl1KuMlXlZEJrJMQ/sGDNni9A4gv4B/gGFizhVhwnUU/PCmHJebju8b11zzm3mgBNaKK03C6fWjatw+NzlqJuX6ZsIS+QGSWh1r++vDp7VoLGAJmNr3iCDrbXy2Yzbr9mIkNTh/2ETXnYWX0mKoA3FkwLFc6gDG/mke0sjZjFEc5RAEDJg+YIJ/aUyQgj8KB+Jr/QKpORV4VH3cAonVquZDehZ5YAFFIbmh4LltCAZtdazYPMomnSUqUOlS8ZFfZuwiWGmk1sZ4oSNQ/bTCdK16DSYwaPYX0V8R+/Jn5sVTaNJRqzRsJd5JNXkQl7MY6RCRsX6YZ3QK17QGqOCVEwNilitAZ+/nv68x/5nveGcp4JimWBQOp7tacZl02oJ0h1cjRA7djLaTvTfMpljXDl46s88/HZ9/n3Uf7fK4hrd4kh9Bpw4BgYaJX2YyZDNFVHzme/vH3r7gZR4fpxZ71SrBd3mV6TadtbOnkYy5I0T/awz2RPI5sNlNIGKvDwRmkRXV8PB8+UsX9ffPrTn8e9bh2a/cxYlay69NGtb/GF9Tu+f+TTD838zjf+TS4o//nLMjwYyhvSknbZ/qHLCcKVObSYFIIo8Qje2/Y7jKltCeNiHChlTRmq4VpYHnkgVEmqJNFA6He2IJQEkzbJF2rCaZegO6+dOE+gHk+YEFxOwVljRbhL/+S+9AKnRNL0v1XwaBthY6WlcZxvE394X+IwJmZSQX37P1O/f1/qGEWCdjctibbhhLdhrJTDD7ZwY3k4e22pdTjcybQSz1g69fx4u9HMrR8oEfkdIsfgkR8qoTSpaqoRJUmLWyZ4uFlWwSQzIbVnizA0ZGZoY+2mwebpWpxrQbYWtA16G00u1KSBDfzl802oT5r94JVyExWhGNNQZAAnXzV3N5TJwLnGed6DAxOrxZhLGkpKWJ46x+9vY2lTWF/19Ol26/7QtmJmWoJc1uLWtFK1QO3vluSaDuUu195RGR5fpnyqbNv13Iz4nEYywH4JKidck8UqsL8x7ojOBfvb7K9Pkh9+Pc9Z29HEdyoJOD4oTpJ8JK2wzpaF4Qt4FWqnq4nZOy3GxTlVcJ2OyKQkq0MaPAtqaV/JOWpD50Fh+RLU3cTJjyM6S07IgCdi6TzowVvnLthYkjBe4LcZ7cEdMYfr0y1WmYh6mZZDOWBLD+BfVxn2vwkHAAA=
+  item: ZOMBIE_SPAWN_EGG
   name: Warlock Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: warlock
+    Attributes:
+      - Base: 2.0
+        Name: minecraft:generic.armor
+      - Base: 0.23000000417232513
+        Name: minecraft:generic.movement_speed
+      - Base: 50.0
+        Name: minecraft:generic.max_health
+      - Base: 0.0
+        Name: minecraft:generic.armor_toughness
+    CustomName: '{"text":"","extra":["Warlock"]}'
+    ArmorItems:
+      - components:
+          minecraft:enchantments:
+            levels:
+              minecraft:feather_falling: 10
+        count: 1
+        id: minecraft:chainmail_boots
+      - components:
+          minecraft:enchantments:
+            levels:
+              minecraft:thorns: 3
+        count: 1
+        id: minecraft:chainmail_leggings
+      - components:
+          minecraft:enchantments:
+            levels:
+              minecraft:thorns: 3
+        count: 1
+        id: minecraft:chainmail_chestplate
+      - count: 1
+        id: minecraft:chainmail_helmet
+    HandItems:
+      - components:
+          minecraft:custom_model_data: 18001
+          minecraft:lore:
+            - '{"extra":["It has lost its power"],"text":""}'
+          minecraft:unbreakable:
+            show_in_tooltip: false
+          minecraft:custom_name: '{"extra":[{"bold":false,"color":"green","italic":false,"obfuscated":false,"strikethrough":false,"text":"Warlock
+          wand","underlined":false}],"text":""}'
+        count: 1
+        id: minecraft:stick
+    id: minecraft:zombie
+    Health: 50.0
 
 darkspideregg:
   inherit: false
   worth: 200.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: CAVE_SPIDER_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/21TS2/TQBAeJ05qu21KeUgcOFRG4lQCqCCkINS8VFopbaK2KYcKRRt7kqziF+t12qpCIP4AQlzorWcO/QVInDlz48Zv4MCxzNpNKyEsr72vmfm+mW8sAAssDCSXR/clGxqw2GERivJOxA6CbWRxGECx0d3ZbW/mwGwik6Nd7qMym6sn4zGXe8xLMDag5LMhdyrp1w/7MOsyMe7FEXdRQB6uZ7fLSeQyiS2coAcAOQ2sFg7kOgtcdEEDox28EGESuFoBrtX6cSgiycOg5tOeJAMwocQcySfYw8EAHRlbtKlpUIpH4UEvYkJyx8OYXM0wv8+JmmZAjruw4PMAHcEGshJHiK4GZmrCHaKYB8NNBFOhch/2f1IUqyal4P1EYhohZ4C+xYj4nSs3QwxQcKfss8PeCJknR0XQ6yzG6mPInqnR0n+Mwgn6hK6XgjHB3AxdPuAoMkJTy9sZy/Klg3J6f+lhHsw2FSqFrPDNgt7tbjRpqn88+7L3dNz8/Gn/wdvRTPFJEYpZ/la/n5ycKlwXOFd/rKxU1VqDuY1gkngEjfU9pOIW6oLxwALDRz8UnBJKOZnLtNEWfMiDItnlqy/fpUSr7Yv/vYy4NlVHuXbABGomLKgSN0UYNUYscDAuKNDPz24eq2FSrQXF+edcn55PR57cJELWj5QGY8n8SAXTYf5lKDxX8d8MY/ln+9nJr2q9ZoDVSGIZ+mkm7x7bEg+lXbHtZZsmgtmVfbtJIl3aSUVqv3qjyq5wbEj00zromeRMBf5yM6fefI0LbTkPi2Q8DGWZZDeOW6RLl25s6VC6hNSiLpLfxr8f+e+/djIt3rrSg8NIylmX5EBf4wLPz2enXZhlOvWkwEyJTZ1pMN9gQYcid6NWGEooQHE9FWLtVGE0VLKydqU+W2Oet+Yd8WBIqxsdUhqPJVKut/F1QnFViL9iRu13EAQAAA==
+  item: CAVE_SPIDER_SPAWN_EGG
   name: Dark Spider Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: dark_spider
+    active_effects:
+      - duration: 42949637
+        show_icon: false
+        ambient: true
+        id: minecraft:speed
+        show_particles: false
+    Attributes:
+      - Modifiers:
+          - Amount: 0.20000000298023224
+            Operation: 2
+            UUID:
+              - -1850824106
+              - 929776792
+              - -1822740609
+              - 1745290805
+            Name: effect.minecraft.speed 0
+        Base: 0.30000001192092896
+        Name: minecraft:generic.movement_speed
+      - Base: 20.0
+        Name: minecraft:generic.max_health
+    CustomName: '{"text":"","extra":["Dark Spider"]}'
+    id: minecraft:cave_spider
+    Health: 20.0
 
 megaspideregg:
   inherit: false
   worth: 200.0
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
-    type: SPIDER_SPAWN_EGG
-    meta:
-      bukkit_class: ItemMeta
-      meta-type: SPAWN_EGG
-      internal: H4sIAAAAAAAA/21Ty27TQBS9Tpxgp2lpCzsqUZltiUBdEYTIoyqtlJCobXgIUJjYN84QvxiP01YVEmKJhFjzCWz4AgRSV+xZsOYbWLAsd+y6IMCyE894zj3nnjlTAahABQPJ5eFVyVwDlvosQlHbjdh+sIMsDgMotwe7e71uAcwNZHKyx31UsGormU65vMe8BGMDFnzmcrue/vrhCOZ8dNkwjriDAoqwnK2uJZHDJHZwhh4AFDSodHAst1jgoAMaGL3gjgiTwNFKsNgcxaGIJA+Dpk9zkgBgwgKzJZ/hEMdjtGVcoUlNg4V4Eu4PIyYktz2MqdQ55o84taYZUOAOLPs8QFuwsazHUmDgyokGZoriNnVZBMNJBFNshbePV4io0pRS8FEiMSUpGqDfZdT75d+VXAxQcLvGpGT2dOgwah9NMLuhw8ccRaYuB17KJNfO8LVcyeq1Ipg9Mj7lV33OgT4YbG/Qm+68iZxnT3sPX386Pq77396XoZz50TAgu8qgt1iMjdMh5IQr/yr12cFwgsyTkxx04y/Q6n9A4Qx9spK2E9E5Bd7+ur6eMmpQ3Q5miUdr2chDikapJRgPKmD46IeC03aQndUsWT3BXR6UlaGNBxlzo/cy+1/JxlqerVpznwnUTDivArIhwqg9YYGNcUll59aHi0fqMSkpgnj++q7n3/OnSGUSIVuHKsGxZH6kyHSYvx8Kz1Fud8NY/ty5+e57o9U0oNJOYhn6qSlXjiyJB9KqW9aaRS+CWfVHVpcivrqbRtx68kIlRunYluinG69ngTWV+LPJgrqLTS60tSIsEdgNZY1CO407lGqHVlR1WDiT1KEzKD9Pf1z3X33sZ0le/CPJKXcB9E0u8ORkLj++mclpEaUj7ymvo8F8mwV9Ih1EnTCUUILyVhqK5hclz1A+ZeecDugm87xN75AHLo0u9CnVPJZINu/g84R4FcUv8KilMkkEAAA=
+  item: SPIDER_SPAWN_EGG
   name: Mega Spider Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: mega_spider
+    active_effects:
+      - duration: 42949659
+        show_icon: false
+        ambient: true
+        id: minecraft:strength
+        show_particles: false
+    Attributes:
+      - Base: 25.0
+        Name: minecraft:generic.max_health
+      - Base: 0.30000001192092896
+        Name: minecraft:generic.movement_speed
+      - Modifiers:
+          - Amount: 3.0
+            Operation: 0
+            UUID:
+              - 1686990948
+              - 1784696665
+              - -1967209790
+              - 980277161
+            Name: effect.minecraft.strength 0
+        Base: 2.0
+        Name: minecraft:generic.attack_damage
+    CustomName: '{"text":"","extra":["Mega Spider"]}'
+    id: minecraft:spider
+    Health: 25.0
 
 # Mob spawners
 warlockspawner:
@@ -190,7 +318,7 @@ warlockspawner:
   name: Warlock Spawner
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -204,7 +332,7 @@ darkspiderspawner:
   name: Dark Spider Spawner
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -218,7 +346,7 @@ megaspiderspawner:
   name: Mega Spider Spawner
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -232,7 +360,7 @@ cavespiderspawner:
   name: Cave Spider Spawner
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -245,7 +373,7 @@ spiderspawner:
   worth: 5000.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -259,7 +387,7 @@ zombiespawner:
   worth: 20000.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -273,7 +401,7 @@ skeletonspawner:
   worth: 20000.0
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -286,7 +414,7 @@ witherarcherspawner:
   name: Wither Archer Spawner
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
@@ -299,7 +427,7 @@ mutantspawner:
   name: Mutant Spawner
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
-    v: 3837
+    v: 3700
     type: SPAWNER
     meta:
       bukkit_class: ItemMeta
