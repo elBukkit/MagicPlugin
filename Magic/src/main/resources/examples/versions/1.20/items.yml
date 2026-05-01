@@ -1,4 +1,5 @@
 hylian_shield:
+  inherit: false
   worth: 200
   item:
     bukkit_class: org.bukkit.inventory.ItemStack
@@ -213,11 +214,9 @@ emerald_sword:
       amount: 5.0
       slot: hand
       operation: ADD_NUMBER
-      uuid: bdb4f201-649d-3773-af6d-fb718fd91885
       name: modifier
     - attribute: generic_attack_speed
       amount: 2.0
       slot: hand
       operation: ADD_NUMBER
-      uuid: bdb4f201-649d-3773-af6d-fb718fd91885
       name: modifier

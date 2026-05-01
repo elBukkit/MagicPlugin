@@ -8,11 +8,9 @@ emerald_sword:
     amount: 5.0
     slot: hand
     operation: ADD_NUMBER
-    uuid: bdb4f201-649d-3773-af6d-fb718fd91885
     name: modifier
   - attribute: minecraft:attack_speed
     amount: 2.0
     slot: hand
     operation: ADD_NUMBER
-    uuid: bdb4f201-649d-3773-af6d-fb718fd91885
     name: modifier
