@@ -1,0 +1,7 @@
+arrow_bomb:
+  item: 'tipped_arrow{CustomModelData:18020,Potion:heal}'
+  item_disabled: 'tipped_arrow{CustomModelData:18021,Potion:heal}'
+
+arrow_grapple:
+  item: 'tipped_arrow{CustomModelData:18026,Potion:slow}'
+  item_disabled: 'tipped_arrow{CustomModelData:18027,Potion:slow}'
