@@ -1,5 +1,6 @@
 # With thanks to @jamesol1
 goblin:
+  requires: LibsDisguises
   type: skeleton
   disguise:
     hide_name: true
