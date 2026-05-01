@@ -1,8 +1,6 @@
 # TODO
 
-# Do it for real
-
- - Look into EffectLib explode effect
+ - How to hide leather armor color in lore?
 
 1: setting "unstashable" on a wand does not prevent it from being stashed if i'm holding the wand in my mainhand when opening a container
 
@@ -10,13 +8,8 @@
 
 https://discord.com/channels/580099743875727363/580101207364861954/1496487669323141304
 
- - Fix backwards compatibility layers, dealing with serialized items.. somehow??
- - See if we can bring the older layers back
- - Vanilla crafting table item is broken in RP
 
 # Actually Somewhat Recent
-
- - Magic mob spawner blocks don't work
 
 # Next
 
