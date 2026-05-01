@@ -85,6 +85,9 @@ public class ItemController {
         for (ItemData magicItem : items.values()) {
             magicItem.checkKey();
             try {
+                if (controller.isDebugConfigurationFiles()) {
+                    controller.info("Finalizing item: " + magicItem.getKey());
+                }
                 ItemStack itemStack = magicItem.getOrCreateItemStack();
                 itemsByStack.put(itemStack, magicItem);
             } catch (Exception ex) {
