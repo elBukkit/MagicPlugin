@@ -1,11 +1,17 @@
 skelliehorseegg:
+  inherit: false
   worth: 1000.0
-  name: Tamed Skellie Horse Egg
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:skeleton_horse_spawn_egg
-    count: 1
-    schema_version: 1
-    components:
-      minecraft:entity_data: '{AbsorptionAmount:0.0f,Age:0,AgeLocked:0b,Air:300s,Brain:{memories:{}},Bred:0b,Bukkit.Aware:1b,Bukkit.MaxDomestication:100,Bukkit.updateLevel:2,CanPickUpLoot:0b,DeathTime:0s,EatingHaystack:0b,FallFlying:0b,Fire:0s,ForcedAge:0,Health:15.0f,HurtByTimestamp:0,HurtTime:0s,InLove:0,Invulnerable:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[94.10986783151236d,63.0d,12.734101518653796d],Paper.OriginWorld:[I;-1698484138,400246832,-1257053634,-1100401284],Paper.SpawnReason:"COMMAND",PersistenceRequired:0b,SkeletonTrap:0b,SkeletonTrapTime:0,Spigot.ticksLived:220,Tame:1b,Temper:0,WorldUUIDLeast:-5399004244153387652L,WorldUUIDMost:-7294933825084504016L,attributes:[{base:15.0d,id:"minecraft:max_health"},{base:0.20000000298023224d,id:"minecraft:movement_speed"}],current_impulse_context_reset_grace_time:0,fall_distance:0.0d,id:"minecraft:skeleton_horse"}'
+  item: SKELETON_HORSE_SPAWN_EGG
+  name: Tamed Skellie Horse Spawn Egg
+  entity:
+    SaddleItem:
+      id: minecraft:saddle
+      count: 1
+    Attributes:
+      - Base: 0.2
+        Name: minecraft:generic.movement_speed
+      - Base: 15.0
+        Name: minecraft:generic.max_health
+    Tame: true
+    id: minecraft:skeleton_horse
+    Health: 15.0

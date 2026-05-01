@@ -1,12 +1,33 @@
 megaspideregg:
+  inherit: false
   worth: 200.0
+  item: SPIDER_SPAWN_EGG
   name: Mega Spider Spawn Egg
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:spider_spawn_egg
-    count: 1
-    components:
-      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"mega_spider"},CanPickUpLoot:0b,CustomName:{extra:["Mega
-        Spider"],text:""},DeathTime:0s,FallFlying:0b,Fire:0s,Health:25.0f,HurtByTimestamp:0,HurtTime:0s,Invulnerable:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[95.0d,63.0d,6.0d],Paper.OriginWorld:[I;-1698484138,400246832,-1257053634,-1100401284],Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:39,WorldUUIDLeast:-5399004244153387652L,WorldUUIDMost:-7294933825084504016L,active_effects:[{ambient:1b,duration:42949633,id:"minecraft:strength",show_icon:0b,show_particles:0b}],attributes:[{base:2.0d,id:"minecraft:attack_damage",modifiers:[{amount:3.0d,id:"minecraft:effect.strength",operation:"add_value"}]},{base:25.0d,id:"minecraft:max_health"},{base:0.30000001192092896d,id:"minecraft:movement_speed"}],current_impulse_context_reset_grace_time:0,fall_distance:0.0d,id:"minecraft:spider"}'
-    schema_version: 1
+  entity:
+    BukkitValues:
+      magic:magicmob: mega_spider
+    active_effects:
+      - duration: 42949659
+        show_icon: false
+        ambient: true
+        id: minecraft:strength
+        show_particles: false
+    Attributes:
+      - Base: 25.0
+        Name: minecraft:generic.max_health
+      - Base: 0.30000001192092896
+        Name: minecraft:generic.movement_speed
+      - Modifiers:
+          - Amount: 3.0
+            Operation: 0
+            UUID:
+              - 1686990948
+              - 1784696665
+              - -1967209790
+              - 980277161
+            Name: effect.minecraft.strength 0
+        Base: 2.0
+        Name: minecraft:generic.attack_damage
+    CustomName: '{"text":"","extra":["Mega Spider"]}'
+    id: minecraft:spider
+    Health: 25.0

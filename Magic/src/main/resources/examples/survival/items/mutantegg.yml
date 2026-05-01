@@ -1,11 +1,34 @@
 mutantegg:
+  inherit: false
   worth: 400.0
+  item: ZOMBIFIED_PIGLIN_SPAWN_EGG
   name: Mutant Spawn Egg
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:zombified_piglin_spawn_egg
-    count: 1
-    components:
-      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"mutant"},CanBreakDoors:0b,CanPickUpLoot:0b,CustomName:{extra:["Mutant"],text:""},DeathTime:0s,DrownedConversionTime:-1,FallFlying:0b,Fire:0s,Health:20.0f,HurtByTimestamp:0,HurtTime:0s,InWaterTime:-1,Invulnerable:0b,IsBaby:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[94.0d,63.0d,9.0d],Paper.OriginWorld:[I;-1698484138,400246832,-1257053634,-1100401284],Paper.ShouldBurnInDay:1b,Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:24,WorldUUIDLeast:-5399004244153387652L,WorldUUIDMost:-7294933825084504016L,anger_end_time:0L,attributes:[{base:5.0d,id:"minecraft:attack_damage"},{base:2.0d,id:"minecraft:armor"},{base:0.0d,id:"minecraft:armor_toughness"},{base:20.0d,id:"minecraft:max_health"},{base:0.23000000417232513d,id:"minecraft:movement_speed"}],current_impulse_context_reset_grace_time:0,equipment:{chest:{count:1,id:"minecraft:iron_chestplate"},feet:{count:1,id:"minecraft:iron_boots"},head:{count:1,id:"minecraft:iron_helmet"},legs:{count:1,id:"minecraft:iron_leggings"},mainhand:{count:1,id:"minecraft:iron_sword"}},fall_distance:0.0d,id:"minecraft:zombified_piglin"}'
-    schema_version: 1
+  entity:
+    BukkitValues:
+      magic:magicmob: mutant
+    Attributes:
+      - Base: 2.0
+        Name: minecraft:generic.armor
+      - Base: 5.0
+        Name: minecraft:generic.attack_damage
+      - Base: 0.23000000417232513
+        Name: minecraft:generic.movement_speed
+      - Base: 20.0
+        Name: minecraft:generic.max_health
+      - Base: 0.0
+        Name: minecraft:generic.armor_toughness
+    CustomName: '{"text":"","extra":["Mutant"]}'
+    ArmorItems:
+      - count: 1
+        id: minecraft:iron_boots
+      - count: 1
+        id: minecraft:iron_leggings
+      - count: 1
+        id: minecraft:iron_chestplate
+      - count: 1
+        id: minecraft:iron_helmet
+    HandItems:
+      - count: 1
+        id: minecraft:iron_sword
+    id: minecraft:zombified_piglin
+    Health: 20.0
