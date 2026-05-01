@@ -5,6 +5,6 @@ coffee1:
   potion_effects:
     minecraft:speed: 200,1
   color:
-    red: 255
-    green: 255
-    blue: 255
+    red: 150
+    green: 75
+    blue: 0
