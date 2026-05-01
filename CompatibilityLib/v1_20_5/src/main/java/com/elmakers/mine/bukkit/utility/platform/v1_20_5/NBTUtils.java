@@ -13,7 +13,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
+import org.bukkit.craftbukkit.v1_20_R4.entity.CraftEntityType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -36,6 +37,8 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.CustomData;
 
 public class NBTUtils extends NBTUtilsBase {
@@ -311,7 +314,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, EntityType entityType, Object entityData) {
         if (platform.getItemUtils().isEmpty(spawnEgg)) return false;
         if (entityData == null || !(entityData instanceof CompoundTag)) return false;
 
@@ -321,6 +324,36 @@ public class NBTUtils extends NBTUtilsBase {
         CustomData customData = CustomData.of((CompoundTag)entityData);
         itemStack.set(DataComponents.ENTITY_DATA, customData);
         return true;
+    }
+
+    @Override
+    public Object getSpawnEggEntityData(ItemStack spawnEgg) {
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return null;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)handle;
+        CustomData customData = itemStack.get(DataComponents.ENTITY_DATA);
+        return customData == null ? null : customData == null ? null : customData.copyTag();
+    }
+
+    @Override
+    public EntityType getSpawnEggEntityType(ItemStack spawnEgg) {
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return null;
+        net.minecraft.world.item.ItemStack nmsItem = (net.minecraft.world.item.ItemStack)handle;
+        Item item = nmsItem.getItem();
+        if (!(item instanceof SpawnEggItem)) {
+            return null;
+        }
+        SpawnEggItem spawnEggItem = (SpawnEggItem)item;
+        return CraftEntityType.minecraftToBukkit(spawnEggItem.getType(nmsItem));
+    }
+
+    @Override
+    public void removeSpawnEggEntityData(ItemStack spawnEgg) {
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)handle;
+        itemStack.set(DataComponents.ENTITY_DATA, null);
     }
 
     @Override

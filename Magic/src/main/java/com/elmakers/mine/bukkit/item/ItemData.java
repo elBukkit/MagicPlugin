@@ -20,6 +20,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -27,12 +28,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.potion.PotionEffect;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.StringUtils;
@@ -246,6 +249,17 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             CompatibilityLib.getItemUtils().setCustomModelData(item, customModelData);
         }
 
+        ConfigurationSection entitySection = configuration.getConfigurationSection("entity");
+        if (entitySection != null) {
+            item = CompatibilityLib.getItemUtils().makeReal(item);
+            Object entityTag = nbtUtils.newCompoundTag();
+            nbtUtils.addTagsToNBT(ConfigUtils.toMap(entitySection), entityTag);
+            EntityType entityType = nbtUtils.getSpawnEggEntityType(item);
+            if (entityType != null) {
+                nbtUtils.setSpawnEggEntityData(item, entityType, entityTag);
+            }
+        }
+
         // Only ItemMeta operations from here
         ItemMeta itemMeta = item.getItemMeta();
         String customName = configuration.getString("name");
@@ -433,6 +447,15 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 itemMeta.removeItemFlags(flag);
             }
             configuration.set("flags", flagIds);
+        }
+
+        if (itemMeta instanceof SpawnEggMeta) {
+            Object entityDataTag = nbtUtils.getSpawnEggEntityData(item);
+            if (entityDataTag != null) {
+                ConfigurationSection entitySection = configuration.createSection("entity");
+                ConfigurationUtils.loadAllTagsFromNBT(entitySection, entityDataTag);
+                nbtUtils.removeSpawnEggEntityData(item);
+            }
         }
 
         // Version-specific data handling

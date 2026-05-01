@@ -5,8 +5,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntitySnapshot;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -149,8 +152,23 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, EntityType entityType, Object entityData) {
         return setTag(spawnEgg, "EntityTag", entityData);
+    }
+
+    @Override
+    public Object getSpawnEggEntityData(ItemStack spawnEgg) {
+        return getTag(spawnEgg, "EntityTag");
+    }
+
+    @Override
+    public org.bukkit.entity.EntityType getSpawnEggEntityType(ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack == null ? null : itemStack.getItemMeta();
+        if (itemMeta == null || !(itemMeta instanceof SpawnEggMeta)) return null;
+        SpawnEggMeta spawnEgg = (SpawnEggMeta) itemMeta;
+        EntitySnapshot entity = spawnEgg.getSpawnedEntity();
+        if (entity == null) return null;
+        return entity.getEntityType();
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
@@ -103,7 +103,13 @@ public interface NBTUtils {
 
     Object newCompoundTag();
 
-    boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData);
+    boolean setSpawnEggEntityData(ItemStack spawnEgg, EntityType entityType, Object entityData);
+
+    Object getSpawnEggEntityData(ItemStack spawnEgg);
+
+    EntityType getSpawnEggEntityType(ItemStack itemStack);
+
+    void removeSpawnEggEntityData(ItemStack spawnEgg);
 
     boolean saveTagsToItem(ConfigurationSection tags, ItemStack item);
 

@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -311,7 +311,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, EntityType entityType, Object entityData) {
         if (platform.getItemUtils().isEmpty(spawnEgg)) return false;
         if (entityData == null || !(entityData instanceof CompoundTag)) return false;
 
@@ -322,6 +322,24 @@ public class NBTUtils extends NBTUtilsBase {
         itemStack.set(DataComponents.ENTITY_DATA, customData);
         return true;
     }
+
+    @Override
+    public Object getSpawnEggEntityData(ItemStack spawnEgg) {
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return null;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)handle;
+        CustomData customData = itemStack.get(DataComponents.ENTITY_DATA);
+        return customData == null ? null : customData.copyTag();
+    }
+
+    @Override
+    public void removeSpawnEggEntityData(ItemStack spawnEgg) {
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)handle;
+        itemStack.set(DataComponents.ENTITY_DATA, null);
+    }
+
     @Override
     public boolean addTagsToNBT(Map<String, Object> tags, Object node) {
         if (node == null) {

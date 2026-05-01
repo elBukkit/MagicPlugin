@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntityType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -22,6 +24,8 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 
 public class NBTUtils extends NBTUtilsBase {
     public NBTUtils(Platform platform) {
@@ -288,6 +292,19 @@ public class NBTUtils extends NBTUtilsBase {
             }
         }
         return list;
+    }
+
+    @Override
+    public EntityType getSpawnEggEntityType(ItemStack spawnEgg) {
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return null;
+        net.minecraft.world.item.ItemStack nmsItem = (net.minecraft.world.item.ItemStack)handle;
+        Item item = nmsItem.getItem();
+        if (!(item instanceof SpawnEggItem)) {
+            return null;
+        }
+        SpawnEggItem spawnEggItem = (SpawnEggItem)item;
+        return CraftEntityType.minecraftToBukkit(spawnEggItem.getType(null));
     }
 
     @Override

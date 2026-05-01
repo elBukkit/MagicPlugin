@@ -84,7 +84,7 @@ public class CaptureAction extends BaseSpellAction {
         CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "UUID");
         CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "PortalCooldown");
 
-        if (!CompatibilityLib.getNBTUtils().setSpawnEggEntityData(spawnEgg, targetEntity, savedEntity)) {
+        if (!CompatibilityLib.getNBTUtils().setSpawnEggEntityData(spawnEgg, targetEntity.getType(), savedEntity)) {
             return SpellResult.FAIL;
         }
         targetEntity.getWorld().dropItemNaturally(targetEntity.getLocation(), spawnEgg);

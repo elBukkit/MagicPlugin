@@ -307,7 +307,6 @@ public abstract class ItemUtilsBase implements ItemUtils {
             skullMeta.setOwnerProfile(null);
         }
 
-
         Multimap<Attribute, AttributeModifier> attributeModifiers = itemMeta.getAttributeModifiers();
         if (attributeModifiers != null && !attributeModifiers.isEmpty()) {
             List<ConfigurationSection> modifierList = new ArrayList<>();
