@@ -1,11 +1,57 @@
 warlockegg:
+  inherit: false
   worth: 2000.0
+  item: ZOMBIE_SPAWN_EGG
   name: Warlock Spawn Egg
-  item:
-    bukkit_class: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:zombie_spawn_egg
-    count: 1
-    components:
-      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"warlock"},CanBreakDoors:0b,CanPickUpLoot:0b,CustomName:{extra:["Warlock"],text:""},DeathTime:0s,DrownedConversionTime:-1,FallFlying:0b,Fire:0s,Health:50.0f,HurtByTimestamp:0,HurtTime:0s,InWaterTime:-1,Invulnerable:0b,IsBaby:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[100.0d,63.0d,4.0d],Paper.OriginWorld:[I;-1698484138,400246832,-1257053634,-1100401284],Paper.ShouldBurnInDay:1b,Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:17,WorldUUIDLeast:-5399004244153387652L,WorldUUIDMost:-7294933825084504016L,attributes:[{base:2.0d,id:"minecraft:armor"},{base:0.0d,id:"minecraft:armor_toughness"},{base:50.0d,id:"minecraft:max_health"},{base:0.23000000417232513d,id:"minecraft:movement_speed"}],current_impulse_context_reset_grace_time:0,fall_distance:0.0d,id:"minecraft:zombie"}'
-    schema_version: 1
+  entity:
+    BukkitValues:
+      magic:magicmob: warlock
+    Attributes:
+      - Base: 50.0
+        Name: minecraft:generic.max_health
+      - Base: 0.0
+        Name: minecraft:generic.armor_toughness
+      - Base: 0.23000000417232513
+        Name: minecraft:generic.movement_speed
+      - Base: 2.0
+        Name: minecraft:generic.armor
+    CustomName: '{"extra":[{"text":"Warlock"}],"text":""}'
+    ArmorItems:
+      - id: minecraft:chainmail_boots
+        Count: true
+        tag:
+          Enchantments:
+            - lvl: 10
+              id: minecraft:feather_falling
+          Damage: 0
+      - id: minecraft:chainmail_leggings
+        Count: true
+        tag:
+          Enchantments:
+            - lvl: 3
+              id: minecraft:thorns
+          Damage: 0
+      - id: minecraft:chainmail_chestplate
+        Count: true
+        tag:
+          Enchantments:
+            - lvl: 3
+              id: minecraft:thorns
+          Damage: 0
+      - id: minecraft:chainmail_helmet
+        Count: true
+        tag:
+          Damage: 0
+    HandItems:
+      - id: minecraft:stick
+        Count: true
+        tag:
+          Unbreakable: true
+          HideFlags: 6
+          display:
+            Lore:
+              - '{"extra":[{"text":"It has lost its power"}],"text":""}'
+            Name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"green","text":"Warlock
+            wand"}],"text":""}'
+    id: minecraft:zombie
+    Health: 50.0
