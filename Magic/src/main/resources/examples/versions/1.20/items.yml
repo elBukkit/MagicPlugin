@@ -441,13 +441,13 @@ iron_chain:
 
 emerald_sword:
   attributes:
-    - attribute: minecraft:generic_attack_damage
+    - attribute: generic_attack_damage
       amount: 5.0
       slot: hand
       operation: ADD_NUMBER
       uuid: bdb4f201-649d-3773-af6d-fb718fd91885
       name: modifier
-    - attribute: minecraft:generic_attack_speed
+    - attribute: generic_attack_speed
       amount: 2.0
       slot: hand
       operation: ADD_NUMBER
