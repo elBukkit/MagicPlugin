@@ -3728,12 +3728,18 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return true;
     }
 
+    public Collection<BoundingBox> getLegacyBoundingBoxes(Block block) {
+        BoundingBox translated = new BoundingBox(block.getLocation().toVector(), BLOCK_BOUNDING_BOX);
+        blockBoundingBoxes.set(0, translated);
+        return blockBoundingBoxes;
+    }
+
     @Override
     public Collection<BoundingBox> getBoundingBoxes(Block block) {
         VoxelShape voxelShape = block.getCollisionShape();
         Collection<org.bukkit.util.BoundingBox> boxes = voxelShape.getBoundingBoxes();
         if (boxes.isEmpty()) {
-            return getBoundingBoxes(block);
+            return getLegacyBoundingBoxes(block);
         }
         List<BoundingBox> converted = new ArrayList<>(boxes.size());
         Vector center = block.getLocation().toVector();
