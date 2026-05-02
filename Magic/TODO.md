@@ -2,13 +2,6 @@
 
  - How to hide leather armor color in lore?
 
-1: setting "unstashable" on a wand does not prevent it from being stashed if i'm holding the wand in my mainhand when opening a container
-
-2: setting up "spell blocks" in config currently, got one looking like this:
-
-https://discord.com/channels/580099743875727363/580101207364861954/1496487669323141304
-
-
 # Actually Somewhat Recent
 
 # Next

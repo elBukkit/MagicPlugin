@@ -877,6 +877,8 @@ public class PlayerController implements Listener {
             }
         }
 
+        // Save this later for spell block interactions
+        boolean wasRightClick = isRightClick;
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Material material = clickedBlock.getType();
             boolean isInteractible = wand != null ? wand.isInteractible(clickedBlock) : controller.isInteractible(clickedBlock);
@@ -944,10 +946,18 @@ public class PlayerController implements Listener {
             && (!spellBlock.requiresSpellProgression() || (wand != null && wand.hasSpellProgression()))
         ) {
             String spellKey = null;
-            if (player.isSneaking()) {
-                spellKey = spellBlock.getRightClickSneakSpell();
-            } else {
-                spellKey = spellBlock.getRightClickSpell();
+            if (wasRightClick) {
+                if (player.isSneaking()) {
+                    spellKey = spellBlock.getRightClickSneakSpell();
+                } else {
+                    spellKey = spellBlock.getRightClickSpell();
+                }
+            } else if (isLeftClick) {
+                if (player.isSneaking()) {
+                    spellKey = spellBlock.getLeftClickSneakSpell();
+                } else {
+                    spellKey = spellBlock.getLeftClickSpell();
+                }
             }
 
             Spell spell = spellKey != null ? mage.getSpell(spellKey) : null;;

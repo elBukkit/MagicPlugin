@@ -29,6 +29,7 @@
 - Change Valhalla XP rewards to use the `SKILL_ACTION` reason by default (was `PLUGIN`)
   - This will make them react to XP multipliers
   - This can be reconfigured per currency using `gain_reason`
+- Add left click events to `spell_blocks` definitions, right click events no longer trigger on left click
 
 ## Improvements
 
