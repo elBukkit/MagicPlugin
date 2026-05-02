@@ -5,3 +5,13 @@ arrow_bomb:
 arrow_grapple:
   item: 'tipped_arrow{CustomModelData:18026,Potion:slow}'
   item_disabled: 'tipped_arrow{CustomModelData:18027,Potion:slow}'
+
+shell:
+  vanilla_item: 'scute{18001}'
+  vanilla_item_enabled: 'scute{19001}'
+  vanilla_item_disabled: 'scute{18002}'
+
+gatling:
+  vanilla_item: 'chain{18001}'
+  vanilla_item_enabled: 'chain{19001}'
+  vanilla_item_disabled: 'chain{18002}'
