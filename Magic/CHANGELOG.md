@@ -7,6 +7,7 @@
 
  - Requires Java 17 to run
  - Compatible from Spigot/Paper 1.17 up
+ - Vanilla item spell icons will be used in 1.19 and lower, skull icons in 1.20 and up
 
 ## FIXES
 
