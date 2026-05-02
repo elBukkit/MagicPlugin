@@ -19,6 +19,7 @@
      `/mage attribute` command.
  - Fix using variables in the ModifyAttributes and ModifyProperties actions
  - Fix EffectLib's ExplodeEffect and BigBangEffect
+ - Fix being able to put `unstashable` wands in chests if they were in your main hand
 
 ## Changes
 

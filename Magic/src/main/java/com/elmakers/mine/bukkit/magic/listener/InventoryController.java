@@ -388,6 +388,31 @@ public class InventoryController implements Listener {
         Wand activeWand = mage.getActiveWand();
         boolean isWandInventoryOpen = activeWand != null && activeWand.isInventoryOpen();
 
+        // Check for unstashable items
+        boolean isContainer = unstashableTypes.contains(inventoryType);
+        boolean isChest = inventoryType == InventoryType.CHEST;
+        boolean isContainerSlot = isChest && event.getSlot() == event.getRawSlot();
+
+        if (isHotbar) {
+            ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
+            if (CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "unmoveable", false)) {
+                event.setCancelled(true);
+                return;
+            }
+            if (isContainer && CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "unstashable", false) && !player.hasPermission("magic.wand.override_stash")) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        // Check for unstashable wands
+        if (isContainer && !isContainerSlot && !player.hasPermission("magic.wand.override_stash")) {
+            if (CompatibilityLib.getNBTUtils().getBoolean(clickedItem, "unstashable", false)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         // Check to see if we just grabbed the active wand, we'll need to deactivate it so it saves
         if (activeWand != null && !isWandInventoryOpen && clickedWand && controller.isSameItem(clickedItem, activeWand.getItem())) {
             activeWand.deactivate();
@@ -410,10 +435,7 @@ public class InventoryController implements Listener {
         }
 
         boolean isFurnace = inventoryType == InventoryType.FURNACE;
-        boolean isContainer = unstashableTypes.contains(inventoryType);
         boolean isEnderChest = inventoryType == InventoryType.ENDER_CHEST;
-        boolean isChest = inventoryType == InventoryType.CHEST;
-        boolean isContainerSlot = isChest && event.getSlot() == event.getRawSlot();
         boolean isWatchedSlot = !isChest || isContainerSlot;
 
         if (isWandInventoryOpen)
@@ -509,26 +531,6 @@ public class InventoryController implements Listener {
             boolean swapToCraftableWand = swapToWand && CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "craftable", false);;
 
             if (swapToWand && !swapToCraftableWand) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (isHotbar) {
-            ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
-            if (CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "unmoveable", false)) {
-                event.setCancelled(true);
-                return;
-            }
-            if (isContainer && CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "unstashable", false) && !player.hasPermission("magic.wand.override_stash")) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        // Check for unstashable wands
-        if (isContainer && !isContainerSlot && !player.hasPermission("magic.wand.override_stash")) {
-            if (CompatibilityLib.getNBTUtils().getBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
             }
