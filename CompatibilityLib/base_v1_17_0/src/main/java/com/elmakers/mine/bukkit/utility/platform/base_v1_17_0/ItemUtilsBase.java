@@ -137,12 +137,18 @@ public class ItemUtilsBase implements ItemUtils {
 
     @Override
     public int getCustomModelData(ItemStack itemStack) {
-        return platform.getNBTUtils().getInt(itemStack, "CustomModelData", 0);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return 0;
+        if (!itemMeta.hasCustomModelData()) return 0;
+        return itemMeta.getCustomModelData();
     }
 
     @Override
     public void setCustomModelData(ItemStack itemStack, int customModelData) {
-        platform.getNBTUtils().setInt(itemStack, "CustomModelData", customModelData);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return;
+        itemMeta.setCustomModelData(customModelData);
+        itemStack.setItemMeta(itemMeta);
     }
 
     @Override
