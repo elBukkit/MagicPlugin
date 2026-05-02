@@ -48,6 +48,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -228,6 +229,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private MageTargeting targeting;
     private WeakReference<Entity> lastDamageSource;
     private WeakReference<Entity> lastDamageTarget;
+    private WeakReference<Entity> damager;
     private Block lastBlockBroken;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
@@ -533,6 +535,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public @Nullable Entity getDamager() {
+        return damager == null ? null : damager.get();
+    }
+
+    @Override
     public @Nullable Entity getLastDamageTarget() {
         return lastDamageTarget == null ? null : lastDamageTarget.get();
     }
@@ -550,6 +557,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void damagedBy(@Nonnull Entity initialDamager, double damage) {
         lastDamage = damage;
         Entity damager = controller.getDamageSource(initialDamager);
+        this.damager = new WeakReference<>(damager);
 
         // Don't count self-attacks
         if (damager == null || damager == getEntity()) return;
@@ -641,6 +649,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         String damageType = currentDamageType;
         currentDamageType = null;
         lastDamage = event.getDamage();
+        if (!(event instanceof EntityDamageByEntityEvent)) {
+            damager = null;
+        }
         LivingEntity entity = getLivingEntity();
         if (entity == null) {
             return;

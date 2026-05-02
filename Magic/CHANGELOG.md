@@ -30,6 +30,7 @@
   - This will make them react to XP multipliers
   - This can be reconfigured per currency using `gain_reason`
 - Add left click events to `spell_blocks` definitions, right click events no longer trigger on left click
+- Separate `damager` and `last_damager` target types, the former now updates with any damage taken, including self damage
 
 ## Improvements
 

@@ -1,7 +1,5 @@
 # TODO
 
- - How to hide leather armor color in lore?
-
 # Actually Somewhat Recent
 
 # Next

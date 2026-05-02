@@ -603,6 +603,8 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     Entity getLastDamager();
     @Nullable
+    Entity getDamager();
+    @Nullable
     Entity getTopDamager();
     @Nullable
     Entity getLastDamageTarget();

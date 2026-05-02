@@ -281,6 +281,9 @@ public class TargetingSpell extends BaseSpell {
         if (targetType == TargetType.LAST_DAMAGER) {
             return targeting.overrideTarget(context, new Target(source, mage.getLastDamager()));
         }
+        if (targetType == TargetType.DAMAGER) {
+            return targeting.overrideTarget(context, new Target(source, mage.getDamager()));
+        }
         if (targetType == TargetType.TOP_DAMAGER) {
             return targeting.overrideTarget(context, new Target(source, mage.getTopDamager()));
         }
