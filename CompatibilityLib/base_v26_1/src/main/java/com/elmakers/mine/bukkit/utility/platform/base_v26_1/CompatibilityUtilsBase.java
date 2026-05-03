@@ -978,13 +978,6 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             matcher.appendReplacement(buffer, getHexColor(match));
         }
         message = matcher.appendTail(buffer).toString();
-
-        // Next translate color codes, including any hex color codes we just inserted
-        SpigotUtils spigot = platform.getSpigotUtils();
-        if (spigot != null) {
-            return spigot.translateColors(message);
-        }
-
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
