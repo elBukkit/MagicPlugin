@@ -1786,7 +1786,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return createBrushItem(materialKey, controller, this, false);
     }
 
-
     @Nullable
     public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
         return createBrushItem(materialKey, controller, wand, isItem, true);

@@ -33,6 +33,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.data.BrushData;
+import com.elmakers.mine.bukkit.api.item.Icon;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -947,6 +948,17 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 icon = replacementMaterial;
             }
             extraLore = messages.get("wand.building_material_description").replace("$material", customName);
+        }
+
+        if (itemStack == null) {
+            String[] keyPieces = StringUtils.split(this.getKey(), ':');
+            Icon iconItem = controller.getIcon("brush_" + this.getKey());
+            if (iconItem == null && keyPieces.length > 1) {
+                iconItem = controller.getIcon("brush_" + keyPieces[0]);
+            }
+            if (iconItem != null) {
+                icon = (MaterialAndData)iconItem.getItemMaterial(controller);
+            }
         }
 
         if (itemStack == null) {
