@@ -551,7 +551,8 @@ max_mana: 1000
 max_mana_regeneration: 100
 
 # Debug EffectLib issues
-debug_effects: false
+# turn this off if you're getting a lot of spam from invalid effects
+debug_effects: true
 
 # use this to make all hitboxes larger or smaller
 # for targeting purposes.

@@ -24,14 +24,16 @@
 
 ## Changes
 
-- Change `/mitem save` to store most item components as config and try to avoid serializing items
-- Add `/mitem serialize` to use only Bukkit serialization to save an item
-- Change Valhalla perk rewards to be "p:" permanent by default
-- Change Valhalla XP rewards to use the `SKILL_ACTION` reason by default (was `PLUGIN`)
-  - This will make them react to XP multipliers
-  - This can be reconfigured per currency using `gain_reason`
-- Add left click events to `spell_blocks` definitions, right click events no longer trigger on left click
-- Separate `damager` and `last_damager` target types, the former now updates with any damage taken, including self damage
+ - Change `/mitem save` to store most item components as config and try to avoid serializing items
+ - Add `/mitem serialize` to use only Bukkit serialization to save an item
+ - Change Valhalla perk rewards to be "p:" permanent by default
+ - Change Valhalla XP rewards to use the `SKILL_ACTION` reason by default (was `PLUGIN`)
+   - This will make them react to XP multipliers
+   - This can be reconfigured per currency using `gain_reason`
+ - Add left click events to `spell_blocks` definitions, right click events no longer trigger on left click
+ - Separate `damager` and `last_damager` target types, the former now updates with any damage taken, including self damage
+ - The `debug_effects` config option is now on by default
+   - Use `/mconfig configure config debug_effects false` to turn it back off if it's spammy for some reason
 
 ## Improvements
 
