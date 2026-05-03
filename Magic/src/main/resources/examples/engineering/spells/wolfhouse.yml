@@ -1,8 +1,6 @@
 wolfhouse_base:
-    icon: spell_icon:158
-    icon_disabled: spell_icon_disabled:158
+    icon: wolfhouse
     hidden: true
-    icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     category: engineering
     worth: 1000
     cast_on_no_target: false

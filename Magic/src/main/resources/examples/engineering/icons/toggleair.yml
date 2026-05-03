@@ -1,5 +1,7 @@
 toggleair:
-  item: 'birch_door{18001}'
-  item_disabled: 'birch_door{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1{18065}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1{18066}'
+  vanilla_item: 'birch_door{18001}'
+  vanilla_item_disabled: 'birch_door{18002}'
   type: spell
   glyph: "\uE9D2"
