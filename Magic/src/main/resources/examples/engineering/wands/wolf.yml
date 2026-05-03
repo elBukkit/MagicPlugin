@@ -224,8 +224,6 @@ wolf:
     - red_concrete
     - white_concrete
     - yellow_concrete
-    - end_portal
-    - nether_portal
 
     - schematic|rainbow_blocks
     - schematic|creeper_rug
