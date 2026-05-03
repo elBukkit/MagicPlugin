@@ -188,7 +188,8 @@ help:
     `<li>``<command command="marena configure testing add spawn" text="Add a new player spawn location">`
     `<li>``<command command="marena configure testing lobby" text="Set the lobby location, where players wait before joining">`
     `<li>``<command command="marena configure testing exit" text="Set the exit location">`
-    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Arenas" text="Detailed isntructions, including a mob arena tutorial, on the wiki">`
+    `<li>``<command command="mconfig configure config arenas.enabled false" text="Turn off all arena functionality">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Arenas" text="Detailed instructions, including a mob arena tutorial, on the wiki">`
   links: |-
     `<title text="Links">`
     `<li>`Configuration reference: &6https://reference.elmakers.com/

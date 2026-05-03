@@ -171,6 +171,8 @@ public class ArenaListener implements Listener {
 
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
+        if (!controller.isEnabled()) return;
+
         Player player = e.getPlayer();
         if (!player.hasPermission("magic.arena.signs.create")) {
             return;
@@ -224,6 +226,8 @@ public class ArenaListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
+        if (!controller.isEnabled()) return;
+
         Player player = e.getPlayer();
         if (!player.hasPermission("magic.arena.signs.use")) {
             return;
@@ -260,6 +264,8 @@ public class ArenaListener implements Listener {
     }
 
     protected boolean onEnterPortal(Entity entity) {
+        if (!controller.isEnabled()) return false;
+
         // Mob arenas eventually!
         if (!(entity instanceof Player)) {
             return false;
@@ -282,6 +288,8 @@ public class ArenaListener implements Listener {
     }
 
     protected boolean onPortal(Entity entity) {
+        if (!controller.isEnabled()) return false;
+
         // Mob arenas eventually!
         if (!(entity instanceof Player)) {
             return false;
@@ -318,6 +326,8 @@ public class ArenaListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (!controller.isEnabled()) return;
+
         Player player = event.getPlayer();
         if (player.hasMetadata("allow_teleport")) {
             player.removeMetadata("allow_teleport", controller.getPlugin());
@@ -337,6 +347,8 @@ public class ArenaListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
+        if (!controller.isEnabled()) return;
+
         if (event.getView().getTitle().contains("Leaderboard")) {
             event.getWhoClicked().closeInventory();
         }

@@ -44,6 +44,7 @@
  - Add `effect_bubbles_particle` config option to wands, defaults to entity_effect
  - Add `wither_archer` mob to go along with pre-existing spawner
  - Add `earns_multiplier` option to spells, for easily scaling SP earn
+ - Add `arenas.enabled false` config optiont to disable Magic Arenas features
 
 # 10.11.1
 

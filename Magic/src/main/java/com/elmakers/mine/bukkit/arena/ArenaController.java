@@ -21,6 +21,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -32,15 +33,36 @@ public class ArenaController implements Runnable {
     private final Map<Entity, Arena> arenaMobs = new WeakHashMap<>();
     private final Plugin plugin;
     private final MageController magic;
+    private boolean enabled = false;
+    private BukkitTask tickTask;
 
     public ArenaController(MageController magic) {
         this.magic = magic;
         this.plugin = magic.getPlugin();
     }
 
-    public void start() {
+    public void load(ConfigurationSection configuration) {
+        boolean wasEnabled = enabled;
+        enabled = configuration != null && configuration.getBoolean("enabled", true);
+        if (wasEnabled != enabled) {
+            if (enabled) {
+                start();
+            } else {
+                stop();
+            }
+        }
+    }
+
+    private void start() {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        scheduler.runTaskTimer(plugin, this, 1, 10);
+        tickTask = scheduler.runTaskTimer(plugin, this, 1, 10);
+    }
+
+    private void stop() {
+        if (tickTask != null) {
+            tickTask.cancel();
+            tickTask = null;
+        }
     }
 
     public Arena addArena(String arenaName, ArenaTemplate template, Location location) {
@@ -303,5 +325,9 @@ public class ArenaController implements Runnable {
             sender.sendMessage(ChatColor.AQUA + "Imported " + arenaKey);
         }
         magic.getAPI().save();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

@@ -1529,7 +1529,6 @@ public class MagicController implements MageController, ChunkLoadListener {
         requirementsController = new RequirementsController(this);
         worldController = new WorldController(this);
         arenaController = new ArenaController(this);
-        arenaController.start();
         if (CompatibilityLib.hasStatistics() && !CompatibilityLib.hasJumpEvent()) {
             jumpController = new JumpController(this);
         }
@@ -8974,6 +8973,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         } else {
             log("Skin-based spell icons disabled");
         }
+        arenaController.load(properties.getConfigurationSection("arenas"));
 
         // Set up sandbox config update timer
         int configUpdateInterval = properties.getInt("config_update_interval");
