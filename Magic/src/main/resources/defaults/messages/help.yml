@@ -334,7 +334,6 @@ help:
     `<li>``<command command="mage promote" text="Rank yourself up">`
     `<li>``<command command="getrp url" text="Get a download URL for the resource pack">`
     `<li>``<command command="mgive @p sp 1000" text="Give yourself some Spell Points">`
-    `<li>``<command command="mgive @p sp:1000" text="Give yourself SP as an item">`
     `<li>``<command command="mage reset @p caster" text="Reset your survival progress">`
     `<li>``<command command="mage reset @p" text="Completely reset your magic player data">`
     `<li>``<help topic="permissions" text="Help with permissions">`
@@ -599,9 +598,10 @@ help:
     `<p>`&6Spell points&f &7(&bSP&7)&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
     `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
     `<p>`This means that once you have more than one spell, using each one frequently is the fastest way to earn SP!
-    `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
+    `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get players going.
     `<p>`Once players have more than one spell they can earn SP much faster by using all of their spells frequently.
     `<li>``<command command="mgive @p sp 1000" text="Give yourself some SP">`
+    `<li>``<command command="mgive @p sp:1000" text="Give yourself SP as an item">`
     `<li>``<command command="mconfig spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="See the wiki for more info">
   paths: |-
