@@ -333,6 +333,7 @@ help:
     `<li>``<command command="mage promote" text="Rank yourself up">`
     `<li>``<command command="getrp url" text="Get a download URL for the resource pack">`
     `<li>``<command command="mgive @p sp 1000" text="Give yourself some Spell Points">`
+    `<li>``<command command="mgive @p sp:1000" text="Give yourself SP as an item">`
     `<li>``<command command="mage reset @p caster" text="Reset your survival progress">`
     `<li>``<command command="mage reset @p" text="Completely reset your magic player data">`
     `<li>``<help topic="permissions" text="Help with permissions">`
