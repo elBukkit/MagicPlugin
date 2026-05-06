@@ -248,6 +248,8 @@ public interface CompatibilityUtils {
 
     boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID);
 
+    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID, String attributeKey);
+
     void sendExperienceUpdate(Player player, float experience, int level);
 
     Object getEntityData(Entity entity);

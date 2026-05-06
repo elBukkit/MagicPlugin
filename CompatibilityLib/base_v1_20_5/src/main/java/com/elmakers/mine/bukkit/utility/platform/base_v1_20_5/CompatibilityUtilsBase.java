@@ -1920,6 +1920,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID) {
+        return setItemAttribute(item, attribute, value, slot, attributeOperation, attributeUUID, "");
+    }
+
+    @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID, String attributeKey) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;

@@ -45,6 +45,7 @@
  - Add `wither_archer` mob to go along with pre-existing spawner
  - Add `earns_multiplier` option to spells, for easily scaling SP earn
  - Add `arenas.enabled false` config optiont to disable Magic Arenas features
+ - Automatically generate maybe-unique keys for item attributes, add optional `key` config to override
 
 # 10.11.1
 

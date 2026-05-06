@@ -1983,8 +1983,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         return location.getBlock().getState();
     }
 
-    protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "modifier");
+    protected AttributeModifier createAttributeModifier(String key, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
         return new AttributeModifier(namespacedKey, value, operation, equipmentSlotGroup);
     }
 
@@ -2417,11 +2417,16 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation) {
-        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
+        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID(), "");
     }
 
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID) {
+        return setItemAttribute(item, attribute, value, slot, attributeOperation, attributeUUID, "");
+    }
+
+    @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID, String attributeKey) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
@@ -2440,7 +2445,10 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                 }
             }
             EquipmentSlotGroup equipmentSlotGroup = parseEquipmentSlotGroup(slot);
-            AttributeModifier modifier = createAttributeModifier(attributeUUID, value, operation, equipmentSlotGroup);
+            if (attributeKey == null || attributeKey.isEmpty()) {
+                attributeKey = "modifier_" + attribute.name() + "_" + slot;
+            }
+            AttributeModifier modifier = createAttributeModifier(attributeKey, value, operation, equipmentSlotGroup);
             meta.addAttributeModifier(attribute, modifier);
             item.setItemMeta(meta);
         } catch (Exception ex) {

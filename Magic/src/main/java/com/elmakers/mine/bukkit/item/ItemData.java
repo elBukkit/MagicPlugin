@@ -201,6 +201,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                     Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                     double value = attributeConfig.getDouble("amount");
                     value = attributeConfig.getDouble("value", value);
+                    String key = attributeConfig.getString("key");
                     String slot = attributeConfig.getString("slot");
                     String uuidString = attributeConfig.getString("uuid");
                     UUID uuid = null;
@@ -215,7 +216,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                         uuid = UUID.randomUUID();
                     }
                     String operation = attributeConfig.getString("operation");
-                    if (!CompatibilityLib.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation, uuid)) {
+                    if (!CompatibilityLib.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation, uuid, key)) {
                         Bukkit.getLogger().warning("Failed to set attribute: " + attributeKey);
                     }
                 } catch (Exception ex) {
