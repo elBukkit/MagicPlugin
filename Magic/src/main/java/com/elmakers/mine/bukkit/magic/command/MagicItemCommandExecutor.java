@@ -78,7 +78,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 sendNoPermission(sender);
                 return true;
             }
-            return onConvertAll(sender);
+            boolean check = (args.length > 1 && args[1].equalsIgnoreCase("--check"));
+            return onConvertAll(sender, check);
         }
 
         if (args[0].equalsIgnoreCase("spawn"))
@@ -630,7 +631,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onConvertAll(CommandSender sender) {
+    public boolean onConvertAll(CommandSender sender, boolean check) {
         MageController controller = api.getController();
         Collection<String> itemKeys = controller.getItemKeys();
         File itemFolder = new File(controller.getConfigFolder(), "items");
@@ -668,7 +669,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 invalid = itemStack.hasItemMeta() || itemSection.contains("tags");
             }
             File targetFolder = itemFolder;
-            if (invalid) {
+            if (invalid && check) {
                 targetFolder = new File(targetFolder, "unsupported");
             } else {
                 targetFolder = new File(targetFolder, "converted");
