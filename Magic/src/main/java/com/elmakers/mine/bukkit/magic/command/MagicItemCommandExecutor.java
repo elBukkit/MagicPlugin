@@ -635,6 +635,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         MageController controller = api.getController();
         Collection<String> itemKeys = controller.getItemKeys();
         File itemFolder = new File(controller.getConfigFolder(), "items");
+        int itemCount = 0;
         for (String itemKey : itemKeys) {
             ItemData existing = controller.getItem(itemKey);
             ItemStack item = existing.getItemStack();
@@ -678,11 +679,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             File itemFile = new File(targetFolder, itemKey + ".yml");
             try {
                 itemConfig.save(itemFile);
+                itemCount++;
             } catch (IOException ex) {
                 ex.printStackTrace();
                 sender.sendMessage(ChatColor.RED + "Can't write to file " + itemFile.getName());
             }
         }
+        sender.sendMessage(ChatColor.GREEN + "Wrote " + itemCount + " items to: " + itemFolder.getName());
         return true;
     }
 
