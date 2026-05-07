@@ -636,6 +636,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         Collection<String> itemKeys = controller.getItemKeys();
         File itemFolder = new File(controller.getConfigFolder(), "items");
         int itemCount = 0;
+        int invalidItemCount = 0;
         for (String itemKey : itemKeys) {
             ItemData existing = controller.getItem(itemKey);
             ItemStack item = existing.getItemStack();
@@ -644,8 +645,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             boolean invalid = false;
             if (item == null || item.getType() == Material.AIR) {
                 sender.sendMessage(ChatColor.RED + "Skipping invalid item: " + ChatColor.AQUA + itemKey);
-                invalid = true;
-                itemSection.set("notes", "Invalid Item");
+                invalid = check;
+                itemSection.set("item", "air");
+                itemSection.set("notes", "Item was invalid and could not be converted");
             } else {
                 if (!item.hasItemMeta()) {
                     // sender.sendMessage(ChatColor.RED + "Skipping simple item: " + ChatColor.AQUA + itemKey);
@@ -668,6 +670,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 ItemData itemData = new com.elmakers.mine.bukkit.item.ItemData(item, controller);
                 ItemStack itemStack = itemData.save(itemSection);
                 invalid = itemStack.hasItemMeta() || itemSection.contains("tags");
+                if (invalid) {
+                    itemSection.set("notes", "Item has unsupported data, saved as a Bukkit serialized item which may have forward-compatibility issues");
+                }
             }
             File targetFolder = itemFolder;
             if (invalid && check) {
@@ -679,13 +684,25 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             File itemFile = new File(targetFolder, itemKey + ".yml");
             try {
                 itemConfig.save(itemFile);
-                itemCount++;
+                if (invalid) {
+                    invalidItemCount++;
+                } else {
+                    itemCount++;
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
                 sender.sendMessage(ChatColor.RED + "Can't write to file " + itemFile.getName());
             }
         }
-        sender.sendMessage(ChatColor.GREEN + "Wrote " + itemCount + " items to: " + itemFolder.getName());
+        sender.sendMessage(ChatColor.GREEN + "Wrote " + itemCount + " items to: " + itemFolder.getName() + "/converted");
+        if (invalidItemCount > 0) {
+            sender.sendMessage(ChatColor.RED + "Found " + invalidItemCount + " invalid or unsupported items");
+            if (check) {
+                sender.sendMessage(ChatColor.GRAY + "Invalid items were written to " + itemFolder.getName() + "/unsupported");
+            } else {
+                sender.sendMessage(ChatColor.GRAY + "Run again with --check parameter to separate out unsupported files");
+            }
+        }
         return true;
     }
 
