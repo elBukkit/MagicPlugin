@@ -21,6 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -525,8 +526,14 @@ public class ItemUtilsBase implements ItemUtils {
                 attributeModifier.set("attribute", attribute.getKey().toString());
                 AttributeModifier modifier = entry.getValue();
                 attributeModifier.set("amount", modifier.getAmount());
-                attributeModifier.set("slot", modifier.getSlotGroup().toString());
-                attributeModifier.set("operation", modifier.getOperation().toString());
+                EquipmentSlotGroup slot = modifier.getSlotGroup();
+                if (slot != null) {
+                    attributeModifier.set("slot", slot.toString());
+                }
+                AttributeModifier.Operation operation = modifier.getOperation();
+                if (operation != null) {
+                    attributeModifier.set("operation", operation.toString());
+                }
                 attributeModifier.set("name", modifier.getName());
                 modifierList.add(attributeModifier);
                 itemMeta.removeAttributeModifier(attribute, modifier);

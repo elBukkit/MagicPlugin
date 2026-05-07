@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Color;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -513,9 +515,18 @@ public class ItemUtilsBase implements ItemUtils {
                 attributeModifier.set("attribute", attribute.getKey().toString());
                 AttributeModifier modifier = entry.getValue();
                 attributeModifier.set("amount", modifier.getAmount());
-                attributeModifier.set("slot", modifier.getSlot().toString());
-                attributeModifier.set("operation", modifier.getOperation().toString());
-                attributeModifier.set("uuid", modifier.getUniqueId().toString());
+                EquipmentSlot slot = modifier.getSlot();
+                if (slot != null) {
+                    attributeModifier.set("slot", slot.toString());
+                }
+                AttributeModifier.Operation operation = modifier.getOperation();
+                if (operation != null) {
+                    attributeModifier.set("operation", operation.toString());
+                }
+                UUID uniqueId = modifier.getUniqueId();
+                if (uniqueId != null) {
+                    attributeModifier.set("uuid", uniqueId.toString());
+                }
                 attributeModifier.set("name", modifier.getName());
                 modifierList.add(attributeModifier);
                 itemMeta.removeAttributeModifier(attribute, modifier);
