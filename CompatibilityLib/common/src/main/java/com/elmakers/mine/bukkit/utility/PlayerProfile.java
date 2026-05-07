@@ -38,7 +38,9 @@ public abstract class PlayerProfile {
     public abstract void update(SkullMeta skullMeta);
 
     public void save(ConfigurationSection configuration) {
-        configuration.set("uuid", uniqueId.toString());
+        if (uniqueId != null) {
+            configuration.set("uuid", uniqueId.toString());
+        }
         configuration.set("skin", skinURL);
         configuration.set("name", name);
     }
