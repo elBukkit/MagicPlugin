@@ -420,18 +420,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             itemMeta.setUnbreakable(false);
         }
 
-        for (String flag : BOOLEAN_FLAGS) {
-            if (nbtUtils.containsTag(itemStack, flag)) {
-                configuration.set(flag, nbtUtils.getBoolean(itemStack, flag, false));
-                nbtUtils.removeMeta(itemStack, flag);
-            }
-        }
-
-        ConfigurationSection tagSection = configuration.createSection("tags");
-        if (!ConfigurationUtils.loadAllTagsFromNBT(tagSection, itemStack) || tagSection.getKeys(false).isEmpty()) {
-            configuration.set("tags", null);
-        }
-
         if (itemMeta instanceof Damageable) {
             Damageable damageable = (Damageable)itemMeta;
             if (damageable.hasDamage()) {
@@ -463,6 +451,22 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         CompatibilityLib.getItemUtils().saveMeta(controller, itemMeta, configuration);
 
         itemStack.setItemMeta(itemMeta);
+
+        // Direct NBT/Component access needs to happen after setting itemMeta
+        for (String flag : BOOLEAN_FLAGS) {
+            if (nbtUtils.containsTag(itemStack, flag)) {
+                configuration.set(flag, nbtUtils.getBoolean(itemStack, flag, false));
+                nbtUtils.removeMeta(itemStack, flag);
+            }
+        }
+
+        // Remove damage before getting custom data, since this was just a tag in older versions
+        CompatibilityLib.getItemUtils().removeDamage(itemStack);
+
+        ConfigurationSection tagSection = configuration.createSection("tags");
+        if (!ConfigurationUtils.loadAllTagsFromNBT(tagSection, itemStack) || tagSection.getKeys(false).isEmpty()) {
+            configuration.set("tags", null);
+        }
 
         // Always remove custom data, this is saved in the tags section
         // Do this after resetting item meta since the custom data is stored there, too
