@@ -48,6 +48,7 @@ public abstract class PlayerProfile {
     public String getSkinURL() {
         return skinURL;
     }
+
     public UUID getUniqueId() {
         return uniqueId;
     }

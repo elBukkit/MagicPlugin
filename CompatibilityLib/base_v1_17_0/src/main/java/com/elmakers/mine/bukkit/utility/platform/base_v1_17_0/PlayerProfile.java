@@ -25,32 +25,41 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
         this.profileJSON = profileJSON;
     }
 
-    public PlayerProfile(InventoryUtilsBase inventoryUtils, SkinUtilsBase skinUtils, Player onlinePlayer) {
-        super(onlinePlayer);
-        this.inventoryUtils = inventoryUtils;
-        Object gameProfile = null;
-        JsonElement profileJson = null;
-        Logger logger = skinUtils.getPlatform().getLogger();
-        try {
-            gameProfile = skinUtils.getProfile(onlinePlayer);
-            profileJson = skinUtils.getProfileJson(gameProfile);
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
-        }
-        this.profileJSON = skinUtils.getGson().toJson(profileJson);
-        this.skinURL = skinUtils.getProfileURL(gameProfile);
-    }
-
     public PlayerProfile(InventoryUtilsBase inventoryUtils, ConfigurationSection config) {
         super(config);
         this.profileJSON = config.getString(CONFIG_KEY);
         this.inventoryUtils = inventoryUtils;
     }
 
-    public PlayerProfile(InventoryUtilsBase inventoryUtils, Object profileObject) {
-        super(null, null, null);
-        this.profileObject = profileObject;
+    public PlayerProfile(InventoryUtilsBase inventoryUtils, SkinUtilsBase skinUtils, Player onlinePlayer) {
+        super(onlinePlayer);
         this.inventoryUtils = inventoryUtils;
+        Logger logger = skinUtils.getPlatform().getLogger();
+        try {
+            Object gameProfile = skinUtils.getProfile(onlinePlayer);
+            loadProfile(skinUtils, gameProfile, onlinePlayer.getName());
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
+        }
+    }
+
+    public PlayerProfile(InventoryUtilsBase inventoryUtils, SkinUtilsBase skinUtils, Object gameProfile, String playerName) {
+        super(null, playerName, null);
+        this.inventoryUtils = inventoryUtils;
+        loadProfile(skinUtils, gameProfile, playerName);
+    }
+
+    private void loadProfile(SkinUtilsBase skinUtils, Object gameProfile, String playerName) {
+        this.profileObject = gameProfile;
+        JsonElement profileJson = null;
+        Logger logger = skinUtils.getPlatform().getLogger();
+        try {
+            profileJson = skinUtils.getProfileJson(gameProfile);
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading player profile for " + playerName, ex);
+        }
+        this.profileJSON = skinUtils.getGson().toJson(profileJson);
+        this.skinURL = skinUtils.getProfileURL(gameProfile);
     }
 
     @Override

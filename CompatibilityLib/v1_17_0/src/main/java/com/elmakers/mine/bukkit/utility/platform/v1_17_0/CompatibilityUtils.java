@@ -106,9 +106,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
+import net.minecraft.network.protocol.game.ClientboundChatPacket;
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -1573,5 +1576,18 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    protected boolean sendActionBarPackets(Player player, String message) {
+        TextComponent component = new TextComponent(message);
+        ClientboundChatPacket packet = new ClientboundChatPacket(component, ChatType.GAME_INFO, emptyUUID);
+        try {
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.SEVERE, "Error updating action bar", ex);
+            return false;
+        }
+        return true;
     }
 }

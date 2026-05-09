@@ -1618,13 +1618,15 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         player.sendTitle(title, subTitle, fadeIn, stay, fadeOut);
     }
 
+    protected abstract boolean sendActionBarPackets(Player player, String message);
+
     @Override
     public boolean sendActionBar(Player player, String message) {
         SpigotUtils spigot = platform.getSpigotUtils();
         if (spigot != null) {
             return spigot.sendActionBar(player, message);
         }
-        return false;
+        return sendActionBarPackets(player, message);
     }
 
     @Override

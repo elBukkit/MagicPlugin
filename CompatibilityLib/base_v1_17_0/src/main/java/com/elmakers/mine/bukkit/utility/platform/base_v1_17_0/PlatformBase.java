@@ -143,29 +143,19 @@ public abstract class PlatformBase implements Platform {
         return spigotUtils;
     }
 
-    protected SkinUtils createSkinUtils() {
-        return new SkinUtilsBase(this);
-    }
+    protected abstract SkinUtils createSkinUtils();
 
     protected SchematicUtils createSchematicUtils() {
         return new SchematicUtilsBase(this);
     }
 
-    protected NBTUtils createNBTUtils() {
-        return new NBTUtilsBase(this);
-    }
+    protected abstract NBTUtils createNBTUtils();
 
-    protected ItemUtils createItemUtils() {
-        return new ItemUtilsBase(this);
-    }
+    protected abstract ItemUtils createItemUtils();
 
-    protected InventoryUtils createInventoryUtils() {
-        return new InventoryUtilsBase(this);
-    }
+    protected abstract InventoryUtils createInventoryUtils();
 
-    protected CompatibilityUtils createCompatibilityUtils() {
-        return new CompatibilityUtilsBase(this);
-    }
+    protected abstract CompatibilityUtils createCompatibilityUtils();
 
     protected DeprecatedUtils createDeprecatedUtils() {
         return new DeprecatedUtilsBase(this);

@@ -8,13 +8,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,7 +28,6 @@ import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -36,7 +35,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 
-public class SkinUtilsBase implements SkinUtils {
+public abstract class SkinUtilsBase implements SkinUtils {
     protected final Platform platform;
     protected final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
     protected final Map<String, UUID> uuidCache = new HashMap<>();
@@ -283,7 +282,7 @@ public class SkinUtilsBase implements SkinUtils {
         InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
         if (onlinePlayer != null) {
             boolean contains;
-            final ProfileResponse response = new ProfileResponse(this, new PlayerProfile(inventoryUtils, onlinePlayer));
+            final ProfileResponse response = new ProfileResponse(this, new PlayerProfile(inventoryUtils, this, onlinePlayer));
             synchronized (responseCache) {
                 contains = responseCache.containsKey(uuid);
                 if (!contains) {
@@ -443,60 +442,11 @@ public class SkinUtilsBase implements SkinUtils {
         return property.getSignature();
     }
 
-    public String getProfileURL(Object profile)
-    {
-        String url = null;
-        if (profile == null) {
-            return null;
-        }
-        try {
-            @SuppressWarnings("unchecked")
-            Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(profile);
-            Collection<Object> textures = properties.get("textures");
-            if (textures != null && textures.size() > 0)
-            {
-                Object textureProperty = textures.iterator().next();
-                String texture = (String) NMSUtils.class_GameProfileProperty_value.get(textureProperty);
-                String decoded = Base64Coder.decodeString(texture);
-                url = getTextureURL(decoded);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return url;
-    }
+    public abstract String getProfileURL(Object profile);
 
-    public Object getProfile(Player player) {
-        if (NMSUtils.class_CraftPlayer_getProfileMethod == null) return null;
-        try {
-            return NMSUtils.class_CraftPlayer_getProfileMethod.invoke(player);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+    public abstract Object getProfile(Player player);
 
-    public JsonElement getProfileJson(Object gameProfile) throws IllegalAccessException {
-        JsonElement profileJson = getGson().toJsonTree(gameProfile);
-        if (profileJson.isJsonObject()) {
-            JsonObject profileObject = (JsonObject) profileJson;
-            @SuppressWarnings("unchecked")
-            Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
-            JsonArray propertiesArray = new JsonArray();
-
-            for (Map.Entry<String, Object> entry : properties.entries()) {
-                JsonObject newObject = new JsonObject();
-                newObject.addProperty("name", entry.getKey());
-                String value = (String) NMSUtils.class_GameProfileProperty_value.get(entry.getValue());
-                newObject.addProperty("value", value);
-                String signature = (String) NMSUtils.class_GameProfileProperty_signature.get(entry.getValue());
-                newObject.addProperty("signature", signature);
-                propertiesArray.add(newObject);
-            }
-            profileObject.add("properties", propertiesArray);
-        }
-        return profileJson;
-    }
+    public abstract JsonElement getProfileJson(Object gameProfile) throws IllegalAccessException;
 
     @Override
     public PlayerProfile parsePlayerProfile(ConfigurationSection config) {
@@ -508,13 +458,17 @@ public class SkinUtilsBase implements SkinUtils {
     public PlayerProfile getPlayerProfile(SkullMeta skullMeta) {
         InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
         Object profileObject = inventoryUtils.getSkullProfile(skullMeta);
-        return new PlayerProfile(inventoryUtils, profileObject);
+        OfflinePlayer owningPlayer = skullMeta.getOwningPlayer();
+        String playerName = owningPlayer == null ? "?" : owningPlayer.getName();
+        return new PlayerProfile(inventoryUtils, (SkinUtilsBase)platform.getSkinUtils(), profileObject, playerName);
     }
 
     @Override
     public PlayerProfile getPlayerProfile(Skull skullBlock) {
         InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
         Object profileObject = inventoryUtils.getSkullProfile(skullBlock);
-        return new PlayerProfile(inventoryUtils, profileObject);
+        OfflinePlayer owningPlayer = skullBlock.getOwningPlayer();
+        String playerName = owningPlayer == null ? "?" : owningPlayer.getName();
+        return new PlayerProfile(inventoryUtils, (SkinUtilsBase)platform.getSkinUtils(), profileObject, playerName);
     }
 }

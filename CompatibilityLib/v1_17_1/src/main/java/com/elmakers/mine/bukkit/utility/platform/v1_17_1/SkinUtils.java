@@ -1,14 +1,13 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_20_3;
+package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
-import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.SkinUtilsBase;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -21,16 +20,6 @@ public class SkinUtils extends SkinUtilsBase {
 
     public SkinUtils(Platform platform) {
         super(platform);
-    }
-
-    @Override
-    protected String getValue(Property property) {
-        return property.value();
-    }
-
-    @Override
-    protected String getSignature(Property property) {
-        return property.signature();
     }
 
     @Override
