@@ -466,6 +466,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         ConfigurationSection tagSection = configuration.createSection("tags");
         if (!ConfigurationUtils.loadAllTagsFromNBT(tagSection, itemStack) || tagSection.getKeys(false).isEmpty()) {
             configuration.set("tags", null);
+        } else {
+            // For legacy compatibility we're removing some specific things here
+            // Ideally this would be anything covered by ItemMeta for versions pre-1.20
+            tagSection.set("SkullOwner", null);
         }
 
         // Always remove custom data, this is saved in the tags section

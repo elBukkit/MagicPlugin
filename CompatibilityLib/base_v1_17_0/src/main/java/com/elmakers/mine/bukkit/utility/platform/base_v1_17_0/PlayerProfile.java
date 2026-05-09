@@ -85,11 +85,15 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
 
     @Override
     public void update(Skull skull) {
-        inventoryUtils.setSkullProfile(skull, profileObject);
+        if (profileObject != null) {
+            inventoryUtils.setSkullProfile(skull, profileObject);
+        }
     }
 
     @Override
     public void update(SkullMeta skullMeta) {
-        inventoryUtils.setSkullProfile(skullMeta, profileObject);
+        if (profileObject != null) {
+            inventoryUtils.setSkullProfile(skullMeta, profileObject);
+        }
     }
 }
