@@ -237,4 +237,14 @@ public class ItemUtils extends ItemUtilsBase {
         if (mcItemStack == null) return;
         mcItemStack.remove(DataComponents.CUSTOM_DATA);
     }
+
+    @Override
+    public void removeDamage(ItemStack itemStack) {
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)getHandle(itemStack);
+        if (mcItemStack == null) return;
+        // Only remove if it's set on the patch and not the base item
+        if (!mcItemStack.getItem().components().has(DataComponents.DAMAGE)) {
+            mcItemStack.remove(DataComponents.DAMAGE);
+        }
+    }
 }

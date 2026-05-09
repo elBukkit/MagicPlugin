@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.Collection;
 import java.util.List;
-import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -67,7 +66,6 @@ public interface ItemUtils {
 
     boolean hasSameTags(ItemStack first, ItemStack second);
 
-    @Nullable
     int getCustomModelData(ItemStack itemStack);
 
     void setCustomModelData(ItemStack itemStack, int customModelData);
@@ -81,6 +79,8 @@ public interface ItemUtils {
     void setEquippable(ItemStack itemStack, Object equippable);
 
     void removeCustomData(ItemStack itemStack);
+
+    void removeDamage(ItemStack itemStack);
 
     void loadMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration);
 

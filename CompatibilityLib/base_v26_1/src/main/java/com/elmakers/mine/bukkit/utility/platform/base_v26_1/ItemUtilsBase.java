@@ -434,6 +434,16 @@ public class ItemUtilsBase implements ItemUtils {
     }
 
     @Override
+    public void removeDamage(ItemStack itemStack) {
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)getHandle(itemStack);
+        if (mcItemStack == null) return;
+        // Only remove if it's set on the patch and not the base item
+        if (!mcItemStack.getItem().components().has(DataComponents.DAMAGE)) {
+            mcItemStack.remove(DataComponents.DAMAGE);
+        }
+    }
+
+    @Override
     public void loadMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration) {
         String potionKey = configuration.getString("potion");
         if (potionKey != null && !potionKey.isEmpty()) {
