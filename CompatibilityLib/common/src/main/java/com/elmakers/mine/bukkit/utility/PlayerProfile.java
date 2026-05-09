@@ -26,7 +26,8 @@ public abstract class PlayerProfile {
     }
 
     protected PlayerProfile(ConfigurationSection configuration) {
-        this.uniqueId = UUID.fromString(configuration.getString("uuid"));
+        final String uuidString = configuration.getString("uuid");
+        this.uniqueId = uuidString == null || uuidString.isEmpty() ? null : UUID.fromString(uuidString);
         this.name = configuration.getString("name");
         this.skinURL = configuration.getString("skin");
     }
