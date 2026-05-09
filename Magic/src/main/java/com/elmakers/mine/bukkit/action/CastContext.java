@@ -1617,12 +1617,16 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             SpellResult actionResult = handler.perform();
             if (actionResult != SpellResult.PENDING) {
                 result = result.min(actionResult);
+                // If this spell kills its own caster, it may have been cancelled while processing
+                if (finished) {
+                    break;
+                }
                 finishedHandlers.add(handler);
                 iterator.remove();
             }
         }
 
-        if (handlers.isEmpty()) {
+        if (handlers == null || handlers.isEmpty()) {
             handlers = null;
             return result;
         }

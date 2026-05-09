@@ -2,25 +2,6 @@
 
 # Actually Somewhat Recent
 
-
-[18:21:22 ERROR]: [Magic]  Error processing batch: Batch from Explode of xxxx
-java.lang.NullPointerException: Cannot invoke "java.util.List.add(Object)" because "this.finishedHandlers" is null
-at Magic-11.0-SNAPSHOT.jar//com.elmakers.mine.bukkit.action.CastContext.processHandlers(CastContext.java:1620) ~[?:?]
-at Magic-11.0-SNAPSHOT.jar//com.elmakers.mine.bukkit.action.ActionHandler.perform(ActionHandler.java:253) ~[?:?]
-at Magic-11.0-SNAPSHOT.jar//com.elmakers.mine.bukkit.batch.ActionBatch.process(ActionBatch.java:38) ~[?:?]
-at Magic-11.0-SNAPSHOT.jar//com.elmakers.mine.bukkit.magic.Mage.processPendingBatches(Mage.java:2034) ~[?:?]
-at Magic-11.0-SNAPSHOT.jar//com.elmakers.mine.bukkit.magic.MagicController.processPendingBatches(MagicController.java:1624) ~[?:?]
-at Magic-11.0-SNAPSHOT.jar//com.elmakers.mine.bukkit.tasks.BatchUpdateTask.run(BatchUpdateTask.java:14) ~[?:?]
-at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1756) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1611) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:427) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1667) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1335) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-130-c5a2736]
-at java.base/java.lang.Thread.run(Thread.java:1474) ~[?:?]
-
 # Next
 
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets
