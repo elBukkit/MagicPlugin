@@ -5123,6 +5123,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     }
                 }
                 return "";
+            case "mana_max_boost":
+                float manaMaxBoost = getManaMaxBoost();
+                if (manaMaxBoost != 0) {
+                    return getPropertyString("mana_boost", manaMaxBoost, 1, true);
+                }
+                return "";
+            case "mana_regeneration_boost":
+                float manaRegenerationBoost = getManaRegenerationBoost();
+                if (manaRegenerationBoost != 0) {
+                    return getPropertyString("mana_regeneration_boost", manaRegenerationBoost, 1, true);
+                }
+                return "";
         }
         return null;
     }
