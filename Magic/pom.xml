@@ -396,10 +396,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>mc.alk</groupId>
-            <artifactId>BattleArena</artifactId>
-            <version>3.9.16.4</version>
+            <groupId>org.battleplugins</groupId>
+            <artifactId>arena</artifactId>
+            <version>4.0.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>us.ajg0702</groupId>
@@ -527,6 +533,11 @@
         <repository>
             <id>opencollab-snapshot</id>
             <url>https://repo.opencollab.dev/main/</url>
+        </repository>
+        <repository>
+            <id>battleplugins-releases</id>
+            <name>BattlePlugins Releases</name>
+            <url>https://repo.battleplugins.org/releases</url>
         </repository>
         <repository>
             <id>repsy</id>
