@@ -1,8 +1,7 @@
 earthbending:
     inherit: base_bending
     class: earthbender
-    migrate_icon: gold_hoe
-    icon: wand_icon:21
+    icon: blaze_rod{18021}
     mana_regeneration: 2
     effect_color: 'CD853F'
 

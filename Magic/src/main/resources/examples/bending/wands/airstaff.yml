@@ -1,7 +1,7 @@
 airstaff:
     inherit: base_bending
     class: airbender
-    icon: wand_icon:34
+    icon: stick{18034}
     effect_color: 'FFFFFF'
     alternate_spell: airglider
     drop: alt_cast

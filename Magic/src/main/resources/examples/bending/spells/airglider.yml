@@ -1,5 +1,5 @@
 airglider:
-    icon: wooden_hoe:33
+    icon: stick{18033}
     category: utility
     worth: 1000
     quick_cast: true
@@ -8,7 +8,7 @@ airglider:
         cast:
         - class: StashWand
         - class: Wear
-          material: wooden_hoe:33
+          material: stick{18033}
         - class: FallProtection
         - class: Velocity
         - class: Delay

@@ -1,3 +1,7 @@
 skull_aang:
-  item: skull:http://textures.minecraft.net/texture/d0a1483289b4486d903c6661407bfaaa4f966e770662983dcce445c2f55ce990
+  item: player_head
   name: Aang
+  player:
+    uuid: 351fb6bd-6b21-389d-9d91-b8ac5a64d103
+    skin: http://textures.minecraft.net/texture/d0a1483289b4486d903c6661407bfaaa4f966e770662983dcce445c2f55ce990
+    name: MHF_Question

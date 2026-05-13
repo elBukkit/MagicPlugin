@@ -23,6 +23,7 @@
  - Fix being able to put `unstashable` wands in chests if they were in your main hand
  - Fix an error that could occor if a spell kills its own caster inside of an Asyncronous action
  - Update BattleArena integration
+ - Fix spell, wand and item icons in war, bending and stars configs
 
 ## Changes
 
