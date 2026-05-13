@@ -5836,6 +5836,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    @Nonnull
+    public Collection<com.elmakers.mine.bukkit.api.magic.MageModifier> getModifiers() {
+        return new ArrayList<>(modifiers.values());
+    }
+
+    @Override
     @Nullable
     public MageModifier getModifier(String key) {
         return modifiers.get(key);

@@ -50,6 +50,10 @@
  - Automatically generate maybe-unique keys for item attributes, add optional `key` config to override
  - Add `mana_max_boost` and `mana_regeneration_boost` custom lore options for wands
 
+## API
+
+ - Added `Mage.getModifiers` method
+
 # 10.11.1
 
  - Fix backwards compatibility, back to 1.20.5 again
