@@ -22,15 +22,14 @@ You can easily import Magic's API into your project like this:
   <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>MagicAPI</artifactId>
-      <version>10.2</version>
+      <version>11.0</version>
       <scope>provided</scope>
   </dependency>
 </dependencies>
 <repositories>
-  <!-- Releases are published to Maven Central -->
   <repository>
-      <id>Maven Central</id>
-      <url>https://repo1.maven.org/maven2/</url>
+      <id>elMakers</id>
+      <url>https://maven.elmakers.com/repository/</url>
   </repository>
 </repositories>
 ```
@@ -41,13 +40,13 @@ Alternatively, you can import Magic's API with Gradle like this:
 
 ```
 repositories {
-    maven {
-            url 'https://repo1.maven.org/maven2/'
+    elmakers {
+        url 'https://maven.elmakers.com/repository/'
     }
 }
 
 dependencies {
-    compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
+    compileOnly 'com.elmakers.mine.bukkit:MagicAPI:11.0'
 }
 ```
 
