@@ -1,12 +1,5 @@
-model3_black_item:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:diamond_pickaxe
-    count: 1
-    components:
-      minecraft:custom_model_data: '{floats:[18016.0f]}'
-      minecraft:unbreakable: '{}'
-      minecraft:custom_name: '{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Model
-        3",underlined:0b}],text:""}'
-    schema_version: 1
+model3_silver_item:
+  item: diamond_pickaxe
+  name: "&cModel 3"
+  custom_model_data: 18016
+  unbreakable: true

@@ -1,11 +1,20 @@
 ferrarispawner:
   worth: 50000.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:spawner
-    count: 1
-    components:
-      minecraft:custom_data: '{BlockEntityTag:{Delay:200,MaxNearbyEntities:2,MaxSpawnDelay:800,MinSpawnDelay:300,RequiredPlayerRange:32,SpawnCount:1,SpawnData:{CustomName:''{"text":"Ferrari"}'',id:"minecraft:armor_stand"},SpawnPotentials:[],SpawnRange:3},display:{Name:''{"text":"Ferrari
-        Spawner"}''}}'
-    schema_version: 1
+  item: spawner
+  tags:
+    display:
+      Name: '{"text":"Ferrari Spawner"}'
+    BlockEntityTag:
+      MaxNearbyEntities: 2
+      MinSpawnDelay: 300
+      SpawnData:
+        id: minecraft:armor_stand
+        CustomName: '{"text":"Ferrari"}'
+      SpawnPotentials: []
+      SpawnRange: 3
+      MaxSpawnDelay: 800
+      RequiredPlayerRange: 32
+      SpawnCount: 1
+      Delay: 200
+  notes: Item has unsupported data, saved as a Bukkit serialized item which may have
+    forward-compatibility issues

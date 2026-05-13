@@ -1,11 +1,5 @@
 ak47_item:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:diamond_pickaxe
-    count: 1
-    components:
-      minecraft:unbreakable: '{}'
-      minecraft:custom_name: '"§aAK-47"'
-      minecraft:custom_model_data: '{floats:[18001.0f]}'
-    schema_version: 1
+  item: diamond_pickaxe
+  name: "&aAK-47"
+  custom_model_data: 18001
+  unbreakable: true
