@@ -3,6 +3,8 @@
 
 # 11.1
 
+ - Allow (or fix?) getting a player skull via `/mgive skull:<playername>`
+
 # 11.0
 
 ## Backwards Compatibility

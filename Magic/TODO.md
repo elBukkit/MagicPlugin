@@ -4,6 +4,8 @@
 
 # Next
 
+ - Saving and loading a custom player skull in 1.21.11 does not work
+
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets
 
  - Can put skills in a container with shift click or the number from the hotbar
