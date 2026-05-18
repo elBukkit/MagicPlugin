@@ -35,7 +35,7 @@ public class SkinUtilsBase implements SkinUtils {
 
     @Override
     public String getOnlineSkinURL(Player player) {
-        PlayerProfile playerProfile = new PlayerProfile(player.getPlayerProfile());
+        PlayerProfile playerProfile = new PlayerProfile(platform, player.getPlayerProfile());
         return playerProfile == null ? null : playerProfile.getSkinURL();
     }
 
@@ -192,7 +192,7 @@ public class SkinUtilsBase implements SkinUtils {
                     }
 
                     // Now we will have to fetch the profile and update the cache
-                    PlayerProfile offlineProfile = new PlayerProfile(offlinePlayer);
+                    PlayerProfile offlineProfile = new PlayerProfile(platform, offlinePlayer);
                     if (!isComplete(offlineProfile)) {
                         if (CompatibilityConstants.DEBUG) {
                             platform.getLogger().info("Fetching offline player data for " + uuid);
@@ -247,14 +247,14 @@ public class SkinUtilsBase implements SkinUtils {
 
     @Override
     public PlayerProfile parsePlayerProfile(ConfigurationSection config) {
-        return new PlayerProfile(config);
+        return new PlayerProfile(platform, config);
     }
 
     @Override
     public PlayerProfile getPlayerProfile(SkullMeta skullMeta) {
         org.bukkit.profile.PlayerProfile profile = skullMeta.getOwnerProfile();
         if (profile != null) {
-            return new PlayerProfile(profile);
+            return new PlayerProfile(platform, profile);
         }
         return null;
     }
@@ -263,7 +263,7 @@ public class SkinUtilsBase implements SkinUtils {
     public PlayerProfile getPlayerProfile(Skull skullBlock) {
         org.bukkit.profile.PlayerProfile profile = skullBlock.getOwnerProfile();
         if (profile != null) {
-            return new PlayerProfile(profile);
+            return new PlayerProfile(platform, profile);
         }
         return null;
     }

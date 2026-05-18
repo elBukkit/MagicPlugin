@@ -279,10 +279,9 @@ public abstract class SkinUtilsBase implements SkinUtils {
     @Override
     public void fetchProfile(final UUID uuid, final ProfileCallback callback) {
         final Player onlinePlayer = Bukkit.getPlayer(uuid);
-        InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
         if (onlinePlayer != null) {
             boolean contains;
-            final ProfileResponse response = new ProfileResponse(this, new PlayerProfile(inventoryUtils, this, onlinePlayer));
+            final ProfileResponse response = new ProfileResponse(this, new PlayerProfile(platform, onlinePlayer));
             synchronized (responseCache) {
                 contains = responseCache.containsKey(uuid);
                 if (!contains) {
@@ -411,7 +410,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         // A null skin URL here is normal if the player has no skin.
                         if (CompatibilityConstants.DEBUG)
                             platform.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
-                        ProfileResponse response = new ProfileResponse(skinUtils, new PlayerProfile(inventoryUtils, uuid, profileJson.get("name").getAsString(), skinURL, profileJSON));
+                        ProfileResponse response = new ProfileResponse(skinUtils, new PlayerProfile(platform, uuid, profileJson.get("name").getAsString(), skinURL, profileJSON));
                         synchronized (responseCache) {
                             responseCache.put(uuid, response);
                         }
@@ -450,8 +449,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
 
     @Override
     public PlayerProfile parsePlayerProfile(ConfigurationSection config) {
-        InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
-        return new PlayerProfile(inventoryUtils, config);
+        return new PlayerProfile(platform, config);
     }
 
     @Override
@@ -460,7 +458,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
         Object profileObject = inventoryUtils.getSkullProfile(skullMeta);
         OfflinePlayer owningPlayer = skullMeta.getOwningPlayer();
         String playerName = owningPlayer == null ? "?" : owningPlayer.getName();
-        return new PlayerProfile(inventoryUtils, (SkinUtilsBase)platform.getSkinUtils(), profileObject, playerName);
+        return new PlayerProfile(platform, profileObject, playerName);
     }
 
     @Override
@@ -469,6 +467,6 @@ public abstract class SkinUtilsBase implements SkinUtils {
         Object profileObject = inventoryUtils.getSkullProfile(skullBlock);
         OfflinePlayer owningPlayer = skullBlock.getOwningPlayer();
         String playerName = owningPlayer == null ? "?" : owningPlayer.getName();
-        return new PlayerProfile(inventoryUtils, (SkinUtilsBase)platform.getSkinUtils(), profileObject, playerName);
+        return new PlayerProfile(platform, profileObject, playerName);
     }
 }

@@ -8,24 +8,30 @@ import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.elmakers.mine.bukkit.utility.platform.Platform;
+
 public abstract class PlayerProfile {
+    protected final Platform platform;
     protected UUID uniqueId;
     protected String name;
     protected String skinURL;
     protected boolean saveProfile = true;
 
-    protected PlayerProfile(UUID uniqueId, String name, String skinURL) {
+    protected PlayerProfile(Platform platform, UUID uniqueId, String name, String skinURL) {
+        this.platform = platform;
         this.uniqueId = uniqueId;
         this.name = name;
         this.skinURL = skinURL;
     }
 
-    protected PlayerProfile(OfflinePlayer player) {
+    protected PlayerProfile(Platform platform, OfflinePlayer player) {
+        this.platform = platform;
         this.uniqueId = player.getUniqueId();
         this.name = player.getName();
     }
 
-    protected PlayerProfile(ConfigurationSection configuration) {
+    protected PlayerProfile(Platform platform, ConfigurationSection configuration) {
+        this.platform = platform;
         final String uuidString = configuration.getString("uuid");
         this.uniqueId = uuidString == null || uuidString.isEmpty() ? null : UUID.fromString(uuidString);
         this.name = configuration.getString("name");

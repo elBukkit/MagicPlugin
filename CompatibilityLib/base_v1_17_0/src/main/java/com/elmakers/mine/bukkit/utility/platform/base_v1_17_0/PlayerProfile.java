@@ -10,46 +10,44 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.gson.JsonElement;
 
 public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfile {
     private static String CONFIG_KEY = "profile";
 
-    private final InventoryUtilsBase inventoryUtils;
     private String profileJSON;
     private Object profileObject;
 
-    public PlayerProfile(InventoryUtilsBase inventoryUtils, UUID uniqueId, String name, String skinURL, String profileJSON) {
-        super(uniqueId, name, skinURL);
-        this.inventoryUtils = inventoryUtils;
+    public PlayerProfile(Platform platform, UUID uniqueId, String name, String skinURL, String profileJSON) {
+        super(platform, uniqueId, name, skinURL);
         this.profileJSON = profileJSON;
     }
 
-    public PlayerProfile(InventoryUtilsBase inventoryUtils, ConfigurationSection config) {
-        super(config);
+    public PlayerProfile(Platform platform, ConfigurationSection config) {
+        super(platform, config);
         this.profileJSON = config.getString(CONFIG_KEY);
-        this.inventoryUtils = inventoryUtils;
     }
 
-    public PlayerProfile(InventoryUtilsBase inventoryUtils, SkinUtilsBase skinUtils, Player onlinePlayer) {
-        super(onlinePlayer);
-        this.inventoryUtils = inventoryUtils;
-        Logger logger = skinUtils.getPlatform().getLogger();
+    public PlayerProfile(Platform platform, Player onlinePlayer) {
+        super(platform, onlinePlayer);
+        Logger logger = platform.getLogger();
         try {
+            SkinUtilsBase skinUtils = (SkinUtilsBase)platform.getSkinUtils();
             Object gameProfile = skinUtils.getProfile(onlinePlayer);
-            loadProfile(skinUtils, gameProfile, onlinePlayer.getName());
+            loadProfile(gameProfile, onlinePlayer.getName());
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
         }
     }
 
-    public PlayerProfile(InventoryUtilsBase inventoryUtils, SkinUtilsBase skinUtils, Object gameProfile, String playerName) {
-        super(null, playerName, null);
-        this.inventoryUtils = inventoryUtils;
-        loadProfile(skinUtils, gameProfile, playerName);
+    public PlayerProfile(Platform platform, Object gameProfile, String playerName) {
+        super(platform, null, playerName, null);
+        loadProfile(gameProfile, playerName);
     }
 
-    private void loadProfile(SkinUtilsBase skinUtils, Object gameProfile, String playerName) {
+    private void loadProfile(Object gameProfile, String playerName) {
+        SkinUtilsBase skinUtils = (SkinUtilsBase)platform.getSkinUtils();
         this.profileObject = gameProfile;
         JsonElement profileJson = null;
         Logger logger = skinUtils.getPlatform().getLogger();
@@ -86,6 +84,7 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
     @Override
     public void update(Skull skull) {
         if (profileObject != null) {
+            InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
             inventoryUtils.setSkullProfile(skull, profileObject);
         }
     }
@@ -93,6 +92,7 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
     @Override
     public void update(SkullMeta skullMeta) {
         if (profileObject != null) {
+            InventoryUtilsBase inventoryUtils = (InventoryUtilsBase)platform.getInventoryUtils();
             inventoryUtils.setSkullProfile(skullMeta, profileObject);
         }
     }

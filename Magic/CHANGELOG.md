@@ -3,6 +3,7 @@
 
 # 11.1
 
+ - Fix loading saved player skulls in 1.20.5 and later
  - Allow (or fix?) getting a player skull via `/mgive skull:<playername>`
 
 # 11.0

@@ -6,11 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
+import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -27,23 +32,64 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
 
     private org.bukkit.profile.PlayerProfile playerProfile;
 
-    public PlayerProfile(org.bukkit.profile.PlayerProfile profile) {
-        super(profile.getUniqueId(), profile.getName(), profile.getTextures().getSkin() == null ? null : profile.getTextures().getSkin().toString());
+    public PlayerProfile(Platform platform, org.bukkit.profile.PlayerProfile profile) {
+        super(platform, profile.getUniqueId(), profile.getName(), profile.getTextures().getSkin() == null ? null : profile.getTextures().getSkin().toString());
         this.playerProfile = profile;
     }
 
-    public PlayerProfile(OfflinePlayer player) {
-        this(player.getPlayerProfile());
+    public PlayerProfile(Platform platform, OfflinePlayer player) {
+        this(platform, player.getPlayerProfile());
     }
 
-    public PlayerProfile(ConfigurationSection configuration) {
-        super(configuration);
+    public PlayerProfile(Platform platform, ConfigurationSection configuration) {
+        super(platform, configuration);
         playerProfile = configuration.getSerializable(CONFIG_KEY, org.bukkit.profile.PlayerProfile.class);
         if (playerProfile != null) {
             name = playerProfile.getName();
             uniqueId = playerProfile.getUniqueId();
             URL skinURL = playerProfile == null ? null : playerProfile.getTextures().getSkin();
             this.skinURL = skinURL == null ? null : skinURL.toString();
+        } else if (skinURL != null) {
+            ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+            try {
+                item = platform.getInventoryUtils().setSkullURL(item, new URL(skinURL), uniqueId, name);
+                ItemMeta itemMeta = item.getItemMeta();
+                if (itemMeta instanceof SkullMeta) {
+                    SkullMeta skullMeta = (SkullMeta)itemMeta;
+                    playerProfile = skullMeta.getOwnerProfile();
+                }
+            } catch (Exception ignore) {
+            }
+        } else if (name != null) {
+            ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+            try {
+                platform.getDeprecatedUtils().setSkullOwner(item, name, new SkullLoadedCallback() {
+                    @Override
+                    public void updated(ItemStack itemStack) {
+                        ItemMeta itemMeta = itemStack.getItemMeta();
+                        if (itemMeta instanceof SkullMeta) {
+                            SkullMeta skullMeta = (SkullMeta)itemMeta;
+                            playerProfile = skullMeta.getOwnerProfile();
+                        }
+                    }
+                });
+            } catch (Exception ignore) {
+            }
+        } else if (uniqueId != null) {
+            ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+            try {
+                platform.getDeprecatedUtils().setSkullOwner(item, uniqueId, new SkullLoadedCallback() {
+                    @Override
+                    public void updated(ItemStack itemStack) {
+                        ItemMeta itemMeta = itemStack.getItemMeta();
+                        if (itemMeta instanceof SkullMeta) {
+                            SkullMeta skullMeta = (SkullMeta) itemMeta;
+                            playerProfile = skullMeta.getOwnerProfile();
+                        }
+                    }
+                });
+            } catch (Exception ignore) {
+            }
         }
     }
 
@@ -66,17 +112,22 @@ public class PlayerProfile extends com.elmakers.mine.bukkit.utility.PlayerProfil
 
     @Override
     public PlayerProfile update() throws ExecutionException, InterruptedException {
-        return new PlayerProfile(playerProfile.update().get());
+        if (playerProfile == null) return this;
+        return new PlayerProfile(platform, playerProfile.update().get());
     }
 
     @Override
     public void update(Skull skull) {
-        skull.setOwnerProfile(playerProfile);
+        if (playerProfile != null) {
+            skull.setOwnerProfile(playerProfile);
+        }
     }
 
     @Override
     public void update(SkullMeta skullMeta) {
-        skullMeta.setOwnerProfile(playerProfile);
+        if (playerProfile != null) {
+            skullMeta.setOwnerProfile(playerProfile);
+        }
     }
 
     @Override
