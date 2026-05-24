@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 11.2
+
 # 11.1
 
  - Fix loading saved player skulls in 1.20.5 and later
