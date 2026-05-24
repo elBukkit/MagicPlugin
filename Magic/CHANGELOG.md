@@ -5,6 +5,7 @@
 
  - Fix loading saved player skulls in 1.20.5 and later
  - Allow (or fix?) getting a player skull via `/mgive skull:<playername>`
+ - Fix Cow.Variant issues on Paper
 
 # 11.0
 
