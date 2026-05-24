@@ -133,9 +133,9 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
         Collection<PlayerWarp> warps = new ArrayList<>();
         for (Land joinedLand : joinedLands) {
             Location location = joinedLand.getSpawn();
-            if (location != null &&
-                    hasPermission(player, location, Flags.SPAWN_TELEPORT, false) &&
-                    hasPermission(player, location, Flags.LAND_ENTER, false)) {
+            if (location != null
+                    && hasPermission(player, location, Flags.SPAWN_TELEPORT, false)
+                    && hasPermission(player, location, Flags.LAND_ENTER, false)) {
                 PlayerWarp warp = new PlayerWarp(joinedLand.getName(), location);
                 warps.add(warp);
             }
