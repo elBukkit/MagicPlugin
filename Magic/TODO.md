@@ -1,10 +1,6 @@
 # TODO
 
-# Actually Somewhat Recent
-
 # Next
-
- - Saving and loading a custom player skull in 1.21.11 does not work
 
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets
 

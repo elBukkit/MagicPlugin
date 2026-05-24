@@ -3,6 +3,8 @@
 
 # 11.2
 
+ - Fix Valhalla save data not persisting
+
 # 11.1
 
  - Fix loading saved player skulls in 1.20.5 and later
