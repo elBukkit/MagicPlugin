@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityAbstrac
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityArmorStandData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityAxolotlData;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityBlockDisplay;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityBoggedData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityCatData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityChickenData;
@@ -47,6 +48,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityFoxData
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityFrogData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityGoatData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityHorseData;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityItemDisplay;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityItemFrameData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityLlamaData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityMooshroomData;
@@ -161,6 +163,10 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityPigData(entity);
             case ZOMBIE_NAUTILUS:
                 return new EntityZombieNautilusData(entity);
+            case ITEM_DISPLAY:
+                return new EntityItemDisplay(entity, controller);
+            case BLOCK_DISPLAY:
+                return new EntityBlockDisplay(entity, controller);
             default:
                 return getExtraDataByClass(controller, entity);
         }
@@ -240,6 +246,10 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityPigData(parameters, controller);
             case ZOMBIE_NAUTILUS:
                 return new EntityZombieNautilusData(parameters, controller);
+            case ITEM_DISPLAY:
+                return new EntityItemDisplay(parameters, controller);
+            case BLOCK_DISPLAY:
+                return new EntityBlockDisplay(parameters, controller);
             default:
                 return null;
         }

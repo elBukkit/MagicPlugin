@@ -4,6 +4,19 @@
 # 11.2
 
  - Fix Valhalla save data not persisting
+ - (WIP) Added support for block and display entities (1.20.5 and up), configuration options:
+   - See `giant_block` and `giant_wand` examples in survival configs   
+   - Both `item_display` and `block_display`:
+     - `transformation`:
+       - See: https://minecraft.wiki/w/Display#Data_values 
+       - `translation` : A vector, either {x: , y: , z: } config section or "x,y,z" as string
+       - `scale` : A vector, either {x: , y: , z: } config section, "x,y,z" as string or "scale" as string
+       - `rotation_left`, `rotation_right` : An axis angle, either {angle:, x: , y: , z: } config section or "angle,x,y,z" as string
+       - All angles are specified in degrees (converted to radians when applied)
+   - `item_display` type:
+     - `item`: An item key to display
+   - `block_display` type: 
+     - `block`: A block to display   
 
 # 11.1
 

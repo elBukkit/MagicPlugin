@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAbstr
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityArmorStandData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityAxolotlData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityBlockDisplay;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityCatData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityCreeperData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityDroppedItemData;
@@ -44,6 +45,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityFoxDa
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityFrogData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityGoatData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityHorseData;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityItemDisplay;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityItemFrameData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityLlamaData;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.entity.EntityMooshroomData;
@@ -146,6 +148,10 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityAxolotlData(entity);
             case EYE_OF_ENDER:
                 return new EntityEnderSignalData(entity);
+            case ITEM_DISPLAY:
+                return new EntityItemDisplay(entity, controller);
+            case BLOCK_DISPLAY:
+                return new EntityBlockDisplay(entity, controller);
             default:
                 return getExtraDataByClass(controller, entity);
         }
@@ -215,6 +221,10 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityEnderSignalData(parameters, controller);
             case FROG:
                 return new EntityFrogData(parameters, controller);
+            case ITEM_DISPLAY:
+                return new EntityItemDisplay(parameters, controller);
+            case BLOCK_DISPLAY:
+                return new EntityBlockDisplay(parameters, controller);
             default:
                 return null;
         }

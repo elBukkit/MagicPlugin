@@ -774,6 +774,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Nullable
     @Override
     public String getModernBlockData() {
+        if (blockData == null && material != null) {
+            return material.createBlockData().getAsString();
+        }
         return blockData;
     }
 

@@ -1,0 +1,7 @@
+giant_wand:
+  name: Mega Wand
+  type: item_display
+  item: wizard_wand
+  transformation:
+    scale: 100
+    translation: 0, 20, 0

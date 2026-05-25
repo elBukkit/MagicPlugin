@@ -1,0 +1,7 @@
+giant_block:
+  name: Mega Diamond
+  type: block_display
+  block: diamond_block
+  transformation:
+    scale: 100
+    translation: 0,120,0
