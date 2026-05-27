@@ -559,4 +559,6 @@ public interface CompatibilityUtils {
     BufferedMapCanvas createMapCanvas();
 
     Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale);
+
+    Entity createItemDisplayEntity(Location location, ItemStack itemStack, double scale);
 }

@@ -5,7 +5,7 @@ rocketlauncher:
     worth: 9999
     actions:
         cast:
-        - class: ArmorStandProjectile
+        - class: ItemProjectile
           actions:
           - class: Damage
             damage_max_distance: 0
@@ -72,38 +72,36 @@ rocketlauncher:
            particle_offset_z: 2
            particle_data: 0.2
     parameters:
-        velocity: 10
-        range: 60
-        hitbox: true
-        radius: 3
-        target_type: LivingEntity
-        damage_max_distance: 5
-        player_damage: 15
-        entity_damage: 15
-        target_breakables: 1
-        bypass_backfire: true
-        destructible: solid
-        destructible_durability: 40
-        undo: 30000
-        brush: erase
-        cooldown: 5000
-        speed: 1.1
-        direction: 0,0.8,0
-        falling: true
-        undo_speed: 0.8
-        target_self_timeout: 2000
-        y_offset: 0.75
-        push: 1
-        velocity_max_distance: 5
-        magic_damage: false
-        unbreakable_items: true
-        helmet_item: diamond_pickaxe:9
-        orient_head: true
-        armor_stand_small: true
-        armor_stand_gravity: false
-        target_armor_stand: true
-        spread_movement_max: 0.1
-        spread_movement: 5
+      item: diamond_pickaxe{18009}
+      scale: 1.5
+      velocity: 10
+      range: 60
+      hitbox: true
+      radius: 3
+      target_type: LivingEntity
+      damage_max_distance: 5
+      player_damage: 15
+      entity_damage: 15
+      target_breakables: 1
+      bypass_backfire: true
+      destructible: solid
+      destructible_durability: 40
+      undo: 30000
+      brush: erase
+      cooldown: 5000
+      speed: 1.1
+      direction: 0,0.8,0
+      falling: true
+      undo_speed: 0.8
+      target_self_timeout: 2000
+      y_offset: 0.75
+      push: 1
+      velocity_max_distance: 5
+      magic_damage: false
+      unbreakable_items: true
+      target_armor_stand: true
+      spread_movement_max: 0.1
+      spread_movement: 5
     costs:
       mana: 1
 

@@ -86,6 +86,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Fox;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
@@ -2395,6 +2396,21 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
                 Vector3f scaleVector = transformation.getScale();
                 scaleVector.set(scale);
                 blockDisplay.setTransformation(transformation);
+            }
+        }
+        return entity;
+    }
+
+    @Override
+    public Entity createItemDisplayEntity(Location location, ItemStack itemStack, double scale) {
+        Entity entity = location.getWorld().spawnEntity(location, EntityType.ITEM_DISPLAY);
+        if (entity instanceof ItemDisplay itemDisplay) {
+            itemDisplay.setItemStack(itemStack);
+            if (scale != 1) {
+                Transformation transformation = itemDisplay.getTransformation();
+                Vector3f scaleVector = transformation.getScale();
+                scaleVector.set(scale);
+                itemDisplay.setTransformation(transformation);
             }
         }
         return entity;

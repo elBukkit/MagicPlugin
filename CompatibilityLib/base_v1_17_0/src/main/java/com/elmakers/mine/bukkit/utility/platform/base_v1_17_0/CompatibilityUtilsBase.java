@@ -1851,4 +1851,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale) {
         return null;
     }
+
+    @Override
+    public Entity createItemDisplayEntity(Location location, ItemStack itemStakc, double scale) {
+        return null;
+    }
 }

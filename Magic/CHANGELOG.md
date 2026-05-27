@@ -20,6 +20,8 @@
  - Add `display` option to ModifyBlock action, which will create display entities rather than blocks
    - Add `display_scale` option to scale the display entity
    - Add `giant_house` and `tiny_house` spells to survival configs
+ - Add `ItemProjectile` action which can generally replace uses of `ArmorStandProjectile` 
+   - Used in `war` `rocketlauncher` spell, which has also been fixed to use custom model data for the shell 
 
 # 11.1
 
