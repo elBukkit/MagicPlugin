@@ -1,0 +1,69 @@
+giant_house:
+  name: Giant House
+  description: Build a giant house, just for fun
+  icon: oak_log
+  category: utility
+  worth: 200
+  earns: 5
+  actions:
+    cast:
+      - class: Volume
+        actions:
+          - class: Skip
+            actions:
+              - class: Delay
+          - class: ModifyBlock
+          - class: CheckBlock
+            allowed: "!all_air"
+            actions:
+              - class: PlayEffects
+                effects: build
+  effects:
+    cast:
+      -  class: EffectSingle
+         sound: magic.shield
+      -  sound: entity_ender_dragon_hurt
+         sound_pitch: 1.6
+         sound_volume: 0.8
+      -  sound: block_beacon_activate
+         sound_pitch: 1.8
+         sound_volume: 0.8
+      -  class: EffectTrail
+         particle: drip_water
+    build:
+      - sound: block_slime_block_place
+        sound_pitch: 0.1
+        sound_volume: 0.8
+        location: target
+        particle: block_crack
+        particle_count: 4
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+      - location: target
+        particle: drip_lava
+        particle_count: 5
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+        sound: block_stone_place
+        sound_pitch: 0.2
+        sound_volume: 1.2
+  parameters:
+    target: block
+    allow_max_range: true
+    range: 30
+    use_brush_size: true
+    undo: 5000
+    cooldown: 20000
+    brush: schematic|small_house
+    destructible: destructible_replace
+    skip: 16
+    delay: 50
+    volume_type: yxz
+    center_z: false
+    reorient: false
+    display: true
+    display_scale: 10
+  costs:
+    mana: 100

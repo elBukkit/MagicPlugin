@@ -96,6 +96,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
@@ -152,10 +153,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
+import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.bukkit.util.VoxelShape;
+import org.joml.Vector3f;
 import org.yaml.snakeyaml.Yaml;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
@@ -3164,5 +3168,24 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public BufferedMapCanvas createMapCanvas() {
         return new BufferedMapCanvas();
+    }
+
+    @Override
+    public Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale) {
+        Entity entity = location.getWorld().spawnEntity(location, EntityType.BLOCK_DISPLAY);
+        if (entity instanceof BlockDisplay blockDisplay) {
+            String blockDataString = materialAndData.getModernBlockData();
+            if (blockDataString != null && !blockDataString.isEmpty()) {
+                BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
+                blockDisplay.setBlock(blockData);
+            }
+            if (scale != 1) {
+                Transformation transformation = blockDisplay.getTransformation();
+                Vector3f scaleVector = transformation.getScale();
+                scaleVector.set(scale);
+                blockDisplay.setTransformation(transformation);
+            }
+        }
+        return entity;
     }
 }

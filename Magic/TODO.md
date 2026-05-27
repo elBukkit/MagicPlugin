@@ -2,6 +2,12 @@
 
 # Next
 
+ - Arena signs only work when oak
+ - Support alpha in colors ;(
+ - Look at class requirement again
+
+
+
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets
 
  - Can put skills in a container with shift click or the number from the hotbar

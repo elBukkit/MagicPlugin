@@ -103,6 +103,7 @@ import org.bukkit.util.Vector;
 import org.bukkit.util.VoxelShape;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
@@ -1844,5 +1845,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public BufferedMapCanvas createMapCanvas() {
         return new BufferedMapCanvas();
+    }
+
+    @Override
+    public Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale) {
+        return null;
     }
 }

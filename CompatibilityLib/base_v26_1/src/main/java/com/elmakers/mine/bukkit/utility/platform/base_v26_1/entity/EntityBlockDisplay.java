@@ -27,7 +27,7 @@ public class EntityBlockDisplay extends EntityDisplay {
         if (entity instanceof BlockDisplay) {
             BlockDisplay display = (BlockDisplay) entity;
             BlockData blockData = display.getBlock();
-            Material material = blockData.getMaterial();;
+            Material material = blockData.getMaterial();
             String blockExtraData = blockData.getAsString();
             this.material = controller.createMaterialAndData(material, blockExtraData);
         }

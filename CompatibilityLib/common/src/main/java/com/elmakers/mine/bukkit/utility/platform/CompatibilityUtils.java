@@ -71,6 +71,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.map.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
@@ -556,4 +557,6 @@ public interface CompatibilityUtils {
     void renderMap(MapRenderer renderer, MapView map, BufferedMapCanvas canvas, Player player);
 
     BufferedMapCanvas createMapCanvas();
+
+    Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale);
 }

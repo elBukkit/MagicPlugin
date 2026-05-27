@@ -29,6 +29,8 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 public class ModifyBlockAction extends BaseSpellAction {
     private boolean spawnFallingBlocks;
     private boolean fallingBlocksHurt;
+    private boolean display;
+    private double displayScale;
     private double fallingBlockSpeed;
     private Vector fallingBlockDirection;
     private float fallingBlockFallDamage;
@@ -60,6 +62,8 @@ public class ModifyBlockAction extends BaseSpellAction {
         fallingBlocksHurt = parameters.getBoolean("falling_hurts", false);
         checkChunk = parameters.getBoolean("check_chunk", true);
         replaceSame = parameters.getBoolean("replace_same", false);
+        display = parameters.getBoolean("display", false);
+        displayScale = parameters.getDouble("display_scale", 1);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
@@ -159,7 +163,18 @@ public class ModifyBlockAction extends BaseSpellAction {
                 undoList.setApplyPhysics(applyPhysics);
             }
             BlockState prior = block.getState();
-            brush.modify(block, applyPhysics);
+            if (display) {
+                Location location = block.getLocation();
+                if (displayScale != 1) {
+                    Location center = context.getTargetCenterLocation();
+                    if (center != null) {
+                        location = location.subtract(center).multiply(displayScale).add(center);
+                    }
+                }
+                CompatibilityLib.getCompatibilityUtils().createBlockDisplayEntity(location, brush, displayScale);
+            } else {
+                brush.modify(block, applyPhysics);
+            }
             if (undoList != null && !undoList.isScheduled()) {
                 context.getController().logBlockChange(context.getMage(), prior, block.getState());
             }
