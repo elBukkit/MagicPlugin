@@ -57,11 +57,11 @@ public class MagicRequirement {
     private @Nullable List<PropertyRequirement> attributes = null;
     private @Nullable List<PropertyRequirement> variables = null;
     private @Nullable Set<String> regionTags = null;
-    private @Nullable RangedRequirement lightLevel = null;
+    private @Nullable DoubleRangedRequirement lightLevel = null;
     private @Nullable TimeRequirement timeOfDay = null;
     private @Nullable MoonRequirement moonPhase = null;
-    private @Nullable RangedRequirement height = null;
-    private @Nullable RangedRequirement serverVersion = null;
+    private @Nullable DoubleRangedRequirement height = null;
+    private @Nullable StringRangedRequirement serverVersion = null;
     private @Nullable CurrencyRequirement currency = null;
     private @Nullable ItemRequirement item = null;
     private @Nullable String weather = null;
@@ -123,7 +123,7 @@ public class MagicRequirement {
         attributes = parsePropertyRequirements(configuration, "attributes", "attribute", "attribute");
         variables = parsePropertyRequirements(configuration, "variables", "variable", "variable");
 
-        lightLevel = parseRangedRequirement(configuration, "light");
+        lightLevel = parseDoubleRangedRequirement(configuration, "light");
         timeOfDay = parseTimeRequirement(configuration, "time");
         // For compatibility with spawners
         String moonKey = configuration.contains("moon") ? "moon" : "moon_phase";
@@ -132,8 +132,8 @@ public class MagicRequirement {
         if (configuration.contains("worlds")) {
             worldNames = new HashSet<>(ConfigurationUtils.getStringList(configuration, "worlds"));
         }
-        height = parseRangedRequirement(configuration, "height");
-        serverVersion = parseRangedRequirement(configuration, "server_version");
+        height = parseDoubleRangedRequirement(configuration, "height");
+        serverVersion = parseStringRangedRequirement(configuration, "server_version");
         String defaultCurrencyType = configuration.getString("currency_type", "currency");
         currency = CurrencyRequirement.parse(configuration, "currency", defaultCurrencyType);
         item = ItemRequirement.parse(configuration, "item");
@@ -160,13 +160,25 @@ public class MagicRequirement {
     }
 
     @Nullable
-    private RangedRequirement parseRangedRequirement(ConfigurationSection configuration, String key) {
+    private DoubleRangedRequirement parseDoubleRangedRequirement(ConfigurationSection configuration, String key) {
         ConfigurationSection rangedConfig = ConfigurationUtils.getConfigurationSection(configuration, key);
         if (rangedConfig != null) {
-            return new RangedRequirement(rangedConfig);
+            return new DoubleRangedRequirement(rangedConfig);
         }
         if (configuration.contains(key)) {
-            return new RangedRequirement(configuration.getString(key));
+            return new DoubleRangedRequirement(configuration.getString(key));
+        }
+        return null;
+    }
+
+    @Nullable
+    private StringRangedRequirement parseStringRangedRequirement(ConfigurationSection configuration, String key) {
+        ConfigurationSection rangedConfig = ConfigurationUtils.getConfigurationSection(configuration, key);
+        if (rangedConfig != null) {
+            return new StringRangedRequirement(rangedConfig);
+        }
+        if (configuration.contains(key)) {
+            return new StringRangedRequirement(configuration.getString(key));
         }
         return null;
     }
@@ -248,8 +260,8 @@ public class MagicRequirement {
             return false;
         }
         if (serverVersion != null) {
-            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
-            if (versionPieces.length < 2 || !serverVersion.check((double)versionPieces[1])) {
+            String versionString = context.getController().getPlugin().getServer().getBukkitVersion();
+            if (!serverVersion.check(versionString)) {
                 return false;
             }
         }
@@ -541,12 +553,8 @@ public class MagicRequirement {
             return context.getMessage("no_client_platform");
         }
         if (serverVersion != null) {
-            Double majorVersion = null;
-            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
-            if (versionPieces.length > 1) {
-                majorVersion = (double)versionPieces[1];
-            }
-            String message = checkRequiredProperty(context, serverVersion, getMessage(context, "server_version"), majorVersion);
+            String versionString = context.getController().getPlugin().getServer().getBukkitVersion();
+            String message = checkRequiredProperty(context, serverVersion, getMessage(context, "server_version"), versionString);
             if (message != null) {
                 return message;
             }
@@ -873,48 +881,55 @@ public class MagicRequirement {
     }
 
     @Nullable
-    protected String checkRequiredProperty(MageContext context, RangedRequirement requirement, String name, Double value) {
+    protected <T extends Comparable<T>> String checkRequiredProperty(MageContext context, RangedRequirement<T> requirement, String name, T value) {
         if (requirement.value != null && (value == null || !value.equals(requirement.value))) {
             return getMessage(context, "property_requirement")
                 .replace("$property", name)
-                .replace("$value", Double.toString(requirement.value)
-                .replace("@value", Integer.toString((int)(double)requirement.value)));
+                .replace("$value", requirement.value.toString())
+                .replace("@value", truncate(requirement.value));
         }
         if (requirement.min != null) {
             if (requirement.inclusive) {
-                if (value == null || value < requirement.min) {
+                if (value == null || value.compareTo(requirement.min) < 0) {
                     return getMessage(context, "property_min_inclusive")
-                        .replace("$property", name).replace("$value", Double.toString(requirement.min))
-                        .replace("@value", Integer.toString((int)(double)requirement.min));
+                        .replace("$property", name).replace("$value",requirement.min.toString())
+                        .replace("@value", truncate(requirement.min));
                 }
             } else {
-                 if (value == null || value <= requirement.min) {
+                 if (value == null || value.compareTo(requirement.min) <= 0) {
                      return getMessage(context, "property_min")
                          .replace("$property", name)
-                         .replace("$value", Double.toString(requirement.min))
-                         .replace("@value", Integer.toString((int)(double)requirement.min));
+                         .replace("$value", requirement.min.toString())
+                         .replace("@value", truncate(requirement.min));
                  }
             }
         }
         if (requirement.max != null) {
             if (requirement.inclusive) {
-                if (value != null && value > requirement.max) {
+                if (value != null && value.compareTo(requirement.max) > 0) {
                     return getMessage(context, "property_max_inclusve")
                         .replace("$property", name)
-                        .replace("$value", Double.toString(requirement.max))
-                        .replace("value", Integer.toString((int)(double)requirement.max));
+                        .replace("$value", requirement.max.toString())
+                        .replace("value", truncate(requirement.max));
                 }
             } else {
-                if (value != null && value >= requirement.max) {
+                if (value != null && value.compareTo(requirement.max) >= 0) {
                     return getMessage(context, "property_max")
                         .replace("$property", name)
-                        .replace("$value", Double.toString(requirement.max))
-                        .replace("@value", Integer.toString((int)(double)requirement.max));
+                        .replace("$value", requirement.max.toString())
+                        .replace("@value", truncate(requirement.max));
                 }
             }
         }
 
         return null;
+    }
+
+    private <T> String truncate(T value) {
+        if (value instanceof Double) {
+            return Integer.toString((int)(double)value);
+        }
+        return value.toString();
     }
 
     protected boolean hasTags(Wand wand) {

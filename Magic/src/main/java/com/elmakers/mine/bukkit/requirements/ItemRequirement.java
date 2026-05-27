@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 
-class ItemRequirement extends RangedRequirement {
+class ItemRequirement extends DoubleRangedRequirement {
     public final String itemKey;
     private ItemStack itemStack;
 

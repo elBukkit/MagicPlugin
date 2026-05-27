@@ -3,7 +3,14 @@
 
 # 11.2
 
+
+## Fixes
+
  - Fix Valhalla save data not persisting
+ - Fix server version check in wand GUI controls (CheckRequirements server_version)
+
+## New Features
+
  - (WIP) Added support for block and display entities (1.20.5 and up), configuration options:
    - See `giant_block` and `giant_wand` examples in survival configs   
    - Both `item_display` and `block_display`:

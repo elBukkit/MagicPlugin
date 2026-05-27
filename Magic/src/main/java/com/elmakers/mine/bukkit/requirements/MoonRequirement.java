@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-class MoonRequirement extends RangedRequirement {
+class MoonRequirement extends DoubleRangedRequirement {
     public MoonRequirement(String value, Logger logger) {
         try {
             if (value.startsWith("<")) {
