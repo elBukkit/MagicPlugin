@@ -13,6 +13,8 @@
        - `scale` : A vector, either {x: , y: , z: } config section, "x,y,z" as string or "scale" as string
        - `rotation_left`, `rotation_right` : An axis angle, either {angle:, x: , y: , z: } config section or "angle,x,y,z" as string
        - All angles are specified in degrees (converted to radians when applied)
+     - view_display: How far away the entity can  be seen
+     - shadow_radius: The size of the shadow
    - `item_display` type:
      - `item`: An item key to display
    - `block_display` type: 

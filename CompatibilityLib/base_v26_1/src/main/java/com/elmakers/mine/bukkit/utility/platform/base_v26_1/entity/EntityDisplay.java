@@ -12,6 +12,8 @@ import com.elmakers.mine.bukkit.utility.platform.base_v26_1.utilities.AngleUtils
 
 public abstract class EntityDisplay extends EntityExtraData {
     private Transformation transformation;
+    private Float viewRange;
+    private Float shadowRadius;
 
     public EntityDisplay(ConfigurationSection configuration, MageController controller) {
         ConfigurationSection transformationConfig = configuration.getConfigurationSection("transformation");
@@ -22,12 +24,16 @@ public abstract class EntityDisplay extends EntityExtraData {
             final AxisAngle4f rightRotation = AngleUtils.parseAngle(transformationConfig, "rotation_right", new AxisAngle4f());
             transformation = new Transformation(translation, leftRotation, scale, rightRotation);
         }
+        viewRange = configuration.contains("view_range") ? (float)configuration.getDouble("view_range") : null;
+        shadowRadius = configuration.contains("shadow_radius") ? (float)configuration.getDouble("shadow_radius") : null;
     }
 
     public EntityDisplay(Entity entity, MageController controller) {
         if (entity instanceof Display) {
             Display display = (Display) entity;
             transformation = display.getTransformation();
+            viewRange = display.getViewRange();
+            shadowRadius = display.getShadowRadius();
         }
     }
 
@@ -36,6 +42,12 @@ public abstract class EntityDisplay extends EntityExtraData {
             Display display = (Display)entity;
             if (transformation != null) {
                 display.setTransformation(transformation);
+            }
+            if (viewRange != null) {
+                display.setViewRange(viewRange);
+            }
+            if (shadowRadius != null) {
+                display.setShadowRadius(shadowRadius);
             }
         }
     }
