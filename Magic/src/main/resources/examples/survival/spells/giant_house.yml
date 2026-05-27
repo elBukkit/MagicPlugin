@@ -54,7 +54,7 @@ giant_house:
     allow_max_range: true
     range: 30
     use_brush_size: true
-    undo: 5000
+    undo: 10000
     cooldown: 20000
     brush: schematic|small_house
     destructible: destructible_replace

@@ -10,6 +10,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
@@ -171,7 +172,8 @@ public class ModifyBlockAction extends BaseSpellAction {
                         location = location.subtract(center).multiply(displayScale).add(center);
                     }
                 }
-                CompatibilityLib.getCompatibilityUtils().createBlockDisplayEntity(location, brush, displayScale);
+                Entity displayEntity = CompatibilityLib.getCompatibilityUtils().createBlockDisplayEntity(location, brush, displayScale);
+                context.registerForUndo(displayEntity);
             } else {
                 brush.modify(block, applyPhysics);
             }
