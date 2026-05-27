@@ -151,7 +151,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.29</version>
+                        <version>13.4.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
