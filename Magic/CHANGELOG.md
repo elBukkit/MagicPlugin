@@ -3,11 +3,11 @@
 
 # 11.2
 
-
 ## Fixes
 
  - Fix Valhalla save data not persisting
  - Fix server version check in wand GUI controls (CheckRequirements server_version)
+ - Allow using color codes in spell names and descriptions
 
 ## New Features
 

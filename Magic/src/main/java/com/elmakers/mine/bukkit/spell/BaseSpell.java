@@ -1064,12 +1064,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Individual spell configuration overrides all
-        name = node.getString("name", name);
+        name = ConfigurationUtils.getColorTranslated(node, "name", name);
         alias = node.getString("alias", "");
-        extendedDescription = node.getString("extended_description", extendedDescription);
-        description = node.getString("description", description);
-        levelDescription = node.getString("level_description", levelDescription);
-        progressDescription = node.getString("progress_description", progressDescription);
+        extendedDescription = ConfigurationUtils.getColorTranslated(node,"extended_description", extendedDescription);
+        description = ConfigurationUtils.getColorTranslated(node,"description", description);
+        levelDescription = ConfigurationUtils.getColorTranslated(node,"level_description", levelDescription);
+        progressDescription = ConfigurationUtils.getColorTranslated(node,"progress_description", progressDescription);
 
         // Parameterize level description
         if (levelDescription != null && !levelDescription.isEmpty()) {

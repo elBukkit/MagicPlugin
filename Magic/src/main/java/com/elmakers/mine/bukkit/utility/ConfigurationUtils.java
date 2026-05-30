@@ -813,4 +813,11 @@ public class ConfigurationUtils extends ConfigUtils {
             }
         }
     }
+
+    public static String getColorTranslated(ConfigurationSection configuration, String key, String defaultValue) {
+        if (!configuration.contains(key)) {
+            return defaultValue;
+        }
+        return CompatibilityLib.getCompatibilityUtils().translateColors(configuration.getString(key));
+    }
 }
