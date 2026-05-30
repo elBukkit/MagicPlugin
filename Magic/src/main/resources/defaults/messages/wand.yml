@@ -158,6 +158,7 @@ wand:
     costs_description: Consumes $description
     active_costs_description: Consumes $description Per Second
     range_description: "&9Range: &6$range &9meters"
+    damage_description: "&9Damage: &6$damage"
     owner_description: "&2&o$name's Wand"
     bound_description: "&3&oBound to $name"
     unmodifiable: That wand can not be modified

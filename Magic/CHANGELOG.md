@@ -8,6 +8,11 @@
  - Fix Valhalla save data not persisting
  - Fix server version check in wand GUI controls (CheckRequirements server_version)
  - Allow using color codes in spell names and descriptions
+ - Add damage value to spell lore.
+   - Uses the `damage` value, if present, set in spell parameters.
+   - Will also use `player_damage` or `entity_damage` if present, in that order
+   - You can override the display with `damage` on base spell properties, set to 0 to remove the lore
+   - Base lore template can be overridden with `wand.damage_description`
 
 ## New Features
 

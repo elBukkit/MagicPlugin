@@ -73,6 +73,8 @@ public interface Messages {
     @Nonnull
     String getRangeDescription(double range, @Nonnull String messagesKey);
     @Nonnull
+    String getDamageDescription(double damage, @Nonnull String messagesKey);
+    @Nonnull
     Collection<String> getAllKeys();
 
     /**

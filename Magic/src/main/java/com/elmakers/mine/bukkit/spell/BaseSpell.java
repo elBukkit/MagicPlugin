@@ -183,6 +183,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     private String creatorName;
     private Cost cost;
     private Cost earns;
+    private double damage;
+    private Double damageOverride;
     private Color color;
     private String particle;
     private SpellCategory category;
@@ -1113,6 +1115,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             double earnsMultiplier = node.getDouble("earns_multiplier", 1);
             earns.scale(earnsMultiplier);
         }
+        damageOverride = ConfigurationUtils.getOptionalDouble(node, "damage");
         earnCooldown = node.getInt("earns_cooldown", 0);
         double earnCooldownScale = node.getDouble("earns_cooldown_scale", 1);
         earnCooldown = (int)Math.ceil(earnCooldownScale * earnCooldown);
@@ -2139,6 +2142,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassAll = parameters.getBoolean("bypass", false);
         duration = parameters.getInt("duration", 0);
         totalDuration = parameters.getInt("total_duration", -1);
+        damage = parameters.getDouble("entity_damage", 0);
+        damage = parameters.getDouble("player_damage", damage);
+        damage = parameters.getDouble("damage", damage);
 
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
         consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
@@ -2771,6 +2777,12 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public double getDamage()
+    {
+        return damageOverride != null ? damageOverride : damage;
+    }
+
+    @Override
     public void setMage(Mage mage)
     {
         this.mage = mage;
@@ -3243,6 +3255,14 @@ public class BaseSpell implements MageSpell, Cloneable {
             String message = messages.getRangeDescription(range, "wand.range_description");
             if (!message.isEmpty()) {
                 lore.add(ChatColor.GRAY + message);
+            }
+        }
+
+        double damage = getDamage();
+        if (damage > 0) {
+            String damageMessage = messages.getDamageDescription(damage, "wand.damage_description");
+            if (!damageMessage.isEmpty()) {
+                lore.add(ChatColor.GRAY + damageMessage);
             }
         }
 
