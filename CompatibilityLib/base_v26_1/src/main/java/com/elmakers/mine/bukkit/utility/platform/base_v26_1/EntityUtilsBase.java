@@ -62,6 +62,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityRabbitD
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntitySheepData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityShulkerData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntitySlimeData;
+import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityTextDisplay;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityVillagerData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityWolfData;
 import com.elmakers.mine.bukkit.utility.platform.base_v26_1.entity.EntityZombieData;
@@ -167,6 +168,8 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityItemDisplay(entity, controller);
             case BLOCK_DISPLAY:
                 return new EntityBlockDisplay(entity, controller);
+            case TEXT_DISPLAY:
+                return new EntityTextDisplay(entity, controller);
             default:
                 return getExtraDataByClass(controller, entity);
         }
@@ -250,6 +253,8 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityItemDisplay(parameters, controller);
             case BLOCK_DISPLAY:
                 return new EntityBlockDisplay(parameters, controller);
+            case TEXT_DISPLAY:
+                return new EntityTextDisplay(parameters, controller);
             default:
                 return null;
         }

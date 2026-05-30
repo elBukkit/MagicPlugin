@@ -31,6 +31,8 @@
      - `item`: An item key to display
    - `block_display` type: 
      - `block`: A block to display   
+   - `text_display` type:
+     - `text`: The text to display
  - Add `display` option to ModifyBlock action, which will create display entities rather than blocks
    - Add `display_scale` option to scale the display entity
    - Add `giant_house` and `tiny_house` spells to survival configs

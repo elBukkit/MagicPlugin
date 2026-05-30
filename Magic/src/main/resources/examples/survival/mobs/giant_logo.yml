@@ -1,0 +1,7 @@
+giant_logo:
+  name: Mega Logo
+  type: text_display
+  text: MAGIC
+  transformation:
+    scale: 10
+    translation: 0,10,0
