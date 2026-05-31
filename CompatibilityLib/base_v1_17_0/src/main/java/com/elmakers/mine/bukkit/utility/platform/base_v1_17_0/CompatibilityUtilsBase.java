@@ -1084,7 +1084,19 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             }
             fox.setFirstTrustedPlayer(tamer);
         }
-        return tame(entity, tamer);
+        if (!(entity instanceof Tameable)) {
+            return false;
+        }
+
+        Tameable tameable = (Tameable)entity;
+        if (tameable.isTamed()) {
+            return false;
+        }
+        tameable.setTamed(true);
+        if (tamer != null) {
+            tameable.setOwner(tamer);
+        }
+        return true;
     }
 
     @Override
