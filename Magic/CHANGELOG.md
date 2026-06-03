@@ -1,9 +1,7 @@
 
 # CHANGELOG
 
-# 11.3
-
-## Fixes
+# 11.2.1
 
  - Fix infinite recursion taming mobs in 1.17 to 1.20
 
