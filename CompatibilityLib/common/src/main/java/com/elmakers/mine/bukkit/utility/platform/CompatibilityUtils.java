@@ -561,4 +561,6 @@ public interface CompatibilityUtils {
     Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale);
 
     Entity createItemDisplayEntity(Location location, ItemStack itemStack, double scale);
+
+    ItemStack createItemStack(Material material, String itemData);
 }

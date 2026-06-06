@@ -3,6 +3,16 @@
 
 # 11.3
 
+## Fixes
+
+ - Fix warnings from vengeance spell on config load
+
+## New Features
+
+ - Add support for vanilla-style item definitions
+   - For example: `shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]`
+   - Won't work for wand icons, but should work anywhere else
+
 # 11.2.1
 
  - Fix infinite recursion taming mobs in 1.17 to 1.20

@@ -1868,4 +1868,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public Entity createItemDisplayEntity(Location location, ItemStack itemStakc, double scale) {
         return null;
     }
+
+    @Override
+    public ItemStack createItemStack(Material material, String itemData) {
+        return new ItemStack(material, 1);
+    }
 }

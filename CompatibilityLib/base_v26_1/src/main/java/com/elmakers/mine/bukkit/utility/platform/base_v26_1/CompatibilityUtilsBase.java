@@ -3204,4 +3204,9 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         }
         return entity;
     }
+
+    @Override
+    public ItemStack createItemStack(Material material, String itemData) {
+        return Bukkit.getItemFactory().createItemStack(material.name().toLowerCase(Locale.ROOT) + itemData);
+    }
 }
