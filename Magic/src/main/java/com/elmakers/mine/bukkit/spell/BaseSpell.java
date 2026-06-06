@@ -957,6 +957,19 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected void loadTemplate(ConfigurationSection node, SpellParameters parameters) {
         // Get variable definitions
         variablesList = ConfigurationUtils.getNodeList(node, "variables");
+        if (variablesList == null || variablesList.isEmpty()) {
+            List<String> simpleList = ConfigurationUtils.getStringList(node, "variables");
+            if (simpleList != null && !simpleList.isEmpty()) {
+                variablesList = new ArrayList<>();
+                for (String variableName : simpleList) {
+                    ConfigurationSection variableNode = ConfigurationUtils.newConfigurationSection();
+                    variableNode.set("variable", variableName);
+                    variableNode.set("scope", "spell");
+                    variableNode.set("default", 0);
+                    variablesList.add(variableNode);
+                }
+            }
+        }
         variablesSection = node.getConfigurationSection("variables");
 
         initializeVariables(parameters);
