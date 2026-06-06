@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseTeleportAction;
@@ -23,8 +24,10 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ChangeWorldAction extends BaseTeleportAction
 {
+    private static final String DEFAULT_KEY = "*";
     private String targetWorldMessage = "";
     private String targetWorldName;
+    private String targetLocationName;
     private boolean loadWorld;
     private double scale;
     ConfigurationSection worldMap;
@@ -37,6 +40,7 @@ public class ChangeWorldAction extends BaseTeleportAction
         if (parameters.contains("target_world")) {
             targetWorldName = parameters.getString("target_world");
             loadWorld = parameters.getBoolean("load", true);
+            targetLocationName = parameters.getString("target_location");
         } else if (parameters.contains("worlds")) {
             worldMap = ConfigurationUtils.getConfigurationSection(parameters, "worlds");
         }
@@ -58,6 +62,7 @@ public class ChangeWorldAction extends BaseTeleportAction
         if (world == null) {
             return null;
         }
+        Player player = context.getMage().getPlayer();
         Location playerLocation = context.getLocation();
         if (playerLocation == null) {
             return null;
@@ -70,9 +75,14 @@ public class ChangeWorldAction extends BaseTeleportAction
                 return null;
             }
             targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+            targetLocation = modifyLocation(targetLocation, targetWorld, player);
         } else if (worldMap != null) {
             if (!worldMap.contains(worldName)) {
-                return null;
+                if (worldMap.contains(DEFAULT_KEY)) {
+                    worldName = DEFAULT_KEY;
+                } else {
+                    return null;
+                }
             }
 
             ConfigurationSection worldNode = ConfigurationUtils.getConfigurationSection(worldMap, worldName);
@@ -103,6 +113,7 @@ public class ChangeWorldAction extends BaseTeleportAction
                     targetLocation.setX(targetLocation.getX() + targetSpawn.getX());
                     targetLocation.setZ(targetLocation.getZ() + targetSpawn.getZ());
                 }
+                targetLocation = modifyLocation(targetLocation, targetWorld, player);
                 if (minLocation != null) {
                     if (targetLocation.getX() < minLocation.getX()) targetLocation.setX(minLocation.getX());
                     if (targetLocation.getZ() < minLocation.getZ()) targetLocation.setZ(minLocation.getZ());
@@ -135,6 +146,17 @@ public class ChangeWorldAction extends BaseTeleportAction
             }
         }
 
+        return targetLocation;
+    }
+
+    protected Location modifyLocation(Location targetLocation, World world, Player player) {
+        if (targetLocationName != null) {
+            targetLocation = switch (targetLocationName) {
+                case "spawn" -> world.getSpawnLocation();
+                case "bed" -> player != null && player.getBedSpawnLocation() != null ? player.getBedSpawnLocation() : world.getSpawnLocation();
+                default -> targetLocation;
+            };
+        }
         return targetLocation;
     }
 
