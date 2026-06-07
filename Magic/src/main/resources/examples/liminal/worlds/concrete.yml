@@ -2,3 +2,7 @@ concrete:
   world: world_concrete
   autoload: true
   generator: concrete
+  ground_level: 1
+  bedrock_level: 0
+  spawn: 0,2,0
+

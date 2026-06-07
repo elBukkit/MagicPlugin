@@ -1,4 +1,17 @@
-concrete:
+concrete_ground:
   class: Perlin
   biome: basalt_deltas
   blocks: concrete_ground
+
+concrete_food:
+  class: Crops
+  border: pale_oak_pressure_plate
+  crops: carrots,beetroots
+  min_age: 1
+  max_age: 1
+
+concrete:
+  class: Sequence
+  generators:
+    - concrete_ground
+    - concrete_food

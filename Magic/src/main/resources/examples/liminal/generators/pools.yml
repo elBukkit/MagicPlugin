@@ -1,3 +1,4 @@
 pools:
   class: Perlin
   biome: lush_caves
+  blocks: quartz_block

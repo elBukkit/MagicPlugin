@@ -2,3 +2,6 @@ pools:
   world: world_pools
   autoload: true
   generator: pools
+  ground_level: 1
+  bedrock_level: 0
+  spawn: 0,2,0
