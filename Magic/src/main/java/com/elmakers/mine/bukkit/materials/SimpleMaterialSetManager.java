@@ -106,6 +106,16 @@ public final class SimpleMaterialSetManager
         return v != null ? v : fallback;
     }
 
+    @Nullable
+    @Override
+    public MaterialSet fromConfig(ConfigurationSection configuration, String key) {
+        List<String> adhoc = configuration.getStringList(key);
+        if (!adhoc.isEmpty()) {
+            return createMaterialSetFromStringList(adhoc);
+        }
+        return fromConfig(configuration.getString(key));
+    }
+
     @Override
     public MaterialSet fromConfigEmpty(String name) {
         return fromConfig(name, MaterialSets.empty());

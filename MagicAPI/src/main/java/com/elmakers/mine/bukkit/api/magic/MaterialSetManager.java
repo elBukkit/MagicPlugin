@@ -66,6 +66,19 @@ public interface MaterialSetManager {
             @Nonnull MaterialSet fallback);
 
     /**
+     * Loads or creates a material set from a configuration section.
+     *
+     * @param configuration
+     *            The configuration to load from.
+     * @param key
+     *            The configuration key containing the config to load from.
+     *            Must be a string (referencing a configured material map)
+     *            or a list (creating an ad-hoc set)
+     */
+    @Nullable
+    MaterialSet fromConfig(ConfigurationSection configuration, String key);
+
+    /**
      * Loads or creates a material set from a configuration string.
      *
      * @param name

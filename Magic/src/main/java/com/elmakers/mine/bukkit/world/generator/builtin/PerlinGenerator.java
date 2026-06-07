@@ -21,11 +21,12 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
-public class FlatGenerator extends MagicChunkGenerator {
+public class PerlinGenerator extends MagicChunkGenerator {
     private PerlinNoiseGenerator noise;
     private double noiseScale = 0.1;
     private int groundLevel = 2;
     private int bedrockLevel = 1;
+    private int maxElevation = 0;
     private double foodProbability = 0;
 
     private List<MaterialAndData> groundBlocks = Collections.emptyList();
@@ -36,12 +37,14 @@ public class FlatGenerator extends MagicChunkGenerator {
         groundLevel = config.getInt("ground_level", groundLevel);
         bedrockLevel = config.getInt("bedrock_level", bedrockLevel);
         foodProbability = config.getDouble("food_probability", foodProbability);
-        noiseScale = config.getDouble("noise_scale", noiseScale);
-        String groundSetKey = config.getString("ground_blocks", "dirts");
-        MaterialSet groundSet = controller.getMaterialSetManager().getMaterialSet(groundSetKey);
+        noiseScale = config.getDouble("noise", noiseScale);
+        maxElevation = config.getInt("elevation", maxElevation);
+        MaterialSet groundSet = controller.getMaterialSetManager().fromConfig(config, "blocks");
         if (groundSet == null) {
-            world.getLogger().warning("Invalid ground block set: " + groundSetKey);
-        } else {
+            world.getLogger().warning("Invalid block set: " + config.getString("blocks") + ", defaulting to dirts");
+            groundSet = controller.getMaterialSetManager().getMaterialSet("dirts");
+        }
+        if (groundSet != null) {
             groundBlocks = new ArrayList<>(groundSet.getMaterialsWithData());
         }
     }
@@ -61,10 +64,12 @@ public class FlatGenerator extends MagicChunkGenerator {
                 int worldX = (chunkX << 4) + x;
                 int worldZ = (chunkZ << 4) + z;
 
+
                 final double blockValue = noise.noise(worldX * noiseScale, worldZ * noiseScale);
+                final int elevation = maxElevation > 0 ? (int)Math.min(maxElevation, Math.max(0, (blockValue + 1) / 2 * (maxElevation + 1))) : 0;
                 final int blockIndex = (int)Math.min(groundBlocks.size() - 1, Math.max(0, (blockValue + 1) / 2 * groundBlocks.size()));
                 final MaterialAndData floorBlock = groundBlocks.get(blockIndex);
-                for (int y = bedrockLevel + 1; y <= groundLevel; y++) {
+                for (int y = bedrockLevel + 1; y <= groundLevel + elevation; y++) {
                     chunk.setBlock(x, y, z, floorBlock.createBlockData());
                 }
                 chunk.setBlock(x, this.bedrockLevel, z, Material.BEDROCK);
@@ -91,7 +96,7 @@ public class FlatGenerator extends MagicChunkGenerator {
 
     @Override
     public Location getSpawnLocation(World world) {
-        return new Location(world, 0, groundLevel + 1, 0);
+        return new Location(world, 0, groundLevel + 1 + maxElevation, 0);
     }
 
     @Override
