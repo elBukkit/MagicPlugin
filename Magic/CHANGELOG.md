@@ -6,6 +6,7 @@
 ## Fixes
 
  - Fix warnings from vengeance spell on config load
+ - Added pale oak signs to `signs` material list
 
 ## Changes
 
