@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
@@ -14,11 +15,14 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
@@ -56,6 +60,9 @@ public class MagicWorld {
     private GameMode gameMode;
     private GameMode leavingGameMode;
     private MagicChunkGenerator generator;
+    private int groundLevel = 64;
+    private int bedrockLevel = 0;
+    private Vector spawnPosition;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -74,10 +81,13 @@ public class MagicWorld {
         if (config.contains("min_height")) {
             minHeight = config.getInt("min_height");
         }
+        groundLevel = config.getInt("ground_level", groundLevel);
+        bedrockLevel = config.getInt("bedrock_level", bedrockLevel);
         copyFrom = config.getString("copy", copyFrom);
         synchronizeTime = config.getBoolean("synchronize_time", synchronizeTime);
         synchronizedTimeOffset = config.getLong("time_offset", synchronizedTimeOffset);
         resourcePack = config.getString("resource_pack", resourcePack);
+        spawnPosition = ConfigurationUtils.getVector(config, "spawn");
         if (config.contains("environment")) {
             String typeString = config.getString("environment");
             try {
@@ -361,5 +371,20 @@ public class MagicWorld {
 
     public MagicController getController() {
         return controller;
+    }
+
+    public Location getSpawnLocation(World world) {
+        if (spawnPosition != null) {
+            return new Location(world, spawnPosition.getX(), spawnPosition.getY(), spawnPosition.getZ());
+        }
+        return null;
+    }
+
+    public int getGroundLevel() {
+        return groundLevel;
+    }
+
+    public int getBedrockLevel() {
+        return bedrockLevel;
     }
 }

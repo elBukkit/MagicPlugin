@@ -21,14 +21,9 @@ import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
 public abstract class MagicChunkGenerator extends ChunkGenerator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.generator.builtin";
 
-    private MagicWorld world;
+    protected MagicWorld world;
+    private String key;
     private BiomeProvider biomeProvider;
-
-    public abstract int getGroundLevel();
-
-    public abstract int getBedrockLevel();
-
-    public abstract Location getSpawnLocation(World world);
 
     @Nullable
     public static MagicChunkGenerator create(MageController controller, String className) {
@@ -93,7 +88,7 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
 
     @Override
     public Location getFixedSpawnLocation(World world, Random random) {
-        return getSpawnLocation(world);
+        return this.world.getSpawnLocation(world);
     }
 
     public String getKey() {
