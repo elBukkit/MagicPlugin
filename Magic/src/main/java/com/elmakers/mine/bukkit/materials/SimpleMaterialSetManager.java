@@ -231,7 +231,7 @@ public final class SimpleMaterialSetManager
             MaterialSet resolved = parseMaterialSet(matName);
             if (resolved != null) {
                 union.add(resolved);
-            } else if (matName.contains("|") || matName.contains(":")) {
+            } else if (matName.contains("|") || matName.contains(":") || matName.contains("[")) {
                 // TODO: Warn on invalid data
                 MaterialAndData material = ConfigurationUtils
                         .toMaterialAndData(matName);

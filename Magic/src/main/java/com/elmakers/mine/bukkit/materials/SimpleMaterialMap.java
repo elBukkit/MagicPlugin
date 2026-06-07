@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.collect.ImmutableList;
 
 public class SimpleMaterialMap implements MaterialMap {
     private final @Nonnull Map<Material, ? extends MaterialAndData> materials;
@@ -37,6 +39,15 @@ public class SimpleMaterialMap implements MaterialMap {
     @Override
     public Collection<Material> getMaterials() {
         return materials.keySet();
+    }
+
+    @Override
+    public Collection<MaterialAndData> getMaterialsWithData() {
+        ImmutableList.Builder<MaterialAndData> allBuilder = ImmutableList.builder();
+        for (Material material : getMaterials()) {
+            allBuilder.add(ConfigurationUtils.toMaterialAndData(material));
+        }
+        return allBuilder.build();
     }
 
     @Override

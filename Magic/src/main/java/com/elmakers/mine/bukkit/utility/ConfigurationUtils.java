@@ -84,6 +84,9 @@ public class ConfigurationUtils extends ConfigUtils {
         if (o instanceof MaterialAndData) {
             return (MaterialAndData)o;
         }
+        if (o instanceof Material) {
+            return new MaterialAndData((Material)o);
+        }
         if (o instanceof String) {
             String matName = (String)o;
             return new MaterialAndData(matName);

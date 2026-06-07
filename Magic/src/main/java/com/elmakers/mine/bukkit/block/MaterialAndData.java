@@ -21,6 +21,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -98,6 +99,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected MaterialExtraData extraData;
     protected GenericExtraData genericExtraData;
     protected String blockData;
+    protected BlockData cachedBlockData;
     protected String itemData;
     protected boolean isValid = true;
     protected boolean isTargetValid = true;
@@ -117,7 +119,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public MaterialAndData(final Material material, String blockData) {
         this.material = material;
-        this.blockData = blockData;
+        this.itemData = blockData;
+        setBlockData(blockData);
     }
 
     public MaterialAndData(final Material material, final short data) {
@@ -213,6 +216,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         update(materialKey);
     }
 
+    private void setBlockData(String blockData) {
+        this.blockData = blockData;
+        this.cachedBlockData = null;
+    }
+
     public void copyTo(MaterialAndData other) {
         other.material = material;
         other.data = data;
@@ -220,7 +228,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         other.customModelData = customModelData;
         other.itemModel = itemModel;
         other.extraData = extraData;
-        other.blockData = blockData;
+        other.setBlockData(blockData);
         other.itemData = itemData;
         other.isValid = isValid;
         other.isTargetValid = isTargetValid;
@@ -252,6 +260,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (itemPieces.length > 1) {
             materialKey = itemPieces[0];
             itemData = "[" + itemPieces[1];
+            blockData = itemData;
         }
 
         MaterialExtraData extraData = null;
@@ -496,7 +505,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         if (isValid) {
             this.extraData = extraData;
-            this.blockData = blockData;
+            this.setBlockData(blockData);
             this.itemData = itemData;
         }
     }
@@ -532,7 +541,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else {
                 extraData = null;
             }
-            blockData = o.blockData;
+            setBlockData(o.blockData);
             itemData = o.itemData;
             isValid = o.isValid;
             isTargetValid = o.isTargetValid;
@@ -554,7 +563,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.material = material;
         this.data = data;
         extraData = null;
-        blockData = null;
+        setBlockData(null);
         itemData = null;
         isValid = material != null;
         isTargetValid = true;
@@ -613,7 +622,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        blockData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
+        setBlockData(CompatibilityLib.getCompatibilityUtils().getBlockData(block));
         if (blockData != null) {
             // If we have block data, the data byte is no longer relevant
             data = 0;
@@ -789,6 +798,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             return material.createBlockData().getAsString();
         }
         return blockData;
+    }
+
+    @Override
+    public BlockData createBlockData() {
+        if (cachedBlockData == null) {
+            if (blockData != null) {
+                cachedBlockData = CompatibilityLib.getPlatform().getPlugin().getServer().createBlockData(blockData);
+            }
+            if (cachedBlockData == null && material != null) {
+                cachedBlockData = CompatibilityLib.getPlatform().getPlugin().getServer().createBlockData(material);
+            }
+        }
+
+        return cachedBlockData;
     }
 
     @Override
@@ -1204,7 +1227,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
         if (data == null) {
             this.extraData = null;
-            this.blockData = null;
+            setBlockData(null);
             this.itemData = null;
         }
     }

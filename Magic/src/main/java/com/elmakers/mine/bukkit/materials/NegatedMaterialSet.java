@@ -31,6 +31,11 @@ final class NegatedMaterialSet implements MaterialSet {
     }
 
     @Override
+    public Collection<MaterialAndData> getMaterialsWithData() {
+        return ImmutableList.of();
+    }
+
+    @Override
     public boolean testMaterial(Material material) {
         return !delegate.testMaterial(material);
     }

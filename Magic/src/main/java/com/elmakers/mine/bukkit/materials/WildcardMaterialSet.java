@@ -17,6 +17,10 @@ enum WildcardMaterialSet implements MaterialSet {
     public Collection<Material> getMaterials() {
         return Collections.emptyList();
     }
+    @Override
+    public Collection<MaterialAndData> getMaterialsWithData() {
+        return Collections.emptyList();
+    }
 
     @Override
     public MaterialSet not() {

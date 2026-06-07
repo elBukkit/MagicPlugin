@@ -12,6 +12,7 @@ import org.bukkit.Material;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -22,8 +23,8 @@ public final class Union {
     private boolean wildcard = false;
     private final List<MaterialSet> sets = new ArrayList<>();
 
-    // TODO: Should this be a set?
     private final List<MaterialAndData> materialAndDatas = new ArrayList<>();
+    private final List<MaterialAndData> allMaterialAndDatas = new ArrayList<>();
     private final Set<Material> materials = new HashSet<>();
 
     Union() {
@@ -61,6 +62,7 @@ public final class Union {
         checkNotNull(material, "material");
 
         materials.add(material);
+        allMaterialAndDatas.add(ConfigurationUtils.toMaterialAndData(material));
 
         return this;
     }
@@ -70,6 +72,7 @@ public final class Union {
         checkArgument(materialAndData.isValid(),
                 "Material data is not valid: %s", materialAndData);
 
+        allMaterialAndDatas.add(materialAndData);
         materialAndDatas.add(materialAndData);
 
         return this;
@@ -77,9 +80,7 @@ public final class Union {
 
     public Union addAll(Material... materials) {
         for (Material material : materials) {
-            checkNotNull(material, "material");
-
-            this.materials.add(material);
+            add(material);
         }
 
         return this;
@@ -136,8 +137,18 @@ public final class Union {
             newMaterialAndDatas = ImmutableList.of();
         }
 
+        ImmutableList<MaterialAndData> newAllMaterialAndDatas;
+        if (!allMaterialAndDatas.isEmpty()) {
+            ImmutableList.Builder<MaterialAndData> materialsBuilder;
+            materialsBuilder = ImmutableList.builder();
+            materialsBuilder.addAll(allMaterialAndDatas);
+            newAllMaterialAndDatas = materialsBuilder.build();
+        } else {
+            newAllMaterialAndDatas = ImmutableList.of();
+        }
+
         return new SimpleMaterialSet(
                 ImmutableList.copyOf(sets),
-                newMaterials, newMaterialAndDatas);
+                newMaterials, newMaterialAndDatas, newAllMaterialAndDatas);
     }
 }

@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
@@ -59,6 +60,7 @@ public interface MaterialAndData {
     Byte getBlockData();
     @Nullable
     String getModernBlockData();
+    BlockData createBlockData();
     void setData(Short data);
     @Nullable
     Material getMaterial();

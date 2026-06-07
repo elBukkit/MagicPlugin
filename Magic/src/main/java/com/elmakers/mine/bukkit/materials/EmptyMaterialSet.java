@@ -19,6 +19,11 @@ enum EmptyMaterialSet implements MaterialSet {
     }
 
     @Override
+    public Collection<MaterialAndData> getMaterialsWithData() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public MaterialSet not() {
         return MaterialSets.wildcard();
     }
