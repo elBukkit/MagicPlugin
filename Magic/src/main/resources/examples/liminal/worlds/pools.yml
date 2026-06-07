@@ -2,3 +2,4 @@ pools:
   inherit: liminal_base
   world: world_pools
   generator: pools
+  time: 6000

@@ -2,3 +2,4 @@ concrete:
   inherit: liminal_base
   world: world_concrete
   generator: concrete
+  time: 6000

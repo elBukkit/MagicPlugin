@@ -65,6 +65,7 @@ public class MagicWorld {
     private MagicChunkGenerator generator;
     private int groundLevel = 64;
     private int bedrockLevel = 0;
+    private Integer time;
     private Vector spawnPosition;
     private Map<String, Boolean> gameRules = new HashMap<>();
 
@@ -139,6 +140,7 @@ public class MagicWorld {
         blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
         cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
+        time = ConfigurationUtils.getOptionalInteger(config, "time");
         String generatorKey = config.getString("generator");
         if (generatorKey != null && !generatorKey.isEmpty()) {
             generator = controller.getWorlds().createGenerator(this, generatorKey);
@@ -242,6 +244,9 @@ public class MagicWorld {
             } else {
                 controller.getLogger().warning("Invalid game rule: " + key);
             }
+        }
+        if (time != null) {
+            world.setTime(time);
         }
     }
 
