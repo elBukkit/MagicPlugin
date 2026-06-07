@@ -6,6 +6,8 @@ liminal_base:
   autoload: true
   bedrock_level: 0
   spawn: 0,2,0
+  game_mode: adventure
+  leave_game_mode: survival
   game_rules:
     advance_weather: false
     advance_time: false
