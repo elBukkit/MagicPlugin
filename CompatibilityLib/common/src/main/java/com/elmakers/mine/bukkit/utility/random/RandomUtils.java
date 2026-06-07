@@ -271,6 +271,11 @@ public class RandomUtils {
     }
 
     public static <T> T getRandom(List<T> list) {
+        return getRandom(list, random);
+    }
+
+    public static <T> T getRandom(List<T> list, Random random) {
+        if (list.isEmpty()) return null;
         return list.get(random.nextInt(list.size()));
     }
 
