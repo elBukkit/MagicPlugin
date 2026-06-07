@@ -70,6 +70,7 @@ public class MagicWorld {
     private Integer titleDelay;
     private Vector spawnPosition;
     private Map<String, Boolean> gameRules = new HashMap<>();
+    private String respawnWorld;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -144,6 +145,7 @@ public class MagicWorld {
         cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
         time = ConfigurationUtils.getOptionalInteger(config, "time");
         titleDelay = ConfigurationUtils.getOptionalInteger(config, "title_delay");
+        respawnWorld = config.getString("respawn");
         String generatorKey = config.getString("generator");
         if (generatorKey != null && !generatorKey.isEmpty()) {
             generator = controller.getWorlds().createGenerator(this, generatorKey);
@@ -451,5 +453,9 @@ public class MagicWorld {
 
     public int getBedrockLevel() {
         return bedrockLevel;
+    }
+
+    public String getRespawnWorld() {
+        return respawnWorld;
     }
 }
