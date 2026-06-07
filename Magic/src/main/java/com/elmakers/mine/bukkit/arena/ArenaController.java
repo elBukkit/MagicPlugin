@@ -41,9 +41,9 @@ public class ArenaController implements Runnable {
         this.plugin = magic.getPlugin();
     }
 
-    public void load(ConfigurationSection configuration) {
+    public void load(boolean enable) {
         boolean wasEnabled = enabled;
-        enabled = configuration != null && configuration.getBoolean("enabled", true);
+        enabled = enable;
         if (wasEnabled != enabled) {
             if (enabled) {
                 start();

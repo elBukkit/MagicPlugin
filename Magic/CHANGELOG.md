@@ -7,6 +7,10 @@
 
  - Fix warnings from vengeance spell on config load
 
+## Changes
+
+ - Changed `arenas.enabled` config option to `enable_arenas`
+
 ## New Features
 
  - Add support for vanilla-style item definitions
