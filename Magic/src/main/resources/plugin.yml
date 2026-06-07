@@ -983,6 +983,7 @@ commands:
         /mwarp replace    Replace an existing warp
         /mwarp remove     Remove a warp
         /mwarp go         Go to a warp
+        /mwarp world      Go to the spawn point of a world
         /mwarp send       Send another player to a warp
         /mwarp list       List warps
         /mwarp configure  Configure warps for Recall or Dynmap
@@ -1009,11 +1010,17 @@ commands:
 
        /mwarp remove <warpname>
   "mwarp go":
+    description: Go to the spawn point of a world
+    permission: magic.commands.mwarp.world
+    usage: |
+
+       /mwarp go <warpname>
+  "mwarp world":
     description: Go to a warp
     permission: magic.commands.mwarp.go
     usage: |
 
-       /mwarp go <warpname>
+      /mwarp go <worldname>
   "mwarp send":
    description: Send a player to a warp
    permission: magic.commands.mwarp.send

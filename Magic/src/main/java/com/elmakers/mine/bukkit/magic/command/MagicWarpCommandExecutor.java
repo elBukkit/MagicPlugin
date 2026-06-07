@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -140,8 +142,24 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("world")) {
+            onWorldWarp(player, warpName);
+            return true;
+        }
+
         sender.sendMessage(ChatColor.RED + "Usage: mwarp [add|replace|remove|go|import]");
         return true;
+    }
+
+    private void onWorldWarp(Player player, String worldName) {
+        final World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            player.sendMessage(ChatColor.RED + "World not found: " + worldName);
+            return;
+        }
+
+        final Location spawn = world.getSpawnLocation();
+        player.teleport(spawn);
     }
 
     private void onGoWarp(Player player, String warpName) {
@@ -353,6 +371,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mwarp.", "configure");
             addIfPermissible(sender, options, "magic.commands.mwarp.", "map");
             addIfPermissible(sender, options, "magic.commands.mwarp.", "describe");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "world");
         } else if (args.length == 2) {
             String subCommand = args[0];
             if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace") || subCommand.equals("configure")) {
@@ -364,6 +383,8 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 if (icons != null) {
                     options.addAll(icons);
                 }
+            } else if (subCommand.equals("world")) {
+                options.addAll(Bukkit.getWorlds().stream().map(w -> w.getName()).toList());
             }
         } else if (args.length == 3) {
             String subCommand = args[0];

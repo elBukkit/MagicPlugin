@@ -12,6 +12,7 @@
  - Add support for vanilla-style item definitions
    - For example: `shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]`
    - Won't work for wand icons, but should work anywhere else
+ - Add `/mwarp world` command to easily go to the spawn point of a specific world
 
 # 11.2.1
 
