@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 public class RandomUtils {
     private static final Random random = new Random();
 
-    public static float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
+    public static float lerp(String[] list, int levelIndex, int nextLevelIndex, double distance) {
         if (list.length == 0) return 0;
         if (levelIndex >= list.length) return Float.parseFloat(list[list.length - 1]);
         if (nextLevelIndex >= list.length) return Float.parseFloat(list[list.length - 1]);
@@ -34,13 +34,25 @@ public class RandomUtils {
         return lerp(previousValue, nextValue, distance);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Number> T lerp(T previousValue, T nextValue, float distance) {
-        return (T)(Number)((Float)previousValue + distance * ((Float)nextValue - (Float)previousValue));
+    public static int lerp(int min, int max, double value) {
+        return (int) Math.min(1.0, Math.max(0.0, value / (double) (max - min)));
+    }
+
+    public static double lerp(double min, double max, double value) {
+        return Math.min(1.0, Math.max(0.0, value / (max - min)));
+    }
+
+    public static float lerp(float min, float max, double value) {
+        return (float) Math.min(1.0, Math.max(0.0, value / (max - min)));
     }
 
     @Nullable
     public static <T extends Object> T weightedRandom(Deque<WeightedPair<T>> weightList) {
+        return weightedRandom(random, weightList);
+    }
+
+    @Nullable
+    public static <T extends Object> T weightedRandom(Random random, Deque<WeightedPair<T>> weightList) {
         if (weightList == null || weightList.size() == 0) return null;
 
         Float maxWeight = weightList.getLast().getThreshold();
@@ -230,28 +242,18 @@ public class RandomUtils {
 
     public static void extrapolateFloatList(List<AscendingPair<Float>> list)
     {
-        RandomUtils.extrapolateList(list);
-    }
-
-    public static void extrapolateIntegerList(List<AscendingPair<Integer>> list)
-    {
-        RandomUtils.extrapolateList(list);
-    }
-
-    public static <T extends Number> void extrapolateList(List<AscendingPair<T>> list)
-    {
         Collections.sort(list);
         int index = 0;
         while (index < list.size() - 1) {
-            AscendingPair<T> current = list.get(index);
-            AscendingPair<T> next = list.get(index + 1);
+            AscendingPair<Float> current = list.get(index);
+            AscendingPair<Float> next = list.get(index + 1);
             long currentIndex = current.getIndex();
             long nextIndex = next.getIndex();
 
             index++;
             if (nextIndex > currentIndex + 1) {
                 float distance = 1f / (nextIndex - currentIndex);
-                AscendingPair<T> inserted = new AscendingPair<>(currentIndex + 1, lerp(current.getValue(), next.getValue(), distance));
+                AscendingPair<Float> inserted = new AscendingPair<>(currentIndex + 1, lerp(current.getValue(), next.getValue(), distance));
                 list.add(index, inserted);
             }
         }
