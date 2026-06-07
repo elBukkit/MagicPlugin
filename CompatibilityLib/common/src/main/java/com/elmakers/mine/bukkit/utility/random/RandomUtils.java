@@ -292,4 +292,26 @@ public class RandomUtils {
     public static boolean checkProbability(double probability) {
         return probability >= random.nextDouble();
     }
+
+    public static double range(Random random, double min, double max) {
+        if (min >= max) {
+            return min;
+        }
+        return min + random.nextDouble(max - min);
+    }
+
+    public static int range(Random random, int min, int max) {
+        if (min >= max) {
+            return min;
+        }
+        return min + random.nextInt(max - min);
+    }
+
+    public static double range(double min, double max) {
+        return range(random, min, max);
+    }
+
+    public static int range(int min, int max) {
+        return range(random, min, max);
+    }
 }
