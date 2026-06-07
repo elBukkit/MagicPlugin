@@ -7,6 +7,7 @@
 
  - Fix warnings from vengeance spell on config load
  - Added pale oak signs to `signs` material list
+ - Fix issues with ops using arena signs
 
 ## Changes
 

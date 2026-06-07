@@ -239,6 +239,7 @@ public class ArenaListener implements Listener {
             String firstLine = sign.getLine(0);
             firstLine = firstLine.replace("" + ChatColor.RESET, "");
             if (firstLine.equals(SIGN_KEY)) {
+                e.setCancelled(true);
                 String secondLine = sign.getLine(1);
                 if (secondLine.contains("Join")) {
                     String arenaName = sign.getLine(2);
