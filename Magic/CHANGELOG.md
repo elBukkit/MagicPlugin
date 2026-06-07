@@ -5,16 +5,19 @@
 
 ## World Generation
 
+- New `liminal` built in example to demonstrate new world gen features
  - Create chunk generators via `generators` configuration, including Builtin generators:
    - Perlin: Perlin noise for elevation and/or block patterns
    - Crops: Generate simple crop farms
  - Use generators in world configs for completely custom world gen
- - New `liminal` built in example to demonstrate features
  - Allow modifying game rules of a world via `game_rules` config
  - Add `time` parameter to set a world to a specific time of day
  - Add `title_delay` parameter to show players a title when they enter a world
  - Add `respawn_world` parameter to force players to respawn in a different world
  - Add `world_modification.transfer` map, to transfer players from one world to another automatically
+ - Add ambient sound parameters:
+   - `min_ambient_sound_time`, `max_ambient_sound_time` : Randomized time between ambient sounds
+   - `ambient_sounds` : A list of ambient sounds to play to all players in the world
 
 ## Fixes
 

@@ -42,6 +42,7 @@ import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
+import de.slikey.effectlib.util.CustomSound;
 import de.slikey.effectlib.util.ParticleUtil;
 
 public class ConfigurationUtils extends ConfigUtils {
@@ -822,5 +823,18 @@ public class ConfigurationUtils extends ConfigUtils {
             return defaultValue;
         }
         return CompatibilityLib.getCompatibilityUtils().translateColors(configuration.getString(key));
+    }
+
+    public static CustomSound[] getSounds(ConfigurationSection config, String key) {
+        List<String> soundNames = config.getStringList(key);
+        if (soundNames == null || soundNames.isEmpty()) {
+            return new CustomSound[0];
+        }
+        CustomSound[] sounds = new CustomSound[soundNames.size()];
+        for (int i = 0; i < soundNames.size(); i++) {
+            String soundName = soundNames.get(i);
+            sounds[i] = new CustomSound(soundName);
+        }
+        return sounds;
     }
 }

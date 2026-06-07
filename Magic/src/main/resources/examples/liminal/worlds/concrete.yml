@@ -3,3 +3,5 @@ concrete:
   world: world_concrete
   generator: concrete
   time: 6000
+  min_ambient_sound_time: 90
+  max_ambient_sound_time: 900

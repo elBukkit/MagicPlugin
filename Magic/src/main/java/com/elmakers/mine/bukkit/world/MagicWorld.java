@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
@@ -34,6 +35,8 @@ import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
 import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
 import com.elmakers.mine.bukkit.world.tasks.CopyWorldTask;
+
+import de.slikey.effectlib.util.CustomSound;
 
 public class MagicWorld {
     private enum WorldState { UNLOADED, LOADING, LOADED }
@@ -71,6 +74,9 @@ public class MagicWorld {
     private Vector spawnPosition;
     private Map<String, Boolean> gameRules = new HashMap<>();
     private String respawnWorld;
+    private CustomSound[] ambientSounds = {};
+    private int minAmbientSoundTime;
+    private int maxAmbientSoundTime;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -96,6 +102,9 @@ public class MagicWorld {
         synchronizedTimeOffset = config.getLong("time_offset", synchronizedTimeOffset);
         resourcePack = config.getString("resource_pack", resourcePack);
         spawnPosition = ConfigurationUtils.getVector(config, "spawn");
+        minAmbientSoundTime = config.getInt("min_ambient_sound_time", 0) * 20;
+        maxAmbientSoundTime = config.getInt("max_ambient_sound_time", 0) * 20;
+        ambientSounds = ConfigurationUtils.getSounds(config, "ambient_sounds");
         if (config.contains("environment")) {
             String typeString = config.getString("environment");
             try {
@@ -163,6 +172,8 @@ public class MagicWorld {
         if (existingWorld != null) {
             reconfigureWorld(existingWorld);
         }
+
+        scheduleAmbientSounds();
     }
 
     public void finalizeLoad() {
@@ -410,6 +421,33 @@ public class MagicWorld {
             world.setTime(changedWorld.getTime() + synchronizedTimeOffset + skipAmount);
             updatingTime = false;
         }
+    }
+
+    private void scheduleAmbientSounds() {
+        if (minAmbientSoundTime == 0 || maxAmbientSoundTime == 0 || ambientSounds.length == 0) {
+            return;
+        }
+
+        final int soundTime = RandomUtils.range(random, minAmbientSoundTime, maxAmbientSoundTime);
+        final Plugin plugin = controller.getPlugin();
+        plugin.getServer().getScheduler().runTaskLater(
+            plugin,
+            () -> {
+                final CustomSound sound = ambientSounds[random.nextInt(ambientSounds.length)];
+                final World world = getWorld();
+                if (world != null) {
+                    for (Player player : world.getPlayers()) {
+                        sound.play(plugin, player);
+                    }
+                    scheduleAmbientSounds();
+                }
+            },
+            soundTime
+        );
+    }
+
+    public World getWorld() {
+        return Bukkit.getWorld(worldName);
     }
 
     public boolean isCancelSpellsOnSave() {

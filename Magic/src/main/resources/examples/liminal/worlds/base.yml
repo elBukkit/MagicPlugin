@@ -10,6 +10,16 @@ liminal_base:
   leave_game_mode: survival
   title_delay: 2000
   respawn: world_concrete
+  ambient_sounds:
+    - ambient_basalt_deltas_additions
+    - ambient_cave
+    - ambient_crimson_forest_additions
+    - ambient_nether_wastes_additions
+    - ambient_soul_sand_valley_additions
+    - ambient_warped_forest_additions
+    - ambient_underwater_loop_additions
+    - ambient_underwater_loop_additions_rare
+    - ambient_underwater_loop_additions_ultra_rare
   game_rules:
     advance_weather: false
     advance_time: false

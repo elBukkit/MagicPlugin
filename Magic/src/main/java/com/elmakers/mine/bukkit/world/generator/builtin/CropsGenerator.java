@@ -68,8 +68,8 @@ public class CropsGenerator extends MagicChunkGenerator {
                         cropData = cropMaterial.createBlockData();
                         if (cropData instanceof Ageable) {
                             Ageable crops = (Ageable)cropData;
-                            float ageRatio = RandomUtils.lerp((float)minAge, (float)maxAge, (float)random.nextDouble());
-                            int age = (int)(float)RandomUtils.lerp((float)0, (float)crops.getMaximumAge(), ageRatio);
+                            double ageRatio = RandomUtils.lerp(minAge, maxAge, random.nextDouble());
+                            int age = RandomUtils.lerp(0, crops.getMaximumAge(), ageRatio);
                             crops.setAge(age);
                         }
                     }
