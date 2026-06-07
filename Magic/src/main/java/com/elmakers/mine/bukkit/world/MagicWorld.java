@@ -128,6 +128,11 @@ public class MagicWorld {
         String generatorKey = config.getString("generator");
         if (generatorKey != null && !generatorKey.isEmpty()) {
             generator = controller.getWorlds().createGenerator(this, generatorKey);
+            World existingWorld = Bukkit.getWorld(worldName);
+            ChunkGenerator chunkGenerator = existingWorld == null ? null : existingWorld.getGenerator();
+            if (chunkGenerator instanceof MagicChunkGenerator generator) {
+                controller.getWorlds().reloadGenerator(this, generator);
+            }
         }
     }
 

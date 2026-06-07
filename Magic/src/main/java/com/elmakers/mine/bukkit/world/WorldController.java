@@ -128,12 +128,20 @@ public class WorldController implements Listener {
         }
         final String generatorClass = generatorConfig.getString("class");
         MagicChunkGenerator generator = MagicChunkGenerator.create(controller, generatorClass);
+        generator.setKey(generatorKey);
         if (generator == null) {
             controller.getLogger().warning("Invalid chunk generator class: " + generatorClass);
         } else {
             generator.load(world, generatorConfig);
         }
         return generator;
+    }
+
+    public void reloadGenerator(MagicWorld world, MagicChunkGenerator generator) {
+        ConfigurationSection generatorConfig = generatorConfigs.get(generator.getKey());
+        if (generatorConfig != null) {
+            generator.load(world, generatorConfig);
+        }
     }
 
     public int getCount() {

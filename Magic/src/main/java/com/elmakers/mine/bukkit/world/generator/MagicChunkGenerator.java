@@ -95,4 +95,12 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     public Location getFixedSpawnLocation(World world, Random random) {
         return getSpawnLocation(world);
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }
