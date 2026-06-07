@@ -9,3 +9,6 @@ world_modification:
     - SPAWNER
     - SPAWNER_EGG
     - BREEDING
+
+  # Transfer players from specific worlds to another
+  transfer:

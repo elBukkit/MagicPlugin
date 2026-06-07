@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
@@ -33,6 +34,7 @@ public class WorldController implements Listener {
     private final WorldSpawnListener spawnListener;
     private final Map<String, ConfigurationSection> generatorConfigs = new HashMap<>();
     private boolean removeInvalidEntities = false;
+    private Map<String, String> transferWorlds = new HashMap<>();
 
     public WorldController(MagicController controller) {
         this.controller = controller;
@@ -53,6 +55,16 @@ public class WorldController implements Listener {
         removeInvalidEntities = configuration.getBoolean("remove_invalid_entities");
         if (removeInvalidEntities) {
             controller.getLogger().info("Will remove out of bounds entities on chunk load");
+        }
+        transferWorlds.clear();
+        ConfigurationSection transfer = configuration.getConfigurationSection("transfer");
+        if (transfer != null) {
+            for (String key : transfer.getKeys(false)) {
+                transferWorlds.put(key, transfer.getString(key));
+            }
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            transferPlayer(player);
         }
     }
 
@@ -171,12 +183,27 @@ public class WorldController implements Listener {
     }
 
     public void onPlayerJoin(Mage mage) {
+        Player player = mage.getPlayer();
+        if (player != null) {
+            transferPlayer(player);
+        }
         MagicWorld magicWorld = getWorld(mage.getLocation().getWorld().getName());
         if (magicWorld == null) {
             MagicWorld.joinedDefault(mage);
             return;
         }
         magicWorld.playerJoined(mage);
+    }
+
+    public void transferPlayer(Player player) {
+        String worldName = transferWorlds.get(player.getWorld().getName());
+        if (worldName == null) return;
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            controller.getLogger().warning("Invalid world in transfer configuration: " + worldName);
+            return;
+        }
+        player.teleport(world.getSpawnLocation());
     }
 
     public Plugin getPlugin() {

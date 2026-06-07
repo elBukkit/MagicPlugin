@@ -14,6 +14,7 @@
  - Add `time` parameter to set a world to a specific time of day
  - Add `title_delay` parameter to show players a title when they enter a world
  - Add `respawn_world` parameter to force players to respawn in a different world
+ - Add `world_modification.transfer` map, to transfer players from one world to another automatically
 
 ## Fixes
 
