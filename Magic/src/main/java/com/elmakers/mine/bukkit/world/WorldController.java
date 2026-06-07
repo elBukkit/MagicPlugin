@@ -88,6 +88,9 @@ public class WorldController implements Listener {
             if (!worldConfiguration.getBoolean("enabled", true)) continue;
 
             worldName = worldConfiguration.getString("world", worldName);
+            // used for base classes
+            if (worldName.isEmpty()) continue;
+
             MagicWorld world = magicWorlds.get(worldName);
             if (world == null) world = new MagicWorld(controller);
             try {

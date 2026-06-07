@@ -4,4 +4,5 @@ examples:
       `<title text="Liminal Deep Instructions">`
       `<p>`The &6Phase &fspell will now take you to a liminal space &r
       `<p>`See if you can find your way out!&r
-      `<p>`If you get too lost, use &6Phase &f again to return home. &r
+      `<p>`If you get too lost, use &6Phase &fagain to return home. &r
+      `<li>``<command command="mconfig example set liminal" text="Switch to this example for a server-changing experience">`
