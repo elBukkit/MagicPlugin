@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
 
@@ -30,6 +31,7 @@ public class WorldController implements Listener {
     private final MagicController controller;
     private final WorldPlayerListener playerListener;
     private final WorldSpawnListener spawnListener;
+    private final Map<String, ConfigurationSection> generatorConfigs = new HashMap<>();
     private boolean removeInvalidEntities = false;
 
     public WorldController(MagicController controller) {
@@ -51,6 +53,13 @@ public class WorldController implements Listener {
         removeInvalidEntities = configuration.getBoolean("remove_invalid_entities");
         if (removeInvalidEntities) {
             controller.getLogger().info("Will remove out of bounds entities on chunk load");
+        }
+    }
+
+    public void loadGenerators(ConfigurationSection configs) {
+        generatorConfigs.clear();
+        for (String key : configs.getKeys(false)) {
+            generatorConfigs.put(key, configs.getConfigurationSection(key));
         }
     }
 
@@ -109,6 +118,22 @@ public class WorldController implements Listener {
             return world.copyWorld(copyFrom);
         }
         return Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
+    }
+
+    public MagicChunkGenerator createGenerator(MagicWorld world, String generatorKey) {
+        ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
+        if (generatorConfig == null) {
+            controller.getLogger().warning("Invalid chunk generator: " + generatorKey);
+            return null;
+        }
+        final String generatorClass = generatorConfig.getString("class");
+        MagicChunkGenerator generator = MagicChunkGenerator.create(controller, generatorClass);
+        if (generator == null) {
+            controller.getLogger().warning("Invalid chunk generator class: " + generatorClass);
+        } else {
+            generator.load(world, generatorConfig);
+        }
+        return generator;
     }
 
     public int getCount() {
@@ -177,5 +202,9 @@ public class WorldController implements Listener {
 
     public WorldSpawnListener getSpawnListener() {
         return spawnListener;
+    }
+
+    public Set<String> getGeneratorKeys() {
+        return generatorConfigs.keySet();
     }
 }

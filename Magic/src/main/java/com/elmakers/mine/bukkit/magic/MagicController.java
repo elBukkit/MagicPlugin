@@ -2143,7 +2143,12 @@ public class MagicController implements MageController, ChunkLoadListener {
         logger.setContext(null);
         log("Loaded " + magicBlockTemplates.size() + " automata templates");
 
-        // Load worlds, which may use mobs, blocks or spells
+        logger.setContext("generators");
+        loadGenerators(loader.getGenerators());
+        logger.setContext(null);
+        log("Loaded " + worldController.getGeneratorKeys().size() + " chunk generators");
+
+        // Load worlds, which may use mobs, generators, blocks or spells
         logger.setContext("worlds");
         loadWorlds(loader.getWorlds());
         logger.setContext(null);
@@ -5051,6 +5056,18 @@ public class MagicController implements MageController, ChunkLoadListener {
             properties.set(key, worldConfig);
         }
         worldController.loadWorlds(properties);
+    }
+
+    public void loadGenerators(ConfigurationSection properties) {
+        Set<String> generatorKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : generatorKeys) {
+            logger.setContext("generators." + key);
+            ConfigurationSection generatorConfig = resolveConfiguration(key, properties, templateConfigurations);
+            generatorConfig = MagicConfiguration.getKeyed(this, generatorConfig, "generator", key);
+            properties.set(key, generatorConfig);
+        }
+        worldController.loadGenerators(properties);
     }
 
     @Override
@@ -8973,7 +8990,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         } else {
             log("Skin-based spell icons disabled");
         }
-        arenaController.load(properties.getConfigurationSection("arenas"));
+        arenaController.load(properties.getBoolean("enable_arenas"));
 
         // Set up sandbox config update timer
         int configUpdateInterval = properties.getInt("config_update_interval");

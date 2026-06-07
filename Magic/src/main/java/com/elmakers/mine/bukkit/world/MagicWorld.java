@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.world;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,6 +20,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
+import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
@@ -53,6 +55,7 @@ public class MagicWorld {
     private Integer minHeight;
     private GameMode gameMode;
     private GameMode leavingGameMode;
+    private MagicChunkGenerator generator;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -122,6 +125,10 @@ public class MagicWorld {
         blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
         cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
+        String generatorKey = config.getString("generator");
+        if (generatorKey != null && !generatorKey.isEmpty()) {
+            generator = controller.getWorlds().createGenerator(this, generatorKey);
+        }
     }
 
     public void finalizeLoad() {
@@ -162,7 +169,11 @@ public class MagicWorld {
             worldCreator.seed(seed);
             worldCreator.environment(worldEnvironment);
             worldCreator.type(worldType);
-            worldCreator.generateStructures(true);
+            if (generator != null) {
+                worldCreator.generator(generator);
+            } else {
+                worldCreator.generateStructures(true);
+            }
             try {
                 world = worldCreator.createWorld();
             } catch (Exception ex) {
@@ -333,5 +344,17 @@ public class MagicWorld {
 
     public int getMinHeight(int defaultHeight) {
         return minHeight != null ? minHeight : defaultHeight;
+    }
+
+    public String getName() {
+        return worldName;
+    }
+
+    public Logger getLogger() {
+        return controller.getLogger();
+    }
+
+    public MagicController getController() {
+        return controller;
     }
 }

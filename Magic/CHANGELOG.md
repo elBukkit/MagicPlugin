@@ -3,6 +3,12 @@
 
 # 11.3
 
+## World Generation
+
+ - New custom world generation system
+ - Create chunk generators via `generators` configuration
+ - Use generators in world configs for completely custom world gen
+
 ## Fixes
 
  - Fix warnings from vengeance spell on config load
