@@ -9,6 +9,8 @@
  - Create chunk generators via `generators` configuration, including Builtin generators:
    - Perlin: Perlin noise for elevation and/or block patterns
    - Crops: Generate simple crop farms
+   - Sequence: Run multiple other generators in order
+   - Random: Randomly choose one generator from a weighted probability map
  - Use generators in world configs for completely custom world gen
  - Allow modifying game rules of a world via `game_rules` config
  - Add `time` parameter to set a world to a specific time of day

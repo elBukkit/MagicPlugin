@@ -6,12 +6,18 @@ concrete_ground:
 concrete_food:
   class: Crops
   border: pale_oak_pressure_plate
-  crops: carrots,beetroots
+  crops: carrots,potatoes
   min_age: 1
   max_age: 1
+
+concrete_surface:
+  class: Random
+  generators:
+    concrete_food: 0.1
+    none: 1
 
 concrete:
   class: Sequence
   generators:
     - concrete_ground
-    - concrete_food
+    - concrete_surface

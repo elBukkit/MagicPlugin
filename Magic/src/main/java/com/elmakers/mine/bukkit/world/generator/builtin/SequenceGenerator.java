@@ -31,10 +31,6 @@ public class SequenceGenerator extends MagicChunkGenerator {
         }
     }
 
-    private MagicChunkGenerator getPrimaryGenerator() {
-        return generators.get(0);
-    }
-
     @Override
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
         for (MagicChunkGenerator generator : generators) {
