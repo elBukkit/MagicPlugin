@@ -1,12 +1,15 @@
 package com.elmakers.mine.bukkit.world;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -63,6 +66,7 @@ public class MagicWorld {
     private int groundLevel = 64;
     private int bedrockLevel = 0;
     private Vector spawnPosition;
+    private Map<String, Boolean> gameRules = new HashMap<>();
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -138,11 +142,19 @@ public class MagicWorld {
         String generatorKey = config.getString("generator");
         if (generatorKey != null && !generatorKey.isEmpty()) {
             generator = controller.getWorlds().createGenerator(this, generatorKey);
-            World existingWorld = Bukkit.getWorld(worldName);
-            ChunkGenerator chunkGenerator = existingWorld == null ? null : existingWorld.getGenerator();
-            if (chunkGenerator instanceof MagicChunkGenerator generator) {
-                controller.getWorlds().reloadGenerator(this, generator);
+        }
+        gameRules.clear();
+        ConfigurationSection gameRulesConfig = config.getConfigurationSection("game_rules");
+        if (gameRulesConfig != null) {
+            for (String rule : gameRulesConfig.getKeys(false)) {
+                gameRules.put(rule, gameRulesConfig.getBoolean(rule));
             }
+        }
+
+        // Reconfigure existing worlds
+        World existingWorld = Bukkit.getWorld(worldName);
+        if (existingWorld != null) {
+            reconfigureWorld(existingWorld);
         }
     }
 
@@ -199,11 +211,38 @@ public class MagicWorld {
                 controller.getLogger().warning("Failed to create world: " + worldName);
             }
         }
-        if (world != null && appearanceEnvironment != null) {
+        configureWorld(world);
+        return world;
+    }
+
+    private void reconfigureWorld(World world) {
+        if (world == null) return;
+
+        ChunkGenerator chunkGenerator = world.getGenerator();
+        if (chunkGenerator instanceof MagicChunkGenerator generator) {
+            controller.getWorlds().reloadGenerator(this, generator);
+        }
+
+        configureWorld(world);
+    }
+
+    private void configureWorld(World world) {
+        if (world == null) return;
+
+        if (appearanceEnvironment != null) {
             CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
             controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
         }
-        return world;
+
+        for (Map.Entry<String, Boolean> entry : gameRules.entrySet()) {
+            String key = entry.getKey();
+            GameRule rule = GameRule.getByName(key);
+            if (rule != null) {
+                world.setGameRule(rule, entry.getValue());
+            } else {
+                controller.getLogger().warning("Invalid game rule: " + key);
+            }
+        }
     }
 
     public void installPopulators(World world) {

@@ -5,10 +5,12 @@
 
 ## World Generation
 
- - New custom world generation system
- - Create chunk generators via `generators` configuration
+ - Create chunk generators via `generators` configuration, including Builtin generators:
+   - Perlin: Perlin noise for elevation and/or block patterns
+   - Crops: Generate simple crop farms
  - Use generators in world configs for completely custom world gen
  - New `liminal` built in example to demonstrate features
+ - Allow modifying game rules of a world via `game_rules` config
 
 ## Fixes
 
