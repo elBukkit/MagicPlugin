@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
@@ -66,6 +67,7 @@ public class MagicWorld {
     private int groundLevel = 64;
     private int bedrockLevel = 0;
     private Integer time;
+    private Integer titleDelay;
     private Vector spawnPosition;
     private Map<String, Boolean> gameRules = new HashMap<>();
 
@@ -141,6 +143,7 @@ public class MagicWorld {
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
         cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
         time = ConfigurationUtils.getOptionalInteger(config, "time");
+        titleDelay = ConfigurationUtils.getOptionalInteger(config, "title_delay");
         String generatorKey = config.getString("generator");
         if (generatorKey != null && !generatorKey.isEmpty()) {
             generator = controller.getWorlds().createGenerator(this, generatorKey);
@@ -334,6 +337,20 @@ public class MagicWorld {
         if (gameMode != null && (previousWorld == null || previousWorld.gameMode != gameMode)) {
             mage.getPlayer().setGameMode(gameMode);
         }
+        Player player = mage.getPlayer();
+        if (titleDelay != null && player != null) {
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().runTaskLater(
+                    plugin,
+                    () -> player.sendTitle(
+                            ChatColor.translateAlternateColorCodes('&', getTitle()),
+                            null,
+                            2 * 20,
+                            4 * 20,
+                            2 * 20
+                    ),
+                    titleDelay * 20 / 1000);
+        }
     }
 
     public void playerLeft(Mage mage, MagicWorld nextWorld) {
@@ -407,6 +424,10 @@ public class MagicWorld {
 
     public String getName() {
         return worldName;
+    }
+
+    public String getTitle() {
+        return controller.getMessages().get("worlds." + worldName + ".name", worldName);
     }
 
     public Logger getLogger() {

@@ -8,6 +8,7 @@ liminal_base:
   spawn: 0,2,0
   game_mode: adventure
   leave_game_mode: survival
+  title_delay: 2000
   game_rules:
     advance_weather: false
     advance_time: false
