@@ -1,0 +1,18 @@
+#
+# This customizes the Phase spell so it takes you to the start of the Liminal experience, and back.
+#
+phase:
+  parameters:
+    worlds:
+      world:
+        target: world_concrete
+        target_location: spawn
+      world_nether:
+        target: world_concrete
+        target_location: spawn
+      world_the_end:
+        target: world_concrete
+        target_location: spawn
+      "*":
+        target: world
+        target_location: bed

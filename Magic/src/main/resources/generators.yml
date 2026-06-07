@@ -1,0 +1,10 @@
+#
+# Modify this file to add and configure chunk generators
+# These generators can be used by world configurations for custom world generation.
+#
+# See the liminal example
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+#

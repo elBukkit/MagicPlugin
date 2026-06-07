@@ -1,0 +1,4 @@
+concrete:
+  world: world_concrete
+  autoload: true
+  generator: concrete

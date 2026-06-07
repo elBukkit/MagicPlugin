@@ -1,0 +1,4 @@
+pools:
+  world: world_pools
+  autoload: true
+  generator: pools

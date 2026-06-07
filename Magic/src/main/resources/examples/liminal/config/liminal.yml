@@ -1,0 +1,5 @@
+# Use a special RP
+resource_pack: liminal
+
+# Use a different RP when combined with other configs
+add_resource_pack: liminal-all

@@ -1,0 +1,9 @@
+diving_helmet:
+    icon: light_blue_stained_glass{CustomModelData:18001}
+    legacy_icon: light_blue_stained_glass
+    indestructible: true
+    keep: true
+    quiet: 2
+    potion_effects: conduit_power
+    worn: true
+    wearable: helmet

@@ -82,6 +82,10 @@ alternate_resource_packs:
     url: "http://rp.elmakers.com/Magic-hires-RP-26.1.zip"
   hires-all:
     url: "http://rp.elmakers.com/Magic-hires-all-RP-26.1.zip"
+  liminal:
+    url: "http://rp.elmakers.com/Magic-liminal-RP-26.1.zip"
+  liminal-all:
+    url: "http://rp.elmakers.com/Magic-liminal-all-RP-26.1.zip"
   hires-modelengine:
     url: "http://rp.elmakers.com/Magic-hires-modelengine-RP-26.1.zip"
   hires-robes:

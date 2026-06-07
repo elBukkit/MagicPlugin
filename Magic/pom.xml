@@ -1018,6 +1018,49 @@
                                     </fileset>
                                 </concat>
 
+                                <!-- Liminal Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/generators.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/generators">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/items.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/items">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/materials.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/materials">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/worlds.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/worlds">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
                                 <!-- Jutsu configs -->
 
                                 <concat destfile="${project.build.directory}/classes/examples/jutsu/spells.yml" overwrite="yes" fixlastline="yes">

@@ -5,7 +5,7 @@ otherside_blocks:
   autoload: true
   chunk_generate:
     replace:
-      class: ReplacePopulator
+      class: Replace
       replace: otherside
 
 otherside_blocks_backup:

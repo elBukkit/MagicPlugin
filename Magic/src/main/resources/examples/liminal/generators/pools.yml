@@ -1,0 +1,3 @@
+pools:
+  class: Flat
+  biome: lush_caves

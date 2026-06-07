@@ -8,6 +8,7 @@
  - New custom world generation system
  - Create chunk generators via `generators` configuration
  - Use generators in world configs for completely custom world gen
+ - New `liminal` built in example to demonstrate features
 
 ## Fixes
 
