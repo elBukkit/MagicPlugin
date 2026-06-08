@@ -35,15 +35,15 @@ public class RandomUtils {
     }
 
     public static int lerp(int min, int max, double value) {
-        return (int) Math.min(1.0, Math.max(0.0, value / (double) (max - min)));
+        return (int)Math.round((double)min + value * (double) (max - min));
     }
 
     public static double lerp(double min, double max, double value) {
-        return Math.min(1.0, Math.max(0.0, value / (max - min)));
+        return min + value * (max - min);
     }
 
     public static float lerp(float min, float max, double value) {
-        return (float) Math.min(1.0, Math.max(0.0, value / (max - min)));
+        return (float)(min + value * (max - min));
     }
 
     @Nullable
