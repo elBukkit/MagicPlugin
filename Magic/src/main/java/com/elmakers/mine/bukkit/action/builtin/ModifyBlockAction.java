@@ -151,8 +151,19 @@ public class ModifyBlockAction extends BaseSpellAction {
         if (spawnFalling && fallingProbability < 1) {
             spawnFalling = context.getRandom().nextDouble() < fallingProbability;
         }
-
-        if (!spawnFalling || brush.isErase()) {
+        if (display) {
+            Location location = block.getLocation();
+            if (displayScale != 1) {
+                Location center = context.getTargetCenterLocation();
+                if (center != null) {
+                    location = location.subtract(center).multiply(displayScale).add(center);
+                }
+            }
+            if (!brush.isErase()) {
+                Entity displayEntity = CompatibilityLib.getCompatibilityUtils().createBlockDisplayEntity(location, brush, displayScale);
+                context.registerForUndo(displayEntity);
+            }
+        } else if (!spawnFalling || brush.isErase()) {
             if (!commit) {
                 context.registerForUndo(block);
                 if (brush.isErase() && !DefaultMaterials.isAir(block.getType())) {
@@ -164,19 +175,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                 undoList.setApplyPhysics(applyPhysics);
             }
             BlockState prior = block.getState();
-            if (display) {
-                Location location = block.getLocation();
-                if (displayScale != 1) {
-                    Location center = context.getTargetCenterLocation();
-                    if (center != null) {
-                        location = location.subtract(center).multiply(displayScale).add(center);
-                    }
-                }
-                Entity displayEntity = CompatibilityLib.getCompatibilityUtils().createBlockDisplayEntity(location, brush, displayScale);
-                context.registerForUndo(displayEntity);
-            } else {
-                brush.modify(block, applyPhysics);
-            }
+            brush.modify(block, applyPhysics);
             if (undoList != null && !undoList.isScheduled()) {
                 context.getController().logBlockChange(context.getMage(), prior, block.getState());
             }
