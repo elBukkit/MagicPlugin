@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
@@ -116,5 +117,14 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
             return Collections.emptyList();
         }
         return new ArrayList<>(materialSet.getMaterialsWithData());
+    }
+
+    protected int getTopBlock(final ChunkData chunk, int x, int y, int z) {
+        Material material = chunk.getType(x, y, z);
+        while (y < chunk.getMaxHeight() && !material.isAir()) {
+            y++;
+            material = chunk.getType(x, y, z);
+        }
+        return y - 1;
     }
 }

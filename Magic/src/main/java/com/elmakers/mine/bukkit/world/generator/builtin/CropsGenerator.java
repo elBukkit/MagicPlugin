@@ -47,12 +47,13 @@ public class CropsGenerator extends MagicChunkGenerator {
 
         for (int x = 6; x < 10; x++) {
             for (int z = 6; z < 10; z++) {
+                int groundY = getTopBlock(chunk, x, groundLevel, z);
                 if (x == 6 || x == 9 || z == 6 || z == 9) {
                     if (borderBlock != null) {
-                        chunk.setBlock(x, groundLevel + 1, z, borderBlock.createBlockData());
+                        chunk.setBlock(x, groundY + 1, z, borderBlock.createBlockData());
                     }
                     if (supportBlock != null) {
-                        chunk.setBlock(x, groundLevel, z, supportBlock.createBlockData());
+                        chunk.setBlock(x, groundY, z, supportBlock.createBlockData());
                     }
                 } else {
                     if (cropData == null) {
@@ -65,9 +66,9 @@ public class CropsGenerator extends MagicChunkGenerator {
                             crops.setAge(age);
                         }
                     }
-                    chunk.setBlock(x, groundLevel + 1, z, cropData);
+                    chunk.setBlock(x, groundY + 1, z, cropData);
                     if (soilBlock != null) {
-                        chunk.setBlock(x, groundLevel, z, soilBlock.createBlockData());
+                        chunk.setBlock(x, groundY, z, soilBlock.createBlockData());
                     }
                     if (!consistent) {
                         cropData = null;
