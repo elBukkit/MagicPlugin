@@ -22,7 +22,6 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.generator.builtin";
 
     protected MagicWorld world;
-    private String key;
     private BiomeProvider biomeProvider;
 
     @Nullable
@@ -92,13 +91,5 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     @Override
     public Location getFixedSpawnLocation(World world, Random random) {
         return this.world.getSpawnLocation(world);
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }

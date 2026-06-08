@@ -163,9 +163,15 @@ public class MagicWorld {
         time = ConfigurationUtils.getOptionalInteger(config, "time");
         titleDelay = ConfigurationUtils.getOptionalInteger(config, "title_delay");
         respawnWorld = config.getString("respawn");
-        String generatorKey = config.getString("generator");
-        if (generatorKey != null && !generatorKey.isEmpty()) {
-            generator = controller.getWorlds().createGenerator(this, generatorKey);
+        ConfigurationSection generatorConfig = config.getConfigurationSection("generator");
+        String generatorKey = null;
+        if (generatorConfig != null) {
+            generator = controller.getWorlds().createGenerator(this, generatorConfig);
+        } else {
+            generatorKey = config.getString("generator");
+            if (generatorKey != null && !generatorKey.isEmpty()) {
+                generator = controller.getWorlds().createGenerator(this, generatorKey);
+            }
         }
         gameRules.clear();
         ConfigurationSection gameRulesConfig = config.getConfigurationSection("game_rules");
@@ -178,7 +184,7 @@ public class MagicWorld {
         // Reconfigure existing worlds
         World existingWorld = Bukkit.getWorld(worldName);
         if (existingWorld != null) {
-            reconfigureWorld(existingWorld);
+            reconfigureWorld(existingWorld, generatorKey, generatorConfig);
         }
 
         scheduleAmbientSounds();
@@ -241,12 +247,16 @@ public class MagicWorld {
         return world;
     }
 
-    private void reconfigureWorld(World world) {
+    private void reconfigureWorld(World world, String generatorKey, ConfigurationSection generatorConfig) {
         if (world == null) return;
 
         ChunkGenerator chunkGenerator = world.getGenerator();
         if (chunkGenerator instanceof MagicChunkGenerator generator) {
-            controller.getWorlds().reloadGenerator(this, generator);
+            if (generatorConfig != null) {
+                generator.load(this, generatorConfig);
+            } else if (generatorKey != null && !generatorKey.isEmpty()) {
+                controller.getWorlds().reloadGenerator(this, generator, generatorKey);
+            }
         }
 
         configureWorld(world);

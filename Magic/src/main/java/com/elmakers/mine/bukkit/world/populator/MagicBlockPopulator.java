@@ -14,7 +14,6 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
     protected MagicWorld world;
-    protected String key;
 
     public boolean load(MagicWorld world, ConfigurationSection config) {
         this.world = world;
@@ -64,13 +63,5 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
         }
 
         return (MagicBlockPopulator)newObject;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }

@@ -33,7 +33,6 @@ public class MagicChunkHandler {
             String className = handlerConfig.getString("class");
             MagicBlockPopulator populator = MagicBlockPopulator.create(getController(), className);
             if (populator != null) {
-                populator.setKey(key);
                 if (populator.load(world, handlerConfig)) {
                     chunkPopulators.add(populator);
                     getController().info("Adding " + key + " populator to " + worldName);

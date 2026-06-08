@@ -150,9 +150,12 @@ public class WorldController implements Listener {
             controller.getLogger().warning("Invalid chunk generator: " + generatorKey);
             return null;
         }
+        return createGenerator(world, generatorConfig);
+    }
+
+    public MagicChunkGenerator createGenerator(MagicWorld world, ConfigurationSection generatorConfig) {
         final String generatorClass = generatorConfig.getString("class");
         MagicChunkGenerator generator = MagicChunkGenerator.create(controller, generatorClass);
-        generator.setKey(generatorKey);
         if (generator == null) {
             controller.getLogger().warning("Invalid chunk generator class: " + generatorClass);
         } else {
@@ -169,7 +172,6 @@ public class WorldController implements Listener {
         }
         final String populatorClass = populatorConfig.getString("class");
         MagicBlockPopulator populator = MagicBlockPopulator.create(controller, populatorClass);
-        populator.setKey(populatorKey);
         if (populator == null) {
             controller.getLogger().warning("Invalid chunk generator class: " + populatorClass);
         } else {
@@ -180,8 +182,8 @@ public class WorldController implements Listener {
         return populator;
     }
 
-    public void reloadGenerator(MagicWorld world, MagicChunkGenerator generator) {
-        ConfigurationSection generatorConfig = generatorConfigs.get(generator.getKey());
+    public void reloadGenerator(MagicWorld world, MagicChunkGenerator generator, String generatorKey) {
+        ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
         if (generatorConfig != null) {
             generator.load(world, generatorConfig);
         }
