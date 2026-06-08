@@ -198,18 +198,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>info.nothingspecial</groupId>
-            <artifactId>Splateds_Elementals</artifactId>
-            <version>B.1.6</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.bekvon.bukkit</groupId>
             <artifactId>Residence</artifactId>
             <version>4.9.1.8</version>

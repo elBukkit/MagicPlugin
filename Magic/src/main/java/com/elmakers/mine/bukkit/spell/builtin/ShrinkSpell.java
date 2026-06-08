@@ -44,20 +44,6 @@ public class ShrinkSpell extends BlockSpell
 
         if (target.hasEntity()) {
             Entity targetEntity = target.getEntity();
-            if (controller.isElemental(targetEntity))
-            {
-                double elementalSize = controller.getElementalScale(targetEntity);
-                if (elementalSize < 0.1) {
-                    int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
-                    controller.damageElemental(targetEntity, elementalDamage, 0, mage.getCommandSender());
-                } else {
-                    elementalSize /= 2;
-                    controller.setElementalScale(targetEntity, elementalSize);
-                }
-
-                return SpellResult.CAST;
-            }
-
             if (!(targetEntity instanceof LivingEntity)) return SpellResult.NO_TARGET;
 
             // Register for undo in advance to catch entity death.

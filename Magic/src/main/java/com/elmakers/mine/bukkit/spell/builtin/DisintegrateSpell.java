@@ -30,32 +30,23 @@ public class DisintegrateSpell extends BlockSpell
         if (target.hasEntity())
         {
             Entity targetEntity = target.getEntity();
-            if (controller.isElemental(targetEntity))
+            registerModified(targetEntity);
+            if (targetEntity instanceof Player)
             {
-                int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
-                controller.damageElemental(targetEntity, elementalDamage, 0, mage.getCommandSender());
-                return SpellResult.CAST;
+                Player player = (Player)targetEntity;
+                CompatibilityLib.getCompatibilityUtils().magicDamage(player, mage.getDamageMultiplier() * playerDamage, mage.getEntity());
+            }
+            else  if (targetEntity instanceof LivingEntity)
+            {
+                LivingEntity li = (LivingEntity)targetEntity;
+                CompatibilityLib.getCompatibilityUtils().magicDamage(li, mage.getDamageMultiplier() * entityDamage, mage.getEntity());
             }
             else
             {
-                registerModified(targetEntity);
-                if (targetEntity instanceof Player)
-                {
-                    Player player = (Player)targetEntity;
-                    CompatibilityLib.getCompatibilityUtils().magicDamage(player, mage.getDamageMultiplier() * playerDamage, mage.getEntity());
-                }
-                else  if (targetEntity instanceof LivingEntity)
-                {
-                    LivingEntity li = (LivingEntity)targetEntity;
-                    CompatibilityLib.getCompatibilityUtils().magicDamage(li, mage.getDamageMultiplier() * entityDamage, mage.getEntity());
-                }
-                else
-                {
-                    targetEntity.remove();
-                }
-                registerForUndo();
-                return SpellResult.CAST;
+                targetEntity.remove();
             }
+            registerForUndo();
+            return SpellResult.CAST;
         }
 
         if (!target.hasTarget())

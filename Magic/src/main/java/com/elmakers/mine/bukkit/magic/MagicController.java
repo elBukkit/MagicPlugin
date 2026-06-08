@@ -154,7 +154,6 @@ import com.elmakers.mine.bukkit.economy.LevelCurrency;
 import com.elmakers.mine.bukkit.economy.ManaCurrency;
 import com.elmakers.mine.bukkit.economy.SpellPointCurrency;
 import com.elmakers.mine.bukkit.economy.VaultCurrency;
-import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.PermissionsTeamProvider;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.EssentialsController;
@@ -564,7 +563,6 @@ public class MagicController implements MageController, ChunkLoadListener {
     private AnvilController anvil = null;
     private MapController maps = null;
     private DynmapController dynmap = null;
-    private ElementalsController elementals = null;
     private CitizensController citizens = null;
     private BlockController blockController = null;
     private HangingController hangingController = null;
@@ -1650,7 +1648,6 @@ public class MagicController implements MageController, ChunkLoadListener {
                             valueMap.put("Dynmap", controller.hasDynmap ? 1 : 0);
                             valueMap.put("Factions", controller.factionsManager.isEnabled() ? 1 : 0);
                             valueMap.put("WorldGuard", controller.worldGuardManager.isEnabled() ? 1 : 0);
-                            valueMap.put("Elementals", controller.elementalsEnabled() ? 1 : 0);
                             valueMap.put("Citizens", controller.citizens != null ? 1 : 0);
                             valueMap.put("CommandBook", controller.hasCommandBook ? 1 : 0);
                             valueMap.put("PvpManager", controller.pvpManager.isEnabled() ? 1 : 0);
@@ -5119,37 +5116,39 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Override
+    @Deprecated
     public boolean elementalsEnabled() {
-        return (elementals != null);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean createElemental(Location location, String templateName, CommandSender creator) {
-        return elementals.createElemental(location, templateName, creator);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean isElemental(Entity entity) {
-        if (elementals == null || entity.getType() != EntityType.FALLING_BLOCK) return false;
-        return elementals.isElemental(entity);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker) {
-        if (elementals == null) return false;
-        return elementals.damageElemental(entity, damage, fireTicks, attacker);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean setElementalScale(Entity entity, double scale) {
-        if (elementals == null) return false;
-        return elementals.setElementalScale(entity, scale);
+        return false;
     }
 
     @Override
+    @Deprecated
     public double getElementalScale(Entity entity) {
-        if (elementals == null) return 0;
-        return elementals.getElementalScale(entity);
+        return 1;
     }
 
     @Nullable
@@ -5333,10 +5332,6 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
         if (target instanceof Player) {
             return display ? ((Player) target).getDisplayName() : target.getName();
-        }
-
-        if (isElemental(target)) {
-            return "Elemental";
         }
 
         if (display) {
@@ -8259,22 +8254,6 @@ public class MagicController implements MageController, ChunkLoadListener {
             getLogger().info("dynmap not found, not integrating.");
         } else {
             getLogger().info("dynmap found, integrating.");
-        }
-
-        // Try to link to Elementals:
-        try {
-            Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
-            if (elementalsPlugin != null && elementalsPlugin.isEnabled()) {
-                elementals = new ElementalsController(elementalsPlugin);
-            } else {
-                elementals = null;
-            }
-        } catch (Throwable ex) {
-            getLogger().warning(ex.getMessage());
-        }
-
-        if (elementals != null) {
-            getLogger().info("Elementals found, integrating.");
         }
 
         // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not

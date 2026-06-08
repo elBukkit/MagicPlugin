@@ -372,6 +372,7 @@ public interface MageController {
      *
      * <p>If so, Magic will work as a passthrough API.
      */
+    @Deprecated
     boolean elementalsEnabled();
 
     /**
@@ -382,6 +383,7 @@ public interface MageController {
      * @param creator The creator of the elemental, may be null.
      * @return False on failure, such as if there are already too many elementals in the world.
      */
+    @Deprecated
     boolean createElemental(Location location, String templateName, CommandSender creator);
 
     /**
@@ -390,6 +392,7 @@ public interface MageController {
      * @param entity The entity to check
      * @return true if this Entity is an Elemental, or part of one.
      */
+    @Deprecated
     boolean isElemental(Entity entity);
 
     /**
@@ -413,6 +416,7 @@ public interface MageController {
      * @param attacker The attacker, initiator of damage. May be a command block or console, or null.
      * @return False if the entity is not a living Elemental.
      */
+    @Deprecated
     boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker);
 
     /**
@@ -424,6 +428,7 @@ public interface MageController {
      * @param scale The new scale
      * @return False if the entity is not an Elemental, or other failure
      */
+    @Deprecated
     boolean setElementalScale(Entity entity, double scale);
 
     /**
@@ -432,6 +437,7 @@ public interface MageController {
      * @param entity The entity representing the Elemental to interrogate
      * @return The scale of the elemental, or 0 on error.
      */
+    @Deprecated
     double getElementalScale(Entity entity);
 
     /**
