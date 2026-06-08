@@ -22,9 +22,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
-import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;
+import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
-public class ChestPopulator extends MagicChunkPopulator {
+public class ChestPopulator extends MagicBlockPopulator {
     private final Deque<WeightedPair<Integer>> baseProbability = new ArrayDeque<>();
     private final Deque<WeightedPair<String>> itemProbability = new ArrayDeque<>();
     private final Set<Material> removeItems = new HashSet<>();

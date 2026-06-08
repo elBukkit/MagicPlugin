@@ -5,7 +5,7 @@ import org.bukkit.generator.BlockPopulator;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 
-public abstract class MagicChunkPopulator extends BlockPopulator {
+public abstract class MagicBlockPopulator extends BlockPopulator {
     protected MagicController controller;
 
     protected void initialize(MagicController controller) {

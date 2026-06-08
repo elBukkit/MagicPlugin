@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.ValueParser;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
-import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 

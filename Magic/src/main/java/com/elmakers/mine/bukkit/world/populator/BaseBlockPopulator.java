@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.BlockResult;
 
-public abstract class BaseBlockPopulator extends MagicChunkPopulator {
+public abstract class BaseBlockPopulator extends MagicBlockPopulator {
     private Integer maxY = null;
     private Integer minY = null;
     private Integer maxAirY = null;

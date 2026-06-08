@@ -14,7 +14,7 @@ public class MagicChunkHandler {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
     private final MagicController controller;
-    private final List<MagicChunkPopulator> chunkPopulators = new ArrayList<>();
+    private final List<MagicBlockPopulator> chunkPopulators = new ArrayList<>();
 
     public MagicChunkHandler(MagicController controller) {
         this.controller = controller;
@@ -33,7 +33,7 @@ public class MagicChunkHandler {
             }
 
             String className = handlerConfig.getString("class");
-            MagicChunkPopulator populator = createChunkPopulator(className);
+            MagicBlockPopulator populator = createChunkPopulator(className);
             if (populator != null) {
                 if (populator.load(handlerConfig, controller)) {
                     chunkPopulators.add(populator);
@@ -47,12 +47,12 @@ public class MagicChunkHandler {
         }
     }
 
-    public Collection<MagicChunkPopulator> getPopulators() {
+    public Collection<MagicBlockPopulator> getPopulators() {
         return chunkPopulators;
     }
 
     @Nullable
-    protected MagicChunkPopulator createChunkPopulator(String className) {
+    protected MagicBlockPopulator createChunkPopulator(String className) {
         if (className == null) return null;
 
         if (className.indexOf('.') <= 0) {
@@ -78,12 +78,12 @@ public class MagicChunkHandler {
             return null;
         }
 
-        if (newObject == null || !(newObject instanceof MagicChunkPopulator)) {
+        if (newObject == null || !(newObject instanceof MagicBlockPopulator)) {
             controller.getLogger().warning("Error loading chunk populator: " + className + ", does it extend MagicChunkPopulator?");
             return null;
         }
 
-        return (MagicChunkPopulator)newObject;
+        return (MagicBlockPopulator)newObject;
     }
 
     public boolean isEmpty() {
