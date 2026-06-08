@@ -30,6 +30,7 @@
 ## Changes
 
  - Changed `arenas.enabled` config option to `enable_arenas`
+ - The `chunk_generate` property has been replaced by `populators`, though the former is still supported
  - Removed support for the Elementals plugin (not updated since MC 1.7, I assume no one will miss it)
 
 ## New Features
