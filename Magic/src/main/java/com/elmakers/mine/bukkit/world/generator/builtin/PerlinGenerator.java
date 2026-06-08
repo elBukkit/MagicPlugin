@@ -20,6 +20,8 @@ public class PerlinGenerator extends MagicChunkGenerator {
     private PerlinNoiseGenerator noise;
     private double noiseScale = 0.1;
     private int maxElevation = 0;
+    private int maxClipElevation = 0;
+    private int minClipElevation = 0;
 
     private List<MaterialAndData> groundBlocks = Collections.emptyList();
 
@@ -28,6 +30,8 @@ public class PerlinGenerator extends MagicChunkGenerator {
         final MageController controller = world.getController();
         noiseScale = config.getDouble("noise", noiseScale);
         maxElevation = config.getInt("elevation", maxElevation);
+        minClipElevation = config.getInt("min_clip_elevation", minClipElevation);
+        maxClipElevation = config.getInt("max_clip_elevation", maxClipElevation);
         MaterialSet groundSet = controller.getMaterialSetManager().fromConfig(config, "blocks");
         if (groundSet == null) {
             world.getLogger().warning("Invalid block set: " + config.getString("blocks") + ", defaulting to dirts");
@@ -52,7 +56,13 @@ public class PerlinGenerator extends MagicChunkGenerator {
                 int worldX = (chunkX << 4) + x;
                 int worldZ = (chunkZ << 4) + z;
                 final double blockValue = noise.noise(worldX * noiseScale, worldZ * noiseScale);
-                final int elevation = maxElevation > 0 ? (int)Math.min(maxElevation, Math.max(0, Math.round((blockValue + 1) / 2 * maxElevation))) : 0;
+                int elevation = maxElevation > 0 ? (int)Math.min(maxElevation, Math.max(0, Math.round((blockValue + 1) / 2 * maxElevation))) : 0;
+                if (maxClipElevation > 0) {
+                    elevation = Math.min(elevation, maxClipElevation);
+                }
+                if (minClipElevation > 0) {
+                    elevation = Math.max(0, elevation - minClipElevation);
+                }
                 final int blockIndex = (int)Math.min(groundBlocks.size() - 1, Math.max(0, Math.round((blockValue + 1) / 2 * (groundBlocks.size() - 1))));
                 final MaterialAndData floorBlock = groundBlocks.get(blockIndex);
                 for (int y = bedrockLevel + 1; y <= groundLevel + elevation; y++) {

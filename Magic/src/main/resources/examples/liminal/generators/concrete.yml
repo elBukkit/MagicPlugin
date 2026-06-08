@@ -2,6 +2,9 @@ concrete_ground:
   class: Perlin
   biome: basalt_deltas
   blocks: concrete_ground
+  elevation: 20
+  min_clip_elevation: 16
+  max_clip_elevation: 18
 
 concrete_food:
   class: Crops
