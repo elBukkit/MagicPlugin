@@ -3,6 +3,7 @@ concrete_ground:
   biome: basalt_deltas
   blocks: concrete_ground
   elevation: 20
+  noise: 0.1
   min_clip_elevation: 16
   max_clip_elevation: 18
 
