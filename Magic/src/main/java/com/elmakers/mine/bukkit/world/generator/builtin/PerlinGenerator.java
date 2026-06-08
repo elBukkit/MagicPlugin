@@ -24,6 +24,7 @@ public class PerlinGenerator extends MagicChunkGenerator {
     private int minClipElevation = 0;
 
     private List<MaterialAndData> groundBlocks = Collections.emptyList();
+    private List<MaterialAndData> topBlocks = Collections.emptyList();
 
     @Override
     public void onLoad(ConfigurationSection config) {
@@ -65,8 +66,14 @@ public class PerlinGenerator extends MagicChunkGenerator {
                 }
                 final int blockIndex = (int)Math.min(groundBlocks.size() - 1, Math.max(0, Math.round((blockValue + 1) / 2 * (groundBlocks.size() - 1))));
                 final MaterialAndData floorBlock = groundBlocks.get(blockIndex);
+                MaterialAndData topBlock = floorBlock;
+                if (!topBlocks.isEmpty()) {
+                    final int topIndex = (int)Math.min(topBlocks.size() - 1, Math.max(0, Math.round((blockValue + 1) / 2 * (topBlocks.size() - 1))));
+                    topBlock = topBlocks.get(topIndex);
+                }
                 for (int y = bedrockLevel + 1; y <= groundLevel + elevation; y++) {
-                    chunk.setBlock(x, y, z, floorBlock.createBlockData());
+                    BlockData blockData = (y == groundLevel + elevation) ? topBlock.createBlockData() : floorBlock.createBlockData();
+                    chunk.setBlock(x, y, z, blockData);
                 }
                 chunk.setBlock(x, bedrockLevel, z, Material.BEDROCK);
             }
