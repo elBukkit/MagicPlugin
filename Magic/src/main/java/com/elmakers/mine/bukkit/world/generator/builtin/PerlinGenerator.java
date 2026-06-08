@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.world.generator.builtin;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.noise.PerlinNoiseGenerator;
@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
 public class PerlinGenerator extends MagicChunkGenerator {
@@ -33,14 +32,8 @@ public class PerlinGenerator extends MagicChunkGenerator {
         maxElevation = config.getInt("elevation", maxElevation);
         minClipElevation = config.getInt("min_clip_elevation", minClipElevation);
         maxClipElevation = config.getInt("max_clip_elevation", maxClipElevation);
-        MaterialSet groundSet = controller.getMaterialSetManager().fromConfig(config, "blocks");
-        if (groundSet == null) {
-            world.getLogger().warning("Invalid block set: " + config.getString("blocks") + ", defaulting to dirts");
-            groundSet = controller.getMaterialSetManager().getMaterialSet("dirts");
-        }
-        if (groundSet != null) {
-            groundBlocks = new ArrayList<>(groundSet.getMaterialsWithData());
-        }
+        groundBlocks = parseBlocks(config, "blocks", "dirts");
+        topBlocks = parseBlocks(config, "top_blocks");
     }
 
     @Override

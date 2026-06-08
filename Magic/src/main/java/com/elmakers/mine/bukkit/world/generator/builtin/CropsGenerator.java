@@ -31,22 +31,8 @@ public class CropsGenerator extends MagicChunkGenerator {
         consistent = config.getBoolean("consistent", consistent);
         minAge = config.getDouble("min_age", minAge);
         maxAge = config.getDouble("max_age", maxAge);
-        MaterialSet foodSet = controller.getMaterialSetManager().fromConfig(config, "crops");
-        if (foodSet == null) {
-            world.getLogger().warning("Invalid food set: " + config.getString("crops") + ", defaulting to all_crops");
-            foodSet = controller.getMaterialSetManager().getMaterialSet("all_crops");
-        }
-        if (foodSet != null) {
-            foodBlocks = new ArrayList<>(foodSet.getMaterialsWithData());
-        } else {
-            foodBlocks = Collections.emptyList();
-        }
-        MaterialSet borderSet = controller.getMaterialSetManager().fromConfig(config, "border");
-        if (borderSet != null) {
-            borderBlocks = new ArrayList<>(borderSet.getMaterialsWithData());
-        } else {
-            borderBlocks = Collections.emptyList();
-        }
+        foodBlocks = parseBlocks(config, "crops", "all_crops");
+        borderBlocks = parseBlocks(config, "border");
     }
 
     @Override

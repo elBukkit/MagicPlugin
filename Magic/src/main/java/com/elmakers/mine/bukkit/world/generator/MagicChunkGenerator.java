@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.world.generator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
@@ -14,7 +17,9 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
 
@@ -91,5 +96,25 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     @Override
     public Location getFixedSpawnLocation(World world, Random random) {
         return this.world.getSpawnLocation(world);
+    }
+
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key) {
+        return parseBlocks(config, key, null);
+    }
+
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key, String defaultSet) {
+        final MageController controller = world.getController();
+        MaterialSet materialSet = controller.getMaterialSetManager().fromConfig(config, key);
+        if (materialSet == null) {
+            if (defaultSet == null) {
+                return Collections.emptyList();
+            }
+            world.getLogger().warning("Invalid block set: " + key + ", defaulting to " + defaultSet);
+            materialSet = controller.getMaterialSetManager().getMaterialSet(defaultSet);
+        }
+        if (materialSet == null) {
+            return Collections.emptyList();
+        }
+        return new ArrayList<>(materialSet.getMaterialsWithData());
     }
 }
