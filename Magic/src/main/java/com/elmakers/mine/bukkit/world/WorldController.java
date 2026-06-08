@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
+import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class WorldController implements Listener {
     private final Map<String, MagicWorld> magicWorlds = new HashMap<>();
@@ -33,6 +34,7 @@ public class WorldController implements Listener {
     private final WorldPlayerListener playerListener;
     private final WorldSpawnListener spawnListener;
     private final Map<String, ConfigurationSection> generatorConfigs = new HashMap<>();
+    private final Map<String, ConfigurationSection> populatorConfigs = new HashMap<>();
     private boolean removeInvalidEntities = false;
     private Map<String, String> transferWorlds = new HashMap<>();
 
@@ -72,6 +74,13 @@ public class WorldController implements Listener {
         generatorConfigs.clear();
         for (String key : configs.getKeys(false)) {
             generatorConfigs.put(key, configs.getConfigurationSection(key));
+        }
+    }
+
+    public void loadPopulators(ConfigurationSection configs) {
+        populatorConfigs.clear();
+        for (String key : configs.getKeys(false)) {
+            populatorConfigs.put(key, configs.getConfigurationSection(key));
         }
     }
 
@@ -150,6 +159,25 @@ public class WorldController implements Listener {
             generator.load(world, generatorConfig);
         }
         return generator;
+    }
+
+    public MagicBlockPopulator createPopulator(MagicWorld world, String populatorKey) {
+        ConfigurationSection populatorConfig = populatorConfigs.get(populatorKey);
+        if (populatorConfig == null) {
+            controller.getLogger().warning("Invalid block populator: " + populatorKey);
+            return null;
+        }
+        final String populatorClass = populatorConfig.getString("class");
+        MagicBlockPopulator populator = MagicBlockPopulator.create(controller, populatorClass);
+        populator.setKey(populatorKey);
+        if (populator == null) {
+            controller.getLogger().warning("Invalid chunk generator class: " + populatorClass);
+        } else {
+            if (!populator.load(world, populatorConfig)) {
+                populator = null;
+            }
+        }
+        return populator;
     }
 
     public void reloadGenerator(MagicWorld world, MagicChunkGenerator generator) {
@@ -244,5 +272,9 @@ public class WorldController implements Listener {
 
     public Set<String> getGeneratorKeys() {
         return generatorConfigs.keySet();
+    }
+
+    public Set<String> getPopulatorKeys() {
+        return populatorConfigs.keySet();
     }
 }

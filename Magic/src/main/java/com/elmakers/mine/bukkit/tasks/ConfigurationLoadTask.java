@@ -38,7 +38,7 @@ public class ConfigurationLoadTask implements Runnable {
     private final CommandSender sender;
     private boolean verboseLogging;
 
-    private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "generators", "spells", "paths",
+    private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "generators", "populators", "spells", "paths",
             "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas", "icons"};
 
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
@@ -1094,6 +1094,10 @@ public class ConfigurationLoadTask implements Runnable {
 
     public ConfigurationSection getGenerators() {
         return loadedConfigurations.get("generators");
+    }
+
+    public ConfigurationSection getPopulators() {
+        return loadedConfigurations.get("populators");
     }
 
     public ConfigurationSection getKits() {

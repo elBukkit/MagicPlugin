@@ -2140,6 +2140,11 @@ public class MagicController implements MageController, ChunkLoadListener {
         logger.setContext(null);
         log("Loaded " + magicBlockTemplates.size() + " automata templates");
 
+        logger.setContext("populators");
+        loadPopulators(loader.getPopulators());
+        logger.setContext(null);
+        log("Loaded " + worldController.getPopulatorKeys().size() + " block populators");
+
         logger.setContext("generators");
         loadGenerators(loader.getGenerators());
         logger.setContext(null);
@@ -5053,6 +5058,18 @@ public class MagicController implements MageController, ChunkLoadListener {
             properties.set(key, worldConfig);
         }
         worldController.loadWorlds(properties);
+    }
+
+    public void loadPopulators(ConfigurationSection properties) {
+        Set<String> generatorKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : generatorKeys) {
+            logger.setContext("populators." + key);
+            ConfigurationSection populatorConfig = resolveConfiguration(key, properties, templateConfigurations);
+            populatorConfig = MagicConfiguration.getKeyed(this, populatorConfig, "populator", key);
+            properties.set(key, populatorConfig);
+        }
+        worldController.loadPopulators(properties);
     }
 
     public void loadGenerators(ConfigurationSection properties) {

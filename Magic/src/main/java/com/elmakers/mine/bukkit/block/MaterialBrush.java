@@ -893,7 +893,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public boolean isErase()
     {
-        return mode == BrushMode.ERASE || (mode == BrushMode.MATERIAL && material == Material.AIR);
+        return mode == BrushMode.ERASE || (mode == BrushMode.MATERIAL && DefaultMaterials.isAir(material));
     }
 
     @Nullable
