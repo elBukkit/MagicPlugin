@@ -13,6 +13,7 @@ frost:
           - class: Damage
           - class: AreaOfEffect
             actions:
+            - class: FreezeEntity
             - class: PotionEffect
             - class: Damage
             - class: Ignite
