@@ -37,8 +37,8 @@
    - For example: `shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]`
    - Won't work for wand icons, but should work anywhere else
  - Add `/mwarp world` command to easily go to the spawn point of a specific world
- - Added `FreezeEntity` and `BurnEntity` actions, to apply the frostbite and fire effects.
-   - FreezeEntity is now used in the Frost spell
+ - Added `FreezeEntity` action, to apply the frostbite effect to an entity. Now used in the `frost` spell.
+ - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)
 
 # 11.2.1
 
