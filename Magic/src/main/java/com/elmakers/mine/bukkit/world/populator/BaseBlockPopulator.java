@@ -10,10 +10,10 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.BlockResult;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 
 public abstract class BaseBlockPopulator extends MagicBlockPopulator {
     private Integer maxY = null;
@@ -25,16 +25,16 @@ public abstract class BaseBlockPopulator extends MagicBlockPopulator {
     private Set<Biome> notBiomes;
 
     @Override
-    public boolean load(ConfigurationSection config, MagicController controller) {
-        if (!super.load(config, controller)) {
+    public boolean load(ConfigurationSection config, MagicWorld world) {
+        if (!super.load(config, world)) {
             return false;
         }
         maxY = ConfigurationUtils.getOptionalInteger(config, "max_y");
         minY = ConfigurationUtils.getOptionalInteger(config, "min_y");
         maxAirY = ConfigurationUtils.getOptionalInteger(config, "max_air_y");
         cooldown = config.getInt("cooldown", 0);
-        biomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(config, "biomes"), controller.getLogger(), "block populator");
-        notBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(config, "not_biomes"), controller.getLogger(), "block populator");
+        biomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(config, "biomes"), getController().getLogger(), "block populator");
+        notBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(config, "not_biomes"), getController().getLogger(), "block populator");
         return true;
     }
 

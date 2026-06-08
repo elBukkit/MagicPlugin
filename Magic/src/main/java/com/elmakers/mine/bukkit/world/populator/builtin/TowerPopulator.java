@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
@@ -9,31 +12,33 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class TowerPopulator extends MagicBlockPopulator {
     private double exitProbability;
+    private List<MaterialAndData> wallBlocks = Collections.emptyList();
 
-    private Material[] wallBlocks = {
-            Material.GRAY_CONCRETE,
-            Material.LIGHT_GRAY_CONCRETE,
-            Material.GRAY_CONCRETE_POWDER,
-            Material.LIGHT_GRAY_CONCRETE_POWDER
-    };
-
-    /*
-    public TowerPopulator(LiminalRoom room, ConfigurationSection config) {
-        super(room);
-        final LiminalController controller = room.getWorld().getController();
-        wallBlocks = controller.getMaterials(config, "floor_blocks", wallBlocks);
-        nextLevel = config.getString("next_level");
+    @Override
+    public boolean onLoad(ConfigurationSection config) {
         exitProbability = config.getDouble("exit_probability");
+        MagicController controller = world.getController();
+        MaterialSet wallSet = controller.getMaterialSetManager().fromConfig(config, "blocks");
+        if (wallSet == null) {
+            world.getLogger().warning("Invalid block set: " + config.getString("blocks") + ", defaulting to stones");
+            wallSet = controller.getMaterialSetManager().getMaterialSet("stones");
+        }
+        if (wallSet != null) {
+            wallBlocks = new ArrayList<>(wallSet.getMaterialsWithData());
+        }
+        return true;
     }
 
-     */
-
     private BlockData getWindowBlock() {
-        BlockData gatewayData = controller.getPlugin().getServer().createBlockData(Material.END_GATEWAY);
+        BlockData gatewayData = getController().getPlugin().getServer().createBlockData(Material.END_GATEWAY);
         if (gatewayData instanceof EndGateway) {
             EndGateway gateway = (EndGateway)gatewayData;
             gateway.setAge(-Integer.MAX_VALUE);
@@ -62,7 +67,8 @@ public class TowerPopulator extends MagicBlockPopulator {
 
         final BlockData exitBlock = isExit ? getWindowBlock() : null;
 
-        final Material wallBlock = wallBlocks[random.nextInt(wallBlocks.length)];
+        final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
+        final BlockData wallBlockData = wallBlock.createBlockData();
         for (int x = minX; x < maxX; x++) {
             for (int z = minZ; z < maxZ; z++) {
                 for (int y = floorLevel + 1; y < maxHeight; y++) {
@@ -73,7 +79,7 @@ public class TowerPopulator extends MagicBlockPopulator {
                             region.setType(x, y, z, Material.AIR);
                         }
                     } else {
-                        region.setType(x, y, z, wallBlock);
+                        region.setBlockData(x, y, z, wallBlockData);
                     }
                 }
 
@@ -82,10 +88,5 @@ public class TowerPopulator extends MagicBlockPopulator {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean onLoad(ConfigurationSection config) {
-        return false;
     }
 }

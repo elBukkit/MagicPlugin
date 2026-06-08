@@ -25,7 +25,7 @@ public class MagicBlockPopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection parameters) {
         RandomUtils.populateStringProbabilityMap(templateProbability, parameters, "template");
         this.parameters = parameters.getConfigurationSection("block_parameters");
-        replace = controller.getMaterialSetManager().fromConfig(parameters.getString("replace"));
+        replace = getController().getMaterialSetManager().fromConfig(parameters.getString("replace"));
         String message = "Creating magic block " + StringUtils.join(RandomUtils.getValues(templateProbability), ",");
         if (replace != null) {
             message += " on generation of " + StringUtils.join(replace.getMaterials(), ",");
@@ -50,14 +50,14 @@ public class MagicBlockPopulator extends BaseBlockPopulator {
         } catch (Exception ignore) {
         }
         Location location = block.getLocation();
-        MagicBlock automaton = controller.addMagicBlock(location, templateKey, null, null, parameters);
+        MagicBlock automaton = getController().addMagicBlock(location, templateKey, null, null, parameters);
         String message = " magic block: " + templateKey + " at " + location.getWorld().getName() + "," + location.toVector();
         if (automaton == null) {
             message = "Failed to create" + message;
         } else {
             message = "Created" + message;
         }
-        controller.info(message);
+        getController().info(message);
         return automaton == null ? BlockResult.SKIP : BlockResult.REMOVE_DROPS;
     }
 }

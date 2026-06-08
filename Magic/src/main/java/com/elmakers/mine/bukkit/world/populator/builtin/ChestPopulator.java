@@ -59,7 +59,7 @@ public class ChestPopulator extends MagicBlockPopulator {
                     Material itemType = Material.valueOf(removeItemKey.toUpperCase());
                     removeItems.add(itemType);
                 } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid material in remove_items list: " + removeItemKey);
+                    getController().getLogger().warning("Invalid material in remove_items list: " + removeItemKey);
                 }
             }
         }
@@ -93,7 +93,7 @@ public class ChestPopulator extends MagicBlockPopulator {
             itemsAdded = new String[itemCount];
             for (int i = 0; i < itemCount; i++) {
                 String wandName = RandomUtils.weightedRandom(itemProbability);
-                ItemStack item = controller.createItem(wandName);
+                ItemStack item = getController().createItem(wandName);
                 if (item != null) {
                     chest.getInventory().addItem(item);
                 } else {
@@ -121,15 +121,15 @@ public class ChestPopulator extends MagicBlockPopulator {
             if (block.getType() == Material.CHEST) {
                 String[] itemsAdded = populateChest(chest);
                 int itemsRemoved = clearChest(chest);
-                if (controller != null) {
+                if (getController() != null) {
                     Location location = block.getLocation();
                     if (clearItems) {
-                        controller.info("Cleared chest at: " + location.getWorld().getName() + "," + location.toVector());
+                        getController().info("Cleared chest at: " + location.getWorld().getName() + "," + location.toVector());
                     } else if (itemsRemoved > 0) {
-                        controller.info("Removed " + itemsRemoved + " items from chest at: " + location.getWorld().getName() + "," + location.toVector());
+                        getController().info("Removed " + itemsRemoved + " items from chest at: " + location.getWorld().getName() + "," + location.toVector());
                     }
                     if (itemsAdded != null && itemsAdded.length > 0) {
-                        controller.info("Added items to chest: " + StringUtils.join(itemsAdded, ", ") + " at "
+                        getController().info("Added items to chest: " + StringUtils.join(itemsAdded, ", ") + " at "
                                 + location.getWorld().getName() + "," + location.toVector());
                     }
                 }

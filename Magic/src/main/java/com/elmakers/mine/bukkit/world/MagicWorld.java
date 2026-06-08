@@ -30,8 +30,8 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
-import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
 import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
 import com.elmakers.mine.bukkit.world.tasks.CopyWorldTask;
@@ -81,7 +81,7 @@ public class MagicWorld {
     public MagicWorld(MagicController controller) {
         this.controller = controller;
         seed = random.nextLong();
-        chunkHandler = new MagicChunkHandler(controller);
+        chunkHandler = new MagicChunkHandler(this);
         spawnHandler = new MagicSpawnHandler(controller);
         blockPlaceHandler = new MagicBlockHandler(controller);
         blockBreakHandler = new MagicBlockHandler(controller);

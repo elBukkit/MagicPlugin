@@ -9,15 +9,16 @@ import javax.annotation.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 
 public class MagicChunkHandler {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
-    private final MagicController controller;
+    private final MagicWorld world;
     private final List<MagicBlockPopulator> chunkPopulators = new ArrayList<>();
 
-    public MagicChunkHandler(MagicController controller) {
-        this.controller = controller;
+    public MagicChunkHandler(MagicWorld world) {
+        this.world = world;
     }
 
     public void load(String worldName, ConfigurationSection config) {
@@ -25,7 +26,7 @@ public class MagicChunkHandler {
         for (String key : config.getKeys(false)) {
             ConfigurationSection handlerConfig = config.getConfigurationSection(key);
             if (handlerConfig == null) {
-                controller.getLogger().warning("Was expecting a properties section in world chunk_generate config for key '" + worldName + "', but got: " + config.get(key));
+                getController().getLogger().warning("Was expecting a properties section in world chunk_generate config for key '" + worldName + "', but got: " + config.get(key));
                 continue;
             }
             if (!handlerConfig.getBoolean("enabled", true)) {
@@ -33,16 +34,16 @@ public class MagicChunkHandler {
             }
 
             String className = handlerConfig.getString("class");
-            MagicBlockPopulator populator = createChunkPopulator(className);
+            MagicBlockPopulator populator = createBlockPopulator(className);
             if (populator != null) {
-                if (populator.load(handlerConfig, controller)) {
+                if (populator.load(handlerConfig, world)) {
                     chunkPopulators.add(populator);
-                    controller.info("Adding " + key + " populator to " + worldName);
+                    getController().info("Adding " + key + " populator to " + worldName);
                 } else {
-                    controller.info("Skipping invalid " + key + " populator for " + worldName);
+                    getController().info("Skipping invalid " + key + " populator for " + worldName);
                 }
             } else {
-                controller.info("Skipping invalid " + key + " populator for " + worldName);
+                getController().info("Skipping invalid " + key + " populator for " + worldName);
             }
         }
     }
@@ -52,7 +53,7 @@ public class MagicChunkHandler {
     }
 
     @Nullable
-    protected MagicBlockPopulator createChunkPopulator(String className) {
+    protected MagicBlockPopulator createBlockPopulator(String className) {
         if (className == null) return null;
 
         if (className.indexOf('.') <= 0) {
@@ -66,7 +67,7 @@ public class MagicChunkHandler {
         try {
             handlerClass = Class.forName(className);
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "Error loading chunk populator: " + className, ex);
+            getController().getLogger().log(Level.WARNING, "Error loading chunk populator: " + className, ex);
             return null;
         }
 
@@ -74,12 +75,12 @@ public class MagicChunkHandler {
         try {
             newObject = handlerClass.getDeclaredConstructor().newInstance();
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "Error loading chunk populator: " + className, ex);
+            getController().getLogger().log(Level.WARNING, "Error loading chunk populator: " + className, ex);
             return null;
         }
 
         if (newObject == null || !(newObject instanceof MagicBlockPopulator)) {
-            controller.getLogger().warning("Error loading chunk populator: " + className + ", does it extend MagicChunkPopulator?");
+            getController().getLogger().warning("Error loading chunk populator: " + className + ", does it extend MagicChunkPopulator?");
             return null;
         }
 
@@ -88,5 +89,9 @@ public class MagicChunkHandler {
 
     public boolean isEmpty() {
         return chunkPopulators.size() == 0;
+    }
+
+    public MagicController getController() {
+        return world.getController();
     }
 }
