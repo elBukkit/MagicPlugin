@@ -52,8 +52,8 @@ public class PerlinGenerator extends MagicChunkGenerator {
                 int worldX = (chunkX << 4) + x;
                 int worldZ = (chunkZ << 4) + z;
                 final double blockValue = noise.noise(worldX * noiseScale, worldZ * noiseScale);
-                final int elevation = maxElevation > 0 ? (int)Math.min(maxElevation, Math.max(0, (blockValue + 1) / 2 * (maxElevation + 1))) : 0;
-                final int blockIndex = (int)Math.min(groundBlocks.size() - 1, Math.max(0, (blockValue + 1) / 2 * groundBlocks.size()));
+                final int elevation = maxElevation > 0 ? (int)Math.min(maxElevation, Math.max(0, Math.round((blockValue + 1) / 2 * maxElevation))) : 0;
+                final int blockIndex = (int)Math.min(groundBlocks.size() - 1, Math.max(0, Math.round((blockValue + 1) / 2 * (groundBlocks.size() - 1))));
                 final MaterialAndData floorBlock = groundBlocks.get(blockIndex);
                 for (int y = bedrockLevel + 1; y <= groundLevel + elevation; y++) {
                     chunk.setBlock(x, y, z, floorBlock.createBlockData());
