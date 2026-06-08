@@ -22,6 +22,8 @@ public class CropsGenerator extends MagicChunkGenerator {
 
     private List<MaterialAndData> foodBlocks = Collections.emptyList();
     private List<MaterialAndData> borderBlocks = Collections.emptyList();
+    private List<MaterialAndData> soilBlocks = Collections.emptyList();
+    private List<MaterialAndData> supportBlocks = Collections.emptyList();
 
     @Override
     public void onLoad(ConfigurationSection config) {
@@ -30,13 +32,17 @@ public class CropsGenerator extends MagicChunkGenerator {
         minAge = config.getDouble("min_age", minAge);
         maxAge = config.getDouble("max_age", maxAge);
         foodBlocks = parseBlocks(config, "crops", "all_crops");
+        soilBlocks = parseBlocks(config, "soil", "farmland");
         borderBlocks = parseBlocks(config, "border");
+        supportBlocks = parseBlocks(config, "support");
     }
 
     @Override
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
         final int groundLevel = world.getGroundLevel();
         MaterialAndData borderBlock = RandomUtils.getRandom(borderBlocks, random);
+        MaterialAndData supportBlock = RandomUtils.getRandom(supportBlocks, random);
+        MaterialAndData soilBlock = RandomUtils.getRandom(soilBlocks, random);
         BlockData cropData = null;
 
         for (int x = 6; x < 10; x++) {
@@ -44,6 +50,9 @@ public class CropsGenerator extends MagicChunkGenerator {
                 if (x == 6 || x == 9 || z == 6 || z == 9) {
                     if (borderBlock != null) {
                         chunk.setBlock(x, groundLevel + 1, z, borderBlock.createBlockData());
+                    }
+                    if (supportBlock != null) {
+                        chunk.setBlock(x, groundLevel, z, supportBlock.createBlockData());
                     }
                 } else {
                     if (cropData == null) {
@@ -57,6 +66,9 @@ public class CropsGenerator extends MagicChunkGenerator {
                         }
                     }
                     chunk.setBlock(x, groundLevel + 1, z, cropData);
+                    if (soilBlock != null) {
+                        chunk.setBlock(x, groundLevel, z, soilBlock.createBlockData());
+                    }
                     if (!consistent) {
                         cropData = null;
                     }

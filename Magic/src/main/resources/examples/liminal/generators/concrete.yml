@@ -11,6 +11,8 @@ concrete_food:
   class: Crops
   border: pale_oak_pressure_plate
   crops: carrots,potatoes
+  support: white_concrete
+  soil: sea_lantern
   min_age: 0.2
   max_age: 1
 
