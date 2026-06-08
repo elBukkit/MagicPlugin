@@ -7,7 +7,7 @@ concrete_food:
   class: Crops
   border: pale_oak_pressure_plate
   crops: carrots,potatoes
-  min_age: 1
+  min_age: 0.2
   max_age: 1
 
 concrete_surface:

@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
 public class CropsGenerator extends MagicChunkGenerator {
-    private boolean consistent = true;
+    private boolean consistent = false;
     private double minAge = 0;
     private double maxAge = 1;
 
