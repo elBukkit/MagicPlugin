@@ -24,8 +24,8 @@ public class PerlinGenerator extends MagicChunkGenerator {
 
     private List<MaterialAndData> groundBlocks = Collections.emptyList();
 
-    public void load(MagicWorld world, ConfigurationSection config) {
-        super.load(world, config);
+    @Override
+    public void onLoad(ConfigurationSection config) {
         final MageController controller = world.getController();
         noiseScale = config.getDouble("noise", noiseScale);
         maxElevation = config.getInt("elevation", maxElevation);

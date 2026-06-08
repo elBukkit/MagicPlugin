@@ -60,9 +60,12 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
         return (MagicChunkGenerator)newObject;
     }
 
+    public abstract void onLoad(ConfigurationSection configuration);
+
     public void load(MagicWorld world, ConfigurationSection configuration) {
         this.world = world;
         biomeProvider = createDefaultBiomeProvider(configuration);
+        onLoad(configuration);
     }
 
     @Override

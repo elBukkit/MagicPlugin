@@ -18,8 +18,8 @@ import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 public class RandomGenerator extends MagicChunkGenerator {
     private Deque<WeightedPair<MagicChunkGenerator>> generators = new ArrayDeque<>();
 
-    public void load(MagicWorld world, ConfigurationSection config) {
-        super.load(world, config);
+    @Override
+    public void onLoad(ConfigurationSection config) {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
         RandomUtils.populateProbabilityMap(new ValueParser<>() {

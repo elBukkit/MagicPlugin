@@ -26,8 +26,8 @@ public class CropsGenerator extends MagicChunkGenerator {
     private List<MaterialAndData> foodBlocks = Collections.emptyList();
     private List<MaterialAndData> borderBlocks = Collections.emptyList();
 
-    public void load(MagicWorld world, ConfigurationSection config) {
-        super.load(world, config);
+    @Override
+    public void onLoad(ConfigurationSection config) {
         final MageController controller = world.getController();
         consistent = config.getBoolean("consistent", consistent);
         minAge = config.getDouble("min_age", minAge);

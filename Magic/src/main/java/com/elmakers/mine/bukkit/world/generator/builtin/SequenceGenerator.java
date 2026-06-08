@@ -16,8 +16,7 @@ import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 public class SequenceGenerator extends MagicChunkGenerator {
     private List<MagicChunkGenerator> generators = new ArrayList<>();
 
-    public void load(MagicWorld world, ConfigurationSection config) {
-        super.load(world, config);
+    public void onLoad(ConfigurationSection config) {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
         List<String> generatorIds = ConfigurationUtils.getStringList(config, "generators");
