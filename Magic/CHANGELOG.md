@@ -29,6 +29,7 @@
  - Fix warnings from vengeance spell on config load
  - Added pale oak signs to `signs` material list
  - Fix issues with ops using arena signs
+ - The ThrowItem action will now use extra data brovided via brushes
 
 ## Changes
 

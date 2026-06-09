@@ -86,7 +86,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         } else {
             MaterialAndData material = context.getBrush();
             if (material != null) {
-                itemStack = CompatibilityLib.getDeprecatedUtils().createItemStack(material.getMaterial(), 1, material.getData());
+                itemStack = material.getItemStack(1);
             }
         }
 
