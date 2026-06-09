@@ -1,11 +1,13 @@
 concrete_ground:
   class: Perlin
   biome: basalt_deltas
+  noise: 0.05
   blocks: concrete_ground
-  elevation: 20
-  noise: 0.1
-  min_clip_elevation: 16
-  max_clip_elevation: 18
+  top_blocks: concrete_top
+  max_elevation: 1
+  min_elevation: 0
+  min_clip_elevation: 0
+  max_clip_elevation: 0
 
 concrete_food:
   class: Crops
@@ -19,7 +21,7 @@ concrete_food:
 concrete_surface:
   class: Random
   generators:
-    concrete_food: 0.1
+    concrete_food: 0.01
     none: 1
 
 concrete:
