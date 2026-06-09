@@ -1,5 +1,12 @@
+concrete_ground:
+  - black_concrete
+
 concrete_top:
   - polished_blackstone_slab
   - polished_blackstone
   - blackstone_slab
   - blackstone
+
+concrete_tower:
+  - grey_concrete
+  - light_gray_concrete

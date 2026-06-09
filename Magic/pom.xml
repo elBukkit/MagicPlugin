@@ -1048,6 +1048,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/populators.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/populators">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/liminal/spells.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/liminal/spells">
                                         <include name="**/*.yml"/>

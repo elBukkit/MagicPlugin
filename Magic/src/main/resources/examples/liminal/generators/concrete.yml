@@ -18,10 +18,20 @@ concrete_food:
   min_age: 0.2
   max_age: 1
 
+concrete_tower:
+  populators: concrete_tower
+
 concrete_surface:
   class: Random
   generators:
-    concrete_food: 0.01
+    concrete_food:
+      min_distance: 64
+      max_distance: 512
+      weight: 0.05
+    concrete_tower:
+      min_distance: 32
+      max_distance: 1600
+      weight: 0.05
     none: 1
 
 concrete:

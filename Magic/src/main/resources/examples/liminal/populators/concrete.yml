@@ -1,0 +1,3 @@
+concrete_tower:
+  class: Tower
+  blocks: concrete_tower
