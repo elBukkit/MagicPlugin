@@ -1,39 +1,76 @@
 package com.elmakers.mine.bukkit.world.generator.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.SplittableRandom;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
-import com.elmakers.mine.bukkit.utility.random.RandomUtils;
-import com.elmakers.mine.bukkit.utility.random.ValueParser;
-import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.WorldController;
+import com.elmakers.mine.bukkit.world.generator.DistanceWeighted;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
 public class RandomGenerator extends MagicChunkGenerator {
-    private Deque<WeightedPair<MagicChunkGenerator>> generators = new ArrayDeque<>();
+    private List<DistanceWeighted<MagicChunkGenerator>> generators = new ArrayList<>();
 
     @Override
     public void onLoad(ConfigurationSection config) {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
-        RandomUtils.populateProbabilityMap(new ValueParser<>() {
-            @Override
-            public MagicChunkGenerator parse(String generatorId) {
-                if (generatorId.equals("none")) return null;
-                return controller.createGenerator(world, generatorId);
+        ConfigurationSection generatorsConfig = config.getConfigurationSection("generators");
+        for (String generatorId : generatorsConfig.getKeys(false)) {
+            if (generatorsConfig.isConfigurationSection(generatorId)) {
+                ConfigurationSection generatorConfig = generatorsConfig.getConfigurationSection(generatorId);
+                generatorId = generatorConfig.getString("generator", generatorId);
+                MagicChunkGenerator generator = controller.createGenerator(world, generatorId);
+                DistanceWeighted<MagicChunkGenerator> entry = DistanceWeighted.fromConfig(generator, generatorConfig);
+                generators.add(entry);
+            } else {
+                MagicChunkGenerator generator = controller.createGenerator(world, generatorId);
+                DistanceWeighted entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
+                generators.add(entry);
             }
         }, generators, config.getConfigurationSection("generators"));
     }
 
+    protected MagicChunkGenerator getGenerator(WorldInfo worldInfo, int chunkX, int chunkZ) {
+        long worldSeed = worldInfo.getSeed();
+        final long chunkSeed = worldSeed
+                ^ (long) chunkX * 0x9E3779B97F4A7C15L
+                ^ (long) chunkZ * 0xD1B54A32D192ED03L;
+
+        double totalWeight = 0;
+        for (DistanceWeighted<MagicChunkGenerator> entry : generators) {
+            totalWeight += entry.getWeight(chunkX, chunkZ);
+        }
+        if (totalWeight == 0) {
+            return generators.get(0).getValue();
+        }
+
+        double weight = new SplittableRandom(chunkSeed).nextDouble(totalWeight);
+        for (DistanceWeighted<MagicChunkGenerator> entry : generators) {
+            double roomWeight = entry.getWeight(chunkX, chunkZ);
+            if (roomWeight <= 0) {
+                continue;
+            }
+            weight -= roomWeight;
+            if (weight <= 0) {
+                return entry.getValue();
+            }
+        }
+        // Should never happen
+        return generators.get(generators.size() - 1).getValue();
+    }
+
     @Override
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        MagicChunkGenerator generator = RandomUtils.weightedRandom(random, generators);
-        if (generator == null) return;
-        generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
+        MagicChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        if (generator != null) {
+            generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
+        }
     }
 }
