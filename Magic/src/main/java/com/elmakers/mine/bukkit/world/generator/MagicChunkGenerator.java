@@ -32,7 +32,9 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
 
     @Nullable
     public static MagicChunkGenerator create(MageController controller, String className) {
-        if (className == null) return null;
+        if (className == null) {
+            className = "Void";
+        }
 
         if (className.indexOf('.') <= 0) {
             className = BUILTIN_CLASSPATH + "." + className;
