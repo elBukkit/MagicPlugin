@@ -23,7 +23,7 @@ final class SimpleMaterialSet implements MaterialSet {
     final @Nonnull ImmutableList<MaterialSet> parents;
     final @Nonnull ImmutableSet<Material> materials;
     final @Nonnull ImmutableList<MaterialAndData> materialAndDatas;
-    final @Nonnull ImmutableList<MaterialAndData> allMaterialsAndData;
+    final @Nonnull ImmutableList<MaterialAndData> allMaterialsAndDatas;
 
     private transient MaterialSet inverse;
 
@@ -31,11 +31,11 @@ final class SimpleMaterialSet implements MaterialSet {
             @Nonnull ImmutableList<MaterialSet> parents,
             @Nonnull ImmutableSet<Material> materials,
             @Nonnull ImmutableList<MaterialAndData> materialAndDatas,
-            @Nonnull ImmutableList<MaterialAndData> allMaterialsAndData) {
+            @Nonnull ImmutableList<MaterialAndData> allMaterialsAndDatas) {
         this.materialAndDatas = materialAndDatas;
         this.parents = parents;
         this.materials = checkNotNull(materials);
-        this.allMaterialsAndData = allMaterialsAndData;
+        this.allMaterialsAndDatas = allMaterialsAndDatas;
     }
 
     @Override
@@ -54,7 +54,7 @@ final class SimpleMaterialSet implements MaterialSet {
 
     @Override
     public Collection<MaterialAndData> getMaterialsWithData() {
-        return allMaterialsAndData;
+        return allMaterialsAndDatas;
     }
 
     @Override

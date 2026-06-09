@@ -49,6 +49,7 @@ public final class Union {
             // union.
             sets.addAll(simpleSet.parents);
             materialAndDatas.addAll(simpleSet.materialAndDatas);
+            allMaterialAndDatas.addAll(simpleSet.allMaterialsAndDatas);
             materials.addAll(simpleSet.materials);
         } else {
             // Negated or custom class
