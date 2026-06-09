@@ -905,11 +905,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return getKey(null);
     }
 
-    // TODO: Should this just be !isDifferent .. ? It's fast right now.
     @Override
-    @SuppressWarnings("deprecation")
     public boolean is(Block block) {
-        return material == block.getType();
+        Material blockMaterial = block.getType();
+        if (material != null && blockMaterial != material) {
+            return false;
+        }
+        if (blockData != null) {
+            String currentData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
+            if (currentData == null || !blockData.equals(currentData)) {
+                return true;
+            }
+        }
+        // We are not checking extra data, it should be covered now by blockData
+        return true;
     }
 
     @Override
@@ -918,29 +927,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isDifferent(Block block) {
-        Material blockMaterial = block.getType();
-        if (material != null && blockMaterial != material) {
-            return true;
-        }
-        // Special cases
-        if (DefaultMaterials.isBanner(material)) {
-            // Can't compare patterns for now
-            return true;
-        }
-        if (blockData != null) {
-            String currentData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
-            if (currentData == null || !blockData.equals(currentData)) {
-                return true;
-            }
-        }
-        // Error on the side of caution if we stored some extra data
-        if (extraData != null) {
-            return true;
-        }
-
-        return false;
+        return !is(block);
     }
 
     @Override

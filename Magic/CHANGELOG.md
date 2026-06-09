@@ -37,6 +37,7 @@
  - The `chunk_generate` property has been replaced by `populators`, though the former is still supported
    - This can now be a string list, referring to populators defined in populator configs
  - Removed support for the Elementals plugin (not updated since MC 1.7, I assume no one will miss it)
+ - Block checks will now check extra block data, if block data was set in the material set
 
 ## New Features
 
