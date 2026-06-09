@@ -13,11 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
 public class PerlinGenerator extends MagicChunkGenerator {
     private PerlinNoiseGenerator noise;
     private double noiseScale = 0.1;
+    private int minElevation = 0;
     private int maxElevation = 0;
     private int maxClipElevation = 0;
     private int minClipElevation = 0;
@@ -29,7 +31,8 @@ public class PerlinGenerator extends MagicChunkGenerator {
     public void onLoad(ConfigurationSection config) {
         final MageController controller = world.getController();
         noiseScale = config.getDouble("noise", noiseScale);
-        maxElevation = config.getInt("elevation", maxElevation);
+        minElevation = config.getInt("min_elevation", minElevation);
+        maxElevation = config.getInt("max_elevation", maxElevation);
         minClipElevation = config.getInt("min_clip_elevation", minClipElevation);
         maxClipElevation = config.getInt("max_clip_elevation", maxClipElevation);
         groundBlocks = parseBlocks(config, "blocks", "dirts");
@@ -49,19 +52,19 @@ public class PerlinGenerator extends MagicChunkGenerator {
             for (int z = 0; z < 16; z++) {
                 int worldX = (chunkX << 4) + x;
                 int worldZ = (chunkZ << 4) + z;
-                final double blockValue = noise.noise(worldX * noiseScale, worldZ * noiseScale);
-                int elevation = maxElevation > 0 ? (int)Math.min(maxElevation, Math.max(0, Math.round((blockValue + 1) / 2 * maxElevation))) : 0;
+                final double blockValue = (noise.noise(worldX * noiseScale, worldZ * noiseScale) + 1) / 2;
+                int elevation = maxElevation > 0 ? RandomUtils.lerp(minElevation, maxElevation, blockValue) : 0;
                 if (maxClipElevation > 0) {
                     elevation = Math.min(elevation, maxClipElevation);
                 }
                 if (minClipElevation > 0) {
                     elevation = Math.max(0, elevation - minClipElevation);
                 }
-                final int blockIndex = (int)Math.min(groundBlocks.size() - 1, Math.max(0, Math.round((blockValue + 1) / 2 * (groundBlocks.size() - 1))));
+                final int blockIndex = RandomUtils.lerp(0, groundBlocks.size() - 1, blockValue);
                 final MaterialAndData floorBlock = groundBlocks.get(blockIndex);
                 MaterialAndData topBlock = floorBlock;
                 if (!topBlocks.isEmpty()) {
-                    final int topIndex = (int)Math.min(topBlocks.size() - 1, Math.max(0, Math.round((blockValue + 1) / 2 * (topBlocks.size() - 1))));
+                    final int topIndex = RandomUtils.lerp(0, topBlocks.size() - 1, blockValue);
                     topBlock = topBlocks.get(topIndex);
                 }
                 for (int y = bedrockLevel + 1; y <= groundLevel + elevation; y++) {
