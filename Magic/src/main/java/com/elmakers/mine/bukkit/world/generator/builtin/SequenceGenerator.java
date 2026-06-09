@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +34,13 @@ public class SequenceGenerator extends MagicChunkGenerator {
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
         for (MagicChunkGenerator generator : generators) {
             generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
+        }
+    }
+
+    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+        super.populate(worldInfo, random, chunkX, chunkZ, region);
+        for (MagicChunkGenerator generator : generators) {
+            generator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
     }
 }

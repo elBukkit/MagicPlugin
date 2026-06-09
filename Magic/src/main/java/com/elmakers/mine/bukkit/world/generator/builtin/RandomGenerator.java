@@ -34,7 +34,7 @@ public class RandomGenerator extends MagicChunkGenerator {
                 DistanceWeighted entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
                 generators.add(entry);
             }
-        }, generators, config.getConfigurationSection("generators"));
+        }
     }
 
     protected MagicChunkGenerator getGenerator(WorldInfo worldInfo, int chunkX, int chunkZ) {
@@ -71,6 +71,15 @@ public class RandomGenerator extends MagicChunkGenerator {
         MagicChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
         if (generator != null) {
             generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
+        }
+    }
+
+    @Override
+    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+        super.populate(worldInfo, random, chunkX, chunkZ, region);
+        MagicChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        if (generator != null) {
+            generator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
     }
 }

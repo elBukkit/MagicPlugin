@@ -147,15 +147,7 @@ public class MagicWorld {
         }
         seed = config.getLong("seed", this.seed);
         autoLoad = config.getBoolean("autoload", autoLoad);
-        ConfigurationSection populatorConfig = config.getConfigurationSection("populators");
-        if (populatorConfig == null) {
-            populatorConfig = config.getConfigurationSection("chunk_generate");
-        }
-        if (populatorConfig == null) {
-            chunkHandler.load(worldName, ConfigurationUtils.getStringList(config, "populators"));
-        } else {
-            chunkHandler.load(worldName, populatorConfig);
-        }
+        chunkHandler.load(this, config);
         blockBreakHandler.load(worldName, "break", config.getConfigurationSection("block_break"));
         blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));

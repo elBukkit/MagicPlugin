@@ -26,7 +26,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class WorldController implements Listener {
     private final Map<String, MagicWorld> magicWorlds = new HashMap<>();
@@ -145,6 +144,7 @@ public class WorldController implements Listener {
     }
 
     public MagicChunkGenerator createGenerator(MagicWorld world, String generatorKey) {
+        if (generatorKey.isEmpty() || generatorKey.equals("none")) return null;
         ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
         if (generatorConfig == null) {
             controller.getLogger().warning("Invalid chunk generator: " + generatorKey);
@@ -164,22 +164,8 @@ public class WorldController implements Listener {
         return generator;
     }
 
-    public MagicBlockPopulator createPopulator(MagicWorld world, String populatorKey) {
-        ConfigurationSection populatorConfig = populatorConfigs.get(populatorKey);
-        if (populatorConfig == null) {
-            controller.getLogger().warning("Invalid block populator: " + populatorKey);
-            return null;
-        }
-        final String populatorClass = populatorConfig.getString("class");
-        MagicBlockPopulator populator = MagicBlockPopulator.create(controller, populatorClass);
-        if (populator == null) {
-            controller.getLogger().warning("Invalid chunk generator class: " + populatorClass);
-        } else {
-            if (!populator.load(world, populatorConfig)) {
-                populator = null;
-            }
-        }
-        return populator;
+    public ConfigurationSection getPopulatorConfig(String populatorKey) {
+        return populatorConfigs.get(populatorKey);
     }
 
     public void reloadGenerator(MagicWorld world, MagicChunkGenerator generator, String generatorKey) {

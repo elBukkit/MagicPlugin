@@ -14,7 +14,9 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.BiomeProvider;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.Plugin;
 
@@ -23,12 +25,15 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
+import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public abstract class MagicChunkGenerator extends ChunkGenerator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.generator.builtin";
 
     protected MagicWorld world;
     private BiomeProvider biomeProvider;
+    private List<MagicBlockPopulator> populators = new ArrayList<>();
+    private BlockPopulator passthroughPopulator = new PassthroughBlockPopulator(this);
 
     @Nullable
     public static MagicChunkGenerator create(MageController controller, String className) {
@@ -72,6 +77,7 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     public void load(MagicWorld world, ConfigurationSection configuration) {
         this.world = world;
         biomeProvider = createDefaultBiomeProvider(configuration);
+        populators = MagicBlockPopulator.loadPopulators(world, configuration);
         onLoad(configuration);
     }
 
@@ -90,6 +96,11 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
             world.getLogger().warning("Invalid biome specified in " + world.getName() + " config: " + biomeKey);
         }
         return null;
+    }
+
+    @Override
+    public List<BlockPopulator> getDefaultPopulators(World world) {
+        return List.of(passthroughPopulator);
     }
 
     protected Plugin getPlugin() {
@@ -128,5 +139,11 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
             material = chunk.getType(x, y, z);
         }
         return y - 1;
+    }
+
+    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+        for (MagicBlockPopulator populator : populators) {
+            populator.populate(worldInfo, random, chunkX, chunkZ, region);
+        }
     }
 }
