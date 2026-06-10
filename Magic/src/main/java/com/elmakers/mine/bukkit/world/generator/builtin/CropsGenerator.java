@@ -11,7 +11,6 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
@@ -19,6 +18,10 @@ public class CropsGenerator extends MagicChunkGenerator {
     private boolean consistent = false;
     private double minAge = 0;
     private double maxAge = 1;
+    private int minPosition = 0;
+    private int maxPosition = 14;
+    private int minWidth = 1;
+    private int maxWidth = 3;
 
     private List<MaterialAndData> foodBlocks = Collections.emptyList();
     private List<MaterialAndData> borderBlocks = Collections.emptyList();
@@ -27,7 +30,6 @@ public class CropsGenerator extends MagicChunkGenerator {
 
     @Override
     public void onLoad(ConfigurationSection config) {
-        final MageController controller = world.getController();
         consistent = config.getBoolean("consistent", consistent);
         minAge = config.getDouble("min_age", minAge);
         maxAge = config.getDouble("max_age", maxAge);
@@ -35,23 +37,34 @@ public class CropsGenerator extends MagicChunkGenerator {
         soilBlocks = parseBlocks(config, "soil", "farmland");
         borderBlocks = parseBlocks(config, "border");
         supportBlocks = parseBlocks(config, "support");
+        minPosition = config.getInt("min_x", minPosition);
+        maxPosition = config.getInt("max_x", maxPosition);
+        minWidth = config.getInt("min_width", minWidth);
+        maxWidth = config.getInt("max_width", maxWidth);
     }
 
     @Override
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
         final int groundLevel = world.getGroundLevel();
-        MaterialAndData borderBlock = RandomUtils.getRandom(borderBlocks, random);
-        MaterialAndData supportBlock = RandomUtils.getRandom(supportBlocks, random);
-        MaterialAndData soilBlock = RandomUtils.getRandom(soilBlocks, random);
+        final MaterialAndData borderBlock = RandomUtils.getRandom(borderBlocks, random);
+        final MaterialAndData supportBlock = RandomUtils.getRandom(supportBlocks, random);
+        final MaterialAndData soilBlock = RandomUtils.getRandom(soilBlocks, random);
+        final int width = RandomUtils.range(random, minWidth, maxWidth);
+        final boolean hasBorder = borderBlock != null;
+        final int borderWidth = hasBorder ? 2 : 0;
+        final int startX = Math.min(16 - width - borderWidth, RandomUtils.range(random, minPosition, maxPosition));
+        final int startZ = Math.min(16 - width - borderWidth, RandomUtils.range(random, minPosition, maxPosition));
+        final int endX = startX + width + borderWidth;
+        final int endZ = startZ + width + borderWidth;
+
         BlockData cropData = null;
 
-        for (int x = 6; x < 10; x++) {
-            for (int z = 6; z < 10; z++) {
+        for (int x = startX; x < endX; x++) {
+            for (int z = startZ; z < endZ; z++) {
                 int groundY = getTopBlock(chunk, x, groundLevel, z);
-                if (x == 6 || x == 9 || z == 6 || z == 9) {
-                    if (borderBlock != null) {
-                        chunk.setBlock(x, groundY + 1, z, borderBlock.createBlockData());
-                    }
+                final boolean isBorder = x == startX || x == endX - 1 || z == startZ || z == endZ - 1;
+                if (hasBorder && isBorder) {
+                    chunk.setBlock(x, groundY + 1, z, borderBlock.createBlockData());
                     if (supportBlock != null) {
                         chunk.setBlock(x, groundY, z, supportBlock.createBlockData());
                     }

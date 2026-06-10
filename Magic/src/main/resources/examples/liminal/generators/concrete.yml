@@ -17,6 +17,10 @@ concrete_food:
   soil: sea_lantern
   min_age: 0.2
   max_age: 1
+  min_width: 1
+  max_width: 3
+  min_position: 0
+  max_position: 14
 
 concrete_tower:
   populators: concrete_tower
