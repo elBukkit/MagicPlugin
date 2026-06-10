@@ -20,11 +20,13 @@ public class Schematic extends AbstractSchematic implements LoadableSchematic {
     @Override
     public void load(short width, short height, short length, int[] blockTypes, byte[] data, Map<Integer, String> rawPallete, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
         Map<Integer, MaterialAndData> palette = new HashMap<>();
-        for (Map.Entry<Integer, String> entry : rawPallete.entrySet()) {
-            String blockData = entry.getValue();
-            Material material = CompatibilityLib.getCompatibilityUtils().getMaterial(blockData);
-            if (material != null) {
-                palette.put(entry.getKey(), new MaterialAndData(material, blockData));
+        if (rawPallete != null) {
+            for (Map.Entry<Integer, String> entry : rawPallete.entrySet()) {
+                String blockData = entry.getValue();
+                Material material = CompatibilityLib.getCompatibilityUtils().getMaterial(blockData);
+                if (material != null) {
+                    palette.put(entry.getKey(), new MaterialAndData(material, blockData));
+                }
             }
         }
 

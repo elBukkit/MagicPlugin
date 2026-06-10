@@ -93,13 +93,23 @@ public class SchematicUtilsBase implements SchematicUtils {
             if (nbtData == null) {
                 return false;
             }
-
+            // FAWE does this, I guess, for some reason?
+            if (nbtUtils.contains(nbtData, "Schematic")) {
+                nbtData = nbtUtils.getTag(nbtData, "Schematic");
+            }
+            Object blockRoot = nbtUtils.getTag(nbtData, "Blocks");
             short width = nbtUtils.getShort(nbtData, "Width", (short)0);
             short height = nbtUtils.getShort(nbtData, "Height", (short)0);
             short length = nbtUtils.getShort(nbtData, "Length", (short)0);
 
             Object palette = nbtUtils.getTag(nbtData,"Palette");
+            if (palette == null && blockRoot != null) {
+                palette = nbtUtils.getTag(blockRoot, "Palette");
+            }
             byte[] blockData = nbtUtils.getByteArray(nbtData, "BlockData");
+            if (blockData == null && blockRoot != null) {
+                blockData = nbtUtils.getByteArray(blockRoot, "Data");
+            }
             int[] blockMap = null;
             Map<Integer, String> paletteMap = null;
 

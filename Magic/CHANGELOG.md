@@ -47,6 +47,7 @@
  - Add `/mwarp world` command to easily go to the spawn point of a specific world
  - Added `FreezeEntity` action, to apply the frostbite effect to an entity. Now used in the `frost` spell.
  - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)
+ - Add support for FAWE schematic format
 
 # 11.2.1
 
