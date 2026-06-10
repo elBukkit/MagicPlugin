@@ -21,6 +21,11 @@ concrete_food:
 concrete_tower:
   populators: concrete_tower
 
+concrete_exit:
+  populators:
+  - concrete_tower
+  - concrete_exit
+
 concrete_surface:
   class: Random
   generators:
@@ -30,8 +35,12 @@ concrete_surface:
       weight: 0.05
     concrete_tower:
       min_distance: 32
-      max_distance: 1600
-      weight: 0.05
+      max_distance: 256
+      weight: 0.5
+    concrete_exit:
+      min_distance: 128
+      max_distance: 512
+      weight: 0.25
     none: 1
 
 concrete:

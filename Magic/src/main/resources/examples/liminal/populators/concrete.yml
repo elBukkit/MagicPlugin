@@ -1,3 +1,13 @@
 concrete_tower:
   class: Tower
   blocks: concrete_tower
+  min_height: 32
+  max_height: 128
+
+concrete_exit:
+  class: EndPortal
+  gateway: true
+  min_portal_width: 1
+  max_portal_width: 8
+  min_tunnel_height: 2
+  max_tunnel_height: 10
