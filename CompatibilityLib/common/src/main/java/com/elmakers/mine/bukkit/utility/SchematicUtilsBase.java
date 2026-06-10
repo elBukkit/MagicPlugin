@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.base_v26_1;
+package com.elmakers.mine.bukkit.utility;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,14 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
 
-public class SchematicUtilsBase implements SchematicUtils {
+public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.platform.SchematicUtils {
     protected final Platform platform;
 
-    protected SchematicUtilsBase(final Platform platform) {
+    public SchematicUtilsBase(final Platform platform) {
         this.platform = platform;
     }
 
