@@ -28,8 +28,7 @@ public class TowerPopulator extends MagicBlockPopulator {
     private double maxTaper = 0;
     private double minNoise = 0;
     private double maxNoise = 0;
-    private double minNoiseThreshold = 0.25;
-    private double maxNoiseThreshold = 0.75;
+    private double minNoiseScale = 0.25;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -48,8 +47,7 @@ public class TowerPopulator extends MagicBlockPopulator {
         maxWidth = config.getInt("max_width", maxWidth);
         minNoise = config.getDouble("min_noise", minNoise);
         maxNoise = config.getDouble("max_noise", maxNoise);
-        minNoiseThreshold = config.getDouble("min_noise_threshold", minNoiseThreshold);
-        maxNoiseThreshold = config.getDouble("max_noise_threshold", maxNoiseThreshold);
+        minNoiseScale = config.getDouble("min_noise_scale", minNoiseScale);
         minTaper = config.getDouble("min_taper", minTaper);
         maxTaper = config.getDouble("max_taper", maxTaper);
         return true;
@@ -62,7 +60,6 @@ public class TowerPopulator extends MagicBlockPopulator {
         final double taper = RandomUtils.range(random, minTaper, maxTaper);
         final double noise = RandomUtils.range(random, minNoise, maxNoise);
         final boolean hasNoise = noise > 0;
-        final double noiseThreshold = RandomUtils.range(random, minNoiseThreshold, maxNoiseThreshold);
         synchronized (this) {
             if (hasNoise && perlin == null) {
                 perlin = new PerlinNoiseGenerator(worldInfo.getSeed());
@@ -87,16 +84,23 @@ public class TowerPopulator extends MagicBlockPopulator {
             final int minZ = chunkGlobalZ + 8 - towerWidthLeft;
             final int maxZ = chunkGlobalZ + 8 + towerWidthRight;
             for (int x = minX; x < maxX; x++) {
+                boolean xisOk = true;
                 if (hasNoise) {
                     final int worldX = chunkGlobalX + x;
-                    final double xNoise = (perlin.noise(worldX * noise, y * noise) + 1) / 2;
-                    if (xNoise < noiseThreshold) return;
+                    final int halfWidth = (maxX - minX) / 2;
+                    final int centerX = (maxX + minX) / 2;
+                    final double xScale = Math.abs((double)x - centerX) / halfWidth;
+                    final double xNoise = RandomUtils.lerp(minNoiseScale, 1, (perlin.noise(worldX * noise, y * noise) + 1) / 2);
+                    xisOk = (xScale < xNoise);
                 }
                 for (int z = minZ; z < maxZ; z++) {
                     if (hasNoise) {
-                        final int worldZ = chunkGlobalZ + z;
-                        final double zNoise = (perlin.noise(worldZ * noise, y * noise) + 1) / 2;
-                        if (zNoise < noiseThreshold) return;
+                        final int worldZ = chunkGlobalZ + x;
+                        final int halfWidth = (maxZ - minZ) / 2;
+                        final int centerZ = (maxZ + minZ) / 2;
+                        final double zScale = Math.abs((double)z - centerZ) / halfWidth;
+                        final double zNoise = RandomUtils.lerp(minNoiseScale, 1, (perlin.noise(worldZ * noise, y * noise) + 1) / 2);
+                        if (!xisOk && zScale > zNoise) continue;
                     }
                     region.setBlockData(x, y, z, wallBlockData);
                 }
