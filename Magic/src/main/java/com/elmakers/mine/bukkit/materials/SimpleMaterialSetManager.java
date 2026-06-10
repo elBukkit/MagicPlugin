@@ -160,7 +160,13 @@ public final class SimpleMaterialSetManager
             negate = false;
         }
 
-        String[] names = StringUtils.split(materialString, ',');
+        String[] names;
+        // TODO: Maybe regex this, or nah
+        if (materialString.contains("[") || materialString.contains("{")) {
+            names = new String[] { materialString };
+        } else {
+            names = StringUtils.split(materialString, ',');
+        }
         MaterialSet created = createMaterialSetFromStringList(Arrays.asList(names));
         return negate ? created.not() : created;
     }
