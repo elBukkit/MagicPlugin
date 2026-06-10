@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
@@ -9,6 +10,7 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 public class AutomatonPopulator extends MagicBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection parameters) {
+        MagicController controller = world.getController();
         RandomUtils.populateStringProbabilityMap(templateProbability, parameters, "automaton");
         this.parameters = parameters.getConfigurationSection("automaton_parameters");
         replace = controller.getMaterialSetManager().fromConfig(parameters.getString("replace"));

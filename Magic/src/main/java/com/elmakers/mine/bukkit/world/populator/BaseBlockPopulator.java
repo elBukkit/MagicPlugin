@@ -25,8 +25,8 @@ public abstract class BaseBlockPopulator extends MagicBlockPopulator {
     private Set<Biome> notBiomes;
 
     @Override
-    public boolean load(ConfigurationSection config, MagicWorld world) {
-        if (!super.load(config, world)) {
+    public boolean load(MagicWorld world, ConfigurationSection config) {
+        if (!super.load(world, config)) {
             return false;
         }
         maxY = ConfigurationUtils.getOptionalInteger(config, "max_y");
