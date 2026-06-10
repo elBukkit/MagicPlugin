@@ -20,6 +20,12 @@ public class TowerPopulator extends MagicBlockPopulator {
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
     private int minHeight = 32;
     private int maxHeight = 128;
+    private int minWidth = 24;
+    private int maxWidth = 48;
+    private double minTaper = 0;
+    private double maxTaper = 0;
+    private double minNoise = 0;
+    private double maxNoise = 0;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -34,6 +40,12 @@ public class TowerPopulator extends MagicBlockPopulator {
         }
         minHeight = config.getInt("min_height", minHeight);
         maxHeight = config.getInt("max_height", maxHeight);
+        minWidth = config.getInt("min_width", minWidth);
+        maxWidth = config.getInt("max_width", maxWidth);
+        minNoise = config.getDouble("min_noise", minNoise);
+        maxNoise = config.getDouble("max_noise", maxNoise);
+        minTaper = config.getDouble("min_taper", minTaper);
+        maxTaper = config.getDouble("max_taper", maxTaper);
         return true;
     }
 
@@ -41,20 +53,28 @@ public class TowerPopulator extends MagicBlockPopulator {
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
         final int worldHeight = worldInfo.getMaxHeight();
         final int towerHeight = Math.min(worldHeight - 1, RandomUtils.range(random, minHeight, maxHeight));
+        final double taper = RandomUtils.range(random, minTaper, maxTaper);
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
 
         final int buffer = region.getBuffer();
-        final int minX = chunkGlobalX - buffer;
-        final int maxX = chunkGlobalX + 16 + buffer;
-        final int minZ = chunkGlobalZ - buffer;
-        final int maxZ = chunkGlobalZ + 16 + buffer;
+        final int maxWidth = 16 + buffer * 2;
+        final int towerWidth = Math.min(maxWidth, RandomUtils.range(random, minWidth, maxWidth));
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
-        for (int x = minX; x < maxX; x++) {
-            for (int z = minZ; z < maxZ; z++) {
-                for (int y = floorLevel + 1; y < towerHeight; y++) {
+        final int minY = floorLevel + 1;
+        for (int y = minY; y < towerHeight; y++) {
+            final double taperFactor = (double)y / (double)(towerHeight - minY);
+            final double taperedWidth = (towerWidth - taperFactor * towerWidth) / 2;
+            final int towerWidthLeft = (int)Math.floor(taperedWidth);
+            final int towerWidthRight = (int)Math.ceil(taperedWidth);
+            final int minX = chunkGlobalX + 8 - towerWidthLeft;
+            final int maxX = chunkGlobalX + 8 + towerWidthRight;
+            final int minZ = chunkGlobalZ + 8 - towerWidthLeft;
+            final int maxZ = chunkGlobalZ + 8 + towerWidthRight;
+            for (int x = minX; x < maxX; x++) {
+                for (int z = minZ; z < maxZ; z++) {
                     region.setBlockData(x, y, z, wallBlockData);
                 }
             }

@@ -3,6 +3,10 @@ concrete_tower:
   blocks: concrete_tower
   min_height: 32
   max_height: 128
+  min_taper: 0
+  max_taper: 0.2
+  min_width: 24
+  max_width: 48
 
 concrete_exit:
   class: EndPortal
