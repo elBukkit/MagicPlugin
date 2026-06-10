@@ -304,7 +304,8 @@ public class RandomUtils {
         if (min >= max) {
             return min;
         }
-        return min + random.nextInt(max - min);
+        // Bounds is exclusive but we want to include it
+        return min + random.nextInt(max - min + 1);
     }
 
     public static double range(double min, double max) {
