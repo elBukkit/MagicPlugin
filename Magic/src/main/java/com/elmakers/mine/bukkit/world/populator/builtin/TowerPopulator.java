@@ -9,6 +9,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.noise.PerlinNoiseGenerator;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -17,6 +18,7 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class TowerPopulator extends MagicBlockPopulator {
+    private PerlinNoiseGenerator perlin;
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
     private int minHeight = 32;
     private int maxHeight = 128;
@@ -26,6 +28,8 @@ public class TowerPopulator extends MagicBlockPopulator {
     private double maxTaper = 0;
     private double minNoise = 0;
     private double maxNoise = 0;
+    private double minNoiseThreshold = 0.25;
+    private double maxNoiseThreshold = 0.75;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -44,6 +48,8 @@ public class TowerPopulator extends MagicBlockPopulator {
         maxWidth = config.getInt("max_width", maxWidth);
         minNoise = config.getDouble("min_noise", minNoise);
         maxNoise = config.getDouble("max_noise", maxNoise);
+        minNoiseThreshold = config.getDouble("min_noise_threshold", minNoiseThreshold);
+        maxNoiseThreshold = config.getDouble("max_noise_threshold", maxNoiseThreshold);
         minTaper = config.getDouble("min_taper", minTaper);
         maxTaper = config.getDouble("max_taper", maxTaper);
         return true;
@@ -54,10 +60,17 @@ public class TowerPopulator extends MagicBlockPopulator {
         final int worldHeight = worldInfo.getMaxHeight();
         final int towerHeight = Math.min(worldHeight - 1, RandomUtils.range(random, minHeight, maxHeight));
         final double taper = RandomUtils.range(random, minTaper, maxTaper);
+        final double noise = RandomUtils.range(random, minNoise, maxNoise);
+        final boolean hasNoise = noise > 0;
+        final double noiseThreshold = RandomUtils.range(random, minNoiseThreshold, maxNoiseThreshold);
+        synchronized (this) {
+            if (hasNoise && perlin == null) {
+                perlin = new PerlinNoiseGenerator(worldInfo.getSeed());
+            }
+        }
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
-
         final int buffer = region.getBuffer();
         final int maxWidth = 16 + buffer * 2;
         final int towerWidth = Math.min(maxWidth, RandomUtils.range(random, minWidth, maxWidth));
@@ -65,7 +78,7 @@ public class TowerPopulator extends MagicBlockPopulator {
         final BlockData wallBlockData = wallBlock.createBlockData();
         final int minY = floorLevel + 1;
         for (int y = minY; y < towerHeight; y++) {
-            final double taperFactor = (double)y / (double)(towerHeight - minY);
+            final double taperFactor = taper * ((double)y / (double)(towerHeight - minY));
             final double taperedWidth = (towerWidth - taperFactor * towerWidth) / 2;
             final int towerWidthLeft = (int)Math.floor(taperedWidth);
             final int towerWidthRight = (int)Math.ceil(taperedWidth);
@@ -74,7 +87,17 @@ public class TowerPopulator extends MagicBlockPopulator {
             final int minZ = chunkGlobalZ + 8 - towerWidthLeft;
             final int maxZ = chunkGlobalZ + 8 + towerWidthRight;
             for (int x = minX; x < maxX; x++) {
+                if (hasNoise) {
+                    final int worldX = chunkGlobalX + x;
+                    final double xNoise = (perlin.noise(worldX * noise, y * noise) + 1) / 2;
+                    if (xNoise < noiseThreshold) return;
+                }
                 for (int z = minZ; z < maxZ; z++) {
+                    if (hasNoise) {
+                        final int worldZ = chunkGlobalZ + z;
+                        final double zNoise = (perlin.noise(worldZ * noise, y * noise) + 1) / 2;
+                        if (zNoise < noiseThreshold) return;
+                    }
                     region.setBlockData(x, y, z, wallBlockData);
                 }
             }
