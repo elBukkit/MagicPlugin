@@ -44,8 +44,10 @@ public class RandomGenerator extends MagicChunkGenerator {
                 ^ (long) chunkZ * 0xD1B54A32D192ED03L;
 
         double totalWeight = 0;
+        final int x = chunkX * 16;
+        final int z = chunkX * 16;
         for (DistanceWeighted<MagicChunkGenerator> entry : generators) {
-            totalWeight += entry.getWeight(chunkX, chunkZ);
+            totalWeight += entry.getWeight(x, z);
         }
         if (totalWeight == 0) {
             return generators.get(0).getValue();
@@ -53,11 +55,11 @@ public class RandomGenerator extends MagicChunkGenerator {
 
         double weight = new SplittableRandom(chunkSeed).nextDouble(totalWeight);
         for (DistanceWeighted<MagicChunkGenerator> entry : generators) {
-            double roomWeight = entry.getWeight(chunkX, chunkZ);
-            if (roomWeight <= 0) {
+            double entryWeight = entry.getWeight(x, z);
+            if (entryWeight <= 0) {
                 continue;
             }
-            weight -= roomWeight;
+            weight -= entryWeight;
             if (weight <= 0) {
                 return entry.getValue();
             }
