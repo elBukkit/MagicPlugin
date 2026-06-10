@@ -6,3 +6,5 @@ attachable_double:
 - banners
 - doors
 - vine
+# This one is here to fix snowy grass after being covered in snow
+- grass_block

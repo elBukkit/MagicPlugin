@@ -30,6 +30,7 @@
  - Added pale oak signs to `signs` material list
  - Fix issues with ops using arena signs
  - The ThrowItem action will now use extra data brovided via brushes
+ - Fix snowy grass not undoing after using the Frost spell
 
 ## Changes
 
