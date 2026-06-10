@@ -37,10 +37,12 @@ concrete_surface:
       min_distance: 32
       max_distance: 512
       weight: 0.5
+      frequency: 48
     concrete_exit:
       min_distance: 512
       max_distance: 2048
       weight: 0.25
+      frequency: 48
     none: 1
 
 concrete:

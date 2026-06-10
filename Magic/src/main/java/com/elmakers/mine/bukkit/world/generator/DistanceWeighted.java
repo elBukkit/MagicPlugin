@@ -11,6 +11,7 @@ public class DistanceWeighted<T> {
     private final int minDistanceSquared;
     private final int maxDistanceSquared;
     private final double weight;
+    private final int frequency;
 
     public static <T> DistanceWeighted<T> fromConfig(T value, ConfigurationSection config) {
         return new DistanceWeighted<>(value, config);
@@ -27,35 +28,44 @@ public class DistanceWeighted<T> {
         int maxDistance = config.getInt("max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
         weight = config.getDouble("weight");
+        frequency = config.getInt("weight");
     }
 
     private DistanceWeighted(Logger logger, T value, String weightConfig) {
         this.value = value;
         String[] pieces = StringUtils.split(weightConfig, ",");
-        double parsedWeight = 0;
+        double weight = 0;
         int minDistance = 0;
         int maxDistance = 0;
+        int frequency = 0;
         try {
-            parsedWeight = Double.parseDouble(pieces[0]);
-            if (pieces.length == 3) {
+            weight = Double.parseDouble(pieces[0]);
+            if (pieces.length >= 3) {
                 minDistance = Integer.parseInt(pieces[1]);
                 maxDistance = Integer.parseInt(pieces[2]);
+                if (pieces.length > 3) {
+                    frequency = Integer.parseInt(pieces[3]);
+                }
             } else if (pieces.length == 2) {
                 maxDistance = Integer.parseInt(pieces[1]);
             }
         } catch (Exception ex) {
             logger.warning("Invalid distance weighted config: " + weightConfig);
         }
-        weight = parsedWeight;
         minDistanceSquared = minDistance * minDistance;
         maxDistanceSquared = maxDistance * maxDistance;
+        this.frequency = frequency;
+        this.weight = weight;
     }
 
     public double getWeight(long x, long z) {
-        if (minDistanceSquared >= maxDistanceSquared) {
-            return weight;
+        if (frequency > 0 && (x % frequency != 0 || z % frequency != 0)) {
+            return 0;
         }
         final long distanceSquared = x * x + z * z;
+        if (distanceSquared >= maxDistanceSquared) {
+            return weight;
+        }
         if (distanceSquared < minDistanceSquared) {
             return 0;
         }
