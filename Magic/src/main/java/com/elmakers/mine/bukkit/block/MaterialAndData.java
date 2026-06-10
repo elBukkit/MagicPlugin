@@ -914,7 +914,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (blockData != null) {
             String currentData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
             if (currentData == null || !blockData.equals(currentData)) {
-                return true;
+                return false;
             }
         }
         // We are not checking extra data, it should be covered now by blockData
