@@ -51,7 +51,6 @@ place:
         consume: true
         ignore_region_overrides: true
         physics: true
-        auto_block_state: true
     costs:
         mana: 10
 

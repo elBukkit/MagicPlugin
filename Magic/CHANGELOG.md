@@ -38,6 +38,7 @@
    - This can now be a string list, referring to populators defined in populator configs
  - Removed support for the Elementals plugin (not updated since MC 1.7, I assume no one will miss it)
  - Block checks will now check extra block data, if block data was set in the material set
+ - The Place spell no longer uses the auto_block_state parameter
 
 ## New Features
 
