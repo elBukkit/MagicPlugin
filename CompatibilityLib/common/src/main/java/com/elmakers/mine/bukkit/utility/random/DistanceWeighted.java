@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.world.generator;
+package com.elmakers.mine.bukkit.utility.random;
 
 import java.util.logging.Logger;
 

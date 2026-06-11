@@ -11,7 +11,7 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.world.WorldController;
-import com.elmakers.mine.bukkit.world.generator.DistanceWeighted;
+import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
 public class RandomGenerator extends MagicChunkGenerator {
