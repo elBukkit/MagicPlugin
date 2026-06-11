@@ -6,10 +6,12 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
+import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -140,7 +142,19 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
         return (MagicBlockPopulator)newObject;
     }
 
+    protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {
+        if (!region.isInRegion(x, y, z)) {
+            getController().info("Trying to set out-of-range block: " + x + "," + y + "," + z);
+            return false;
+        }
+        region.setBlockData(x, y, z, blockData);
+        return true;
+    }
+
     protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        if (!region.isInRegion(x, y, z)) {
+            return y;
+        }
         Material material = region.getType(x, y, z);
         while (y < worldInfo.getMaxHeight() && !material.isAir()) {
             y++;

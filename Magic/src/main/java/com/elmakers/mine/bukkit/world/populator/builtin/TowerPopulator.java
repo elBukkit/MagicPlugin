@@ -102,7 +102,7 @@ public class TowerPopulator extends MagicBlockPopulator {
                         final double zNoise = RandomUtils.lerp(minNoiseScale, 1, (perlin.noise(worldZ * noise, y * noise) + 1) / 2);
                         if (!xisOk && zScale > zNoise) continue;
                     }
-                    region.setBlockData(x, y, z, wallBlockData);
+                    setBlockData(region, x, y, z, wallBlockData);
                 }
             }
         }

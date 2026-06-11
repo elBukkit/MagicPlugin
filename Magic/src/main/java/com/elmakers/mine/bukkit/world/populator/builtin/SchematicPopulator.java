@@ -69,7 +69,7 @@ public class SchematicPopulator extends MagicBlockPopulator {
                     final Material material = block == null ? null : block.getMaterial();
                     if (material != null) {
                         if (material.isAir() && !fillAir) continue;
-                        region.setBlockData(dx + startX + chunkBaseX, y, dz + startZ + chunkBaseZ, block.createBlockData());
+                        setBlockData(region, dx + startX + chunkBaseX, y, dz + startZ + chunkBaseZ, block.createBlockData());
                     }
                 }
             }
