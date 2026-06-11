@@ -1,9 +1,5 @@
 diving_helmet:
-    icon: light_blue_stained_glass{CustomModelData:18001}
-    legacy_icon: light_blue_stained_glass
-    indestructible: true
-    keep: true
-    quiet: 2
-    potion_effects: conduit_power
-    worn: true
-    wearable: helmet
+    name: "&bDiving Helmet"
+    item: chainmail_helmet[attribute_modifiers=[{id:"oxygen",type:"oxygen_bonus",amount:10,operation:"add_value",slot:"head",display:{type:"hidden"}}],tooltip_display={hidden_components:["attribute_modifiers"]}]
+    lore:
+        - Wear to breathe underwater for a little longer
