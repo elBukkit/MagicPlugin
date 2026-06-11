@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
 
 public class CropsGenerator extends MagicChunkGenerator {
     private boolean consistent = false;
+    private boolean searchUp = true;
     private double minAge = 0;
     private double maxAge = 1;
     private int minPosition = 0;
@@ -41,6 +42,7 @@ public class CropsGenerator extends MagicChunkGenerator {
         maxPosition = config.getInt("max_x", maxPosition);
         minWidth = config.getInt("min_width", minWidth);
         maxWidth = config.getInt("max_width", maxWidth);
+        searchUp = config.getBoolean("search_up", searchUp);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class CropsGenerator extends MagicChunkGenerator {
 
         for (int x = startX; x < endX; x++) {
             for (int z = startZ; z < endZ; z++) {
-                int groundY = getTopBlock(chunk, x, groundLevel, z);
+                int groundY = searchUp ? getTopBlock(chunk, x, groundLevel, z) : groundLevel;
                 final boolean isBorder = x == startX || x == endX - 1 || z == startZ || z == endZ - 1;
                 if (hasBorder && isBorder) {
                     chunk.setBlock(x, groundY + 1, z, borderBlock.createBlockData());

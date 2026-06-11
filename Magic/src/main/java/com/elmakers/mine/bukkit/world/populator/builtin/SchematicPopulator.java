@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.Random;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -19,6 +20,8 @@ public class SchematicPopulator extends MagicBlockPopulator {
     private int maxPosition = 0;
     private int minY = 0;
     private int maxY = 0;
+    private boolean searchUp = true;
+    private boolean fillAir = false;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -27,6 +30,8 @@ public class SchematicPopulator extends MagicBlockPopulator {
         maxY = config.getInt("max_y", maxY);
         minPosition = config.getInt("min_position", minPosition);
         maxPosition = config.getInt("max_position", maxPosition);
+        searchUp = config.getBoolean("search_up", searchUp);
+        fillAir = config.getBoolean("fill_air", fillAir);
         return true;
     }
 
@@ -50,7 +55,8 @@ public class SchematicPopulator extends MagicBlockPopulator {
         final int offsetZ = RandomUtils.range(random, minPosition, maxPosition) + buffer;
         final int startX = Math.min(maxSize - sizeX, offsetX);
         final int startZ = Math.min(maxSize - sizeZ, offsetZ);
-        final int startY = world.getGroundLevel() + RandomUtils.range(random, minY, maxY);
+        final int groundY = world.getGroundLevel();
+        final int startY = (searchUp ? getTopBlock(worldInfo, region, startX, groundY, startZ) : groundY) + RandomUtils.range(random, minY, maxY);
         final int maxHeight = worldInfo.getMaxHeight();
 
         for (int dy = 0; dy < sizeY; dy++) {
@@ -60,7 +66,9 @@ public class SchematicPopulator extends MagicBlockPopulator {
             for (int dx = 0; dx < sizeX; dx++) {
                 for (int dz = 0; dz < sizeZ; dz++) {
                     final MaterialAndData block = schematic.getBlock(dx, dy, dz);
-                    if (block != null) {
+                    final Material material = block == null ? null : block.getMaterial();
+                    if (material != null) {
+                        if (material.isAir() && !fillAir) continue;
                         region.setBlockData(dx + startX + chunkBaseX, y, dz + startZ + chunkBaseZ, block.createBlockData());
                     }
                 }
