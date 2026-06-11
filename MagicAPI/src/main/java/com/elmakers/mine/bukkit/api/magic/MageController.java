@@ -206,6 +206,8 @@ public interface MageController {
 
     @Nullable
     Schematic loadSchematic(String name);
+    @Nullable
+    Schematic loadSchematic(String name, boolean synchronous);
 
     /**
      * @return Manager of material sets.

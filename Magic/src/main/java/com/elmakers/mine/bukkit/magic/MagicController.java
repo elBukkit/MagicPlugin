@@ -1405,33 +1405,57 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Nullable
     @Override
     public Schematic loadSchematic(String schematicName) {
+        return loadSchematic(schematicName, false);
+    }
+
+    @Nullable
+    @Override
+    public Schematic loadSchematic(String schematicName, boolean synchronous) {
         if (schematicName == null || schematicName.length() == 0) return null;
 
-        if (schematics.containsKey(schematicName)) {
-            WeakReference<Schematic> schematic = schematics.get(schematicName);
-            if (schematic != null) {
-                Schematic cached = schematic.get();
-                if (cached != null) {
-                    return cached;
+        Schematic schematic = null;
+        InputStream inputSchematic = null;
+        synchronized (schematics) {
+            if (schematics.containsKey(schematicName)) {
+                WeakReference<Schematic> schematicReference = schematics.get(schematicName);
+                if (schematicReference != null) {
+                    schematic = schematicReference.get();
+                }
+            }
+            if (schematic == null) {
+                inputSchematic = findSchematic(schematicName, "schem");
+                if (inputSchematic != null) {
+                    schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
+                    schematics.put(schematicName, new WeakReference<>(schematic));
                 }
             }
         }
-        final InputStream inputSchematic = findSchematic(schematicName, "schem");
-        if (inputSchematic != null) {
-            com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
-            schematics.put(schematicName, new WeakReference<>(schematic));
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                try {
-                    CompatibilityLib.getSchematicUtils().loadSchematic(inputSchematic, schematic, getLogger());
-                    info("Finished loading schematic");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
 
-            return schematic;
+        if (inputSchematic != null && schematic != null) {
+            final InputStream loadInputSchematic = inputSchematic;
+            final com.elmakers.mine.bukkit.block.Schematic loadSchematic = (com.elmakers.mine.bukkit.block.Schematic)schematic;
+            Runnable loadTask = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        CompatibilityLib.getSchematicUtils().loadSchematic(loadInputSchematic, loadSchematic, getLogger());
+                        info("Finished loading schematic synchronously");
+                    } catch (Exception ex) {
+                        getLogger().warning("Failed to load schematic: " + schematicName);
+                    }
+                    try {
+                        loadInputSchematic.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+            };
+            if (synchronous) {
+                loadTask.run();
+            } else {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, loadTask);
+            }
         }
-        return null;
+        return schematic;
     }
 
     @Override
