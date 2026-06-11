@@ -21,6 +21,7 @@ public class SchematicPopulator extends MagicBlockPopulator {
     private int minY = 0;
     private int maxY = 0;
     private boolean searchUp = true;
+    private boolean conform = false;
     private boolean fillAir = false;
 
     @Override
@@ -31,6 +32,7 @@ public class SchematicPopulator extends MagicBlockPopulator {
         minPosition = config.getInt("min_position", minPosition);
         maxPosition = config.getInt("max_position", maxPosition);
         searchUp = config.getBoolean("search_up", searchUp);
+        conform = config.getBoolean("conform", conform);
         fillAir = config.getBoolean("fill_air", fillAir);
         return true;
     }
@@ -56,20 +58,28 @@ public class SchematicPopulator extends MagicBlockPopulator {
         final int startX = Math.min(maxSize - sizeX, offsetX);
         final int startZ = Math.min(maxSize - sizeZ, offsetZ);
         final int groundY = world.getGroundLevel();
-        final int startY = (searchUp ? getTopBlock(worldInfo, region, startX, groundY, startZ) : groundY) + RandomUtils.range(random, minY, maxY);
+        final int startY = (searchUp ? getTopBlock(worldInfo, region, startX + chunkBaseX, groundY, startZ + chunkBaseZ) : groundY) + RandomUtils.range(random, minY, maxY);
         final int maxHeight = worldInfo.getMaxHeight();
+        for (int dx = 0; dx < sizeX; dx++) {
+            for (int dz = 0; dz < sizeZ; dz++) {
+                final int x = dx + startX + chunkBaseX;
+                final int z = dz + startZ + chunkBaseZ;
+                int yOffset = 0;
+                if (conform) {
+                    int conformY = getTopBlock(worldInfo, region, x, startY, z);
+                    conformY = getBottomBlock(worldInfo, region, x, conformY, z);
+                    yOffset = conformY - startY;
+                }
 
-        for (int dy = 0; dy < sizeY; dy++) {
-            final int y = dy + startY;
-            if (y >= maxHeight) break;
+                for (int dy = 0; dy < sizeY; dy++) {
+                    final int y = dy + startY + yOffset;
+                    if (y >= maxHeight) break;
 
-            for (int dx = 0; dx < sizeX; dx++) {
-                for (int dz = 0; dz < sizeZ; dz++) {
                     final MaterialAndData block = schematic.getBlock(dx, dy, dz);
                     final Material material = block == null ? null : block.getMaterial();
                     if (material != null) {
                         if (material.isAir() && !fillAir) continue;
-                        setBlockData(region, dx + startX + chunkBaseX, y, dz + startZ + chunkBaseZ, block.createBlockData());
+                        setBlockData(region, x, y, z, block.createBlockData());
                     }
                 }
             }

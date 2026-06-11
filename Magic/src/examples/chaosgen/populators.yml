@@ -45,6 +45,7 @@ chaos_build6:
   class: Schematic
   min_position: -16
   max_position: 31
+  conform: true
   schematic: creeper_rug
 
 chaos_build7:
@@ -69,6 +70,7 @@ chaos_build10:
   class: Schematic
   min_position: -16
   max_position: 31
+  conform: true
   schematic: rainbow
 
 chaos_build11:

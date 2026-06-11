@@ -162,4 +162,16 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
         }
         return y - 1;
     }
+
+    protected int getBottomBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        if (!region.isInRegion(x, y, z)) {
+            return y;
+        }
+        Material material = region.getType(x, y, z);
+        while (y > worldInfo.getMinHeight() && material.isAir()) {
+            y--;
+            material = region.getType(x, y, z);
+        }
+        return y;
+    }
 }
