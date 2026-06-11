@@ -1,0 +1,9 @@
+worlds:
+  world_chaos:
+    name: "&4C&cH&eA&aO&bS"
+
+examples:
+  chaos:
+    instructions: |-
+      `<title text="Chaos World">`
+      `<li>``<command command="mwarp world chaos" text="Go to the Chaos world">`

@@ -11,6 +11,8 @@
    - Crops: Generate simple crop farms
    - Sequence: Run multiple other generators in order
    - Random: Randomly choose one generator from a weighted probability map
+   - Tower: Build a tower
+   - Schematic: Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
    - Added new populators: Tower
