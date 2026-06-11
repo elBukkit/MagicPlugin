@@ -1,0 +1,70 @@
+package com.elmakers.mine.bukkit.world.populator.builtin;
+
+import java.util.Random;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.Schematic;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+
+public class SchematicPopulator extends MagicBlockPopulator {
+    private String schematic;
+    private int minPosition = 0;
+    private int maxPosition = 0;
+    private int minY = 0;
+    private int maxY = 0;
+
+    @Override
+    public boolean onLoad(ConfigurationSection config) {
+        schematic = config.getString("schematic");
+        minY = config.getInt("min_y", minY);
+        maxY = config.getInt("max_y", maxY);
+        minPosition = config.getInt("min_position", minPosition);
+        maxPosition = config.getInt("max_position", maxPosition);
+        return true;
+    }
+
+    @Override
+    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+        MagicController controller = getController();
+        Schematic schematic = controller.loadSchematic(this.schematic, true);
+        if (schematic == null || !schematic.isLoaded()) {
+            controller.getLogger().warning("Unknown schematic: " + this.schematic);
+            return;
+        }
+        Vector size = schematic.getSize();
+        final int buffer = region.getBuffer();
+        final int chunkBaseX = (chunkX << 4) - buffer;
+        final int chunkBaseZ = (chunkZ << 4) - buffer;
+        final int maxSize = 16 + buffer * 2;
+        final int sizeX = Math.min(maxSize, size.getBlockX());
+        final int sizeY = size.getBlockY();
+        final int sizeZ = Math.min(maxSize, size.getBlockZ());
+        final int offsetX = RandomUtils.range(random, minPosition, maxPosition) + buffer;
+        final int offsetZ = RandomUtils.range(random, minPosition, maxPosition) + buffer;
+        final int startX = Math.min(maxSize - sizeX, offsetX);
+        final int startZ = Math.min(maxSize - sizeZ, offsetZ);
+        final int startY = world.getGroundLevel() + RandomUtils.range(random, minY, maxY);
+        final int maxHeight = worldInfo.getMaxHeight();
+
+        for (int dy = 0; dy < sizeY; dy++) {
+            final int y = dy + startY;
+            if (y >= maxHeight) break;
+
+            for (int dx = 0; dx < sizeX; dx++) {
+                for (int dz = 0; dz < sizeZ; dz++) {
+                    final MaterialAndData block = schematic.getBlock(dx, dy, dz);
+                    if (block != null) {
+                        region.setBlockData(dx + startX + chunkBaseX, y, dz + startZ + chunkBaseZ, block.createBlockData());
+                    }
+                }
+            }
+        }
+    }
+}
