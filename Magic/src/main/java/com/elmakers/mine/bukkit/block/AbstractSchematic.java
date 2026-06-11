@@ -135,7 +135,12 @@ public abstract class AbstractSchematic implements Schematic {
         int x = v.getBlockX() + center.getBlockX();
         int y = v.getBlockY() + center.getBlockY();
         int z = v.getBlockZ() + center.getBlockZ();
+        return getBlock(x, y, z);
+    }
 
+    @Nullable
+    @Override
+    public MaterialAndData getBlock(int x, int y, int z) {
         if (x < 0 || x >= blocks.length || y < 0 || y >= blocks[x].length || z < 0 || z >= blocks[x][y].length) {
             return null;
         }
