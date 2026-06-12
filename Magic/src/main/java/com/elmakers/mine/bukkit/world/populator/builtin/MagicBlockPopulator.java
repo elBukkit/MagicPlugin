@@ -14,9 +14,9 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.SimpleBlockPopulator;
 
-public class MagicBlockPopulator extends BaseBlockPopulator {
+public class MagicBlockPopulator extends SimpleBlockPopulator {
     protected MaterialSet replace;
     protected List<WeightedPair<String>> templateProbability = new ArrayList<>();
     protected ConfigurationSection parameters;
