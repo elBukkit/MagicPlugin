@@ -13,3 +13,18 @@ chaos:
     spawn_monsters: false
     spawn_phantoms: false
     spawn_patrols: false
+
+vanilla_chaos:
+  autoload: true
+  world: world_vanilla_chaos
+  generator: vanilla_chaos
+  time: 6000
+  bedrock_level: 0
+  ground_level: 1
+  game_rules:
+    advance_weather: false
+    advance_time: false
+    spawn_mobs: false
+    spawn_monsters: false
+    spawn_phantoms: false
+    spawn_patrols: false

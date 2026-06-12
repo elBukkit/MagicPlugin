@@ -77,11 +77,55 @@ public class RandomGenerator extends BaseChunkGenerator {
     }
 
     @Override
+    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        if (generator != null) {
+            generator.generateCaves(worldInfo, random, chunkX, chunkZ, chunk);
+        }
+    }
+
+    @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
         super.populate(worldInfo, random, chunkX, chunkZ, region);
         BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
         if (generator != null) {
             generator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
+    }
+
+    @Override
+    public boolean shouldGenerateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        return generator != null && generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ);
+    }
+
+    @Override
+    public boolean shouldGenerateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        return generator != null && generator.shouldGenerateSurface(worldInfo, random, chunkX, chunkZ);
+    }
+
+    @Override
+    public boolean shouldGenerateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        return generator != null && generator.shouldGenerateCaves(worldInfo, random, chunkX, chunkZ);
+    }
+
+    @Override
+    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        return generator != null && generator.shouldGenerateDecorations(worldInfo, random, chunkX, chunkZ);
+    }
+
+    @Override
+    public boolean shouldGenerateMobs(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        return generator != null && generator.shouldGenerateMobs(worldInfo, random, chunkX, chunkZ);
+    }
+
+    @Override
+    public boolean shouldGenerateStructures(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+        BaseChunkGenerator generator = getGenerator(worldInfo, chunkX, chunkZ);
+        return generator != null && generator.shouldGenerateStructures(worldInfo, random, chunkX, chunkZ);
     }
 }

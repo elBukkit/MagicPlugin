@@ -94,3 +94,13 @@ chaos:
   generators:
     - chaos_ground
     - chaos_surface
+
+vanilla_ground:
+  class: Vanilla
+  generate_structures: false
+
+vanilla_chaos:
+  class: Sequence
+  generators:
+    - vanilla_ground
+    - chaos_surface
