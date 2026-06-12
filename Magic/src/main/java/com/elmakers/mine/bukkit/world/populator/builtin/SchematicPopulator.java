@@ -15,7 +15,8 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class SchematicPopulator extends BaseBlockPopulator {
-    private String schematic;
+    private String schematicName;
+    private Schematic schematic;
     private int minPosition = 0;
     private int maxPosition = 0;
     private int minY = 0;
@@ -26,7 +27,8 @@ public class SchematicPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        schematic = config.getString("schematic");
+        schematic = null;
+        schematicName = config.getString("schematic");
         minY = config.getInt("min_y", minY);
         maxY = config.getInt("max_y", maxY);
         minPosition = config.getInt("min_position", minPosition);
@@ -40,9 +42,11 @@ public class SchematicPopulator extends BaseBlockPopulator {
     @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
         MagicController controller = getController();
-        Schematic schematic = controller.loadSchematic(this.schematic, true);
+        if (schematic == null) {
+            schematic = controller.loadSchematic(this.schematicName, true);
+        }
         if (schematic == null || !schematic.isLoaded()) {
-            controller.getLogger().warning("Unknown schematic: " + this.schematic);
+            controller.getLogger().warning("Unknown schematic: " + this.schematicName);
             return;
         }
         Vector size = schematic.getSize();
