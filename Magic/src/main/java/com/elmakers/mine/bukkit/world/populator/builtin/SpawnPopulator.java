@@ -8,7 +8,7 @@ import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class MobPopulator extends BaseBlockPopulator {
+public class SpawnPopulator extends BaseBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection config) {
         return true;
