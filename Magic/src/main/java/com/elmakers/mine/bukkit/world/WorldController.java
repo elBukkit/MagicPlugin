@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
 
@@ -143,7 +143,7 @@ public class WorldController implements Listener {
         return Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
     }
 
-    public MagicChunkGenerator createGenerator(MagicWorld world, String generatorKey) {
+    public BaseChunkGenerator createGenerator(MagicWorld world, String generatorKey) {
         if (generatorKey.isEmpty() || generatorKey.equals("none")) return null;
         ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
         if (generatorConfig == null) {
@@ -153,9 +153,9 @@ public class WorldController implements Listener {
         return createGenerator(world, generatorConfig);
     }
 
-    public MagicChunkGenerator createGenerator(MagicWorld world, ConfigurationSection generatorConfig) {
+    public BaseChunkGenerator createGenerator(MagicWorld world, ConfigurationSection generatorConfig) {
         final String generatorClass = generatorConfig.getString("class");
-        MagicChunkGenerator generator = MagicChunkGenerator.create(controller, generatorClass);
+        BaseChunkGenerator generator = BaseChunkGenerator.create(controller, generatorClass);
         if (generator == null) {
             controller.getLogger().warning("Invalid chunk generator class: " + generatorClass);
         } else {
@@ -168,7 +168,7 @@ public class WorldController implements Listener {
         return populatorConfigs.get(populatorKey);
     }
 
-    public void reloadGenerator(MagicWorld world, MagicChunkGenerator generator, String generatorKey) {
+    public void reloadGenerator(MagicWorld world, BaseChunkGenerator generator, String generatorKey) {
         ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
         if (generatorConfig != null) {
             generator.load(world, generatorConfig);

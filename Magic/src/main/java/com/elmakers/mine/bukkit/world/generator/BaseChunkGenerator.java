@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public abstract class MagicChunkGenerator extends ChunkGenerator {
+public abstract class BaseChunkGenerator extends ChunkGenerator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.generator.builtin";
 
     protected MagicWorld world;
@@ -36,7 +36,7 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     private BlockPopulator passthroughPopulator = new PassthroughBlockPopulator(this);
 
     @Nullable
-    public static MagicChunkGenerator create(MageController controller, String className) {
+    public static BaseChunkGenerator create(MageController controller, String className) {
         if (className == null) {
             className = "Void";
         }
@@ -64,12 +64,12 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
             return null;
         }
 
-        if (newObject == null || !(newObject instanceof MagicChunkGenerator)) {
+        if (newObject == null || !(newObject instanceof BaseChunkGenerator)) {
             controller.getLogger().warning("Error loading chunk generator: " + className + ", does it extend MagicChunkGenerator?");
             return null;
         }
 
-        return (MagicChunkGenerator)newObject;
+        return (BaseChunkGenerator)newObject;
     }
 
     public abstract void onLoad(ConfigurationSection configuration);

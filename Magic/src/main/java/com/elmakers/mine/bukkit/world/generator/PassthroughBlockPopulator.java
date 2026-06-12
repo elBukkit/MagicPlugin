@@ -7,9 +7,9 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
 public class PassthroughBlockPopulator extends BlockPopulator {
-    private final MagicChunkGenerator generator;
+    private final BaseChunkGenerator generator;
 
-    public PassthroughBlockPopulator(MagicChunkGenerator generator) {
+    public PassthroughBlockPopulator(BaseChunkGenerator generator) {
         this.generator = generator;
     }
 

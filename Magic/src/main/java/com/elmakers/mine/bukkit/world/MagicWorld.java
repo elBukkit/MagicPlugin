@@ -29,7 +29,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
-import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
@@ -66,7 +66,7 @@ public class MagicWorld {
     private Integer minHeight;
     private GameMode gameMode;
     private GameMode leavingGameMode;
-    private MagicChunkGenerator generator;
+    private BaseChunkGenerator generator;
     private int groundLevel = 64;
     private int bedrockLevel = 0;
     private Integer time;
@@ -243,7 +243,7 @@ public class MagicWorld {
         if (world == null) return;
 
         ChunkGenerator chunkGenerator = world.getGenerator();
-        if (chunkGenerator instanceof MagicChunkGenerator generator) {
+        if (chunkGenerator instanceof BaseChunkGenerator generator) {
             if (generatorConfig != null) {
                 generator.load(this, generatorConfig);
             } else if (generatorKey != null && !generatorKey.isEmpty()) {

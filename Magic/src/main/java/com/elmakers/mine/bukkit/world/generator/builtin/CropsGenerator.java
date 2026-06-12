@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
-import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 
-public class CropsGenerator extends MagicChunkGenerator {
+public class CropsGenerator extends BaseChunkGenerator {
     private boolean consistent = false;
     private boolean searchUp = true;
     private double minAge = 0;
