@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 
-public abstract class MagicBlockPopulator extends BlockPopulator {
+public abstract class BaseBlockPopulator extends BlockPopulator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
     protected MagicWorld world;
@@ -38,7 +38,7 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
         return world.getController();
     }
 
-    public static List<MagicBlockPopulator> loadPopulators(MagicWorld world, ConfigurationSection config) {
+    public static List<BaseBlockPopulator> loadPopulators(MagicWorld world, ConfigurationSection config) {
         ConfigurationSection populatorConfig = config.getConfigurationSection("populators");
         if (populatorConfig == null) {
             populatorConfig = config.getConfigurationSection("chunk_generate");
@@ -49,8 +49,8 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
         return loadFromSections(world, populatorConfig);
     }
 
-    private static List<MagicBlockPopulator> loadFromSections(MagicWorld world, ConfigurationSection populatorConfigs) {
-        List<MagicBlockPopulator> populators = new ArrayList<>();
+    private static List<BaseBlockPopulator> loadFromSections(MagicWorld world, ConfigurationSection populatorConfigs) {
+        List<BaseBlockPopulator> populators = new ArrayList<>();
         MagicController controller = world.getController();
         for (String key : populatorConfigs.getKeys(false)) {
             ConfigurationSection handlerConfig = populatorConfigs.getConfigurationSection(key);
@@ -63,7 +63,7 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
             }
 
             String className = handlerConfig.getString("class");
-            MagicBlockPopulator populator = MagicBlockPopulator.create(controller, className);
+            BaseBlockPopulator populator = BaseBlockPopulator.create(controller, className);
             if (populator != null) {
                 if (populator.load(world, handlerConfig)) {
                     populators.add(populator);
@@ -78,8 +78,8 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
         return populators;
     }
 
-    private static List<MagicBlockPopulator> loadFromList(MagicWorld world, List<String> populatorConfigs) {
-        List<MagicBlockPopulator> populators = new ArrayList<>();
+    private static List<BaseBlockPopulator> loadFromList(MagicWorld world, List<String> populatorConfigs) {
+        List<BaseBlockPopulator> populators = new ArrayList<>();
         if (populatorConfigs == null || populatorConfigs.isEmpty()) return populators;
         MagicController controller = world.getController();
         for (String key : populatorConfigs) {
@@ -89,7 +89,7 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
                 return null;
             }
             final String populatorClass = populatorConfig.getString("class");
-            MagicBlockPopulator populator = MagicBlockPopulator.create(controller, populatorClass);
+            BaseBlockPopulator populator = BaseBlockPopulator.create(controller, populatorClass);
             if (populator == null) {
                 controller.getLogger().warning("Invalid chunk generator class: " + populatorClass);
             } else {
@@ -108,7 +108,7 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
     }
 
     @Nullable
-    public static MagicBlockPopulator create(MageController controller, String className) {
+    public static BaseBlockPopulator create(MageController controller, String className) {
         if (className == null) return null;
 
         if (className.indexOf('.') <= 0) {
@@ -134,12 +134,12 @@ public abstract class MagicBlockPopulator extends BlockPopulator {
             return null;
         }
 
-        if (newObject == null || !(newObject instanceof MagicBlockPopulator)) {
+        if (newObject == null || !(newObject instanceof BaseBlockPopulator)) {
             controller.getLogger().warning("Error loading block populator: " + className + ", does it extend MagicBlockPopulator?");
             return null;
         }
 
-        return (MagicBlockPopulator)newObject;
+        return (BaseBlockPopulator)newObject;
     }
 
     protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {

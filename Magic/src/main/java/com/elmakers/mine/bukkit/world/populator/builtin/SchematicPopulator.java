@@ -12,9 +12,9 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class SchematicPopulator extends MagicBlockPopulator {
+public class SchematicPopulator extends BaseBlockPopulator {
     private String schematic;
     private int minPosition = 0;
     private int maxPosition = 0;

@@ -15,9 +15,9 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class TowerPopulator extends MagicBlockPopulator {
+public class TowerPopulator extends BaseBlockPopulator {
     private PerlinNoiseGenerator perlin;
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
     private int minHeight = 32;

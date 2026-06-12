@@ -30,7 +30,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.generator.MagicChunkGenerator;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
 import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
@@ -278,7 +278,7 @@ public class MagicWorld {
 
     public void installPopulators(World world) {
         if (world == null || installed || chunkHandler.isEmpty()) return;
-        Collection<MagicBlockPopulator> populators = chunkHandler.getPopulators();
+        Collection<BaseBlockPopulator> populators = chunkHandler.getPopulators();
         if (populators == null || populators.isEmpty()) return;
         controller.info("Installing Populators in " + world.getName());
         world.getPopulators().addAll(populators);

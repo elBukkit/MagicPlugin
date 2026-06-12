@@ -25,14 +25,14 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public abstract class MagicChunkGenerator extends ChunkGenerator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.generator.builtin";
 
     protected MagicWorld world;
     private BiomeProvider biomeProvider;
-    private List<MagicBlockPopulator> populators = new ArrayList<>();
+    private List<BaseBlockPopulator> populators = new ArrayList<>();
     private BlockPopulator passthroughPopulator = new PassthroughBlockPopulator(this);
 
     @Nullable
@@ -77,7 +77,7 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     public void load(MagicWorld world, ConfigurationSection configuration) {
         this.world = world;
         biomeProvider = createDefaultBiomeProvider(configuration);
-        populators = MagicBlockPopulator.loadPopulators(world, configuration);
+        populators = BaseBlockPopulator.loadPopulators(world, configuration);
         onLoad(configuration);
     }
 
@@ -142,7 +142,7 @@ public abstract class MagicChunkGenerator extends ChunkGenerator {
     }
 
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        for (MagicBlockPopulator populator : populators) {
+        for (BaseBlockPopulator populator : populators) {
             populator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
     }

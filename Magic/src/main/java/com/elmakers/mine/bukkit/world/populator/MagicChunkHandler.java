@@ -12,17 +12,17 @@ import com.elmakers.mine.bukkit.world.MagicWorld;
 public class MagicChunkHandler {
 
     private final MagicWorld world;
-    private List<MagicBlockPopulator> chunkPopulators = new ArrayList<>();
+    private List<BaseBlockPopulator> chunkPopulators = new ArrayList<>();
 
     public MagicChunkHandler(MagicWorld world) {
         this.world = world;
     }
 
     public void load(MagicWorld world, ConfigurationSection config) {
-        chunkPopulators = MagicBlockPopulator.loadPopulators(world, config);
+        chunkPopulators = BaseBlockPopulator.loadPopulators(world, config);
     }
 
-    public Collection<MagicBlockPopulator> getPopulators() {
+    public Collection<BaseBlockPopulator> getPopulators() {
         return chunkPopulators;
     }
 

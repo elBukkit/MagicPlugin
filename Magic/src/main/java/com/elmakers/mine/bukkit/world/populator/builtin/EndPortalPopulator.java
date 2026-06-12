@@ -10,9 +10,9 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class EndPortalPopulator extends MagicBlockPopulator {
+public class EndPortalPopulator extends BaseBlockPopulator {
     private int minPortalWidth = 3;
     private int maxPortalWidth = 3;
     private int minTunnelHeight = 0;

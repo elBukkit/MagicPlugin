@@ -6,9 +6,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class MobPopulator extends MagicBlockPopulator {
+public class MobPopulator extends BaseBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection config) {
         return true;

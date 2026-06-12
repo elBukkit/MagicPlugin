@@ -21,9 +21,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class ChestPopulator extends MagicBlockPopulator {
+public class ChestPopulator extends BaseBlockPopulator {
     private final List<WeightedPair<Integer>> baseProbability = new ArrayList<>();
     private final List<WeightedPair<String>> itemProbability = new ArrayList<>();
     private final Set<Material> removeItems = new HashSet<>();
