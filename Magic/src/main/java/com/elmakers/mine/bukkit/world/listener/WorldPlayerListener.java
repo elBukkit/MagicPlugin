@@ -73,6 +73,7 @@ public class WorldPlayerListener implements Listener {
         MagicWorld magicWorld = controller.getWorld(player.getWorld().getName());
         if (magicWorld == null) return;
         String respawnWorld = magicWorld.getRespawnWorld();
+        if (respawnWorld == null || respawnWorld.isEmpty()) return;
         World world = Bukkit.getWorld(respawnWorld);
         if (world != null) {
             player.setRespawnLocation(world.getSpawnLocation(), true);
