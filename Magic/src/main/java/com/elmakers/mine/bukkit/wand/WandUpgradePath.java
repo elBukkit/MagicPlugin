@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.wand;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -707,7 +706,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (levelMap == null) return false;
 
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
-        Deque<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(properties);
+        List<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(properties);
 
         Mage mage = properties.getMage();
         if (mage != null && mage.getDebugLevel() > 0) {

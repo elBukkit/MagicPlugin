@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.world.block.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.world.block.BlockRule;
 
 public class MagicBlockRule extends BlockRule {
     protected MaterialSet replace;
-    protected Deque<WeightedPair<String>> templateProbability = new ArrayDeque<>();
+    protected List<WeightedPair<String>> templateProbability = new ArrayList<>();
     protected ConfigurationSection parameters;
 
     @Override

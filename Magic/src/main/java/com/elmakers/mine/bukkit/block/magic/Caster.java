@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.block.magic;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
@@ -16,13 +16,13 @@ import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
 public class Caster {
     @Nonnull
-    private final Deque<WeightedPair<String>> spells;
+    private final List<WeightedPair<String>> spells;
     private final boolean recast;
     private final boolean undoAll;
     private final boolean allowOverlapping;
 
     public Caster(@Nonnull MagicBlockTemplate automaton, ConfigurationSection configuration) {
-        spells = new ArrayDeque<>();
+        spells = new ArrayList<>();
         RandomUtils.populateStringProbabilityMap(spells, configuration, "spells");
         recast = configuration.getBoolean("recast", true);
         undoAll = configuration.getBoolean("undo_all", false);

@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class MagicBlockPopulator extends BaseBlockPopulator {
     protected MaterialSet replace;
-    protected Deque<WeightedPair<String>> templateProbability = new ArrayDeque<>();
+    protected List<WeightedPair<String>> templateProbability = new ArrayList<>();
     protected ConfigurationSection parameters;
 
     @Override

@@ -1,9 +1,7 @@
 package com.elmakers.mine.bukkit.world.block.builtin;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nonnull;
@@ -24,14 +22,14 @@ import com.elmakers.mine.bukkit.world.block.BlockRule;
 
 public class CastRule extends BlockRule {
     protected List<CastSpell>        spells;
-    protected Deque<WeightedPair<CastSpell>> spellProbability;
+    protected List<WeightedPair<CastSpell>> spellProbability;
 
     @Override
     public boolean onLoad(ConfigurationSection parameters) {
         Collection<String> spells = parameters.getStringList("spells");
         if (spells == null || spells.size() == 0) {
             ConfigurationSection spellMap = parameters.getConfigurationSection("spells");
-            spellProbability = new ArrayDeque<>();
+            spellProbability = new ArrayList<>();
             RandomUtils.populateProbabilityMap(CastSpellParser.getInstance(), spellProbability, spellMap);
             if (spellProbability.isEmpty()) {
                 return false;

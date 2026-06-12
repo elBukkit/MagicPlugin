@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.world.block.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
@@ -19,11 +19,11 @@ import com.elmakers.mine.bukkit.world.BlockResult;
 import com.elmakers.mine.bukkit.world.block.BlockRule;
 
 public class DropRule extends BlockRule {
-    protected Deque<WeightedPair<String>> dropProbability;
+    protected List<WeightedPair<String>> dropProbability;
 
     @Override
     public boolean onLoad(ConfigurationSection parameters) {
-        dropProbability = new ArrayDeque<>();
+        dropProbability = new ArrayList<>();
         RandomUtils.populateStringProbabilityMap(dropProbability, parameters, "items");
         logBlockRule("Dropping one of " + StringUtils.join(dropProbability, ","));
         return !dropProbability.isEmpty();

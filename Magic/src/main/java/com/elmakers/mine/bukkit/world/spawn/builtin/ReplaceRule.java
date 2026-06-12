@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.world.spawn.builtin;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -24,7 +22,7 @@ import com.elmakers.mine.bukkit.world.spawn.SpawnRule;
 
 public class ReplaceRule extends SpawnRule {
     // Keep these separate for efficiency
-    protected Deque<WeightedPair<SpawnOption>> replaceProbability;
+    protected List<WeightedPair<SpawnOption>> replaceProbability;
     protected int yOffset;
     protected boolean atHighestBlock;
 
@@ -38,7 +36,7 @@ public class ReplaceRule extends SpawnRule {
             parameters.set("sub_type", parameters.get("replace_sub_type"));
         }
 
-        replaceProbability = new ArrayDeque<>();
+        replaceProbability = new ArrayList<>();
         SpawnOptionParser parser = SpawnOptionParser.getInstance(controller);
         RandomUtils.populateProbabilityMap(parser, replaceProbability, parameters, "type");
         if (replaceProbability.isEmpty()) {

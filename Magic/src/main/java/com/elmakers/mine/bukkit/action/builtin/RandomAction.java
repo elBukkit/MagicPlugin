@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
 public class RandomAction extends CompoundAction
 {
-    private Deque<WeightedPair<ActionContext>> actionProbability;
+    private List<WeightedPair<ActionContext>> actionProbability;
     private ActionContext currentAction = null;
     private MageSpell mageSpell;
 
@@ -61,7 +61,7 @@ public class RandomAction extends CompoundAction
     }
 
     protected void mapActions(CastContext context) {
-        actionProbability = new ArrayDeque<>();
+        actionProbability = new ArrayList<>();
         ActionHandler actions = getHandler("actions");
         if (actions != null)
         {

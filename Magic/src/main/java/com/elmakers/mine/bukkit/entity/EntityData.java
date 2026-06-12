@@ -1,10 +1,8 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -149,19 +147,19 @@ public class EntityData
     protected boolean isSuperProtected = false;
     protected boolean registerByName = false;
 
-    protected Deque<WeightedPair<ItemData>> itemInHand;
-    protected Deque<WeightedPair<ItemData>> itemInOffhand;
-    protected Deque<WeightedPair<ItemData>> helmet;
-    protected Deque<WeightedPair<ItemData>> chestplate;
-    protected Deque<WeightedPair<ItemData>> leggings;
-    protected Deque<WeightedPair<ItemData>> boots;
+    protected List<WeightedPair<ItemData>> itemInHand;
+    protected List<WeightedPair<ItemData>> itemInOffhand;
+    protected List<WeightedPair<ItemData>> helmet;
+    protected List<WeightedPair<ItemData>> chestplate;
+    protected List<WeightedPair<ItemData>> leggings;
+    protected List<WeightedPair<ItemData>> boots;
 
     protected Integer xp;
     protected Integer dropXp;
 
     protected boolean defaultDrops;
     protected boolean dropsRequirePlayerKiller;
-    protected List<Deque<WeightedPair<String>>> drops;
+    protected List<List<WeightedPair<String>>> drops;
     protected ConfigurationSection loot;
     protected ConfigurationSection brain;
     protected int interval;
@@ -488,13 +486,13 @@ public class EntityData
                     } else {
                         table = (ConfigurationSection)item;
                     }
-                    Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
+                    List<WeightedPair<String>> dropProbability = new ArrayList<>();
                     RandomUtils.populateStringProbabilityMap(dropProbability, table, 0, 0, 0);
                     drops.add(dropProbability);
                 } else {
                     List<String> dropList = ConfigurationUtils.getStringList(item);
                     if (dropList != null) {
-                        Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
+                        List<WeightedPair<String>> dropProbability = new ArrayList<>();
                         RandomUtils.populateStringProbabilityList(dropProbability, dropList);
                         drops.add(dropProbability);
                     }
@@ -1240,7 +1238,7 @@ public class EntityData
         }
     }
 
-    protected void copyEquipmentPieceTo(Deque<WeightedPair<ItemData>> item, ItemUpdatedCallback callback) {
+    protected void copyEquipmentPieceTo(List<WeightedPair<ItemData>> item, ItemUpdatedCallback callback) {
         ItemData itemData = RandomUtils.weightedRandom(item);
         if (itemData != null) {
             itemData.getItemStack(1, callback);
@@ -1390,7 +1388,7 @@ public class EntityData
         }
 
         if (drops != null) {
-            for (Deque<WeightedPair<String>> dropTable : drops) {
+            for (List<WeightedPair<String>> dropTable : drops) {
                 String key = RandomUtils.weightedRandom(dropTable);
                 if (key != null && !key.equalsIgnoreCase("none")) {
                     ItemStack item = controller.createItem(key);

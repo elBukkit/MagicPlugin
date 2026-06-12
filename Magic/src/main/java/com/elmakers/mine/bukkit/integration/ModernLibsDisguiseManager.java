@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.integration;
 
 import static com.google.common.base.Verify.verifyNotNull;
 
-import java.util.Deque;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -64,7 +64,7 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
                 DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
                 switch (disguiseType) {
                     case PLAYER:
-                        Deque<WeightedPair<String>> skins = RandomUtils.createStringProbabilityMap(configuration, "skin");
+                        List<WeightedPair<String>> skins = RandomUtils.createStringProbabilityMap(configuration, "skin");
                         String skin = RandomUtils.weightedRandom(skins);
                         String name = configuration.getString("name", entity.getCustomName());
                         if (name == null || name.isEmpty()) {

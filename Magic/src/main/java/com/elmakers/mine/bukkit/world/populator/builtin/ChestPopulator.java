@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -25,8 +24,8 @@ import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class ChestPopulator extends MagicBlockPopulator {
-    private final Deque<WeightedPair<Integer>> baseProbability = new ArrayDeque<>();
-    private final Deque<WeightedPair<String>> itemProbability = new ArrayDeque<>();
+    private final List<WeightedPair<Integer>> baseProbability = new ArrayList<>();
+    private final List<WeightedPair<String>> itemProbability = new ArrayList<>();
     private final Set<Material> removeItems = new HashSet<>();
     private boolean clearItems = false;
     private int maxY = 255;
