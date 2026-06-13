@@ -22,21 +22,30 @@ public class RandomGenerator extends BaseChunkGenerator {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
         ConfigurationSection generatorsConfig = config.getConfigurationSection("generators");
-        if (generatorsConfig == null) {
-            world.getController().getLogger().warning("Random generator missing 'generators' section");
-            return false;
-        }
-        for (String generatorId : generatorsConfig.getKeys(false)) {
-            if (generatorsConfig.isConfigurationSection(generatorId)) {
-                ConfigurationSection generatorConfig = generatorsConfig.getConfigurationSection(generatorId);
-                generatorId = generatorConfig.getString("generator", generatorId);
-                BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
-                DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromConfig(generator, generatorConfig);
-                generators.add(entry);
+        if (generatorsConfig != null) {
+            for (String generatorId : generatorsConfig.getKeys(false)) {
+                if (generatorsConfig.isConfigurationSection(generatorId)) {
+                    ConfigurationSection generatorConfig = generatorsConfig.getConfigurationSection(generatorId);
+                    generatorId = generatorConfig.getString("generator", generatorId);
+                    BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
+                    DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromConfig(generator, generatorConfig);
+                    generators.add(entry);
+                } else {
+                    BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
+                    DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
+                    generators.add(entry);
+                }
+            }
+        } else {
+            List<String> generatorIds = config.getStringList("generators");
+            if (generatorIds != null) {
+                for (String generatorId : generatorIds) {
+                    BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
+                    DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromString(world.getLogger(), generator, "1");
+                    generators.add(entry);
+                }
             } else {
-                BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
-                DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
-                generators.add(entry);
+                world.getController().getLogger().warning("Random generator missing 'generators' section");
             }
         }
         return !generators.isEmpty();

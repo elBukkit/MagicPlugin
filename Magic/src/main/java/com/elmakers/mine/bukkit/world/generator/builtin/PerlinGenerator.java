@@ -12,7 +12,6 @@ import org.bukkit.util.noise.PerlinNoiseGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 
