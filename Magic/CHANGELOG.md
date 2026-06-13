@@ -15,7 +15,7 @@
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
    - Added new populators: 
-     - Grid : Place a grid of populators, useful for jigsaw-like layouts
+     - Grid : Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
      - Tower : Build a randomized tower
      - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
      - Spawn : Spawn some mobs from a distance-weighted probability map

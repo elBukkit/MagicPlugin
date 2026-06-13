@@ -1,0 +1,313 @@
+dungeon_random_1x1:
+  class: Random
+  populators:
+    - dungeon_1x1_a
+
+dungeon_1x1_a:
+  class: Schematic
+  schematic: dungeon_1x1_a
+  search_up: false
+
+dungeon_random_2x1:
+  class: Random
+  populators:
+    - dungeon_2x1_a
+
+dungeon_2x1_a:
+  class: Schematic
+  schematic: dungeon_2x1_a
+  search_up: false
+
+dungeon_random_1x2:
+  class: Random
+  populators:
+    - dungeon_1x2_a
+
+dungeon_1x2_a:
+  class: Schematic
+  schematic: dungeon_1x2_a
+  search_up: false
+
+dungeon_random_3x1:
+  class: Random
+  populators:
+    - dungeon_3x1_a
+
+dungeon_3x1_a:
+  class: Schematic
+  schematic: dungeon_3x1_a
+  search_up: false
+
+dungeon_random_1x3:
+  class: Random
+  populators:
+    - dungeon_1x3_a
+
+dungeon_1x3_a:
+  class: Schematic
+  schematic: dungeon_1x3_a
+  search_up: false
+
+dungeon_grid_1x1:
+  class: Random
+  populators:
+    - dungeon_3x3_a
+
+dungeon_3x3_a:
+  class: Schematic
+  schematic: dungeon_3x3_a
+  min_position: -16
+  max_position: -16
+  search_up: false
+
+dungeon_grid_3x3:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_1x1
+      x: -1
+      z: -1
+    1x2:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 0
+    1x3:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 1
+    2x1:
+      populator: dungeon_random_1x1
+      x: 0
+      z: -1
+    2x2:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    2x3:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 1
+    3x1:
+      populator: dungeon_random_1x1
+      x: 1
+      z: -1
+    3x2:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 0
+    3x3:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 1
+
+dungeon_grid_3x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_1x3
+      x: -1
+      z: -1
+    2x1:
+      populator: dungeon_random_1x1
+      x: 0
+      z: -1
+    2x2:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    2x3:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 1
+    3x1:
+      populator: dungeon_random_1x1
+      x: 1
+      z: -1
+    3x2:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 0
+    3x3:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 1
+
+dungeon_grid_1x3:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_3x1
+      x: -1
+      z: -1
+    1x2:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 0
+    1x3:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 1
+    2x2:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    2x3:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 1
+    3x2:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 0
+    3x3:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 1
+
+dungeon_grid_1x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_3x1
+      x: -1
+      z: -1
+    1x2:
+      populator: dungeon_random_3x1
+      x: -1
+      z: 0
+    1x3:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 1
+    2x3:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 1
+    3x3:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 1
+
+dungeon_grid_1x1x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_3x1
+      x: -1
+      z: -1
+    1x2:
+      populator: dungeon_random_3x1
+      x: -1
+      z: 0
+    1x3:
+      populator: dungeon_random_3x1
+      x: -1
+      z: 1
+
+dungeon_grid_1x1x1_b:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_1x3
+      x: -1
+      z: -1
+    2x1:
+      populator: dungeon_random_1x3
+      x: 0
+      z: -1
+    3x1:
+      populator: dungeon_random_1x3
+      x: 1
+      z: -1
+
+dungeon_grid_1x2x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_2x1
+      x: -1
+      z: -1
+    1x2:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 0
+    1x3:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 1
+    2x2:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    2x3:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 1
+    3x1:
+      populator: dungeon_random_1x1
+      x: 1
+      z: -1
+    3x2:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 0
+    3x3:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 1
+
+dungeon_grid_1x1x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_1x2
+      x: -1
+      z: -1
+    1x3:
+      populator: dungeon_random_1x1
+      x: -1
+      z: 1
+    2x1:
+      populator: dungeon_random_1x1
+      x: 0
+      z: -1
+    2x2:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    2x3:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 1
+    3x1:
+      populator: dungeon_random_1x1
+      x: 1
+      z: -1
+    3x2:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 0
+    3x3:
+      populator: dungeon_random_1x1
+      x: 1
+      z: 1
+
+dungeon_rooms:
+  class: Random
+  populators:
+    dungeon_grid_1x1x2:
+      frequency: 48
+    dungeon_grid_1x2x1:
+      frequency: 48
+    dungeon_grid_1x3:
+      frequency: 48
+    dungeon_grid_3x1:
+      frequency: 48
+    dungeon_grid_1x1:
+      frequency: 48
+    dungeon_grid_1x2:
+      frequency: 48
+    dungeon_grid_1x1x1:
+      frequency: 48
+    dungeon_grid_1x1x1_b:
+      frequency: 48
