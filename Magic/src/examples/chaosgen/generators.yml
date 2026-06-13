@@ -44,51 +44,6 @@ chaos_surface:
       frequency: 48
     none: 1
 
-chaos_tower:
-  populators: chaos_tower
-
-chaos_build1:
-  populators: chaos_build1
-
-chaos_build2:
-  populators: chaos_build2
-
-chaos_build3:
-  populators: chaos_build3
-
-chaos_build4:
-  populators: chaos_build4
-
-chaos_build5:
-  populators: chaos_build5
-
-chaos_build6:
-  populators: chaos_build6
-
-chaos_build7:
-  populators: chaos_build7
-
-chaos_build8:
-  populators: chaos_build8
-
-chaos_build9:
-  populators: chaos_build9
-
-chaos_build10:
-  populators: chaos_build10
-
-chaos_build11:
-  populators: chaos_build11
-  
-chaos_build12:
-  populators: chaos_build12
-
-chaos_build13:
-  populators: chaos_build13
-
-chaos_build14:
-  populators: chaos_build14
-
 chaos:
   class: Sequence
   generators:

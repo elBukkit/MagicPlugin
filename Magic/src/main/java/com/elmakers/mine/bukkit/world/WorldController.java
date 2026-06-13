@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -147,6 +148,13 @@ public class WorldController implements Listener {
         if (generatorKey.isEmpty() || generatorKey.equals("none")) return null;
         ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
         if (generatorConfig == null) {
+            // Auto-generate empty config
+            if (populatorConfigs.containsKey(generatorKey)) {
+                ConfigurationSection voidConfig = new MemoryConfiguration();
+                voidConfig.set("populators", generatorKey);
+                generatorConfigs.put(generatorKey, voidConfig);
+                return createGenerator(world, voidConfig);
+            }
             controller.getLogger().warning("Invalid chunk generator: " + generatorKey);
             return null;
         }

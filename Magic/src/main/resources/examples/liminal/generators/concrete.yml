@@ -22,9 +22,6 @@ concrete_food:
   min_position: 0
   max_position: 14
 
-concrete_tower:
-  populators: concrete_tower
-
 concrete_exit:
   populators:
   - concrete_tower
