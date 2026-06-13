@@ -28,8 +28,7 @@ public class PerlinGenerator extends BaseChunkGenerator {
     private List<MaterialAndData> topBlocks = Collections.emptyList();
 
     @Override
-    public void onLoad(ConfigurationSection config) {
-        final MageController controller = world.getController();
+    public boolean onLoad(ConfigurationSection config) {
         noiseScale = config.getDouble("noise", noiseScale);
         minElevation = config.getInt("min_elevation", minElevation);
         maxElevation = config.getInt("max_elevation", maxElevation);
@@ -37,6 +36,7 @@ public class PerlinGenerator extends BaseChunkGenerator {
         maxClipElevation = config.getInt("max_clip_elevation", maxClipElevation);
         groundBlocks = parseBlocks(config, "blocks", "dirts");
         topBlocks = parseBlocks(config, "top_blocks");
+        return true;
     }
 
     @Override

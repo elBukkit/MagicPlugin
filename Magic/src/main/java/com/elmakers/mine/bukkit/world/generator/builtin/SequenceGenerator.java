@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 public class SequenceGenerator extends BaseChunkGenerator {
     private List<BaseChunkGenerator> generators = new ArrayList<>();
 
-    public void onLoad(ConfigurationSection config) {
+    public boolean onLoad(ConfigurationSection config) {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
         List<String> generatorIds = ConfigurationUtils.getStringList(config, "generators");
@@ -28,6 +28,7 @@ public class SequenceGenerator extends BaseChunkGenerator {
                 world.getLogger().warning("Invalid generator: " + generatorId);
             }
         }
+        return !generators.isEmpty();
     }
 
     @Override

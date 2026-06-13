@@ -18,13 +18,13 @@ public class RandomGenerator extends BaseChunkGenerator {
     private List<DistanceWeighted<BaseChunkGenerator>> generators = new ArrayList<>();
 
     @Override
-    public void onLoad(ConfigurationSection config) {
+    public boolean onLoad(ConfigurationSection config) {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
         ConfigurationSection generatorsConfig = config.getConfigurationSection("generators");
         if (generatorsConfig == null) {
-            world.getController().getLogger().warning("Random populator missing 'generators' section");
-            return;
+            world.getController().getLogger().warning("Random generator missing 'generators' section");
+            return false;
         }
         for (String generatorId : generatorsConfig.getKeys(false)) {
             if (generatorsConfig.isConfigurationSection(generatorId)) {
@@ -39,6 +39,7 @@ public class RandomGenerator extends BaseChunkGenerator {
                 generators.add(entry);
             }
         }
+        return !generators.isEmpty();
     }
 
     protected BaseChunkGenerator getGenerator(WorldInfo worldInfo, int chunkX, int chunkZ) {

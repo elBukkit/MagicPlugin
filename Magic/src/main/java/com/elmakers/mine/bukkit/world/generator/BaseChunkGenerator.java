@@ -72,13 +72,13 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         return (BaseChunkGenerator)newObject;
     }
 
-    public abstract void onLoad(ConfigurationSection configuration);
+    public abstract boolean onLoad(ConfigurationSection configuration);
 
-    public void load(MagicWorld world, ConfigurationSection configuration) {
+    public boolean load(MagicWorld world, ConfigurationSection configuration) {
         this.world = world;
         biomeProvider = createDefaultBiomeProvider(configuration);
         populators = BaseBlockPopulator.loadPopulators(world, configuration);
-        onLoad(configuration);
+        return onLoad(configuration);
     }
 
     @Override

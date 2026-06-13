@@ -17,13 +17,14 @@ public class VanillaGenerator extends BaseChunkGenerator {
     private boolean generateStructures = true;
 
     @Override
-    public void onLoad(ConfigurationSection configuration) {
+    public boolean onLoad(ConfigurationSection configuration) {
         generateNoise = configuration.getBoolean("generate_noise", generateNoise);
         generateSurface = configuration.getBoolean("generate_surface", generateSurface);
         generateCaves = configuration.getBoolean("generate_caves", generateCaves);
         generateDecorations = configuration.getBoolean("generate_decorations", generateDecorations);
         generateMobs = configuration.getBoolean("generate_mobs", generateMobs);
         generateStructures = configuration.getBoolean("generate_structures", generateStructures);
+        return true;
     }
 
     @Override

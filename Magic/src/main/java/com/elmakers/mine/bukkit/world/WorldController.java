@@ -167,7 +167,9 @@ public class WorldController implements Listener {
         if (generator == null) {
             controller.getLogger().warning("Invalid chunk generator class: " + generatorClass);
         } else {
-            generator.load(world, generatorConfig);
+            if (!generator.load(world, generatorConfig)) {
+                generator = null;
+            }
         }
         return generator;
     }

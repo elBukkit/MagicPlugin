@@ -30,7 +30,7 @@ public class CropsGenerator extends BaseChunkGenerator {
     private List<MaterialAndData> supportBlocks = Collections.emptyList();
 
     @Override
-    public void onLoad(ConfigurationSection config) {
+    public boolean onLoad(ConfigurationSection config) {
         consistent = config.getBoolean("consistent", consistent);
         minAge = config.getDouble("min_age", minAge);
         maxAge = config.getDouble("max_age", maxAge);
@@ -43,6 +43,7 @@ public class CropsGenerator extends BaseChunkGenerator {
         minWidth = config.getInt("min_width", minWidth);
         maxWidth = config.getInt("max_width", maxWidth);
         searchUp = config.getBoolean("search_up", searchUp);
+        return true;
     }
 
     @Override
