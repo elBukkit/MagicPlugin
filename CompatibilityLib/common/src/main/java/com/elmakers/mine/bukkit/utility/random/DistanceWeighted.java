@@ -27,14 +27,14 @@ public class DistanceWeighted<T> {
         minDistanceSquared = minDistance * minDistance;
         int maxDistance = config.getInt("max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
-        weight = config.getDouble("weight");
-        frequency = config.getInt("weight");
+        weight = config.getDouble("weight", 1);
+        frequency = config.getInt("frequency");
     }
 
     private DistanceWeighted(Logger logger, T value, String weightConfig) {
         this.value = value;
         String[] pieces = StringUtils.split(weightConfig, ",");
-        double weight = 0;
+        double weight = 1;
         int minDistance = 0;
         int maxDistance = 0;
         int frequency = 0;
