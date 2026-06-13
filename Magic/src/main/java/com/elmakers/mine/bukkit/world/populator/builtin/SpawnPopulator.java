@@ -92,8 +92,8 @@ public class SpawnPopulator extends BaseBlockPopulator {
             for (int x = baseX - searchX; x < x + searchX && !spawned; x++) {
                 for (int z = baseZ - searchZ; z < z + searchZ && !spawned; z++) {
                     for (int y = baseY - searchY; y < y + searchY && !spawned; y++) {
-                        if (!region.isInRegion(x, y, z) || !region.isInRegion(x, y + 1, z)) continue;
-                        if (region.getType(x, y, z).isAir() && region.getType(x, y + 1, z).isAir()) {
+                        if (!region.isInRegion(x, y, z) || !region.isInRegion(x, y + 1, z) || !region.isInRegion(x, y - 1, z)) continue;
+                        if (region.getType(x, y, z).isAir() && region.getType(x, y + 1, z).isAir() && !region.getType(x, y - 1, z).isAir()) {
                             Entity spawnedEntity = region.spawnEntity(new Location(targetWorld, x, y, z), entityData.getType(), false);
                             spawned = true;
                             if (spawnedEntity != null) {
