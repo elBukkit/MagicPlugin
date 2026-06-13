@@ -829,11 +829,8 @@ public class MagicController implements MageController, ChunkLoadListener {
             throws PluginNotLoadedException, NoSuchMageException {
         checkNotNull(mageId);
 
-        if (!loaded) {
-            if (entity instanceof Player) {
-                getLogger().warning("Player data request for " + mageId + " (" + commandSender.getName() + ") failed, plugin not loaded yet");
-            }
-
+        if (!loaded && entity instanceof Player) {
+            getLogger().warning("Player data request for " + mageId + " (" + commandSender.getName() + ") failed, plugin not loaded yet");
             throw new PluginNotLoadedException();
         }
 
@@ -6638,7 +6635,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Override
     @Nullable
     public com.elmakers.mine.bukkit.entity.EntityData getMob(String key) {
-        if (key == null) return null;
+        if (key == null || key.isEmpty() || key.equals("none")) return null;
 
         // This null check is hopefully temporary, but deals with actions that look up a mob during interrogation.
         com.elmakers.mine.bukkit.entity.EntityData mob = mobs == null ? null : mobs.get(key);
