@@ -3,4 +3,4 @@ hopper:
   type: rabbit
   mount:
     type: item_display
-    item: stick[custom_model_data={floats:[8888]}]
+    item: stick[custom_model_data={floats:[19001]}]

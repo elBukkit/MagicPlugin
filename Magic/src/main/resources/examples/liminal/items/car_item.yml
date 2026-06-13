@@ -1,0 +1,7 @@
+car_item:
+  item: leather_horse_armor
+  custom_model_data: 19001
+  color:
+    red: 70
+    green: 70
+    blue: 70

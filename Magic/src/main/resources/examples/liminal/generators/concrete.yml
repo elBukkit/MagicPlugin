@@ -34,6 +34,10 @@ concrete_surface:
       min_distance: 64
       max_distance: 512
       weight: 0.05
+    concrete_car:
+      min_distance: 64
+      max_distance: 512
+      weight: 0.1
     concrete_tower:
       min_distance: 32
       max_distance: 512

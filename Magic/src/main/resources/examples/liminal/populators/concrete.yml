@@ -18,3 +18,7 @@ concrete_exit:
   max_portal_width: 8
   min_tunnel_height: 2
   max_tunnel_height: 10
+
+concrete_car:
+  class: Spawn
+  types: car

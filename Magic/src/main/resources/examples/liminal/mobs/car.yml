@@ -1,0 +1,3 @@
+car:
+  type: item_display
+  item: car_item
