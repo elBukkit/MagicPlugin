@@ -49,30 +49,49 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return loadFromSections(world, populatorConfig);
     }
 
+    public static BaseBlockPopulator loadPopulator(MagicWorld world, String key, ConfigurationSection config) {
+        MagicController controller = world.getController();
+        if (config == null) {
+            controller.getLogger().warning("Was expecting a properties section in world populators config for key '" + world.getName());
+            return null;
+        }
+        if (!config.getBoolean("enabled", true)) {
+            return null;
+        }
+
+        String className = config.getString("class");
+        BaseBlockPopulator populator = BaseBlockPopulator.create(controller, className);
+        if (populator != null) {
+            if (populator.load(world, config)) {
+                controller.info("Adding " + key + " populator to " + world.getName());
+            } else {
+                populator = null;
+            }
+        }
+        if (populator == null) {
+            controller.info("Skipping invalid " + key + " populator for " + world.getName());
+        }
+        return populator;
+    }
+
+    public static BaseBlockPopulator loadPopulator(MagicWorld world, String key) {
+        MagicController controller = world.getController();
+        if (key.isEmpty() || key.equals("none")) return null;
+        ConfigurationSection populatorConfig = controller.getWorlds().getPopulatorConfig(key);
+        if (populatorConfig == null) {
+            controller.getLogger().warning("Invalid block populator: " + key);
+            return null;
+        }
+        return loadPopulator(world, key, populatorConfig);
+    }
+
     private static List<BaseBlockPopulator> loadFromSections(MagicWorld world, ConfigurationSection populatorConfigs) {
         List<BaseBlockPopulator> populators = new ArrayList<>();
-        MagicController controller = world.getController();
         for (String key : populatorConfigs.getKeys(false)) {
             ConfigurationSection handlerConfig = populatorConfigs.getConfigurationSection(key);
-            if (handlerConfig == null) {
-                controller.getLogger().warning("Was expecting a properties section in world populators config for key '" + world.getName() + "', but got: " + populatorConfigs.get(key));
-                continue;
-            }
-            if (!handlerConfig.getBoolean("enabled", true)) {
-                continue;
-            }
-
-            String className = handlerConfig.getString("class");
-            BaseBlockPopulator populator = BaseBlockPopulator.create(controller, className);
+            BaseBlockPopulator populator = loadPopulator(world, key, handlerConfig);
             if (populator != null) {
-                if (populator.load(world, handlerConfig)) {
-                    populators.add(populator);
-                    controller.info("Adding " + key + " populator to " + world.getName());
-                } else {
-                    controller.info("Skipping invalid " + key + " populator for " + world.getName());
-                }
-            } else {
-                controller.info("Skipping invalid " + key + " populator for " + world.getName());
+                populators.add(populator);
             }
         }
         return populators;
@@ -81,27 +100,10 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     private static List<BaseBlockPopulator> loadFromList(MagicWorld world, List<String> populatorConfigs) {
         List<BaseBlockPopulator> populators = new ArrayList<>();
         if (populatorConfigs == null || populatorConfigs.isEmpty()) return populators;
-        MagicController controller = world.getController();
         for (String key : populatorConfigs) {
-            ConfigurationSection populatorConfig = world.getController().getWorlds().getPopulatorConfig(key);
-            if (populatorConfig == null) {
-                controller.getLogger().warning("Invalid block populator: " + key);
-                return null;
-            }
-            final String populatorClass = populatorConfig.getString("class");
-            BaseBlockPopulator populator = BaseBlockPopulator.create(controller, populatorClass);
-            if (populator == null) {
-                controller.getLogger().warning("Invalid chunk generator class: " + populatorClass);
-            } else {
-                if (!populator.load(world, populatorConfig)) {
-                    populator = null;
-                }
-            }
+            BaseBlockPopulator populator = loadPopulator(world, key);
             if (populator != null) {
                 populators.add(populator);
-                world.getController().info("Adding " + key + " populator to " + world.getName());
-            } else {
-                world.getController().info("Skipping invalid " + key + " populator for " + world.getName());
             }
         }
         return populators;

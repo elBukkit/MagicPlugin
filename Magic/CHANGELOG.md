@@ -10,15 +10,18 @@
    - Perlin: Perlin noise for elevation and/or block patterns
    - Crops: Generate simple crop farms
    - Sequence: Run multiple other generators in order
-   - Random: Randomly choose one generator from a weighted probability map
+   - Random: Randomly choose one generator from a distance-weighted probability map
    - Vanilla: Use vanilla world generation
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
    - Added new populators: 
+     - Grid : Place a grid of populators, useful for jigsaw-like layouts
      - Tower : Build a randomized tower
      - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
-     - Spawn : Spawn some mobs
+     - Spawn : Spawn some mobs from a distance-weighted probability map
      - EndPortal : Build some configurations of an end portal
+     - Sequence: Run multiple other populators in order
+     - Random: Randomly choose one populators from a distance-weighted probability map
  - Use generators in world configs for completely custom world gen
  - Allow modifying game rules of a world via `game_rules` config
  - Add `time` parameter to set a world to a specific time of day

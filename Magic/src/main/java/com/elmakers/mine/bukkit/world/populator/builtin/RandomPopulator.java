@@ -1,0 +1,62 @@
+package com.elmakers.mine.bukkit.world.populator.builtin;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+
+import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+
+public class RandomPopulator extends BaseBlockPopulator {
+    private List<DistanceWeighted<BaseBlockPopulator>> populators = new ArrayList<>();
+
+    @Override
+    public boolean onLoad(ConfigurationSection config) {
+        populators.clear();
+        ConfigurationSection populatorsConfig = config.getConfigurationSection("populators");
+        if (populatorsConfig != null) {
+            for (String populatorId : populatorsConfig.getKeys(false)) {
+                if (populatorsConfig.isConfigurationSection(populatorId)) {
+                    ConfigurationSection populatorConfig = populatorsConfig.getConfigurationSection(populatorId);
+                    populatorId = populatorConfig.getString("populator", populatorId);
+                    BaseBlockPopulator populator = BaseBlockPopulator.loadPopulator(world, populatorId);
+                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromConfig(populator, populatorConfig);
+                    populators.add(entry);
+                } else {
+                    BaseBlockPopulator generator = BaseBlockPopulator.loadPopulator(world, populatorId);
+                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromString(world.getLogger(), generator, populatorsConfig.getString(populatorId));
+                    populators.add(entry);
+                }
+            }
+        } else {
+            List<String> populatorIds = config.getStringList("populators");
+            if (populatorIds != null) {
+                for (String populatorId : populatorIds) {
+                    BaseBlockPopulator generator = BaseBlockPopulator.loadPopulator(world, populatorId);
+                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromString(world.getLogger(), generator, "1");
+                    populators.add(entry);
+                }
+            } else {
+                world.getController().getLogger().warning("Random populator missing 'populators' section");
+            }
+        }
+        return !populators.isEmpty();
+    }
+
+    protected BaseBlockPopulator getPopulator(WorldInfo worldInfo, int chunkX, int chunkZ) {
+        return RandomUtils.getDistanceWeighted(populators, worldInfo, chunkX, chunkZ);
+    }
+
+    @Override
+    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+        BaseBlockPopulator populator = getPopulator(worldInfo, chunkX, chunkZ);
+        if (populator != null) {
+            populator.populate(worldInfo, random, chunkX, chunkZ, region);
+        }
+    }
+}
