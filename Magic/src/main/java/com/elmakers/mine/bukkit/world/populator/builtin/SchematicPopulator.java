@@ -53,18 +53,17 @@ public class SchematicPopulator extends BaseBlockPopulator {
             controller.getLogger().warning("Unknown schematic: " + this.schematicName);
             return;
         }
+
         Vector size = schematic.getSize();
         final int buffer = region.getBuffer();
-        final int chunkBaseX = (chunkX << 4) - buffer;
-        final int chunkBaseZ = (chunkZ << 4) - buffer;
+        final int chunkBaseX = (chunkX << 4);
+        final int chunkBaseZ = (chunkZ << 4);
         final int maxSize = 16 + buffer * 2;
-        final int sizeX = Math.min(maxSize, size.getBlockX());
         final int sizeY = size.getBlockY();
+        final int startX = RandomUtils.range(random, minPosition, maxPosition);
+        final int startZ = RandomUtils.range(random, minPosition, maxPosition);
+        final int sizeX = Math.min(maxSize, size.getBlockX());
         final int sizeZ = Math.min(maxSize, size.getBlockZ());
-        final int offsetX = RandomUtils.range(random, minPosition, maxPosition) + buffer;
-        final int offsetZ = RandomUtils.range(random, minPosition, maxPosition) + buffer;
-        final int startX = Math.min(maxSize - sizeX, offsetX);
-        final int startZ = Math.min(maxSize - sizeZ, offsetZ);
         final int groundY = world.getGroundLevel();
         final int startY = (searchUp ? getTopBlock(worldInfo, region, startX + chunkBaseX, groundY, startZ + chunkBaseZ) : groundY) + RandomUtils.range(random, minY, maxY);
         final int maxHeight = worldInfo.getMaxHeight();
