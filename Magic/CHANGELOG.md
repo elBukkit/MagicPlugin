@@ -36,6 +36,7 @@
  - Fix issues with ops using arena signs
  - The ThrowItem action will now use extra data brovided via brushes
  - Fix snowy grass not undoing after using the Frost spell
+ - Fixed `hover_message_key` parameter in `CheckChatClick` action
 
 ## Changes
 

@@ -23,7 +23,7 @@ public class CheckChatClickAction extends CheckTriggerAction {
         trigger = UUID.randomUUID().toString();
         messageKey = parameters.getString("message_key", "message");
         clickMessageKey = parameters.getString("click_message_key", "click_message");
-        hoverMessageKey = parameters.getString("Hover_message_key", "hover_message");
+        hoverMessageKey = parameters.getString("hover_message_key", "hover_message");
         clickTemplateKey = parameters.getString("click_template_key", "click_template");
     }
 
