@@ -1,3 +1,11 @@
+# One populator for each schematic
+# Plus one randomizer for each schematic, which
+# can be used to add more variations of each.
+# There are 5 shapes of schematics in this version, each
+# one takes up an even number of chunks:
+# 3x3, 2x3, 3x3, 1x3, 3x1, 2x2, 2x1, 1x2 and 1x1
+#
+
 dungeon_random_1x1:
   class: Random
   populators:
@@ -28,6 +36,37 @@ dungeon_1x2_a:
   schematic: dungeon_1x2_a
   search_up: false
 
+dungeon_random_2x2:
+  class: Random
+  populators:
+    - dungeon_2x2_a
+
+dungeon_2x2_a:
+  class: Schematic
+  schematic: dungeon_2x2_a
+  search_up: false
+
+dungeon_random_2x3:
+  class: Random
+  populators:
+    - dungeon_2x3_a
+
+dungeon_2x3_a:
+  class: Schematic
+  schematic: dungeon_2x3_a
+  search_up: false
+
+
+dungeon_random_3x2:
+  class: Random
+  populators:
+    - dungeon_3x2_a
+
+dungeon_3x2_a:
+  class: Schematic
+  schematic: dungeon_3x2_a
+  search_up: false
+
 dungeon_random_3x1:
   class: Random
   populators:
@@ -48,11 +87,6 @@ dungeon_1x3_a:
   schematic: dungeon_1x3_a
   search_up: false
 
-dungeon_grid_1x1:
-  class: Random
-  populators:
-    - dungeon_3x3_a
-
 dungeon_3x3_a:
   class: Schematic
   schematic: dungeon_3x3_a
@@ -60,254 +94,384 @@ dungeon_3x3_a:
   max_position: -16
   search_up: false
 
-dungeon_grid_3x3:
+# Set up sub-grids to fill in 1x3, 3x1, 3x2, 2x3, 2x2, 2x1 and 1x2 spaces
+# These will all be placed inside of other grids, and so should start at 0
+
+# Start with 1x2 rooms
+
+# 1x2 made of 1x1 rooms
+dungeon_1x2_1x1:
   class: Grid
   grid:
     1x1:
       populator: dungeon_random_1x1
-      x: -1
-      z: -1
+      x: 0
+      z: 0
     1x2:
       populator: dungeon_random_1x1
-      x: -1
-      z: 0
-    1x3:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 1
-    2x1:
-      populator: dungeon_random_1x1
       x: 0
-      z: -1
-    2x2:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 0
-    2x3:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 1
-    3x1:
-      populator: dungeon_random_1x1
-      x: 1
-      z: -1
-    3x2:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 0
-    3x3:
-      populator: dungeon_random_1x1
-      x: 1
       z: 1
 
-dungeon_grid_3x1:
-  class: Grid
-  grid:
-    1x1:
-      populator: dungeon_random_1x3
-      x: -1
-      z: -1
-    2x1:
-      populator: dungeon_random_1x1
-      x: 0
-      z: -1
-    2x2:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 0
-    2x3:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 1
-    3x1:
-      populator: dungeon_random_1x1
-      x: 1
-      z: -1
-    3x2:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 0
-    3x3:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 1
-
-dungeon_grid_1x3:
-  class: Grid
-  grid:
-    1x1:
-      populator: dungeon_random_3x1
-      x: -1
-      z: -1
-    1x2:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 0
-    1x3:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 1
-    2x2:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 0
-    2x3:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 1
-    3x2:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 0
-    3x3:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 1
-
+# Randomized 1x2 grid
 dungeon_grid_1x2:
+  class: Random
+  populators:
+    - dungeon_1x2_1x1
+    - dungeon_random_1x2
+
+# 2x1 made of 1x1 rooms
+dungeon_2x1_1x1:
   class: Grid
   grid:
     1x1:
-      populator: dungeon_random_3x1
-      x: -1
-      z: -1
-    1x2:
-      populator: dungeon_random_3x1
-      x: -1
-      z: 0
-    1x3:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 1
-    2x3:
       populator: dungeon_random_1x1
       x: 0
-      z: 1
-    3x3:
+      z: 0
+    2x1:
       populator: dungeon_random_1x1
       x: 1
-      z: 1
+      z: 0
 
-dungeon_grid_1x1x1:
+# Randomized 2x1 grid
+dungeon_grid_2x1:
+  class: Random
+  populators:
+    - dungeon_2x1_1x1
+    - dungeon_random_2x1
+
+# 2x2 grids of 1x2 layouts
+dungeon_2x2_1x2:
   class: Grid
   grid:
     1x1:
-      populator: dungeon_random_3x1
-      x: -1
-      z: -1
+      populator: dungeon_grid_1x2
+      x: 0
+      z: 0
+    2x1:
+      populator: dungeon_grid_1x2
+      x: 1
+      z: 0
+
+# 2x2 grids of 2x1 layouts
+dungeon_2x2_2x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x1
+      x: 0
+      z: 0
     1x2:
-      populator: dungeon_random_3x1
-      x: -1
+      populator: dungeon_grid_2x1
+      x: 0
+      z: 1
+
+# Randomized 2x2 grid
+dungeon_grid_2x2:
+  class: Random
+  populators:
+    - dungeon_2x2_1x2
+    - dungeon_2x2_2x1
+    - dungeon_random_2x2
+
+# 1x3 from 1x2 and 1x1
+dungeon_1x3_1x2_1x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_1x2
+      x: 0
       z: 0
     1x3:
-      populator: dungeon_random_3x1
-      x: -1
-      z: 1
+      populator: dungeon_random_1x1
+      x: 0
+      z: 2
 
-dungeon_grid_1x1x1_b:
+# 1x3 from 1x1 and 1x2
+dungeon_1x3_1x1_1x2:
   class: Grid
   grid:
     1x1:
-      populator: dungeon_random_1x3
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    1x2:
+      populator: dungeon_grid_1x2
+      x: 0
+      z: 1
+
+# Randomized 1x3 grid
+dungeon_grid_1x3:
+  class: Random
+  populators:
+    - dungeon_1x3_1x2_1x1
+    - dungeon_1x3_1x1_1x2
+    - dungeon_random_1x3
+
+# 3x1 from 2x1 and 1x1
+dungeon_3x1_2x1_1x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x1
+      x: 0
+      z: 0
+    3x1:
+      populator: dungeon_random_1x1
+      x: 2
+      z: 0
+
+# 3x1 from 1x1 and 2x1
+dungeon_3x1_1x1_2x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_random_1x1
+      x: 0
+      z: 0
+    2x1:
+      populator: dungeon_grid_2x1
+      x: 1
+      z: 0
+
+# Randomized 3x1 grid
+dungeon_grid_3x1:
+  class: Random
+  populators:
+    - dungeon_3x1_2x1_1x1
+    - dungeon_3x1_1x1_2x1
+    - dungeon_random_3x1
+
+# 3x2 from 2x2 and 1x2
+dungeon_3x2_2x2_1x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x2
+      x: 0
+      z: 0
+    2x1:
+      populator: dungeon_grid_1x2
+      x: 2
+      z: 0
+
+# 3x2 from 1x2 and 2x2
+dungeon_3x2_1x2_2x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_1x2
+      x: 0
+      z: 0
+    2x1:
+      populator: dungeon_grid_2x2
+      x: 1
+      z: 0
+
+# Randomized 3x2 grid
+dungeon_grid_3x2:
+  class: Random
+  populators:
+    - dungeon_3x2_2x2_1x2
+    - dungeon_3x2_1x2_2x2
+    - dungeon_random_3x2
+
+# 2x3 from 2x2 and 2x1
+dungeon_2x3_2x2_2x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x2
+      x: 0
+      z: 0
+    2x1:
+      populator: dungeon_grid_2x1
+      x: 0
+      z: 2
+
+# 2x3 from 2x1 and 2x2
+dungeon_2x3_2x1_2x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x1
+      x: 0
+      z: 0
+    2x1:
+      populator: dungeon_grid_2x2
+      x: 0
+      z: 1
+
+# Randomized 2x3 grid
+dungeon_grid_2x3:
+  class: Random
+  populators:
+    - dungeon_2x3_2x2_2x1
+    - dungeon_2x3_2x1_2x2
+    - dungeon_random_2x3
+
+# Now make sets of 3x3 grids, each one slots in different layouts
+# that cover all 9 chunks in some way.
+# These are centered on a chunk, and so the "top left" should start at -1,-1
+
+# This one is special since it is a 3x3 schematic it doesn't need a separate grid
+
+dungeon_grid_3x3_1x1:
+  class: Random
+  populators:
+    - dungeon_3x3_a
+
+# 3x3 grid mode of 2x2, plus 1x3 and 2x1
+
+dungeon_grid_3x3_2x2_1x3_2x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x2
+      x: -1
+      z: -1
+    1x3:
+      populator: dungeon_grid_2x1
+      x: -1
+      z: 1
+    3x1:
+      populator: dungeon_grid_1x3
+      x: 1
+      z: -1
+
+# 3x3 grid mode of 2x2, plus 3x1 and 1x2
+
+dungeon_grid_3x3_2x2_3x1_1x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x2
+      x: -1
+      z: -1
+    1x3:
+      populator: dungeon_grid_3x1
+      x: -1
+      z: 1
+    3x1:
+      populator: dungeon_grid_1x2
+      x: 1
+      z: -1
+
+
+# 3x3 grid mode of 1x3, plus 2x2 and 2x1
+
+dungeon_grid_3x3_1x3_2x2_2x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_1x3
+      x: -1
+      z: -1
+    3x1:
+      populator: dungeon_grid_2x2
+      x: 0
+      z: -1
+    2x3:
+      populator: dungeon_grid_2x1
+      x: 0
+      z: 1
+
+# 3x3 grid mode of 1x2, then 2x2 and 3x1
+
+dungeon_grid_3x3_1x2_2x2_3x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_1x2
       x: -1
       z: -1
     2x1:
-      populator: dungeon_random_1x3
+      populator: dungeon_grid_2x2
       x: 0
       z: -1
-    3x1:
-      populator: dungeon_random_1x3
-      x: 1
-      z: -1
+    1x3:
+      populator: dungeon_grid_3x1
+      x: -1
+      z: 1
 
-dungeon_grid_1x2x1:
+# 3x3 grid made of 1x3 and 2x3
+
+dungeon_grid_3x3_1x3_2x3:
   class: Grid
   grid:
     1x1:
-      populator: dungeon_random_2x1
+      populator: dungeon_grid_1x3
       x: -1
       z: -1
-    1x2:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 0
-    1x3:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 1
-    2x2:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 0
-    2x3:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 1
-    3x1:
-      populator: dungeon_random_1x1
-      x: 1
-      z: -1
-    3x2:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 0
-    3x3:
-      populator: dungeon_random_1x1
-      x: 1
-      z: 1
-
-dungeon_grid_1x1x2:
-  class: Grid
-  grid:
-    1x1:
-      populator: dungeon_random_1x2
-      x: -1
-      z: -1
-    1x3:
-      populator: dungeon_random_1x1
-      x: -1
-      z: 1
     2x1:
-      populator: dungeon_random_1x1
+      populator: dungeon_grid_2x3
       x: 0
       z: -1
-    2x2:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 0
-    2x3:
-      populator: dungeon_random_1x1
-      x: 0
-      z: 1
-    3x1:
-      populator: dungeon_random_1x1
+
+# 3x3 grid made of 2x3 and 1x3
+
+dungeon_grid_3x3_2x3_1x3:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_2x3
+      x: -1
+      z: -1
+    1x3:
+      populator: dungeon_grid_1x3
       x: 1
       z: -1
-    3x2:
-      populator: dungeon_random_1x1
-      x: 1
+
+# 3x3 grid made of 3x1 and 3x2
+
+dungeon_grid_3x3_3x1_3x2:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_3x1
+      x: -1
+      z: -1
+    2x1:
+      populator: dungeon_grid_3x2
+      x: -1
       z: 0
-    3x3:
-      populator: dungeon_random_1x1
-      x: 1
+
+# 3x3 grid made of 3x2 and 3x1
+
+dungeon_grid_3x3_3x2_3x1:
+  class: Grid
+  grid:
+    1x1:
+      populator: dungeon_grid_3x2
+      x: -1
+      z: -1
+    1x3:
+      populator: dungeon_grid_3x1
+      x: -1
       z: 1
+
+# Finally, tie it all together by choosing a random 3x3 layout
+# this is the one actually used by the world generator.
+# The frequency is set to 48 so this will only be placed every 4 chunks
+# Since this is a 3x3 layout this fills in everywhere.
 
 dungeon_rooms:
   class: Random
   populators:
-    dungeon_grid_1x1x2:
+    dungeon_grid_3x3_1x1:
       frequency: 48
-    dungeon_grid_1x2x1:
+    dungeon_grid_3x3_2x2_1x3_2x1:
       frequency: 48
-    dungeon_grid_1x3:
+    dungeon_grid_3x3_2x2_3x1_1x2:
       frequency: 48
-    dungeon_grid_3x1:
+    dungeon_grid_3x3_1x3_2x2_2x1:
       frequency: 48
-    dungeon_grid_1x1:
+    dungeon_grid_3x3_1x2_2x2_3x1:
       frequency: 48
-    dungeon_grid_1x2:
+    dungeon_grid_3x3_1x3_2x3:
       frequency: 48
-    dungeon_grid_1x1x1:
+    dungeon_grid_3x3_2x3_1x3:
       frequency: 48
-    dungeon_grid_1x1x1_b:
+    dungeon_grid_3x3_3x1_3x2:
+      frequency: 48
+    dungeon_grid_3x3_3x2_3x1:
       frequency: 48
