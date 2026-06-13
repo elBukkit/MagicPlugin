@@ -316,6 +316,7 @@ public class RandomUtils {
         return range(random, min, max);
     }
 
+    @Nullable
     public static <T> T getDistanceWeighted(List<DistanceWeighted<T>> options, WorldInfo worldInfo, int chunkX, int chunkZ) {
         final long worldSeed = worldInfo.getSeed();
         final long chunkSeed = worldSeed
@@ -329,7 +330,7 @@ public class RandomUtils {
             totalWeight += entry.getWeight(x, z);
         }
         if (totalWeight == 0) {
-            return options.get(0).getValue();
+            return null;
         }
 
         double weight = new SplittableRandom(chunkSeed).nextDouble(totalWeight);
@@ -344,6 +345,6 @@ public class RandomUtils {
             }
         }
         // Should never happen
-        return options.get(options.size() - 1).getValue();
+        return null;
     }
 }
