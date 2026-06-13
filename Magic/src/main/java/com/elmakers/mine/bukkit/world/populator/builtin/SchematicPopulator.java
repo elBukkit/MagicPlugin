@@ -28,7 +28,11 @@ public class SchematicPopulator extends BaseBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection config) {
         schematic = null;
-        schematicName = config.getString("schematic");
+        schematicName = config.getString("schematic", "");
+        if (schematicName.isEmpty()) {
+            world.getController().getLogger().warning("Schematic populator missing 'schematic' name");
+            return false;
+        }
         minY = config.getInt("min_y", minY);
         maxY = config.getInt("max_y", maxY);
         minPosition = config.getInt("min_position", minPosition);

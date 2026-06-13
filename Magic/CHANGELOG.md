@@ -11,12 +11,14 @@
    - Crops: Generate simple crop farms
    - Sequence: Run multiple other generators in order
    - Random: Randomly choose one generator from a weighted probability map
-   - Tower: Build a tower
    - Vanilla: Use vanilla world generation
-   - Schematic: Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
-   - Added new populators: Tower
+   - Added new populators: 
+     - Tower : Build a randomized tower
+     - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
+     - Spawn : Spawn some mobs
+     - EndPortal : Build some configurations of an end portal
  - Use generators in world configs for completely custom world gen
  - Allow modifying game rules of a world via `game_rules` config
  - Add `time` parameter to set a world to a specific time of day

@@ -6,11 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.SplittableRandom;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
@@ -312,5 +314,36 @@ public class RandomUtils {
 
     public static int range(int min, int max) {
         return range(random, min, max);
+    }
+
+    public static <T> T getDistanceWeighted(List<DistanceWeighted<T>> options, WorldInfo worldInfo, int chunkX, int chunkZ) {
+        final long worldSeed = worldInfo.getSeed();
+        final long chunkSeed = worldSeed
+                ^ (long) chunkX * 0x9E3779B97F4A7C15L
+                ^ (long) chunkZ * 0xD1B54A32D192ED03L;
+
+        double totalWeight = 0;
+        final int x = chunkX * 16;
+        final int z = chunkX * 16;
+        for (DistanceWeighted<T> entry : options) {
+            totalWeight += entry.getWeight(x, z);
+        }
+        if (totalWeight == 0) {
+            return options.get(0).getValue();
+        }
+
+        double weight = new SplittableRandom(chunkSeed).nextDouble(totalWeight);
+        for (DistanceWeighted<T> entry : options) {
+            double entryWeight = entry.getWeight(x, z);
+            if (entryWeight <= 0) {
+                continue;
+            }
+            weight -= entryWeight;
+            if (weight <= 0) {
+                return entry.getValue();
+            }
+        }
+        // Should never happen
+        return options.get(options.size() - 1).getValue();
     }
 }

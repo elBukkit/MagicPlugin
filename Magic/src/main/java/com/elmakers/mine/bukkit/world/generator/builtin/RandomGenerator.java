@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.world.generator.builtin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.SplittableRandom;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
@@ -11,6 +10,7 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 
@@ -22,6 +22,10 @@ public class RandomGenerator extends BaseChunkGenerator {
         generators.clear();
         WorldController controller = world.getController().getWorlds();
         ConfigurationSection generatorsConfig = config.getConfigurationSection("generators");
+        if (generatorsConfig == null) {
+            world.getController().getLogger().warning("Random populator missing 'generators' section");
+            return;
+        }
         for (String generatorId : generatorsConfig.getKeys(false)) {
             if (generatorsConfig.isConfigurationSection(generatorId)) {
                 ConfigurationSection generatorConfig = generatorsConfig.getConfigurationSection(generatorId);
@@ -31,41 +35,14 @@ public class RandomGenerator extends BaseChunkGenerator {
                 generators.add(entry);
             } else {
                 BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
-                DistanceWeighted entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
+                DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
                 generators.add(entry);
             }
         }
     }
 
     protected BaseChunkGenerator getGenerator(WorldInfo worldInfo, int chunkX, int chunkZ) {
-        long worldSeed = worldInfo.getSeed();
-        final long chunkSeed = worldSeed
-                ^ (long) chunkX * 0x9E3779B97F4A7C15L
-                ^ (long) chunkZ * 0xD1B54A32D192ED03L;
-
-        double totalWeight = 0;
-        final int x = chunkX * 16;
-        final int z = chunkX * 16;
-        for (DistanceWeighted<BaseChunkGenerator> entry : generators) {
-            totalWeight += entry.getWeight(x, z);
-        }
-        if (totalWeight == 0) {
-            return generators.get(0).getValue();
-        }
-
-        double weight = new SplittableRandom(chunkSeed).nextDouble(totalWeight);
-        for (DistanceWeighted<BaseChunkGenerator> entry : generators) {
-            double entryWeight = entry.getWeight(x, z);
-            if (entryWeight <= 0) {
-                continue;
-            }
-            weight -= entryWeight;
-            if (weight <= 0) {
-                return entry.getValue();
-            }
-        }
-        // Should never happen
-        return generators.get(generators.size() - 1).getValue();
+        return RandomUtils.getDistanceWeighted(generators, worldInfo, chunkX, chunkZ);
     }
 
     @Override
