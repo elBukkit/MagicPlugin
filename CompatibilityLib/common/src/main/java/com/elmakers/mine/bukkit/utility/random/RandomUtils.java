@@ -325,7 +325,7 @@ public class RandomUtils {
 
         double totalWeight = 0;
         final int x = chunkX * 16;
-        final int z = chunkX * 16;
+        final int z = chunkZ * 16;
         for (DistanceWeighted<T> entry : options) {
             totalWeight += entry.getWeight(x, z);
         }
