@@ -94,16 +94,19 @@ public class TowerPopulator extends BaseBlockPopulator {
             for (int dx = minX; dx < maxX; dx++) {
                 final int x = chunkGlobalX + dx;
                 final double noiseXValue = (perlin.noise(x * noise, y * noise) + 1) / 2;
-                final int maxDX = RandomUtils.lerp(solidX, sizeXHalf, noiseXValue);
-                setBlockData(region, x, y, chunkGlobalZ + midZ + maxDX, wallBlockData);
-                setBlockData(region, x, y, chunkGlobalZ + midZ - maxDX, wallBlockData);
-            }
-            for (int dz = minZ; dz < maxZ; dz++) {
-                final int z = chunkGlobalZ + dz;
-                final double noiseZValue = (perlin.noise(z * noise, y * noise) + 1) / 2;
-                final int maxDZ = RandomUtils.lerp(solidZ, sizeZHalf, noiseZValue);
-                setBlockData(region, chunkGlobalX + midX + maxDZ, y, z, wallBlockData);
-                setBlockData(region, chunkGlobalX + midX - maxDZ, y, z, wallBlockData);
+                final int maxDZ = RandomUtils.lerp(solidX, sizeXHalf, noiseXValue);
+                for (int dz = minZ; dz < maxZ; dz++) {
+                    final int z = chunkGlobalZ + dz;
+                    final double noiseZValue = (perlin.noise(z * noise, y * noise) + 1) / 2;
+                    final int maxDX = RandomUtils.lerp(solidZ, sizeZHalf, noiseZValue);
+                    if (x < chunkGlobalX + midX + maxDX
+                        && x > chunkGlobalX + midX - maxDX
+                        && z < chunkGlobalZ + midZ + maxDZ
+                        && z > chunkGlobalZ + midZ - maxDZ
+                    ) {
+                        setBlockData(region, x, y, z, wallBlockData);
+                    }
+                }
             }
         }
     }
