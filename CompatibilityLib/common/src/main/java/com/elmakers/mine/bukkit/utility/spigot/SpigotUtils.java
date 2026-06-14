@@ -43,7 +43,7 @@ public class SpigotUtils implements com.elmakers.mine.bukkit.utility.platform.Sp
         if (ChatUtils.hasJSON(message)) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, parseChatComponents(message));
         } else {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, fromLegacyText(message));
         }
         return true;
     }
@@ -54,7 +54,7 @@ public class SpigotUtils implements com.elmakers.mine.bukkit.utility.platform.Sp
         if (ChatUtils.hasJSON(message)) {
             components = parseChatComponents(message);
         } else {
-            components = new BaseComponent[]{new TextComponent(message)};
+            components = fromLegacyText(message);
         }
         BaseComponent[] fontComponent = new ComponentBuilder("").font(font).append(components).create();
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, fontComponent);
