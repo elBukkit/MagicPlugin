@@ -3213,4 +3213,14 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public ItemStack createItemStack(Material material, String itemData) {
         return Bukkit.getItemFactory().createItemStack(material.name().toLowerCase(Locale.ROOT) + itemData);
     }
+
+    @Override
+    public boolean lockFreezeTicks(Entity entity, boolean lock) {
+        PaperUtils paperUtils = platform.getPaperUtils();
+        if (paperUtils == null) {
+            return false;
+        }
+        paperUtils.lockFreezeTicks(entity, lock);
+        return true;
+    }
 }

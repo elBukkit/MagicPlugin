@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -17,5 +18,10 @@ public class PaperUtils implements com.elmakers.mine.bukkit.utility.platform.Pap
     @Override
     public void registerEvents(MageController controller, PluginManager pm) {
         pm.registerEvents(new PaperPlayerListener(controller), controller.getPlugin());
+    }
+
+    @Override
+    public void lockFreezeTicks(Entity entity, boolean lock) {
+        entity.lockFreezeTicks(lock);
     }
 }

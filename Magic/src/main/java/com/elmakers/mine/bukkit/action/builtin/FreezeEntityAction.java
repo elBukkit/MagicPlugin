@@ -17,6 +17,7 @@ public class FreezeEntityAction extends BaseSpellAction
     private int freezeTicks;
     private boolean additive;
     private boolean reduce;
+    private boolean lock;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -24,6 +25,7 @@ public class FreezeEntityAction extends BaseSpellAction
         freezeTicks = parameters.getInt("duration", 0) * 20 / 1000;
         additive = parameters.getBoolean("additive", false);
         reduce = parameters.getBoolean("reduce", false);
+        lock = parameters.getBoolean("lock", false);
     }
 
     @Override
@@ -40,6 +42,9 @@ public class FreezeEntityAction extends BaseSpellAction
             newFreezeTicks = Math.max(newFreezeTicks, currentFreezeTicks);
         }
         targetEntity.setFreezeTicks(newFreezeTicks);
+        if (lock) {
+            CompatibilityLib.getCompatibilityUtils().lockFreezeTicks(targetEntity, true);
+        }
 
         return SpellResult.CAST;
     }

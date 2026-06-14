@@ -1873,4 +1873,14 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public ItemStack createItemStack(Material material, String itemData) {
         return new ItemStack(material, 1);
     }
+
+    @Override
+    public boolean lockFreezeTicks(Entity entity, boolean lock) {
+        PaperUtils paperUtils = platform.getPaperUtils();
+        if (paperUtils == null) {
+            return false;
+        }
+        paperUtils.lockFreezeTicks(entity, lock);
+        return true;
+    }
 }

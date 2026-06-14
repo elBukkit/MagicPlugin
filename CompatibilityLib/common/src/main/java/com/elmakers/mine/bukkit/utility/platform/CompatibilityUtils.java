@@ -563,4 +563,6 @@ public interface CompatibilityUtils {
     Entity createItemDisplayEntity(Location location, ItemStack itemStack, double scale);
 
     ItemStack createItemStack(Material material, String itemData);
+
+    boolean lockFreezeTicks(Entity entity, boolean lock);
 }
