@@ -9,14 +9,20 @@ concrete_tower:
   max_width: 48
   min_noise: 0.1
   max_noise: 0.5
-  min_noise_scale: 0.5
+  min_noise_scale: 0.9
 
-concrete_exit:
+concrete_portal:
   class: EndPortal
   target_world: world_pools
-  gateway: true
-  min_portal_width: 1
+  min_gateway_height: 10
+  max_gateway_height: 10
+  min_portal_width: 8
   max_portal_width: 8
+
+concrete_tunnel:
+  class: Tunnel
+  min_tunnel_width: 1
+  max_tunnel_width: 8
   min_tunnel_height: 2
   max_tunnel_height: 10
 

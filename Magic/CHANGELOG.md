@@ -20,6 +20,7 @@
      - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
      - Spawn : Spawn some mobs from a distance-weighted probability map
      - EndPortal : Build some configurations of an end portal, use `target_world` to send to a specific world
+     - Tunnel : Make tunnels/doorways through the center of a region
      - Sequence: Run multiple other populators in order
      - Random: Randomly choose one populators from a distance-weighted probability map
  - Use generators in world configs for completely custom world gen

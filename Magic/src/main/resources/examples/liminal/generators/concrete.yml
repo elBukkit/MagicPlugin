@@ -25,7 +25,8 @@ concrete_food:
 concrete_exit:
   populators:
   - concrete_tower
-  - concrete_exit
+  - concrete_tunnel
+  - concrete_portal
 
 concrete_surface:
   class: Random
