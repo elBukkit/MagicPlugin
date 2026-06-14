@@ -41,7 +41,7 @@
  - Fix snowy grass not undoing after using the Frost spell
  - Fixed `hover_message_key` parameter in `CheckChatClick` action
 
-## Changes
+## Changes[items.yml](../../../../../Servers/liminal/plugins/Magic/items.yml)
 
  - Changed `arenas.enabled` config option to `enable_arenas`
  - The `chunk_generate` property has been replaced by `populators`, though the former is still supported
@@ -60,6 +60,7 @@
  - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)
  - Add support for FAWE schematic format
  - Add `reload` parameter to entity configs, for randomized entities (see `car` in liminal example)
+ - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
 
 # 11.2.1
 

@@ -76,6 +76,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private boolean loaded;
     private boolean exactIngredient;
     private boolean replaceOnEquip;
+    private boolean keep;
     private List<String> discoverRecipes;
     private List<PendingUpdate> pending = null;
 
@@ -119,6 +120,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         discoverRecipes = ConfigurationUtils.getStringList(configuration, "discover_recipes");
         damage = ConfigurationUtils.getOptionalInteger(configuration, "damage");
         cache = configuration.getBoolean("cache", true);
+        keep = configuration.getBoolean("keep", false);
         // Slightly more efficient if this has been overridden to an empty list
         if (discoverRecipes != null && discoverRecipes.isEmpty()) {
             discoverRecipes = null;
@@ -238,6 +240,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         if (tagSection != null) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
             nbtUtils.saveTagsToItem(tagSection, item);
+        }
+        if (keep) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "keep", true);
         }
         for (String flag : BOOLEAN_FLAGS) {
             if (configuration.contains(flag)) {
@@ -462,6 +467,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
         // Remove damage before getting custom data, since this was just a tag in older versions
         CompatibilityLib.getItemUtils().removeDamage(itemStack);
+
+        // Check for keep and make it a special option instead of a tag
+        if (CompatibilityLib.getNBTUtils().getBoolean(itemStack, "keep", false)) {
+            CompatibilityLib.getNBTUtils().removeMeta(itemStack, "keep");
+            configuration.set("keep", true);
+        }
 
         ConfigurationSection tagSection = configuration.createSection("tags");
         if (!ConfigurationUtils.loadAllTagsFromNBT(tagSection, itemStack) || tagSection.getKeys(false).isEmpty()) {
