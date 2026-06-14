@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -22,5 +23,16 @@ public class SequencePopulator extends BaseBlockPopulator {
         for (BaseBlockPopulator populator : populators) {
             populator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
+    }
+
+    @Override
+    public String getPortalTargetWorld(Location location) {
+        for (BaseBlockPopulator populator : populators) {
+            String targetWorld = populator.getPortalTargetWorld(location);
+            if (targetWorld != null) {
+                return targetWorld;
+            }
+        }
+        return null;
     }
 }

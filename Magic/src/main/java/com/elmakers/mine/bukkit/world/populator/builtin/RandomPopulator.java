@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -48,15 +49,24 @@ public class RandomPopulator extends BaseBlockPopulator {
         return !populators.isEmpty();
     }
 
-    protected BaseBlockPopulator getPopulator(WorldInfo worldInfo, int chunkX, int chunkZ) {
-        return RandomUtils.getDistanceWeighted(populators, worldInfo, chunkX, chunkZ);
+    protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
+        return RandomUtils.getDistanceWeighted(populators, worldSeed, chunkX, chunkZ);
     }
 
     @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        BaseBlockPopulator populator = getPopulator(worldInfo, chunkX, chunkZ);
+        BaseBlockPopulator populator = getPopulator(worldInfo.getSeed(), chunkX, chunkZ);
         if (populator != null) {
             populator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
+    }
+
+    @Override
+    public String getPortalTargetWorld(Location location) {
+        BaseBlockPopulator populator = getPopulator(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ());
+        if (populator == null) {
+            return null;
+        }
+        return populator.getPortalTargetWorld(location);
     }
 }

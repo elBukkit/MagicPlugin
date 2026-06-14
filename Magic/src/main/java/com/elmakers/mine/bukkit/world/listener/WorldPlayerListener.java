@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.world.BlockResult;
@@ -77,6 +78,20 @@ public class WorldPlayerListener implements Listener {
         World world = Bukkit.getWorld(respawnWorld);
         if (world != null) {
             player.setRespawnLocation(world.getSpawnLocation(), true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        Player player = event.getPlayer();
+        MagicWorld magicWorld = controller.getWorld(player.getWorld().getName());
+        if (magicWorld == null) return;
+        String nextWorldName = magicWorld.getPortalTargetWorld(player.getLocation());
+        if (nextWorldName != null && !nextWorldName.isEmpty()) {
+            World nextWorld = Bukkit.getWorld(nextWorldName);
+            if (nextWorld != null) {
+                event.setTo(nextWorld.getSpawnLocation());
+            }
         }
     }
 }

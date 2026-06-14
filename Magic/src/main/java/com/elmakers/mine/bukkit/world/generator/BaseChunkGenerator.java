@@ -146,4 +146,14 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
             populator.populate(worldInfo, random, chunkX, chunkZ, region);
         }
     }
+
+    public String getPortalTargetWorld(Location location) {
+        for (BaseBlockPopulator populator : populators) {
+            String populatorTarget = populator.getPortalTargetWorld(location);
+            if (populatorTarget != null) {
+                return populatorTarget;
+            }
+        }
+        return null;
+    }
 }

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
@@ -18,6 +19,7 @@ public class EndPortalPopulator extends BaseBlockPopulator {
     private int minTunnelHeight = 0;
     private int maxTunnelHeight = 0;
     private boolean gateway = false;
+    private String targetWorld;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -26,6 +28,7 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         minTunnelHeight = config.getInt("min_tunnel_height", minPortalWidth);
         maxTunnelHeight = config.getInt("max_tunnel_height", maxPortalWidth);
         gateway = config.getBoolean("gateway", gateway);
+        targetWorld = config.getString("target_world", targetWorld);
         return true;
     }
 
@@ -75,5 +78,10 @@ public class EndPortalPopulator extends BaseBlockPopulator {
                 }
             }
         }
+    }
+
+    @Override
+    public String getPortalTargetWorld(Location location) {
+        return targetWorld;
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
@@ -175,5 +176,9 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
             material = region.getType(x, y, z);
         }
         return y;
+    }
+
+    public String getPortalTargetWorld(Location location) {
+        return null;
     }
 }

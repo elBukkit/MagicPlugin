@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -111,5 +112,16 @@ public class SequenceGenerator extends BaseChunkGenerator {
             }
         }
         return false;
+    }
+
+    @Override
+    public String getPortalTargetWorld(Location location) {
+        for (BaseChunkGenerator generator : generators) {
+            String targetWorld = generator.getPortalTargetWorld(location);
+            if (targetWorld != null) {
+                return targetWorld;
+            }
+        }
+        return null;
     }
 }

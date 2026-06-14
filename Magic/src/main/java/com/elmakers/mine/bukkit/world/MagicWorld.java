@@ -506,4 +506,11 @@ public class MagicWorld {
     public String getRespawnWorld() {
         return respawnWorld;
     }
+
+    public String getPortalTargetWorld(Location location) {
+        if (generator == null) {
+            return null;
+        }
+        return generator.getPortalTargetWorld(location);
+    }
 }

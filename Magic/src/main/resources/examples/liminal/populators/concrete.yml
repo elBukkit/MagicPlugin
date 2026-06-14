@@ -13,6 +13,7 @@ concrete_tower:
 
 concrete_exit:
   class: EndPortal
+  target_world: world_pools
   gateway: true
   min_portal_width: 1
   max_portal_width: 8

@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
@@ -317,8 +316,7 @@ public class RandomUtils {
     }
 
     @Nullable
-    public static <T> T getDistanceWeighted(List<DistanceWeighted<T>> options, WorldInfo worldInfo, int chunkX, int chunkZ) {
-        final long worldSeed = worldInfo.getSeed();
+    public static <T> T getDistanceWeighted(List<DistanceWeighted<T>> options, long worldSeed, int chunkX, int chunkZ) {
         final long chunkSeed = worldSeed
                 ^ (long) chunkX * 0x9E3779B97F4A7C15L
                 ^ (long) chunkZ * 0xD1B54A32D192ED03L;

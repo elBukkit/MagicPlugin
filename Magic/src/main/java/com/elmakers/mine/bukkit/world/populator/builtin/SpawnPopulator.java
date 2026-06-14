@@ -83,7 +83,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
         final int chunkBaseZ = (chunkZ << 4);
         final int baseY = world.getGroundLevel();
         for (int i = 0; i < picks; i++) {
-            EntityData entityData = RandomUtils.getDistanceWeighted(spawns, worldInfo, chunkX, chunkZ);
+            EntityData entityData = RandomUtils.getDistanceWeighted(spawns, worldInfo.getSeed(), chunkX, chunkZ);
             if (entityData == null) continue;
             boolean spawned = false;
             final int position = RandomUtils.range(random, minPosition, maxPosition);
