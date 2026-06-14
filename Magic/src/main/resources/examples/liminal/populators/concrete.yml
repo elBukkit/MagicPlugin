@@ -12,12 +12,12 @@ concrete_tower:
   min_noise_scale: 0.9
 
 concrete_portal:
-  class: EndPortal
+  class: EndGateway
   target_world: world_pools
   min_gateway_height: 10
   max_gateway_height: 10
-  min_portal_width: 8
-  max_portal_width: 8
+  min_gateway_width: 8
+  max_gateway_width: 8
 
 concrete_tunnel:
   class: Tunnel
