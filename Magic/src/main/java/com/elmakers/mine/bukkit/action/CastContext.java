@@ -468,6 +468,16 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Override
+    public void registerFrozen(Entity entity)
+    {
+        addWork(5);
+        if (undoList != null)
+        {
+            undoList.freeze(entity);
+        }
+    }
+
+    @Override
     public void clearAttachables(Block block)
     {
         addWork(50);

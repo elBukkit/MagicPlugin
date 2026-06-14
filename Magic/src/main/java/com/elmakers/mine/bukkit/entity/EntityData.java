@@ -91,6 +91,7 @@ public class EntityData
     protected Vector relativeLocation;
     protected boolean hasMoved = false;
     protected boolean hasChangedHealth = false;
+    protected boolean hasFrozen = false;
     protected boolean isTemporary = false;
     protected boolean cancelExplosion = false;
     protected boolean magicSpawned = false;
@@ -1001,6 +1002,11 @@ public class EntityData
             }
         }
 
+        if (hasFrozen) {
+            CompatibilityLib.getCompatibilityUtils().lockFreezeTicks(entity, false);
+            entity.setFreezeTicks(0);
+        }
+
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
@@ -1266,6 +1272,11 @@ public class EntityData
     @Override
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
+    }
+
+    @Override
+    public void setHasFrozen(boolean frozen) {
+        this.hasFrozen = frozen;
     }
 
     @Override

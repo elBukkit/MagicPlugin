@@ -808,6 +808,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Nullable
     @Override
+    public EntityData freeze(Entity entity) {
+        EntityData data = modify(entity);
+        if (data != null) {
+            data.setRespawn(true);
+            data.setHasFrozen(true);
+        }
+        return data;
+    }
+
+    @Nullable
+    @Override
     public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
 
