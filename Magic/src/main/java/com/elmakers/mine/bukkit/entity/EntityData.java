@@ -183,6 +183,7 @@ public class EntityData
     protected EntityData mount;
     protected String mountType;
 
+    protected boolean reload = false;
     protected ConfigurationSection configuration;
 
     public EntityData(MageController controller, Entity entity) {
@@ -307,6 +308,7 @@ public class EntityData
     @Override
     public void load(ConfigurationSection parameters) {
         this.configuration = parameters;
+        reload = parameters.getBoolean("reload", false);
         // This is required to allow changes to health
         hasChangedHealth = true;
         name = parameters.getString("name");
@@ -857,6 +859,11 @@ public class EntityData
     }
 
     private boolean modify(Entity entity, boolean register) {
+        // For randomization
+        if (reload) {
+            load(configuration);
+        }
+
         // Don't check isValid here since it will be false on the spawn event!
         if (entity.isDead()) return false;
         if (register && !(entity instanceof Player)) {
@@ -1708,5 +1715,9 @@ public class EntityData
         variant.load(effectiveParameters);
 
         return variant;
+    }
+
+    public boolean shouldReload() {
+        return reload;
     }
 }

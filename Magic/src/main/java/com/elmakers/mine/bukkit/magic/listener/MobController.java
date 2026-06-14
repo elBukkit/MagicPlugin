@@ -120,7 +120,7 @@ public class MobController implements Listener, ChunkLoadListener {
             String key = mob.getKey();
             if (key == null || key.isEmpty()) continue;
             mob = controller.getMob(key);
-            if (mob != null) {
+            if (mob != null && !mob.shouldReload()) {
                 mob.modify(entry.getKey());
             }
         }
