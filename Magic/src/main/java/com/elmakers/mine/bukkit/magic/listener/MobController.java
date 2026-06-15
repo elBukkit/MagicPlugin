@@ -114,14 +114,16 @@ public class MobController implements Listener, ChunkLoadListener {
 
     public void updateAllMobs() {
         // Not clearing the map, but hopefully everything in it will be replaced
-        Map<Entity, EntityData> currentMobs = new HashMap<>(activeMobs);
-        for (Map.Entry<Entity, EntityData> entry : currentMobs.entrySet()) {
-            EntityData mob = entry.getValue();
-            String key = mob.getKey();
-            if (key == null || key.isEmpty()) continue;
-            mob = controller.getMob(key);
-            if (mob != null && !mob.shouldReload()) {
-                mob.modify(entry.getKey());
+        synchronized (activeMobs) {
+            Map<Entity, EntityData> currentMobs = new HashMap<>(activeMobs);
+            for (Map.Entry<Entity, EntityData> entry : currentMobs.entrySet()) {
+                EntityData mob = entry.getValue();
+                String key = mob.getKey();
+                if (key == null || key.isEmpty()) continue;
+                mob = controller.getMob(key);
+                if (mob != null && !mob.shouldReload()) {
+                    mob.modify(entry.getKey());
+                }
             }
         }
     }
@@ -348,27 +350,29 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
-        EntityData mob = activeMobs.get(entity);
-        if (mob == null) {
-            return;
-        }
+        synchronized (activeMobs) {
+            EntityData mob = activeMobs.get(entity);
+            if (mob == null) {
+                return;
+            }
 
-        if (entity instanceof Player) {
-            controller.getLogger().warning("A player has magic mob data on death, this shouldn't happen");
-            return;
-        }
+            if (entity instanceof Player) {
+                controller.getLogger().warning("A player has magic mob data on death, this shouldn't happen");
+                return;
+            }
 
-        // Prevent processing double-death events
-        activeMobs.remove(entity);
-        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
-        Bukkit.getPluginManager().callEvent(deathEvent);
+            // Prevent processing double-death events
+            activeMobs.remove(entity);
+            MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
+            Bukkit.getPluginManager().callEvent(deathEvent);
 
-        mob.onDeath(entity);
-        if (!mob.isSplittable()) {
-            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NOSPLIT, true);
-        }
-        if (!CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_DROPS)) {
-            mob.modifyDrops(event);
+            mob.onDeath(entity);
+            if (!mob.isSplittable()) {
+                CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NOSPLIT, true);
+            }
+            if (!CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_DROPS)) {
+                mob.modifyDrops(event);
+            }
         }
     }
 
@@ -393,21 +397,27 @@ public class MobController implements Listener, ChunkLoadListener {
     }
 
     public void register(@Nonnull Entity entity, @Nonnull EntityData entityData) {
-        EntityData existing = activeMobs.get(entity);
-        if (existing != null && existing != entityData) {
-            entityData = existing.createVariant(entityData.getConfiguration());
+        synchronized (activeMobs) {
+            EntityData existing = activeMobs.get(entity);
+            if (existing != null && existing != entityData) {
+                entityData = existing.createVariant(entityData.getConfiguration());
+            }
+            activeMobs.put(entity, entityData);
         }
-        activeMobs.put(entity, entityData);
     }
 
     @Nullable
     public EntityData getEntityData(Entity entity) {
-        return activeMobs.get(entity);
+        synchronized (activeMobs) {
+            return activeMobs.get(entity);
+        }
     }
 
     @Nonnull
     public Collection<Entity> getActiveMobs() {
-        return new ArrayList<>(activeMobs.keySet());
+        synchronized (activeMobs) {
+            return new ArrayList<>(activeMobs.keySet());
+        }
     }
 
     @Nonnull
