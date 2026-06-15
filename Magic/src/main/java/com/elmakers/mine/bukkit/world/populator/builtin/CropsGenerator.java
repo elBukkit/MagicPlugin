@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.world.generator.builtin;
+package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.Collections;
 import java.util.List;
