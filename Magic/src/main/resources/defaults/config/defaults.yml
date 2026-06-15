@@ -495,6 +495,12 @@ mage_update_frequency: 1
 # Decreasing this value may introduce some lag (though probably not)
 magic_block_update_frequency: 10
 
+# How often to "tick" a magic mob
+# This is used for non-mage related tasks, such as aligning passengers
+# This also triggers clean up of removed mobs from the active mobs list
+# Increase this value if you think mobs are lagging the server
+magic_mob_update_frequency: 1
+
 # How long to exempt players from flight checks for each tick that
 # they have a jump potion effect
 # Set to 0 to disable exemption

@@ -253,6 +253,7 @@ import com.elmakers.mine.bukkit.tasks.MageLoadTask;
 import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MagicBlockUpdateTask;
+import com.elmakers.mine.bukkit.tasks.MagicMobUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
 import com.elmakers.mine.bukkit.tasks.MigrationTask;
 import com.elmakers.mine.bukkit.tasks.PostStartupLoadTask;
@@ -506,6 +507,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private BukkitTask logWatchdogTimer = null;
     private Plugin plugin = null;
     private int magicBlockUpdateFrequency = 1;
+    private int magicMobUpdateFrequency = 1;
     private int mageUpdateFrequency = 5;
     private int workFrequency = 1;
     private int undoFrequency = 10;
@@ -3074,6 +3076,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         for (MagicBlock magicBlock : activeBlocks.values()) {
             magicBlock.tick();
         }
+    }
+
+    public void tickMagicMobs() {
+        mobs.tick();
     }
 
     @Override
@@ -8486,6 +8492,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         final MagicBlockUpdateTask blockTask = new MagicBlockUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, magicBlockUpdateFrequency);
 
+        // Set up the Mob timer
+        final MagicMobUpdateTask mobsTask = new MagicMobUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mobsTask, 0, magicMobUpdateFrequency);
+
         // Set up the Update check timer
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
@@ -8544,6 +8554,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
         magicBlockUpdateFrequency = properties.getInt("magic_block_update_frequency", magicBlockUpdateFrequency);
+        magicMobUpdateFrequency = properties.getInt("magic_mob_update_frequency", magicMobUpdateFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
         pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);

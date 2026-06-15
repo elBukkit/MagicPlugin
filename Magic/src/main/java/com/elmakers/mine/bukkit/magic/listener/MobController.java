@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -470,6 +471,18 @@ public class MobController implements Listener, ChunkLoadListener {
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventTeleport()) {
             event.setCancelled(true);
+        }
+    }
+
+    public void tick() {
+        synchronized (activeMobs) {
+            for (Iterator<Map.Entry<Entity, EntityData>> iterator = activeMobs.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<Entity, EntityData> entry = iterator.next();
+                Entity entity = entry.getKey();
+                if (!entity.isValid()) {
+                    iterator.remove();
+                }
+            }
         }
     }
 }
