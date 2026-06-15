@@ -60,11 +60,15 @@ public class CropsPopulator extends BaseBlockPopulator {
         final int startZ = Math.min(16 - width - borderWidth, RandomUtils.range(random, minPosition, maxPosition));
         final int endX = startX + width + borderWidth;
         final int endZ = startZ + width + borderWidth;
+        final int chunkGlobalX = chunkX << 4;
+        final int chunkGlobalZ = chunkZ << 4;
 
         BlockData cropData = null;
 
-        for (int x = startX; x < endX; x++) {
-            for (int z = startZ; z < endZ; z++) {
+        for (int dx = startX; dx < endX; dx++) {
+            for (int dz = startZ; dz < endZ; dz++) {
+                final int x = chunkGlobalX + dx;
+                final int z = chunkGlobalZ + dz;
                 int groundY = searchUp ? getTopBlock(worldInfo, region, x, groundLevel, z) : groundLevel;
                 final boolean isBorder = x == startX || x == endX - 1 || z == startZ || z == endZ - 1;
                 if (hasBorder && isBorder) {
