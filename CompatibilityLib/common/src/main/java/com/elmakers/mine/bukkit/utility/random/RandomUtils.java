@@ -345,4 +345,17 @@ public class RandomUtils {
         // Should never happen
         return null;
     }
+
+    public static float applyRotation(float targetRot, float rot, float rotationSpeed) {
+        while (targetRot - rot < -180.0F) {
+            rot -= 360.0F;
+        }
+
+        while (targetRot - rot >= 180.0F) {
+            rot += 360.0F;
+        }
+
+        final float rotDelta = targetRot - rot;
+        return rot + Math.signum(rotDelta) * Math.min(rotationSpeed, Math.abs(rotDelta));
+    }
 }

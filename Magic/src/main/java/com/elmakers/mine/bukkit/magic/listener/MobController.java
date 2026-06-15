@@ -481,7 +481,9 @@ public class MobController implements Listener, ChunkLoadListener {
                 Entity entity = entry.getKey();
                 if (!entity.isValid()) {
                     iterator.remove();
+                    continue;
                 }
+                entry.getValue().tick(entity);
             }
         }
     }

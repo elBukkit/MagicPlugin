@@ -179,6 +179,7 @@ public class EntityData
     protected ConfigurationSection disguise;
     protected ConfigurationSection model;
     protected BossBarConfiguration bossBar;
+    private double passengerRotationSpeed;
 
     protected EntityMageData mageData;
     protected EntityData mount;
@@ -333,6 +334,7 @@ public class EntityData
         mythicMobLevel = ConfigUtils.getOptionalDouble(parameters, "mythic_mob_level");
         health = ConfigUtils.getOptionalDouble(parameters, "health");
         maxHealth = ConfigUtils.getOptionalDouble(parameters, "max_health");
+        passengerRotationSpeed = configuration.getDouble("passenger_rotation_speed", 0);
         // Shortcut for max_health
         if (health != null && maxHealth == null) maxHealth = health;
         isSilent = ConfigUtils.getOptionalBoolean(parameters, "silent");
@@ -1478,6 +1480,23 @@ public class EntityData
     public void tick(Mage mage) {
         if (mageData != null) {
             mageData.tick(mage);
+        }
+    }
+
+    public void tick(Entity entity) {
+        if (passengerRotationSpeed > 0) {
+            Entity passenger = entity;
+            Entity vehicle = passenger.getVehicle();
+            while (vehicle != null) {
+                final Location vehicleLocation = vehicle.getLocation();
+                final float yaw = passenger.getLocation().getYaw();
+                final float targetYaw = RandomUtils.applyRotation(vehicleLocation.getYaw(), yaw, (float)passengerRotationSpeed);
+                final float pitch = passenger.getLocation().getPitch();
+                final float targetPitch = RandomUtils.applyRotation(vehicleLocation.getPitch(), pitch, (float)passengerRotationSpeed);
+                passenger.setRotation(targetYaw, targetPitch);
+                passenger = vehicle;
+                vehicle = passenger.getVehicle();
+            }
         }
     }
 
