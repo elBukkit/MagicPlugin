@@ -5371,6 +5371,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (target instanceof Player) {
             return display ? ((Player) target).getDisplayName() : target.getName();
         }
+        EntityData mob = getMob(target);
+        if (mob != null) {
+            return mob.getName();
+        }
 
         if (display) {
             if (target instanceof LivingEntity) {
