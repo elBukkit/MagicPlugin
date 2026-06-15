@@ -9,19 +9,6 @@ concrete_ground:
   min_clip_elevation: 0
   max_clip_elevation: 0
 
-concrete_food:
-  class: Crops
-  border: pale_oak_pressure_plate
-  crops: carrots,potatoes
-  support: white_concrete
-  soil: ochre_froglight
-  min_age: 0.2
-  max_age: 1
-  min_width: 1
-  max_width: 3
-  min_position: 0
-  max_position: 14
-
 concrete_exit:
   populators:
   - concrete_tower
