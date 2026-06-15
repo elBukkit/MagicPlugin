@@ -23,6 +23,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
@@ -101,6 +102,10 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return List.of(passthroughPopulator);
+    }
+
+    protected MagicController getController() {
+        return world.getController();
     }
 
     protected Plugin getPlugin() {
