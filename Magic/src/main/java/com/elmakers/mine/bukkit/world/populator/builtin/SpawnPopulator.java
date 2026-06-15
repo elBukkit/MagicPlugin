@@ -29,7 +29,6 @@ public class SpawnPopulator extends BaseBlockPopulator {
     private int searchX = 2;
     private int searchZ = 2;
 
-
     @Override
     public boolean onLoad(ConfigurationSection config) {
         spawns.clear();

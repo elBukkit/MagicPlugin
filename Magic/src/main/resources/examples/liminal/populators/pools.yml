@@ -2,3 +2,9 @@ pools_vines:
   # TODO: vines
   class: Crops
   vines: minecraft:cave_vines[age=0,berries=true]
+
+pools_mobs:
+  class: Spawn
+  types:
+    hopper: 0.05
+    none: 1

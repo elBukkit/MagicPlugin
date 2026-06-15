@@ -11,6 +11,8 @@ pools_surface:
   window_probability: 0.3
   island_probability: 0.75
   double_door_probability: 0.5
+  populators:
+    - pools_mobs
   floor_blocks:
     - blue_concrete
     - light_blue_concrete
@@ -24,14 +26,10 @@ pools_surface:
     - quartz_block
   light_blocks:
     - sea_lantern
-  entity_probability: 0.05
-  entities:
-    hopper:
-      type: hopper
-      weight: 1
 
 pools:
   class: Sequence
   generators:
     - bedrock
     - pools_surface
+    - pools_mobs

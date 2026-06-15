@@ -1,6 +1,9 @@
 hopper:
   name: "&0Hopper"
-  type: rabbit
+  type: item_display
+  item: hopper_item
   mount:
-    type: item_display
-    item: stick[custom_model_data={floats:[19001]}]
+    remove_mounts: "*"
+    default_drops: false
+    type: rabbit
+    invisible: true
