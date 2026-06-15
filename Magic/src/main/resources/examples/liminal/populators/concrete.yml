@@ -4,7 +4,9 @@ concrete_tower:
   min_height: 32
   max_height: 128
   min_taper: 0
-  max_taper: 0.2
+  max_taper: 1
+  min_taper_start: 0.5
+  max_taper_start: 0.75
   min_width: 24
   max_width: 48
   min_noise: 0.01

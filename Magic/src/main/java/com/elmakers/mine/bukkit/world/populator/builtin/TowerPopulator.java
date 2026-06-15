@@ -26,6 +26,8 @@ public class TowerPopulator extends BaseBlockPopulator {
     private int maxWidth = 48;
     private double minTaper = 0;
     private double maxTaper = 0;
+    private double minTaperStart = 0;
+    private double maxTaperStart = 1;
     private double minNoise = 0;
     private double maxNoise = 0;
     private double minSolidAmount = 0.25;
@@ -52,6 +54,8 @@ public class TowerPopulator extends BaseBlockPopulator {
         maxSolidAmount = config.getDouble("max_solid_amount", maxSolidAmount);
         minTaper = config.getDouble("min_taper", minTaper);
         maxTaper = config.getDouble("max_taper", maxTaper);
+        minTaperStart = config.getDouble("min_taper_start", minTaperStart);
+        maxTaperStart = config.getDouble("max_taper_start", maxTaperStart);
         return true;
     }
 
@@ -76,8 +80,11 @@ public class TowerPopulator extends BaseBlockPopulator {
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
         final int minY = floorLevel + 1;
-        for (int y = minY; y < towerHeight; y++) {
-            final double taperFactor = taper * ((double)y / (double)(towerHeight - minY));
+        final int maxY = minY + towerHeight;
+        final double taperStartFactor = RandomUtils.range(random, minTaperStart, maxTaperStart);
+        final int taperStart = (int)(taperStartFactor * towerHeight);
+        for (int y = minY; y < maxY; y++) {
+            final double taperFactor = y < taperStart ? 0 : RandomUtils.lerp(0, taper, (double)(y - taperStart) / (maxY - taperStart));
             final double taperedWidth = (towerWidth - taperFactor * towerWidth) / 2;
             final int towerWidthLeft = (int)Math.floor(taperedWidth);
             final int towerWidthRight = (int)Math.ceil(taperedWidth);
