@@ -1,10 +1,37 @@
 pools_surface:
   class: Pools
   biome: lush_caves
+  roof_min_height: 6
+  roof_max_height: 16
+  doorway_min_height: 3
+  doorway_max_height: 6
+  doorway_max_width_half: 3
+  walkway_max_width_half: 5
+  wall_probability: 0.75
+  window_probability: 0.3
+  island_probability: 0.75
+  double_door_probability: 0.5
+  floor_blocks:
+    - blue_concrete
+    - light_blue_concrete
+  wall_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+  ceiling_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+  light_blocks:
+    - sea_lantern
+  entity_probability: 0.05
+  entities:
+    hopper:
+      type: hopper
+      weight: 1
 
 pools:
   class: Sequence
   generators:
     - bedrock
     - pools_surface
-
