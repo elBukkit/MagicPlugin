@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.WorldInfo;
@@ -72,7 +71,6 @@ public class PerlinGenerator extends BaseChunkGenerator {
                     BlockData blockData = (y == groundLevel + elevation) ? topBlock.createBlockData() : floorBlock.createBlockData();
                     chunk.setBlock(x, y, z, blockData);
                 }
-                chunk.setBlock(x, bedrockLevel, z, Material.BEDROCK);
             }
         }
     }

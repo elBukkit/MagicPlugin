@@ -1,4 +1,10 @@
-pools:
+pools_surface:
   class: Pools
   biome: lush_caves
+
+pools:
+  class: Sequence
+  generators:
+    - bedrock
+    - pools_surface
 

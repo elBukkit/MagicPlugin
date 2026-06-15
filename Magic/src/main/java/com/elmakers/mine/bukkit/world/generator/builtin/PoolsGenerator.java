@@ -157,7 +157,6 @@ public class PoolsGenerator extends BaseChunkGenerator {
                 final BlockData lightMaterial = hasLight ? lightBlock : floorBlock;
 
                 // Fill in the sub-floor first
-                chunk.setBlock(x, bedrockLevel, z, Material.BEDROCK);
                 for (int y = bedrockLevel + 1; y < this.floorLevel; y++) {
                     chunk.setBlock(x, y, z, floorBlock);
                 }

@@ -54,5 +54,6 @@ concrete_surface:
 concrete:
   class: Sequence
   generators:
+    - bedrock
     - concrete_ground
     - concrete_surface
