@@ -61,6 +61,7 @@
  - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)
  - Add support for FAWE schematic format
  - Add `reload` parameter to entity configs, for randomized entities (see `car` in liminal example)
+- Add `reload` parameter to item configs, replaces/inverts the existing `cache` parameter
  - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
 
 # 11.2.1

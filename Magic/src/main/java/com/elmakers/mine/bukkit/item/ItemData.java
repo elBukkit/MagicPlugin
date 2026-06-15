@@ -71,12 +71,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private Set<String> categories = ImmutableSet.of();
     private String creatorId;
     private String creator;
-    private boolean cache = true;
     private boolean locked;
     private boolean loaded;
     private boolean exactIngredient;
     private boolean replaceOnEquip;
     private boolean keep;
+    private boolean reload = false;
     private List<String> discoverRecipes;
     private List<PendingUpdate> pending = null;
 
@@ -119,8 +119,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         exactIngredient = configuration.getBoolean("exact_ingredient");
         discoverRecipes = ConfigurationUtils.getStringList(configuration, "discover_recipes");
         damage = ConfigurationUtils.getOptionalInteger(configuration, "damage");
-        cache = configuration.getBoolean("cache", true);
+        boolean cache = configuration.getBoolean("cache", true);
         keep = configuration.getBoolean("keep", false);
+        reload = configuration.getBoolean("reload", !cache);
         // Slightly more efficient if this has been overridden to an empty list
         if (discoverRecipes != null && discoverRecipes.isEmpty()) {
             discoverRecipes = null;
@@ -137,8 +138,8 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         NBTUtils nbtUtils = CompatibilityLib.getNBTUtils();
         ConfigurationSection configuration = this.configuration;
-        // Save this configuration for later if we're not caching the item, otherwise we are done with it.
-        if (cache) {
+        // Save this configuration for later only if this item reloads on creation
+        if (!reload) {
             this.configuration = null;
         }
         ItemStack item = null;
@@ -630,7 +631,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     @Nonnull
     public ItemStack getOrCreateItemStack() {
-        if (item == null || !cache) {
+        if (item == null || reload) {
             if (configuration != null) {
                 try {
                     item = createItemFromConfiguration();
