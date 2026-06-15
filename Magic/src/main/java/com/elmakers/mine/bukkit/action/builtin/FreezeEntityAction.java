@@ -63,6 +63,12 @@ public class FreezeEntityAction extends BaseSpellAction
     }
 
     @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
+
+    @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("duration");
