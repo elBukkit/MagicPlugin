@@ -19,6 +19,7 @@ public class FreezeEntityAction extends BaseSpellAction
     private boolean additive;
     private boolean reduce;
     private boolean lock;
+    private boolean unlock;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -27,6 +28,7 @@ public class FreezeEntityAction extends BaseSpellAction
         additive = parameters.getBoolean("additive", false);
         reduce = parameters.getBoolean("reduce", false);
         lock = parameters.getBoolean("lock", false);
+        unlock = parameters.getBoolean("unlock", false);
     }
 
     @Override
@@ -44,6 +46,9 @@ public class FreezeEntityAction extends BaseSpellAction
         }
         context.registerFrozen(targetEntity);
         targetEntity.setFreezeTicks(newFreezeTicks);
+        if (unlock) {
+            CompatibilityLib.getCompatibilityUtils().lockFreezeTicks(targetEntity, false);
+        }
         if (lock) {
             CompatibilityLib.getCompatibilityUtils().lockFreezeTicks(targetEntity, true);
         }
