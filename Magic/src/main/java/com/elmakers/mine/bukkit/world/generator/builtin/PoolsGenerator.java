@@ -22,8 +22,6 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 
 public class PoolsGenerator extends BaseChunkGenerator {
-    private int bedrockLevel = 60;
-    private int floorLevel = 62;
     private int roofMinHeight = 4;
     private int roofMaxHeight = 10;
     private int doorwayMinHeight = 2;
@@ -55,8 +53,6 @@ public class PoolsGenerator extends BaseChunkGenerator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        bedrockLevel = config.getInt("bedrock_level", bedrockLevel);
-        floorLevel = config.getInt("floor_level", floorLevel);
         roofMinHeight = config.getInt("roof_min_height", roofMinHeight);
         roofMaxHeight = config.getInt("roof_max_height", roofMaxHeight);
         doorwayMinHeight = config.getInt("doorway_min_height", doorwayMinHeight);
@@ -102,7 +98,8 @@ public class PoolsGenerator extends BaseChunkGenerator {
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkGenerator.ChunkData chunk) {
         final MagicController controller = getController();
         final boolean isStartingChunk = chunkX == 0 && chunkZ == 0;
-        final int floorLevel = this.floorLevel;
+        final int floorLevel = world.getGroundLevel();
+        final int bedrockLevel = world.getBedrockLevel();
         final int roofLevel = floorLevel + RandomUtils.range(random, roofMinHeight, roofMaxHeight);
         final int roofMaxLevel = floorLevel + roofMaxHeight;
         final int doorwayLevel = Math.min(roofLevel, floorLevel + RandomUtils.range(random, doorwayMinHeight, doorwayMaxHeight));
@@ -157,7 +154,7 @@ public class PoolsGenerator extends BaseChunkGenerator {
                 final BlockData lightMaterial = hasLight ? lightBlock : floorBlock;
 
                 // Fill in the sub-floor first
-                for (int y = bedrockLevel + 1; y < this.floorLevel; y++) {
+                for (int y = bedrockLevel + 1; y < floorLevel; y++) {
                     chunk.setBlock(x, y, z, floorBlock);
                 }
 

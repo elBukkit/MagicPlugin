@@ -5,6 +5,6 @@ pools:
   time: 6000
   spawn: 8,300,8
   bedrock_level: 60
-  floor_level: 62
+  ground_level: 62
   min_ambient_sound_time: 60
   max_ambient_sound_time: 600
