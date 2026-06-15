@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.RegionAccessor;
 import org.bukkit.Rotation;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -692,10 +693,21 @@ public class EntityData
     }
 
     @Nullable
-    protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
+    protected Entity trySpawn(RegionAccessor region, Location location, CreatureSpawnEvent.SpawnReason reason) {
+        if (location == null) {
+            return null;
+        }
         Entity spawned = null;
         boolean addedToWorld = false;
-        if (mythicMobKey != null) {
+        if (region != null) {
+            try {
+                spawned = region.spawnEntity(location, type);
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error spawning entity: " + getType() + " at " + getLocation(), ex);
+            }
+            addedToWorld = true;
+        }
+        if (spawned == null && mythicMobKey != null) {
             spawned = controller.spawnMythicMob(mythicMobKey, location);
             if (spawned != null) {
                 if (mythicMobLevel != null) {
@@ -733,9 +745,9 @@ public class EntityData
                     CompatibilityLib.getCompatibilityUtils().addToWorld(location.getWorld(), spawned, reason);
                     isSpawning = false;
                 }
-                modifyPostSpawn(spawned);
+                modifyPostSpawn(spawned, region);
             } catch (Exception ex) {
-                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for] " + getType() + " at " + getLocation(), ex);
+                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for: " + getType() + " at " + getLocation(), ex);
             }
         }
         return spawned;
@@ -757,42 +769,50 @@ public class EntityData
     @Nullable
     @Override
     public Entity spawn() {
-        return spawn((Location)null, null);
+        return doSpawn(null, null, null);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location) {
-        return spawn(location, null);
+        return doSpawn(location, null, null);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller) {
-        return spawn((Location)null, null);
+        return doSpawn(null, null, null);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
-        return spawn(location, null);
+        return doSpawn(location, null, null);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
-        return spawn(location, reason);
+        return doSpawn(location, reason, null);
+    }
+
+    @Nullable
+    @Override
+    public Entity spawn(Location location, RegionAccessor region) {
+        return doSpawn(location, null, region);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
-        if (location != null) this.location = location;
-        else if (this.location == null) return null;
-        Entity entity = trySpawn(reason);
+        return doSpawn(location, reason, null);
+    }
+
+    public Entity doSpawn(Location location, CreatureSpawnEvent.SpawnReason reason, RegionAccessor region) {
+        Entity entity = trySpawn(region, location, reason);
         if (entity != null && mageData != null) {
             Mage mage = controller.getMage(entity);
             mageData.trigger(mage, "spawn");
@@ -812,7 +832,7 @@ public class EntityData
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
             } else {
-                entity = trySpawn(null);
+                entity = trySpawn(null, null, null);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
 
@@ -873,7 +893,7 @@ public class EntityData
             controller.registerMob(entity, this);
         }
         boolean modifiedPre = modifyPreSpawn(entity, false, false);
-        boolean modifiedPost = modifyPostSpawn(entity);
+        boolean modifiedPost = modifyPostSpawn(entity, null);
         return modifiedPre || modifiedPost;
     }
 
@@ -1076,7 +1096,7 @@ public class EntityData
         return mageData != null ? mageData.mageProperties : null;
     }
 
-    private boolean modifyPostSpawn(Entity entity) {
+    private boolean modifyPostSpawn(Entity entity, RegionAccessor region) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
@@ -1101,7 +1121,7 @@ public class EntityData
             }
             // This prevents respawning mounts on chunk load for persistent mobs
             if (mountEntity == null) {
-                mountEntity = mount.spawn(entity.getLocation());
+                mountEntity = mount.spawn(entity.getLocation(), region);
             } else {
                 if (mountEntity.getType() == mount.getType()) {
                     // Don't re-mount
@@ -1112,7 +1132,7 @@ public class EntityData
                     // Mount type has changed, now we need to respawn it
                     mountEntity.remove();
                     entity.eject();
-                    mountEntity = mount.spawn(entity.getLocation());
+                    mountEntity = mount.spawn(entity.getLocation(), region);
                 }
             }
             if (allowMount && mountEntity != null) {

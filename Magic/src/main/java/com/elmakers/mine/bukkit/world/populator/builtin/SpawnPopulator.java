@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
@@ -88,16 +87,13 @@ public class SpawnPopulator extends BaseBlockPopulator {
             final int position = RandomUtils.range(random, minPosition, maxPosition);
             final int baseX = chunkBaseX + position;
             final int baseZ = chunkBaseZ + position;
-            for (int x = baseX - searchX; x < x + searchX && !spawned; x++) {
-                for (int z = baseZ - searchZ; z < z + searchZ && !spawned; z++) {
-                    for (int y = baseY - searchY; y < y + searchY && !spawned; y++) {
+            for (int x = baseX - searchX; x < baseX + searchX && !spawned; x++) {
+                for (int z = baseZ - searchZ; z < baseZ + searchZ && !spawned; z++) {
+                    for (int y = baseY - searchY; y < baseY + searchY && !spawned; y++) {
                         if (!region.isInRegion(x, y, z) || !region.isInRegion(x, y + 1, z) || !region.isInRegion(x, y - 1, z)) continue;
                         if (region.getType(x, y, z).isAir() && region.getType(x, y + 1, z).isAir() && !region.getType(x, y - 1, z).isAir()) {
-                            Entity spawnedEntity = region.spawnEntity(new Location(targetWorld, x, y, z), entityData.getType(), false);
+                            entityData.spawn(new Location(targetWorld, x, y, z), region);
                             spawned = true;
-                            if (spawnedEntity != null) {
-                                entityData.modify(spawnedEntity);
-                            }
                         }
                     }
                 }
