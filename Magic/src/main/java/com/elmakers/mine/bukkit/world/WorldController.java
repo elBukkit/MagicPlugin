@@ -1,7 +1,10 @@
 package com.elmakers.mine.bukkit.world;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -20,6 +23,8 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -230,6 +235,21 @@ public class WorldController implements Listener {
             return;
         }
         player.teleport(world.getSpawnLocation());
+    }
+
+    public List<MaterialAndData> parseBlocks(String worldKey, ConfigurationSection config, String key, String defaultSet) {
+        MaterialSet materialSet = controller.getMaterialSetManager().fromConfig(config, key);
+        if (materialSet == null) {
+            if (defaultSet == null) {
+                return Collections.emptyList();
+            }
+            controller.getLogger().warning("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
+            materialSet = controller.getMaterialSetManager().getMaterialSet(defaultSet);
+        }
+        if (materialSet == null) {
+            return Collections.emptyList();
+        }
+        return new ArrayList<>(materialSet.getMaterialsWithData());
     }
 
     public Plugin getPlugin() {

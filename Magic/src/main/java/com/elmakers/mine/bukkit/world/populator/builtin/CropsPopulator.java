@@ -7,14 +7,15 @@ import java.util.Random;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
-import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class CropsGenerator extends BaseChunkGenerator {
+public class CropsPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
     private boolean searchUp = true;
     private double minAge = 0;
@@ -47,7 +48,7 @@ public class CropsGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
+    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
         final int groundLevel = world.getGroundLevel();
         final MaterialAndData borderBlock = RandomUtils.getRandom(borderBlocks, random);
         final MaterialAndData supportBlock = RandomUtils.getRandom(supportBlocks, random);
@@ -64,12 +65,12 @@ public class CropsGenerator extends BaseChunkGenerator {
 
         for (int x = startX; x < endX; x++) {
             for (int z = startZ; z < endZ; z++) {
-                int groundY = searchUp ? getTopBlock(chunk, x, groundLevel, z) : groundLevel;
+                int groundY = searchUp ? getTopBlock(worldInfo, region, x, groundLevel, z) : groundLevel;
                 final boolean isBorder = x == startX || x == endX - 1 || z == startZ || z == endZ - 1;
                 if (hasBorder && isBorder) {
-                    chunk.setBlock(x, groundY + 1, z, borderBlock.createBlockData());
+                    region.setBlockData(x, groundY + 1, z, borderBlock.createBlockData());
                     if (supportBlock != null) {
-                        chunk.setBlock(x, groundY, z, supportBlock.createBlockData());
+                        region.setBlockData(x, groundY, z, supportBlock.createBlockData());
                     }
                 } else {
                     if (cropData == null) {
@@ -82,9 +83,9 @@ public class CropsGenerator extends BaseChunkGenerator {
                             crops.setAge(age);
                         }
                     }
-                    chunk.setBlock(x, groundY + 1, z, cropData);
+                    region.setBlockData(x, groundY + 1, z, cropData);
                     if (soilBlock != null) {
-                        chunk.setBlock(x, groundY, z, soilBlock.createBlockData());
+                        region.setBlockData(x, groundY, z, soilBlock.createBlockData());
                     }
                     if (!consistent) {
                         cropData = null;

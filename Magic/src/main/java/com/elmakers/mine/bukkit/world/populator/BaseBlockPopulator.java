@@ -14,6 +14,7 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -176,6 +177,13 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
             material = region.getType(x, y, z);
         }
         return y;
+    }
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key) {
+        return parseBlocks(config, key, null);
+    }
+
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key, String defaultSet) {
+        return world.getController().getWorlds().parseBlocks(world.getName(), config, key, defaultSet);
     }
 
     public String getPortalTargetWorld(Location location) {

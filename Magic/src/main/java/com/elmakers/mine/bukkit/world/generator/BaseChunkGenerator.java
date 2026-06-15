@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.world.generator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -22,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
@@ -122,19 +120,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
     protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key, String defaultSet) {
-        final MageController controller = world.getController();
-        MaterialSet materialSet = controller.getMaterialSetManager().fromConfig(config, key);
-        if (materialSet == null) {
-            if (defaultSet == null) {
-                return Collections.emptyList();
-            }
-            world.getLogger().warning("Invalid block set: " + key + ", defaulting to " + defaultSet);
-            materialSet = controller.getMaterialSetManager().getMaterialSet(defaultSet);
-        }
-        if (materialSet == null) {
-            return Collections.emptyList();
-        }
-        return new ArrayList<>(materialSet.getMaterialsWithData());
+        return world.getController().getWorlds().parseBlocks(world.getName(), config, key, defaultSet);
     }
 
     protected int getTopBlock(final ChunkData chunk, int x, int y, int z) {
