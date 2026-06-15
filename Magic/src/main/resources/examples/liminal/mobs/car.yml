@@ -1,4 +1,5 @@
 car:
+  name: "&fCar"
   type: item_display
   item: car_item
   # This will cause the config to be reloaded every time a new mob spawns, allowing

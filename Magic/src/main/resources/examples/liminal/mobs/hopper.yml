@@ -1,5 +1,5 @@
 hopper:
-  name: "&0Hopper"
+  name: "&3Hopper"
   type: item_display
   item: hopper_item
   mount:
