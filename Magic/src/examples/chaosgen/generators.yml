@@ -41,7 +41,7 @@ chaos_surface:
       min_distance: 32
       max_distance: 512
       weight: 0.5
-      frequency: 48
+      frequency: 3
     none: 1
 
 chaos:

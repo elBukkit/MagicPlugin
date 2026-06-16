@@ -7,4 +7,4 @@ dungeon:
   class: Sequence
   generators:
     - dungeon_floor
-    - dungeon_rooms
+    - dungeon_surface

@@ -11,6 +11,7 @@
    - Crops: Generate simple crop farms
    - Sequence: Run multiple other generators in order
    - Random: Randomly choose one generator from a distance-weighted probability map
+   - Frequency: Only fill every N chunks
    - Vanilla: Use vanilla world generation
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
@@ -21,6 +22,7 @@
      - Spawn : Spawn some mobs from a distance-weighted probability map
      - EndPortal : Build some configurations of an end portal, use `target_world` to send to a specific world
      - Tunnel : Make tunnels/doorways through the center of a region
+     - Frequency: Only fill every N chunks
      - Sequence: Run multiple other populators in order
      - Random: Randomly choose one populators from a distance-weighted probability map
  - Use generators in world configs for completely custom world gen

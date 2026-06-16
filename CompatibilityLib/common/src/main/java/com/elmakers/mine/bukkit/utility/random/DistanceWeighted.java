@@ -28,7 +28,8 @@ public class DistanceWeighted<T> {
         int maxDistance = config.getInt("max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
         weight = config.getDouble("weight", 1);
-        frequency = config.getInt("frequency");
+        // Frequency is defined in terms of chunks
+        frequency = config.getInt("frequency") * 16;
     }
 
     private DistanceWeighted(Logger logger, T value, String weightConfig) {

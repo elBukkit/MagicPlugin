@@ -451,27 +451,23 @@ dungeon_grid_3x3_3x2_3x1:
 
 # Finally, tie it all together by choosing a random 3x3 layout
 # this is the one actually used by the world generator.
-# The frequency is set to 48 so this will only be placed every 4 chunks
+# The frequency is set to 48 so this will only be placed every 3 chunks
 # Since this is a 3x3 layout this fills in everywhere.
 
 dungeon_rooms:
   class: Random
   populators:
-    dungeon_grid_3x3_1x1:
-      frequency: 48
-    dungeon_grid_3x3_2x2_1x3_2x1:
-      frequency: 48
-    dungeon_grid_3x3_2x2_3x1_1x2:
-      frequency: 48
-    dungeon_grid_3x3_1x3_2x2_2x1:
-      frequency: 48
-    dungeon_grid_3x3_1x2_2x2_3x1:
-      frequency: 48
-    dungeon_grid_3x3_1x3_2x3:
-      frequency: 48
-    dungeon_grid_3x3_2x3_1x3:
-      frequency: 48
-    dungeon_grid_3x3_3x1_3x2:
-      frequency: 48
-    dungeon_grid_3x3_3x2_3x1:
-      frequency: 48
+    - dungeon_grid_3x3_1x1
+    - dungeon_grid_3x3_2x2_1x3_2x1
+    - dungeon_grid_3x3_2x2_3x1_1x2
+    - dungeon_grid_3x3_1x3_2x2_2x1
+    - dungeon_grid_3x3_1x2_2x2_3x1
+    - dungeon_grid_3x3_1x3_2x3
+    - dungeon_grid_3x3_2x3_1x3
+    - dungeon_grid_3x3_3x1_3x2
+    - dungeon_grid_3x3_3x2_3x1
+
+dungeon_surface:
+  class: Frequency
+  frequency: 3
+  populator: dungeon_rooms
