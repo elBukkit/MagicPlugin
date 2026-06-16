@@ -769,7 +769,7 @@ public class EntityData
     @Nullable
     @Override
     public Entity spawn() {
-        return doSpawn(null, null, null);
+        return doSpawn(location, null, null);
     }
 
     @Nullable
