@@ -34,10 +34,22 @@ public class RandomUtils {
     }
 
     public static int lerp(int min, int max, double value) {
+        if (max == min) return min;
+        if (min > max) {
+            int temp = min;
+            min = max;
+            max = temp;
+        }
         return (int)Math.round((double)min + value * (double) (max - min));
     }
 
     public static double lerp(double min, double max, double value) {
+        if (max == min) return min;
+        if (min > max) {
+            double temp = min;
+            min = max;
+            max = temp;
+        }
         return min + value * (max - min);
     }
 

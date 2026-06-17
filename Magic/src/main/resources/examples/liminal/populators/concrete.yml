@@ -1,46 +1,33 @@
 concrete_tower:
   class: Tower
   blocks: concrete_tower
-  min_height: 32
-  max_height: 128
-  min_taper: 0
-  max_taper: 1
-  min_taper_start: 0.5
-  max_taper_start: 0.75
-  min_width: 24
-  max_width: 48
-  min_noise: 0.01
-  max_noise: 0.75
-  min_solid_amount: 0.2
-  max_solid_amount: 0.8
+  height: 32 | 128
+  taper: 0 | 1
+  taper_start: 0.5 | 0.75
+  width: 24 | 48
+  noise: 0.01 | 0.75
+  solid_amount: 0.2 | 0.8
 
 concrete_food:
   class: Crops
   border: pale_oak_pressure_plate
   crops: carrots,potatoes
   support: white_concrete
-  soil: ochre_froglight
-  min_age: 0.2
-  max_age: 1
-  min_width: 1
-  max_width: 3
-  min_position: 0
-  max_position: 14
+  soil: glowstone
+  age: 0.2 | 1
+  width: 1 | 3
+  position: 0 | 14
 
 concrete_portal:
   class: EndGateway
   target_world: world_pools
-  min_gateway_height: 10
-  max_gateway_height: 10
-  min_gateway_width: 8
-  max_gateway_width: 8
+  gateway_height: 10
+  gateway_width: 8
 
 concrete_tunnel:
   class: Tunnel
-  min_tunnel_width: 1
-  max_tunnel_width: 8
-  min_tunnel_height: 2
-  max_tunnel_height: 10
+  tunnel_width: 1 | 8
+  tunnel_height: 2 | 10
 
 concrete_car:
   class: Spawn

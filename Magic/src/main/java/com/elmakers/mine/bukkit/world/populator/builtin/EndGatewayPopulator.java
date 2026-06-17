@@ -10,24 +10,20 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class EndGatewayPopulator extends BaseBlockPopulator {
-    private int minGatewayWidth = 3;
-    private int maxGatewayWidth = 3;
-    private int minGatewayHeight = 2;
-    private int maxGatewayHeight = 4;
+    private IntegerRange gatewayWidth;
+    private IntegerRange gatewayHeight;
     private String targetWorld;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        minGatewayWidth = config.getInt("min_gateway_width", minGatewayWidth);
-        maxGatewayWidth = config.getInt("max_gateway_width", maxGatewayWidth);
-        minGatewayHeight = config.getInt("min_gateway_height", minGatewayHeight);
-        maxGatewayHeight = config.getInt("max_gateway_height", maxGatewayHeight);
+        gatewayWidth = IntegerRange.fromConfig(getLogger(), config, "gateway_width", 3, 3);
+        gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "gateway_height", 2, 4);
         targetWorld = config.getString("target_world", targetWorld);
-        return maxGatewayWidth > 0;
+        return gatewayWidth.getMax() > 0;
     }
 
     private BlockData getGatewayBlock() {
@@ -44,10 +40,10 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
-        final int portalWidth = RandomUtils.range(random, minGatewayWidth, maxGatewayWidth);
-        final int gatewayHeight = RandomUtils.range(random, minGatewayHeight, maxGatewayHeight);
-        final int portalLeft = 8 - (int)Math.ceil((double)portalWidth / 2);
-        final int portalRight = 8 + (int)Math.floor((double)portalWidth / 2);
+        final int gatewayWidth = this.gatewayWidth.getRandom(random);
+        final int gatewayHeight = this.gatewayHeight.getRandom(random);
+        final int portalLeft = 8 - (int)Math.ceil((double)gatewayWidth / 2);
+        final int portalRight = 8 + (int)Math.floor((double)gatewayWidth / 2);
 
         final int minExitX = chunkGlobalX + portalLeft;
         final int maxExitX = chunkGlobalX + portalRight;

@@ -7,17 +7,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class RepeatPopulator extends BaseBlockPopulator {
     private BaseBlockPopulator populator;
-    private int minRepeat = 2;
-    private int maxRepeat = 2;
+    private IntegerRange repeat;
 
     public boolean onLoad(ConfigurationSection config) {
-        minRepeat = config.getInt("min_repeat", minRepeat);
-        maxRepeat = config.getInt("max_repeat", maxRepeat);
+        repeat = IntegerRange.fromConfig(getLogger(), config, "repeat", 2, 2);
         String populatorId = config.getString("populator");
         populator = BaseBlockPopulator.loadPopulator(world, populatorId);
         return populator != null;
@@ -25,7 +23,7 @@ public class RepeatPopulator extends BaseBlockPopulator {
 
     @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        final int repeat = RandomUtils.range(random, minRepeat, maxRepeat);
+        final int repeat = this.repeat.getRandom(random);
         for (int i = 0; i < repeat; i++) {
             populator.populate(worldInfo, random, chunkX, chunkZ, region);
         }

@@ -8,21 +8,19 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class EndPortalPopulator extends BaseBlockPopulator {
-    private int minPortalWidth = 3;
-    private int maxPortalWidth = 3;
-    private int portalDepth = 0;
+    private IntegerRange portalWidth;
+    private IntegerRange portalDepth;
     private String targetWorld;
     private Material borderMaterial = Material.BEDROCK;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        minPortalWidth = config.getInt("min_portal_width", minPortalWidth);
-        maxPortalWidth = config.getInt("max_portal_width", maxPortalWidth);
-        portalDepth = config.getInt("portal_depth", portalDepth);
+        portalWidth = IntegerRange.fromConfig(getLogger(), config, "portal_width", 3, 3);
+        portalDepth = IntegerRange.fromConfig(getLogger(), config, "portal_depth", 0, 0);
         targetWorld = config.getString("target_world", targetWorld);
         return true;
     }
@@ -32,7 +30,8 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
-        final int portalWidth = RandomUtils.range(random, minPortalWidth, maxPortalWidth);
+        final int portalWidth = this.portalWidth.getRandom(random);
+        final int portalDepth = this.portalDepth.getRandom(random);
         final int portalLeft = 8 - (int)Math.ceil((double)portalWidth / 2);
         final int portalRight = 8 + (int)Math.floor((double)portalWidth / 2);
 

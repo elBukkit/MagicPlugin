@@ -4,10 +4,8 @@ concrete_ground:
   noise: 0.05
   blocks: concrete_ground
   top_blocks: concrete_top
-  max_elevation: 1
-  min_elevation: 0
-  min_clip_elevation: 0
-  max_clip_elevation: 0
+  elevation: 0 | 1
+  clip_elevation: 0
 
 concrete_exit:
   populators:

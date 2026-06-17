@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
@@ -75,8 +75,7 @@ public class MagicWorld {
     private Map<String, Boolean> gameRules = new HashMap<>();
     private String respawnWorld;
     private CustomSound[] ambientSounds = {};
-    private int minAmbientSoundTime;
-    private int maxAmbientSoundTime;
+    private IntegerRange ambientSoundTime;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -102,8 +101,7 @@ public class MagicWorld {
         synchronizedTimeOffset = config.getLong("time_offset", synchronizedTimeOffset);
         resourcePack = config.getString("resource_pack", resourcePack);
         spawnPosition = ConfigurationUtils.getVector(config, "spawn");
-        minAmbientSoundTime = config.getInt("min_ambient_sound_time", 0) * 20;
-        maxAmbientSoundTime = config.getInt("max_ambient_sound_time", 0) * 20;
+        ambientSoundTime = IntegerRange.fromConfig(getLogger(), config, "ambient_sound_time", 0, 0);
         ambientSounds = ConfigurationUtils.getSounds(config, "ambient_sounds");
         if (config.contains("environment")) {
             String typeString = config.getString("environment");
@@ -434,11 +432,11 @@ public class MagicWorld {
     }
 
     private void scheduleAmbientSounds() {
-        if (minAmbientSoundTime == 0 || maxAmbientSoundTime == 0 || ambientSounds.length == 0) {
+        final int soundTime = this.ambientSoundTime.getRandom(random) * 20;
+        if (soundTime == 0 || ambientSounds.length == 0) {
             return;
         }
 
-        final int soundTime = RandomUtils.range(random, minAmbientSoundTime, maxAmbientSoundTime);
         final Plugin plugin = controller.getPlugin();
         plugin.getServer().getScheduler().runTaskLater(
             plugin,

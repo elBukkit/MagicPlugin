@@ -11,16 +11,14 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class SchematicPopulator extends BaseBlockPopulator {
     private String schematicName;
     private Schematic schematic;
-    private int minPosition = 0;
-    private int maxPosition = 0;
-    private int minY = 0;
-    private int maxY = 0;
+    private IntegerRange position;
+    private IntegerRange yOffset;
     private boolean searchUp = true;
     private boolean conform = false;
     private boolean fillAir = false;
@@ -33,10 +31,8 @@ public class SchematicPopulator extends BaseBlockPopulator {
             world.getController().getLogger().warning("Schematic populator missing 'schematic' name");
             return false;
         }
-        minY = config.getInt("min_y", minY);
-        maxY = config.getInt("max_y", maxY);
-        minPosition = config.getInt("min_position", minPosition);
-        maxPosition = config.getInt("max_position", maxPosition);
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 0);
+        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         searchUp = config.getBoolean("search_up", searchUp);
         conform = config.getBoolean("conform", conform);
         fillAir = config.getBoolean("fill_air", fillAir);
@@ -60,12 +56,13 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int chunkBaseZ = (chunkZ << 4);
         final int maxSize = 16 + buffer * 2;
         final int sizeY = size.getBlockY();
-        final int startX = RandomUtils.range(random, minPosition, maxPosition);
-        final int startZ = RandomUtils.range(random, minPosition, maxPosition);
+        final int startX = position.getRandom(random);
+        final int startZ = position.getRandom(random);
         final int sizeX = Math.min(maxSize, size.getBlockX());
         final int sizeZ = Math.min(maxSize, size.getBlockZ());
         final int groundY = world.getGroundLevel();
-        final int startY = (searchUp ? getTopBlock(worldInfo, region, startX + chunkBaseX, groundY, startZ + chunkBaseZ) : groundY) + RandomUtils.range(random, minY, maxY);
+        final int startOffsetY = yOffset.getRandom(random);
+        final int startY = (searchUp ? getTopBlock(worldInfo, region, startX + chunkBaseX, groundY, startZ + chunkBaseZ) : groundY) + startOffsetY;
         final int maxHeight = worldInfo.getMaxHeight();
         for (int dx = 0; dx < sizeX; dx++) {
             for (int dz = 0; dz < sizeZ; dz++) {

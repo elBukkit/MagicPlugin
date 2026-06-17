@@ -1,12 +1,9 @@
 pools_surface:
   class: Pools
   biome: lush_caves
-  roof_min_height: 6
-  roof_max_height: 16
-  doorway_min_height: 3
-  doorway_max_height: 6
-  doorway_max_width_half: 3
-  walkway_max_width_half: 5
+  roof_height: 6 | 16
+  doorway_height: 3 | 6
+  doorway_width: 6 | 10
   wall_probability: 0.75
   window_probability: 0.3
   island_probability: 0.75

@@ -90,8 +90,7 @@ dungeon_1x3_a:
 dungeon_3x3_a:
   class: Schematic
   schematic: dungeon_3x3_a
-  min_position: -16
-  max_position: -16
+  position: -16
   search_up: false
 
 # Set up sub-grids to fill in 1x3, 3x1, 3x2, 2x3, 2x2, 2x1 and 1x2 spaces

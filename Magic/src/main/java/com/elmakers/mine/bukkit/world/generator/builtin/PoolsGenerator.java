@@ -18,19 +18,16 @@ import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 
 public class PoolsGenerator extends BaseChunkGenerator {
-    private int roofMinHeight = 4;
-    private int roofMaxHeight = 10;
-    private int doorwayMinHeight = 2;
-    private int doorwayMaxHeight = 4;
-    private int doorwayMinWidthHalf = 0;
-    private int doorwayMaxWidthHalf = 3;
-    private int walkwayMaxWidthHalf = 5;
-    private int hallwayMaxWidthHalf = 0;
-    private int hallwayMinWidthHalf = 0;
+    private IntegerRange roofHeight;
+    private IntegerRange doorwayHeight;
+    private IntegerRange doorwayWidth;
+    private IntegerRange walkwayWidth;
+    private IntegerRange hallwayWidth;
     private double wallProbability = 0.75;
     private double windowProbability = 0.3;
     private double islandProbability = 0.75;
@@ -40,11 +37,9 @@ public class PoolsGenerator extends BaseChunkGenerator {
     private double floorLightProbability = 0;
     private double sunroofProbability = 1;
     private double floodingProbability = 0;
-    private int floodingMinLevel = 1;
-    private int floodingMaxLevel = 6;
-    private int waterHeightMax = 0;
-    private int waterHeightMin = 0;
-    private int waterDepthMax = 1;
+    private IntegerRange floodingLevel;
+    private IntegerRange waterHeight;
+    private IntegerRange waterDepth;
 
     private List<MaterialAndData> floorBlocks = Collections.emptyList();
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
@@ -53,13 +48,15 @@ public class PoolsGenerator extends BaseChunkGenerator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        roofMinHeight = config.getInt("roof_min_height", roofMinHeight);
-        roofMaxHeight = config.getInt("roof_max_height", roofMaxHeight);
-        doorwayMinHeight = config.getInt("doorway_min_height", doorwayMinHeight);
-        doorwayMaxHeight = config.getInt("doorway_max_height", doorwayMaxHeight);
-        doorwayMaxWidthHalf = config.getInt("doorway_max_width_half", doorwayMaxWidthHalf);
-        doorwayMinWidthHalf = config.getInt("doorway_min_width_half", doorwayMinWidthHalf);
-        walkwayMaxWidthHalf = config.getInt("walkway_max_width_half", walkwayMaxWidthHalf);
+        roofHeight = IntegerRange.fromConfig(getLogger(), config, "roof_height", 4, 10);
+        doorwayWidth = IntegerRange.fromConfig(getLogger(), config, "doorway_width", 0, 6);
+        doorwayHeight = IntegerRange.fromConfig(getLogger(), config, "doorway_height", 2, 4);
+        walkwayWidth = IntegerRange.fromConfig(getLogger(), config, "walkway_width", 0, 10);
+        hallwayWidth = IntegerRange.fromConfig(getLogger(), config, "hallway_width", 0, 0);
+        floodingLevel = IntegerRange.fromConfig(getLogger(), config, "flooding_level", 1, 6);
+        waterHeight = IntegerRange.fromConfig(getLogger(), config, "water_height", 0, 0);
+        waterDepth = IntegerRange.fromConfig(getLogger(), config, "water_depth", 1, 1);
+
         wallProbability = config.getDouble("wall_probability", wallProbability);
         windowProbability = config.getDouble("window_probability", windowProbability);
         islandProbability = config.getDouble("island_probability", islandProbability);
@@ -67,15 +64,8 @@ public class PoolsGenerator extends BaseChunkGenerator {
         doubleDoorProbability = config.getDouble("double_door_probability", doubleDoorProbability);
         lightProbability = config.getDouble("light_probability", lightProbability);
         floorLightProbability = config.getDouble("floor_light_probability", floorLightProbability);
-        hallwayMaxWidthHalf = config.getInt("hallway_max_width_half", hallwayMaxWidthHalf);
-        hallwayMinWidthHalf = config.getInt("hallway_min_width_half", hallwayMinWidthHalf);
         sunroofProbability = config.getDouble("sunroof_probability", sunroofProbability);
         floodingProbability = config.getDouble("flooding_probability", floodingProbability);
-        floodingMinLevel = config.getInt("flooding_min_level", floodingMinLevel);
-        floodingMaxLevel = config.getInt("flooding_mx_level", floodingMaxLevel);
-        waterDepthMax =  config.getInt("water_depth_max", waterDepthMax);
-        waterHeightMax = config.getInt("water_height_max", waterHeightMax);
-        waterHeightMin = config.getInt("water_height_min", waterHeightMin);
 
         floorBlocks = parseBlocks(config, "floor_blocks", "concretes");
         wallBlocks = parseBlocks(config, "wall_blocks", "stones");
@@ -100,14 +90,15 @@ public class PoolsGenerator extends BaseChunkGenerator {
         final boolean isStartingChunk = chunkX == 0 && chunkZ == 0;
         final int floorLevel = world.getGroundLevel();
         final int bedrockLevel = world.getBedrockLevel();
-        final int roofLevel = floorLevel + RandomUtils.range(random, roofMinHeight, roofMaxHeight);
-        final int roofMaxLevel = floorLevel + roofMaxHeight;
-        final int doorwayLevel = Math.min(roofLevel, floorLevel + RandomUtils.range(random, doorwayMinHeight, doorwayMaxHeight));
-        final int doorwayWidthHalf = RandomUtils.range(random, doorwayMinWidthHalf, doorwayMaxWidthHalf);
-        final int waterHeight = RandomUtils.range(random, waterHeightMin, waterHeightMax);
+        final int roofLevel = floorLevel + roofHeight.getRandom(random);
+        final int roofMaxLevel = floorLevel + roofHeight.getMax();
+        final int doorwayLevel = Math.min(roofLevel, floorLevel + doorwayHeight.getRandom(random));
+        final int doorwayWidthHalf = (int)Math.ceil((double)doorwayWidth.getRandom(random) / 2);
+        final int hallwayWidthHalf = (int)Math.ceil((double)hallwayWidth.getRandom(random) / 2);
+        final int waterHeight = this.waterHeight.getRandom(random);
         final int doorwayLeft = 7 - doorwayWidthHalf;
         final int doorwayRight = 9 + doorwayWidthHalf;
-        final int walkwayWidthHalf = isStartingChunk ? 0 : random.nextInt(walkwayMaxWidthHalf);
+        final int walkwayWidthHalf = isStartingChunk ? 0 : walkwayWidth.getRandom(random);
         final int walkwayLeft = 8 - walkwayWidthHalf;
         final int walkWayRight = 8 + walkwayWidthHalf;
         final boolean canHaveWindow = doorwayWidthHalf < 4;
@@ -138,11 +129,11 @@ public class PoolsGenerator extends BaseChunkGenerator {
         final int lightsSecond = 16 - lightsFirst;
         final boolean isFlooded = hasSunRoof && random.nextDouble() < floodingProbability;
         final boolean hasFloorLights = random.nextDouble() < floorLightProbability;
-        final int waterMinY = floorLevel - waterDepthMax;
+        final int waterMinY = floorLevel - waterDepth.getRandom(random);
         final int lightY = waterMinY;
         Levelled floodWater = null;
         if (isFlooded) {
-            int floodLevel = RandomUtils.range(random, floodingMinLevel, floodingMaxLevel);
+            int floodLevel = floodingLevel.getRandom(random);
             floodWater = (Levelled)controller.getPlugin().getServer().createBlockData(Material.WATER);
             floodWater.setLevel(floodLevel);
         }
@@ -256,8 +247,7 @@ public class PoolsGenerator extends BaseChunkGenerator {
 
                 // Fill in hallways after
                 boolean isCenterWalkway = isWalkway || x == 8 || z == 8;
-                if (!isCenterWalkway && (hallwayMaxWidthHalf > 0 || hallwayMinWidthHalf > 0)) {
-                    int hallwayWidthHalf = RandomUtils.range(random, hallwayMinWidthHalf, hallwayMaxWidthHalf);
+                if (!isCenterWalkway && hallwayWidthHalf > 0) {
                     int hallwayLeft = 8 - hallwayWidthHalf;
                     int hallwayRight = 8 + hallwayWidthHalf;
                     if (isStartingChunk) {

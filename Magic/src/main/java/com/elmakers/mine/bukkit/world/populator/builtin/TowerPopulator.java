@@ -14,24 +14,20 @@ import org.bukkit.util.noise.PerlinNoiseGenerator;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.random.DoubleRange;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class TowerPopulator extends BaseBlockPopulator {
     private PerlinNoiseGenerator perlin;
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
-    private int minHeight = 32;
-    private int maxHeight = 128;
-    private int minWidth = 24;
-    private int maxWidth = 48;
-    private double minTaper = 0;
-    private double maxTaper = 0;
-    private double minTaperStart = 0;
-    private double maxTaperStart = 1;
-    private double minNoise = 0;
-    private double maxNoise = 0;
-    private double minSolidAmount = 0.25;
-    private double maxSolidAmount = 0.5;
+    private IntegerRange height;
+    private IntegerRange width;
+    private DoubleRange taper;
+    private DoubleRange taperStart;
+    private DoubleRange noise;
+    private DoubleRange solidAmount;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -44,28 +40,22 @@ public class TowerPopulator extends BaseBlockPopulator {
         if (wallSet != null) {
             wallBlocks = new ArrayList<>(wallSet.getMaterialsWithData());
         }
-        minHeight = config.getInt("min_height", minHeight);
-        maxHeight = config.getInt("max_height", maxHeight);
-        minWidth = config.getInt("min_width", minWidth);
-        maxWidth = config.getInt("max_width", maxWidth);
-        minNoise = config.getDouble("min_noise", minNoise);
-        maxNoise = config.getDouble("max_noise", maxNoise);
-        minSolidAmount = config.getDouble("min_solid_amount", minSolidAmount);
-        maxSolidAmount = config.getDouble("max_solid_amount", maxSolidAmount);
-        minTaper = config.getDouble("min_taper", minTaper);
-        maxTaper = config.getDouble("max_taper", maxTaper);
-        minTaperStart = config.getDouble("min_taper_start", minTaperStart);
-        maxTaperStart = config.getDouble("max_taper_start", maxTaperStart);
+        height = IntegerRange.fromConfig(getLogger(), config, "height", 32, 128);
+        width = IntegerRange.fromConfig(getLogger(), config, "width", 24, 48);
+        taper = DoubleRange.fromConfig(getLogger(), config, "taper", 0, 0);
+        taperStart = DoubleRange.fromConfig(getLogger(), config, "taper_start", 0, 1);
+        noise = DoubleRange.fromConfig(getLogger(), config, "noise", 0, 0);
+        solidAmount = DoubleRange.fromConfig(getLogger(), config, "solid_amount", 0.25, 0.5);
         return true;
     }
 
     @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
         final int worldHeight = worldInfo.getMaxHeight();
-        final int towerHeight = Math.min(worldHeight - 1, RandomUtils.range(random, minHeight, maxHeight));
-        final double taper = RandomUtils.range(random, minTaper, maxTaper);
-        final double noise = RandomUtils.range(random, minNoise, maxNoise);
-        final double solidAmount = RandomUtils.range(random, minSolidAmount, maxSolidAmount);
+        final int towerHeight = Math.min(worldHeight - 1, height.getRandom(random));
+        final double taper = this.taper.getRandom(random);
+        final double noise = this.noise.getRandom(random);
+        final double solidAmount = this.solidAmount.getRandom(random);
         synchronized (this) {
             if (perlin == null) {
                 perlin = new PerlinNoiseGenerator(worldInfo.getSeed());
@@ -76,12 +66,12 @@ public class TowerPopulator extends BaseBlockPopulator {
         final int floorLevel = world.getGroundLevel();
         final int buffer = region.getBuffer();
         final int maxWidth = 16 + buffer * 2;
-        final int towerWidth = Math.min(maxWidth, RandomUtils.range(random, minWidth, maxWidth));
+        final int towerWidth = Math.min(maxWidth, this.width.getRandom(random));
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
         final int minY = floorLevel + 1;
         final int maxY = minY + towerHeight;
-        final double taperStartFactor = RandomUtils.range(random, minTaperStart, maxTaperStart);
+        final double taperStartFactor = this.taperStart.getRandom(random);
         final int taperStart = (int)(taperStartFactor * towerHeight);
         for (int y = minY; y < maxY; y++) {
             final double taperFactor = y < taperStart ? 0 : RandomUtils.lerp(0, taper, (double)(y - taperStart) / (maxY - taperStart));

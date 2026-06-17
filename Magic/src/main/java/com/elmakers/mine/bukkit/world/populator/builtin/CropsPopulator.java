@@ -12,18 +12,17 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.random.DoubleRange;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class CropsPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
     private boolean searchUp = true;
-    private double minAge = 0;
-    private double maxAge = 1;
-    private int minPosition = 0;
-    private int maxPosition = 14;
-    private int minWidth = 1;
-    private int maxWidth = 3;
+    private DoubleRange age;
+    private IntegerRange position;
+    private IntegerRange width;
 
     private List<MaterialAndData> foodBlocks = Collections.emptyList();
     private List<MaterialAndData> borderBlocks = Collections.emptyList();
@@ -33,16 +32,13 @@ public class CropsPopulator extends BaseBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection config) {
         consistent = config.getBoolean("consistent", consistent);
-        minAge = config.getDouble("min_age", minAge);
-        maxAge = config.getDouble("max_age", maxAge);
+        age = DoubleRange.fromConfig(getLogger(), config, "age", 0, 1);
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 14);
+        width = IntegerRange.fromConfig(getLogger(), config, "width", 1, 3);
         foodBlocks = parseBlocks(config, "crops", "all_crops");
         soilBlocks = parseBlocks(config, "soil", "farmland");
         borderBlocks = parseBlocks(config, "border");
         supportBlocks = parseBlocks(config, "support");
-        minPosition = config.getInt("min_x", minPosition);
-        maxPosition = config.getInt("max_x", maxPosition);
-        minWidth = config.getInt("min_width", minWidth);
-        maxWidth = config.getInt("max_width", maxWidth);
         searchUp = config.getBoolean("search_up", searchUp);
         return true;
     }
@@ -53,11 +49,11 @@ public class CropsPopulator extends BaseBlockPopulator {
         final MaterialAndData borderBlock = RandomUtils.getRandom(borderBlocks, random);
         final MaterialAndData supportBlock = RandomUtils.getRandom(supportBlocks, random);
         final MaterialAndData soilBlock = RandomUtils.getRandom(soilBlocks, random);
-        final int width = RandomUtils.range(random, minWidth, maxWidth);
+        final int width = this.width.getRandom(random);
         final boolean hasBorder = borderBlock != null;
         final int borderWidth = hasBorder ? 2 : 0;
-        final int startX = Math.min(16 - width - borderWidth, RandomUtils.range(random, minPosition, maxPosition));
-        final int startZ = Math.min(16 - width - borderWidth, RandomUtils.range(random, minPosition, maxPosition));
+        final int startX = Math.min(16 - width - borderWidth, position.getRandom(random));
+        final int startZ = Math.min(16 - width - borderWidth, position.getRandom(random));
         final int endX = startX + width + borderWidth;
         final int endZ = startZ + width + borderWidth;
         final int chunkGlobalX = chunkX << 4;
@@ -82,7 +78,7 @@ public class CropsPopulator extends BaseBlockPopulator {
                         cropData = cropMaterial.createBlockData();
                         if (cropData instanceof Ageable) {
                             Ageable crops = (Ageable)cropData;
-                            double ageRatio = RandomUtils.lerp(minAge, maxAge, random.nextDouble());
+                            double ageRatio = age.getRandom(random);
                             int age = RandomUtils.lerp(0, crops.getMaximumAge(), ageRatio);
                             crops.setAge(age);
                         }

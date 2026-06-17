@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.world.populator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -38,6 +39,10 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
 
     public MagicController getController() {
         return world.getController();
+    }
+
+    protected Logger getLogger() {
+        return world.getLogger();
     }
 
     public static List<BaseBlockPopulator> loadPopulators(MagicWorld world, ConfigurationSection config) {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -108,6 +109,10 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
 
     protected Plugin getPlugin() {
         return world.getController().getPlugin();
+    }
+
+    protected Logger getLogger() {
+        return world.getLogger();
     }
 
     @Override
