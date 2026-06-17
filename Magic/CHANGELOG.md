@@ -25,6 +25,7 @@
      - Frequency: Only fill every N chunks
      - Sequence: Run multiple other populators in order
      - Random: Randomly choose one populators from a distance-weighted probability map
+     - Repeat: Repeat another populator some random amount of times
  - Use generators in world configs for completely custom world gen
  - Allow modifying game rules of a world via `game_rules` config
  - Add `time` parameter to set a world to a specific time of day
