@@ -243,7 +243,7 @@ public class WorldController implements Listener {
             if (defaultSet == null) {
                 return Collections.emptyList();
             }
-            controller.getLogger().warning("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
+            controller.info("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
             materialSet = controller.getMaterialSetManager().getMaterialSet(defaultSet);
         }
         if (materialSet == null) {
