@@ -91,9 +91,9 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
     private void teleportToOwner() {
         BlockPos blockPosition = this.tamed.getOwner().blockPosition();
         for (int i = 0; i < 10; ++i) {
-            int dx = RandomUtils.getRandomIntInclusive(-3, 3);
-            int dy = RandomUtils.getRandomIntInclusive(-1, 1);
-            int dz = RandomUtils.getRandomIntInclusive(-3, 3);
+            int dx = RandomUtils.range(-3, 3);
+            int dy = RandomUtils.range(-1, 1);
+            int dz = RandomUtils.range(-3, 3);
             if (this.tryTeleportTo(blockPosition.getX() + dx, blockPosition.getY() + dy, blockPosition.getZ() + dz)) {
                 break;
             }

@@ -220,7 +220,7 @@ public class EntityMageData {
                 Player targetPlayer = (Player)targetEntity;
                 if (hasDialog) {
                     if (dialogRandom) {
-                        String randomLine = dialog.get(RandomUtils.getRandomIntInclusive(0, dialog.size() - 1));
+                        String randomLine = dialog.get(RandomUtils.range(0, dialog.size() - 1));
                         MageConversation.sayLine(targetPlayer, randomLine, speaker);
                     } else {
                         MageConversation conversation = progress.get(targetPlayer);

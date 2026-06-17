@@ -284,10 +284,6 @@ public class RandomUtils {
         return random;
     }
 
-    public static int getRandomIntInclusive(int start, int stop) {
-        return random.nextInt(stop - start + 1) + start;
-    }
-
     public static boolean checkProbability(double probability) {
         return probability >= random.nextDouble();
     }
@@ -307,11 +303,11 @@ public class RandomUtils {
         return min + random.nextInt(max - min + 1);
     }
 
-    public static double range(double min, double max) {
+    public static int range(int min, int max) {
         return range(random, min, max);
     }
 
-    public static int range(int min, int max) {
+    public static double range(double min, double max) {
         return range(random, min, max);
     }
 
