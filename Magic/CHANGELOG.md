@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+# 11.2.2
+
+ - Fix (re) creating paintings in 26.1
+
 # 11.2.1
 
  - Fix infinite recursion taming mobs in 1.17 to 1.20
