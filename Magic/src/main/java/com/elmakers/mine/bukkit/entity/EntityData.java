@@ -831,8 +831,8 @@ public class EntityData
             WeakReference<Entity> respawnedEntity = respawned.get(uuid);
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
-            } else {
-                entity = trySpawn(null, null, null);
+            } else if (location != null) {
+                entity = trySpawn(null, location, null);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
 
