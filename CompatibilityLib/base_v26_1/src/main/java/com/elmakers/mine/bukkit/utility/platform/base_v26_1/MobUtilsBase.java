@@ -192,7 +192,7 @@ public class MobUtilsBase implements MobUtils {
         return craft.getHandle();
     }
 
-    private Mob getMob(Entity entity) {
+    protected Mob getMob(Entity entity) {
         net.minecraft.world.entity.Entity nms = getNMS(entity);
         if (!(nms instanceof Mob)) {
             return null;

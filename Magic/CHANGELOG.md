@@ -2,7 +2,8 @@
 # CHANGELOG
 
 # 11.2.2
-
+ 
+ - Add support for Spigot/Paper 26.2
  - Fix (re) creating paintings in 26.1
 
 # 11.2.1
