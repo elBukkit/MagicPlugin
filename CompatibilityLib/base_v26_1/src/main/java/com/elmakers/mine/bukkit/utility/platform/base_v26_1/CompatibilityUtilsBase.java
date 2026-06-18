@@ -79,7 +79,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.CraftArt;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.entity.CraftArmorStand;
@@ -186,6 +185,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -199,6 +199,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -207,6 +208,7 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.decoration.HangingEntity;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
@@ -1846,19 +1848,27 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Painting createPainting(Location location, BlockFace facing, Art art) {
         Painting newPainting = null;
-        ServerLevel level = ((CraftWorld)location.getWorld()).getHandle();
-        Direction directionEnum = null;
         try {
-            directionEnum = Direction.valueOf(facing.name());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        BlockPos blockLocation = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        net.minecraft.world.entity.decoration.painting.Painting newEntity = new net.minecraft.world.entity.decoration.painting.Painting(level, blockLocation, directionEnum, Holder.direct(CraftArt.bukkitToMinecraft(art)));
-        Entity bukkitEntity = newEntity.getBukkitEntity();
-        if (bukkitEntity != null && bukkitEntity instanceof Painting) {
-            newPainting = (Painting)bukkitEntity;
+            ServerLevel level = ((CraftWorld)location.getWorld()).getHandle();
+            Direction directionEnum = Direction.valueOf(facing.name());
+            // Paper doesn't have CraftArt.bukkitToMinecraft anymore...
+            // It also disagrees with Spigot on whether getKey is deprecated or getKeyOrThrow exists
+            NamespacedKey paintingKey = art.getKey();
+            Identifier paintingId = Identifier.fromNamespaceAndPath(paintingKey.getNamespace(), paintingKey.getKey());
+            Optional<Holder.Reference<PaintingVariant>> paintingVariant = level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).get(paintingId);
+            if (!paintingVariant.isPresent()) {
+                throw new Exception("Could not find painting variant");
+            }
+
+            BlockPos blockLocation = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            net.minecraft.world.entity.decoration.painting.Painting newEntity = new net.minecraft.world.entity.decoration.painting.Painting(level, blockLocation, directionEnum, paintingVariant.get());
+            Entity bukkitEntity = newEntity.getBukkitEntity();
+            if (bukkitEntity != null && bukkitEntity instanceof Painting) {
+                newPainting = (Painting)bukkitEntity;
+
+            }
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating painting for: " + art, ex);
         }
         return newPainting;
     }
