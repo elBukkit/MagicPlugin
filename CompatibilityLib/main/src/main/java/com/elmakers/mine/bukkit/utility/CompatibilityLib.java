@@ -48,6 +48,7 @@ public class CompatibilityLib extends PlatformInterpreter {
             logger.info("Finding modern compatibility layer for server version " + versionDescription);
             boolean foundExact = true;
             int[] layerVersion = {majorVersion, minorVersion, 0};
+            Exception lastException = null;
             while (layerVersion[0] >= 26) {
                 try {
                     String versionPackage = StringUtils.join(ArrayUtils.toObject(layerVersion), "_");
@@ -55,7 +56,9 @@ public class CompatibilityLib extends PlatformInterpreter {
                     Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
                     platform = (Platform)platformConstructor.newInstance(controller);
                     break;
-                } catch (Exception ignore) {
+                } catch (ClassNotFoundException ignore) {
+                } catch (Exception unknownFailure) {
+                    lastException = unknownFailure;
                 }
                 foundExact = false;
                 layerVersion[1]--;
@@ -65,7 +68,7 @@ public class CompatibilityLib extends PlatformInterpreter {
                 }
             }
             if (platform == null) {
-                logger.log(Level.SEVERE, "Failed to load compatibility layer, something went wrong");
+                logger.log(Level.SEVERE, "Failed to load compatibility layer, something went wrong", lastException);
                 return false;
             }
             if (!foundExact) {
