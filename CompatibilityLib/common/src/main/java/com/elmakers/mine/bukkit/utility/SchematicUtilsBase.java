@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
 
 public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.platform.SchematicUtils {
-    private static final int STRUCTURE_DATA_VERSION = 4903; // 3465; // Set for 1.20 compatibility
+    private static final int STRUCTURE_DATA_VERSION = 3465; // Set for 1.20 compatibility (4903 is current)
     protected final Platform platform;
 
     public SchematicUtilsBase(final Platform platform) {

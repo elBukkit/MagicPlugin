@@ -45,6 +45,7 @@
  - Fix snowy grass not undoing after using the Frost spell
  - Fixed `hover_message_key` parameter in `CheckChatClick` action
  - Fix `commit` spell, it should commit all pending spells which it was not doing
+ - Fix saved schematics being upside down or backwards depending on the click order
 
 ## Changes
 

@@ -47,7 +47,13 @@ public class SaveSchematicSpell extends TargetingSpell {
 
         if (this.targetBlock != null) {
             Location secondLocation = this.targetBlock.getLocation();
-            SaveSchematicBatch batch = new SaveSchematicBatch(this, secondLocation, targetBlock.getLocation(), ignoreMaterials, structure);
+
+            // Always do min to max
+            Location targetLocation = targetBlock.getLocation();
+            Location maxLocation = new Location(secondLocation.getWorld(), Math.max(secondLocation.getX(), targetLocation.getX()), Math.max(secondLocation.getY(), targetLocation.getY()), Math.max(secondLocation.getZ(), targetLocation.getZ()));
+            Location minLocation = new Location(secondLocation.getWorld(), Math.min(secondLocation.getX(), targetLocation.getX()), Math.min(secondLocation.getY(), targetLocation.getY()), Math.min(secondLocation.getZ(), targetLocation.getZ()));
+
+            SaveSchematicBatch batch = new SaveSchematicBatch(this, minLocation, maxLocation, ignoreMaterials, structure);
 
             int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
             maxDimension = parameters.getInt("md", maxDimension);
