@@ -221,7 +221,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public Object wrapInTag(Object value) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    public Object wrapInTag(Object value) {
         return ((InventoryUtilsBase)platform.getInventoryUtils()).wrapInTag(value);
     }
 

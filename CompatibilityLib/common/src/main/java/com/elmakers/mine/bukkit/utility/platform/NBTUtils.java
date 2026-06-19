@@ -123,8 +123,7 @@ public interface NBTUtils {
 
     boolean addTagsToNBT(Map<String, Object> tags, Object node);
 
-    Object wrapInTag(Object value)
-            throws IllegalAccessException, InvocationTargetException, InstantiationException;
+    Object wrapInTag(Object value);
 
     Set<String> getTagKeys(Object tag);
 

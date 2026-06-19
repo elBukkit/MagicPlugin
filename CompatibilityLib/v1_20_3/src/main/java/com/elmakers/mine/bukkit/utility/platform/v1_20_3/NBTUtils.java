@@ -246,9 +246,9 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void addToList(Object listObject, Object node) {
-        if (listObject == null || !(listObject instanceof ListTag) || !(node instanceof Tag)) return;
+        if (listObject == null || !(listObject instanceof ListTag)) return;
         ListTag list = (ListTag)listObject;
-        list.add((Tag)node);
+        list.add((Tag)wrapInTag(node));
     }
 
     @Override

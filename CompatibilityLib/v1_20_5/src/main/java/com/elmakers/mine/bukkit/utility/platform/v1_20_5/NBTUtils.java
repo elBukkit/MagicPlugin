@@ -263,9 +263,9 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void addToList(Object listObject, Object node) {
-        if (listObject == null || !(listObject instanceof ListTag) || !(node instanceof Tag)) return;
+        if (listObject == null || !(listObject instanceof ListTag)) return;
         ListTag list = (ListTag)listObject;
-        list.add((Tag)node);
+        list.add(wrapInTag(node));
     }
 
     @Override
@@ -453,7 +453,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public Tag wrapInTag(Object value) {
-        if (value == null) return null;
+        if (value == null || value instanceof Tag) return (Tag)value;
         Tag wrappedValue = null;
         if (value instanceof Boolean) {
             wrappedValue = ByteTag.valueOf((byte)((boolean)value ? 1 : 0));
@@ -507,7 +507,7 @@ public class NBTUtils extends NBTUtilsBase {
             if (wrappedValue == null) {
                 for (Object item : list) {
                     if (item != null) {
-                        platform.getNBTUtils().addToList(listMeta, wrapInTag(item));
+                        addToList(listMeta, wrapInTag(item));
                     }
                 }
                 wrappedValue = listMeta;

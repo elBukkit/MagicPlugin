@@ -120,7 +120,7 @@ public class InventoryUtils extends InventoryUtilsBase {
 
     @Override
     public Tag wrapInTag(Object value) {
-        if (value == null) return null;
+        if (value == null || value instanceof Tag) return (Tag)value;
         Tag wrappedValue = null;
         if (value instanceof Boolean) {
             wrappedValue = ByteTag.valueOf((byte)((boolean)value ? 1 : 0));
