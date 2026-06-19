@@ -68,6 +68,7 @@
  - Add `reload` parameter to entity configs, for randomized entities (see `car` in liminal example)
  - Add `reload` parameter to item configs, replaces/inverts the existing `cache` parameter
  - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
+ - Add support for loading structure files (.nbt), same as schematics
 
 # 11.2.2
 

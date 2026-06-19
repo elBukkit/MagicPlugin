@@ -1426,6 +1426,12 @@ public class MagicController implements MageController, ChunkLoadListener {
                 if (inputSchematic != null) {
                     schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
                     schematics.put(schematicName, new WeakReference<>(schematic));
+                } else {
+                    inputSchematic = findSchematic(schematicName, "nbt");
+                    if (inputSchematic != null) {
+                        schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
+                        schematics.put(schematicName, new WeakReference<>(schematic));
+                    }
                 }
             }
         }

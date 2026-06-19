@@ -30,7 +30,7 @@ public abstract class AbstractSchematic implements Schematic {
         this.controller = controller;
     }
 
-    protected void initialize(short width, short height, short length) {
+    protected void initialize(int width, int height, int length) {
         size = new Vector(width, height, length);
         center = new Vector(Math.floor(size.getBlockX() / 2), 0, Math.floor(size.getBlockZ() / 2));
         blocks = new MaterialAndData[width][height][length];

@@ -18,7 +18,7 @@ public class Schematic extends AbstractSchematic implements LoadableSchematic {
     }
 
     @Override
-    public void load(short width, short height, short length, int[] blockTypes, byte[] data, Map<Integer, String> rawPallete, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
+    public void load(int width, int height, int length, int[] blockTypes, byte[] data, Map<Integer, String> rawPallete, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
         Map<Integer, MaterialAndData> palette = new HashMap<>();
         if (rawPallete != null) {
             for (Map.Entry<Integer, String> entry : rawPallete.entrySet()) {

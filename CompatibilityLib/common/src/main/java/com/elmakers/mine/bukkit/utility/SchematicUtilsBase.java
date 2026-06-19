@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
 
 public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.platform.SchematicUtils {
-    private static final int STRUCTURE_DATA_VERSION = 3465; // Set for 1.20 compatibility
+    private static final int STRUCTURE_DATA_VERSION = 4903; // 3465; // Set for 1.20 compatibility
     protected final Platform platform;
 
     public SchematicUtilsBase(final Platform platform) {
@@ -139,6 +139,50 @@ public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.plat
         return nbtUtils.writeTagToStream(nbtData, output);
     }
 
+    protected boolean loadStructure(Object nbtData, LoadableSchematic schematic, Logger log) {
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        List<Integer> sizeList = nbtUtils.getIntList(nbtData, "size");
+        if (sizeList.size() != 3) {
+            return false;
+        }
+
+        int width = sizeList.get(0);
+        int height = sizeList.get(1);
+        int length = sizeList.get(2);
+
+        List<Object> blocks = nbtUtils.getTagList(nbtData, "blocks");
+        List<Object> palette = nbtUtils.getTagList(nbtData, "palette");
+
+        int[] blockMap = null;
+        Map<Integer, String> paletteMap = null;
+        if (palette != null && blocks != null) {
+            // Load blocks
+            blockMap = new int[width * height * length];
+            for (Object blockEntry : blocks) {
+                List<Integer> pos = nbtUtils.getIntList(blockEntry, "pos");
+                if (pos.size() != 3) continue;
+                int x = pos.get(0);
+                int y = pos.get(1);
+                int z = pos.get(2);
+                int blockIndex = x + (y * length + z) * width;
+                if (blockIndex < 0 || blockIndex >= blockMap.length) continue;
+                int state = nbtUtils.getInt(blockEntry, "state", 0);
+                blockMap[blockIndex] = state;
+            }
+
+            // Map Palette
+            paletteMap = new HashMap<>();
+            for (int i = 0; i < palette.size(); i++) {
+                paletteMap.put(i, nbtUtils.getString(palette.get(i), "Name"));
+            }
+        }
+
+        Collection<Object> entityData = nbtUtils.getTagList(nbtData, "Entities");
+        Vector origin = new Vector(0, 0, 0);
+        schematic.load(width, height, length, blockMap, null, paletteMap, null, entityData, origin);
+        return true;
+    }
+
     @Override
     public boolean loadSchematic(InputStream input, LoadableSchematic schematic, Logger log) {
         if (input == null || schematic == null) return false;
@@ -150,16 +194,19 @@ public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.plat
                 return false;
             }
 
-            // Since we're dealing with alternate file schemes here, let's do structures as well
+            // We're going to branch completely for structures for simplicity
+            if (nbtUtils.contains(nbtData, "DataVersion") && nbtUtils.contains(nbtData, "size")) {
+                return loadStructure(nbtData, schematic, log);
+            }
 
             // FAWE does this, I guess, for some reason?
             if (nbtUtils.contains(nbtData, "Schematic")) {
                 nbtData = nbtUtils.getTag(nbtData, "Schematic");
             }
             Object blockRoot = nbtUtils.getTag(nbtData, "Blocks");
-            short width = nbtUtils.getShort(nbtData, "Width", (short)0);
-            short height = nbtUtils.getShort(nbtData, "Height", (short)0);
-            short length = nbtUtils.getShort(nbtData, "Length", (short)0);
+            int width = nbtUtils.getShort(nbtData, "Width", (short)0);
+            int height = nbtUtils.getShort(nbtData, "Height", (short)0);
+            int length = nbtUtils.getShort(nbtData, "Length", (short)0);
 
             Object palette = nbtUtils.getTag(nbtData,"Palette");
             if (palette == null && blockRoot != null) {
