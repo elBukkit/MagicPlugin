@@ -555,7 +555,7 @@ public class EntityData
             }
             for (String attributeKey : keys) {
                 try {
-                    if (attributeConfiguration.isString(attributeKey)) continue;
+                    if (attributeConfiguration.isString(attributeKey) && attributeConfiguration.getString(attributeKey).isEmpty()) continue;
                     Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                     attributes.put(attribute, attributeConfiguration.getDouble(attributeKey));
                 } catch (Exception ex) {
