@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utility.platform.v1_20_2;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.NBTUtilsBase;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.Tag;
@@ -273,8 +274,8 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Collection<Object> getTagList(Object tag, String key) {
-        Collection<Object> list = new ArrayList<>();
+    public List<Object> getTagList(Object tag, String key) {
+        List<Object> list = new ArrayList<>();
         if (tag == null || !(tag instanceof CompoundTag)) {
             return list;
         }
@@ -290,6 +291,31 @@ public class NBTUtils extends NBTUtilsBase {
                 // Tag entry = listTag.get(i);
                 Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
                 list.add(entry);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Integer> getIntList(Object tag, String key) {
+        List<Integer> list = new ArrayList<>();
+        if (tag == null || !(tag instanceof CompoundTag)) {
+            return list;
+        }
+
+        ListTag listTag = ((CompoundTag)tag).getList(key, CompatibilityConstants.NBT_TYPE_INTEGER);
+
+        if (listTag != null) {
+            Logger logger = platform.getLogger();
+            int size = listTag.size();
+            for (int i = 0; i < size; i++) {
+                // Doesn't seem like this is ever going to get resolved, mappings issue:
+                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
+                // Tag entry = listTag.get(i);
+                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
+                if (entry instanceof IntTag intTag) {
+                    list.add(intTag.getAsInt());
+                }
             }
         }
         return list;

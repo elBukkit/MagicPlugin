@@ -289,8 +289,8 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Collection<Object> getTagList(Object tag, String key) {
-        Collection<Object> list = new ArrayList<>();
+    public List<Object> getTagList(Object tag, String key) {
+        List<Object> list = new ArrayList<>();
         if (tag == null || !(tag instanceof CompoundTag)) {
             return list;
         }
@@ -302,6 +302,26 @@ public class NBTUtils extends NBTUtilsBase {
             for (int i = 0; i < size; i++) {
                 Tag entry = listTag.get(i);
                 list.add(entry);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Integer> getIntList(Object tag, String key) {
+        List<Integer> list = new ArrayList<>();
+        if (tag == null || !(tag instanceof CompoundTag)) {
+            return list;
+        }
+
+        ListTag listTag = ((CompoundTag)tag).getList(key, CompatibilityConstants.NBT_TYPE_INTEGER);
+        if (listTag != null) {
+            int size = listTag.size();
+            for (int i = 0; i < size; i++) {
+                Tag entry = listTag.get(i);
+                if (entry instanceof IntTag intTag) {
+                    list.add(intTag.getAsInt());
+                }
             }
         }
         return list;

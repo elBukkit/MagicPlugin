@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utility.platform;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -99,7 +99,9 @@ public interface NBTUtils {
 
     Set<String> getAllKeys(Object tag);
 
-    Collection<Object> getTagList(Object tag, String key);
+    List<Object> getTagList(Object tag, String key);
+
+    List<Integer> getIntList(Object tag, String key);
 
     Object newCompoundTag();
 
