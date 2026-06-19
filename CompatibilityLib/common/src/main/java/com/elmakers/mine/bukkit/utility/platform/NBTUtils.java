@@ -85,7 +85,7 @@ public interface NBTUtils {
 
     void setByteArray(Object tag, String key, byte[] value);
 
-    void setEmptyList(Object tag, String key);
+    Object setEmptyList(Object tag, String key);
 
     void removeMeta(Object node, String tag);
 

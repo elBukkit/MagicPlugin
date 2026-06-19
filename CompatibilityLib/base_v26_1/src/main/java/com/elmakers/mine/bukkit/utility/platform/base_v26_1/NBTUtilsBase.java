@@ -403,9 +403,11 @@ public class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public void setEmptyList(Object tag, String key) {
-        if (tag == null || !(tag instanceof CompoundTag)) return;
-        ((CompoundTag)tag).put(key, new ListTag());
+    public Object setEmptyList(Object tag, String key) {
+        if (tag == null || !(tag instanceof CompoundTag)) return null;
+        ListTag list = new ListTag();
+        ((CompoundTag)tag).put(key, list);
+        return list;
     }
 
     @Override

@@ -184,8 +184,9 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public void setEmptyList(Object tag, String key) {
+    public Object setEmptyList(Object tag, String key) {
         // Not in legacy versions
+        return null;
     }
 
     @Override
