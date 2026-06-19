@@ -16,6 +16,7 @@ public class SaveSchematicSpell extends TargetingSpell {
     private static final int DEFAULT_MAX_DIMENSION = 128;
     private Block targetBlock = null;
     private String filename = "(Not Saved)";
+    private boolean structure = false;
 
     @Override
     public SpellResult onCast(ConfigurationSection parameters) {
@@ -30,6 +31,9 @@ public class SaveSchematicSpell extends TargetingSpell {
         if (targetBlock == null) {
             return SpellResult.NO_TARGET;
         }
+        if (parameters.getString("type", "schem").equals("nbt")) {
+            structure = true;
+        }
 
         if (targetLocation2 != null) {
             this.targetBlock = targetLocation2.getBlock();
@@ -43,7 +47,7 @@ public class SaveSchematicSpell extends TargetingSpell {
 
         if (this.targetBlock != null) {
             Location secondLocation = this.targetBlock.getLocation();
-            SaveSchematicBatch batch = new SaveSchematicBatch(this, secondLocation, targetBlock.getLocation(), ignoreMaterials);
+            SaveSchematicBatch batch = new SaveSchematicBatch(this, secondLocation, targetBlock.getLocation(), ignoreMaterials, structure);
 
             int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
             maxDimension = parameters.getInt("md", maxDimension);

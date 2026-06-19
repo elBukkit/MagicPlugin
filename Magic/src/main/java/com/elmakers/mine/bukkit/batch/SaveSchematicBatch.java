@@ -28,6 +28,7 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
     private boolean finished = false;
     private String[][][] blockData;
     private String filename;
+    private boolean structure;
 
     private final int absx;
     private final int absy;
@@ -42,11 +43,12 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
     private int iy = 0;
     private int iz = 0;
 
-    public SaveSchematicBatch(TargetingSpell spell, Location p1, Location p2, MaterialSet ignore) {
+    public SaveSchematicBatch(TargetingSpell spell, Location p1, Location p2, MaterialSet ignore, boolean structure) {
         this.spell = spell;
         this.context = spell.getCurrentCast();
         this.ignore = ignore;
         this.world = p1.getWorld();
+        this.structure = structure;
 
         int deltax = p2.getBlockX() - p1.getBlockX();
         int deltay = p2.getBlockY() - p1.getBlockY();
@@ -133,7 +135,7 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
         int index = 1;
         File targetFile = null;
         while ((targetFile == null || targetFile.exists()) && index < MAX_FILES) {
-            filename = context.getMage().getName().toLowerCase() + index + ".schem";
+            filename = context.getMage().getName().toLowerCase() + index + ".nbt";
             targetFile = new File(schematicFolder, filename);
             index++;
         }
@@ -145,7 +147,11 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
             ((SaveSchematicSpell)spell).setFilename(filename);
         }
         try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
-            return CompatibilityLib.getSchematicUtils().saveSchematic(outputStream, blockData);
+            if (structure) {
+                return CompatibilityLib.getSchematicUtils().saveStructure(outputStream, blockData);
+            } else {
+                return CompatibilityLib.getSchematicUtils().saveSchematic(outputStream, blockData);
+            }
         } catch (Exception ex) {
             context.getLogger().log(Level.WARNING, "Failed to write to file: " + targetFile.getAbsolutePath());
             return false;

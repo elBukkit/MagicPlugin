@@ -11,5 +11,7 @@ public interface SchematicUtils {
 
     boolean saveSchematic(OutputStream output, String[][][] blockData);
 
+    boolean saveStructure(OutputStream output, String[][][] blockData);
+
     boolean loadLegacySchematic(InputStream input, LoadableSchematic schematic);
 }

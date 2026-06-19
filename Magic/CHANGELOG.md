@@ -45,9 +45,8 @@
  - Fix snowy grass not undoing after using the Frost spell
  - Fixed `hover_message_key` parameter in `CheckChatClick` action
  - Fix `commit` spell, it should commit all pending spells which it was not doing
- - Fix (re) creating paintings in 26.1
 
-## Changes[items.yml](../../../../../Servers/liminal/plugins/Magic/items.yml)
+## Changes
 
  - Changed `arenas.enabled` config option to `enable_arenas`
  - The `chunk_generate` property has been replaced by `populators`, though the former is still supported
@@ -55,6 +54,7 @@
  - Removed support for the Elementals plugin (not updated since MC 1.7, I assume no one will miss it)
  - Block checks will now check extra block data, if block data was set in the material set
  - The Place spell no longer uses the auto_block_state parameter (this feature is broken on Paper)
+ - The `save` spell now outputs structure files (.nbt) instead of schmeatics
 
 ## New Features
 
@@ -66,8 +66,13 @@
  - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)
  - Add support for FAWE schematic format
  - Add `reload` parameter to entity configs, for randomized entities (see `car` in liminal example)
-- Add `reload` parameter to item configs, replaces/inverts the existing `cache` parameter
+ - Add `reload` parameter to item configs, replaces/inverts the existing `cache` parameter
  - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
+
+# 11.2.2
+
+ - Add support for 26.2
+ - Fix (re) creating paintings in 26.1
 
 # 11.2.1
 

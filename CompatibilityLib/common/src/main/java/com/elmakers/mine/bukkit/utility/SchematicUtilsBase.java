@@ -18,10 +18,67 @@ import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
 
 public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.platform.SchematicUtils {
+    private static final int STRUCTURE_DATA_VERSION = 3465; // Set for 1.20 compatibility
     protected final Platform platform;
 
     public SchematicUtilsBase(final Platform platform) {
         this.platform = platform;
+    }
+
+    @Override
+    public boolean saveStructure(OutputStream output, String[][][] blockData) {
+        if (output == null || blockData == null || blockData.length == 0 || blockData[0].length == 0 || blockData[0][0].length == 0) {
+            return false;
+        }
+
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        Object nbtData = nbtUtils.newCompoundTag();
+        nbtUtils.setInt(nbtData, "DataVersion", STRUCTURE_DATA_VERSION);
+        int width = blockData.length;
+        int height = blockData[0].length;
+        int length = blockData[0][0].length;
+        Object sizeList = nbtUtils.setEmptyList(nbtData, "size");
+        nbtUtils.addToList(sizeList, width);
+        nbtUtils.addToList(sizeList, height);
+        nbtUtils.addToList(sizeList, length);
+
+        // Iterate through blocks and build varint data list and block palette
+        Map<String, Integer> paletteLookup = new HashMap<>();
+        List<Integer> blockList = new ArrayList<>();
+        Object blocks = nbtUtils.setEmptyList(nbtData, "blocks");
+        Object palette = nbtUtils.setEmptyList(nbtData, "palette");
+        int currentId = 0;
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < length; z++) {
+                for (int x = 0; x < width; x++) {
+                    String block = blockData[x][y][z];
+                    Integer paletteIndex = paletteLookup.get(block);
+                    if (paletteIndex == null) {
+                        paletteIndex = currentId++;
+                        paletteLookup.put(block, paletteIndex);
+
+                        // Add new Palette entry
+                        Object paletteEntry = nbtUtils.newCompoundTag();
+                        nbtUtils.setString(paletteEntry, "Name", block);
+                        nbtUtils.addToList(palette, paletteEntry);
+                    }
+                    blockList.add(paletteIndex);
+
+                    // Add new Block entry
+                    Object blockEntry = nbtUtils.newCompoundTag();
+                    nbtUtils.setInt(blockEntry, "state", paletteIndex);
+                    Object posList = nbtUtils.setEmptyList(blockEntry, "pos");
+                    nbtUtils.addToList(posList, x);
+                    nbtUtils.addToList(posList, y);
+                    nbtUtils.addToList(posList, z);
+                    nbtUtils.addToList(blocks, blockEntry);
+                }
+            }
+        }
+
+        // Add empty lists so they exist
+        nbtUtils.setEmptyList(nbtData, "entities");
+        return nbtUtils.writeTagToStream(nbtData, output);
     }
 
     @Override
@@ -92,6 +149,9 @@ public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.plat
             if (nbtData == null) {
                 return false;
             }
+
+            // Since we're dealing with alternate file schemes here, let's do structures as well
+
             // FAWE does this, I guess, for some reason?
             if (nbtUtils.contains(nbtData, "Schematic")) {
                 nbtData = nbtUtils.getTag(nbtData, "Schematic");

@@ -230,9 +230,9 @@ spells:
         cast_finish: Filled @blocks blocks with $material
     save:
         name: Save
-        description: Save a selected cuboid area to a schematic file
-        usage: Cast twice to fill
-        target_selected: Cast again to save schematic
+        description: Save a selected cuboid area to a structure file
+        usage: Cast twice to save
+        target_selected: Cast again to save structure
         fail: Can't save that much!
         cast_finish: Saved selection to $filename
     superregenerate:
