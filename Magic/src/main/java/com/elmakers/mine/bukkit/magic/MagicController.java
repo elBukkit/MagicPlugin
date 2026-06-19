@@ -49,6 +49,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -3687,7 +3688,15 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
     }
 
+    private void registerPlayerAttribute(String attribute) {
+        registeredAttributes.add(attribute);
+        registeredAttributes.add("target_" + attribute);
+    }
+
     private void finalizeAttributes() {
+        for (Attribute entityAttribute : Attribute.values()) {
+            registerPlayerAttribute(entityAttribute.name().toLowerCase());
+        }
         registeredAttributes.addAll(builtinMageAttributes);
         registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(builtinTargetAttributes);

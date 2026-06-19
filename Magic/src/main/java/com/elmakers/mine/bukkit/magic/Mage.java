@@ -5446,6 +5446,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         }
                         return 0.0;
                     }
+                    try {
+                        Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+                        return living.getAttribute(attribute).getValue();
+                    } catch (Exception ignore) {
+                    }
                 }
                 return null;
         }

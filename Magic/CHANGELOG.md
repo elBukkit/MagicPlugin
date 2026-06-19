@@ -70,6 +70,7 @@
  - Add `reload` parameter to item configs, replaces/inverts the existing `cache` parameter
  - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
  - Add support for loading structure files (.nbt), same as schematics
+ - Magic mob entity attributes can now be used as equation variables (e.g. `scale: target_scale + 1`)
 
 # 11.2.2
 
