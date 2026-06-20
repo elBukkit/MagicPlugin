@@ -172,7 +172,7 @@ public class MagicWorld {
         }
 
         // Reconfigure existing worlds
-        World existingWorld = Bukkit.getWorld(worldName);
+        World existingWorld = Bukkit.getServer() != null ? Bukkit.getWorld(worldName) : null;
         if (existingWorld != null) {
             reconfigureWorld(existingWorld, generatorKey, generatorConfig);
         }

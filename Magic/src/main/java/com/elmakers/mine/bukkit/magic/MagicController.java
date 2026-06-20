@@ -1537,10 +1537,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         return schematicNames;
     }
 
-    /*
-     * Saving and loading
-     */
-    public void initialize() {
+    public void initializeControllers() {
         warpController = new WarpController(this);
         kitController = new KitController(this);
         crafting = new CraftingController(this);
@@ -1560,6 +1557,13 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (CompatibilityLib.hasStatistics() && !CompatibilityLib.hasJumpEvent()) {
             jumpController = new JumpController(this);
         }
+    }
+
+    /*
+     * Saving and loading
+     */
+    public void initialize() {
+        initializeControllers();
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         examplesFolder.mkdirs();
 

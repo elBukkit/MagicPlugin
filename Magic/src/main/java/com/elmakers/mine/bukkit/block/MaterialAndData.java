@@ -190,7 +190,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
         }
 
-        if (item.hasItemMeta()) {
+        // this empty server check is here for MagicMeta
+        if (Bukkit.getServer() != null && item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
             customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
             itemModel = CompatibilityLib.getItemUtils().getItemModel(item);
@@ -988,6 +989,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public ItemStack applyToItem(ItemStack stack, ItemUpdatedCallback callback)
     {
+        if (stack == null) {
+            return stack;
+        }
         boolean asynchronous = false;
         stack.setType(material);
         if (data != null) {
