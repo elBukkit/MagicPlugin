@@ -56,6 +56,8 @@
  - Block checks will now check extra block data, if block data was set in the material set
  - The Place spell no longer uses the auto_block_state parameter (this feature is broken on Paper)
  - The `save` spell now outputs structure files (.nbt) instead of schmeatics
+ - Add `custom_name` and `custom_name_visible` parameters to EntityProjectile action
+ - Add `mount_name_visible` parameter to MountArmorStand action
 
 ## New Features
 

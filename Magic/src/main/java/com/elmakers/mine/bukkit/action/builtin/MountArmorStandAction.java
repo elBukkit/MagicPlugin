@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MountArmorStandAction extends RideEntityAction
 {
@@ -43,6 +44,7 @@ public class MountArmorStandAction extends RideEntityAction
     private int slotNumber;
     private boolean mountTarget = false;
     private String mountName;
+    private Boolean mountNameVisible;
 
     @Override
     public void reset(CastContext context)
@@ -73,6 +75,7 @@ public class MountArmorStandAction extends RideEntityAction
         mountWand = parameters.getBoolean("mount_wand", false);
         findWand = parameters.getBoolean("find_wand", false);
         mountName = parameters.getString("mount_name", null);
+        mountNameVisible = ConfigurationUtils.getOptionalBoolean(parameters, "mount_name_visible");
         ItemData replacementType = controller.getOrCreateItem(parameters.getString("replacement_item"));
         if (replacementType != null) {
             replacementItem = replacementType.getItemStack(1);
@@ -232,6 +235,9 @@ public class MountArmorStandAction extends RideEntityAction
         }
         if (mountName != null && !mountName.isEmpty()) {
             armorStand.setCustomName(mountName);
+        }
+        if (mountNameVisible != null) {
+            armorStand.setCustomNameVisible(mountNameVisible);
         }
         context.setTargetEntity(armorStand);
 

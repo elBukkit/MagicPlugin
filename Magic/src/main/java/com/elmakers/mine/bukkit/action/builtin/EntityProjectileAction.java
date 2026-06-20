@@ -32,6 +32,8 @@ public class EntityProjectileAction extends CustomProjectileAction {
     private boolean orient = false;
     private boolean spawnActionsRun;
     private boolean allowReplacement = true;
+    private Boolean customNameVisible = null;
+    private String customName;
     private Vector velocityOffset;
     private Vector locationOffset;
     private Vector relativeLocationOffset;
@@ -72,6 +74,8 @@ public class EntityProjectileAction extends CustomProjectileAction {
         locationOffset = ConfigurationUtils.getVector(parameters, "location_offset");
         relativeLocationOffset = ConfigurationUtils.getVector(parameters, "relative_location_offset");
         allowReplacement = parameters.getBoolean("allow_replacement", true);
+        customName = parameters.getString("custom_name");
+        customNameVisible = ConfigurationUtils.getOptionalBoolean(parameters, "custom_name_visible", customName != null && !customName.isEmpty() ? true : null);
 
         if (parameters.contains("spawn_reason")) {
             String reasonText = parameters.getString("spawn_reason").toUpperCase();
@@ -101,6 +105,12 @@ public class EntityProjectileAction extends CustomProjectileAction {
             CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
         }
         CompatibilityLib.getCompatibilityUtils().setPersist(entity, false);
+        if (customName != null && !customName.isEmpty()) {
+            entity.setCustomName(customName);
+        }
+        if (customNameVisible != null) {
+            entity.setCustomNameVisible(customNameVisible);
+        }
 
         if (entity instanceof LivingEntity) {
             CompatibilityLib.getCompatibilityUtils().setMaxHealth(((LivingEntity) entity), 1000.0);
