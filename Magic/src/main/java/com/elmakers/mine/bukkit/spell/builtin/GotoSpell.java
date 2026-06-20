@@ -18,6 +18,8 @@ import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
 
+import de.slikey.effectlib.util.ColorUtils;
+
 public class GotoSpell extends UndoableSpell
 {
     LivingEntity targetEntity = null;
@@ -35,7 +37,7 @@ public class GotoSpell extends UndoableSpell
         effectColor = mage.getEffectColor();
         if (effectColor == null)
         {
-            effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
+            effectColor = ColorUtils.parse(parameters, "effect_color", Color.RED);
         }
 
         boolean allowSelection = parameters.getBoolean("allow_selection", false) || mage.isSuperPowered();

@@ -3,11 +3,7 @@
 # Next
 
  - Quests module fixes
-
-
- - Support alpha in colors ;(
  - Look at class requirement again
-
 
 
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets

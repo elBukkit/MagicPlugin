@@ -44,6 +44,8 @@ import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.google.common.collect.ImmutableSet;
 
+import de.slikey.effectlib.util.ColorUtils;
+
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback, Cloneable {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
     public static double EARN_SCALE = 0.5;
@@ -286,12 +288,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             }
             itemMeta.setLore(lore);
         }
-        ConfigurationSection colorConfig = configuration.getConfigurationSection("color");
-        if (colorConfig != null) {
-            int red = colorConfig.getInt("red");
-            int green = colorConfig.getInt("green");
-            int blue = colorConfig.getInt("blue");
-            final Color color = Color.fromRGB(red, green, blue);
+
+        final Color color = ColorUtils.parse(configuration, "color");
+        if (color != null) {
             if (itemMeta instanceof LeatherArmorMeta) {
                 LeatherArmorMeta leather = (LeatherArmorMeta)itemMeta;
                 leather.setColor(color);

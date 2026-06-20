@@ -75,7 +75,7 @@
  - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
  - Add support for loading structure files (.nbt), same as schematics
  - Magic mob entity attributes can now be used as equation variables (e.g. `scale: target_scale + 1`)
- - Colors in effects now support ARGB for alpha transparency, as well as config via sections with (alpha,red,green,blue)
+ - Colors now support ARGB for alpha transparency, as well as config via sections with (alpha,red,green,blue)
 
 # 11.2.2
 
