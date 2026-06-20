@@ -7591,6 +7591,16 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Override
+    public Collection<String> getBlockPopulatorKeys() {
+        return worldController.getPopulatorKeys();
+    }
+
+    @Override
+    public Collection<String> getChunkGeneratorKeys() {
+        return worldController.getGeneratorKeys();
+    }
+
+    @Override
     public Collection<String> getAutoDiscoverRecipeKeys() {
         return crafting.getAutoDiscoverRecipeKeys();
     }
