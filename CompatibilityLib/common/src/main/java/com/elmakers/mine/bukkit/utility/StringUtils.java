@@ -75,4 +75,8 @@ public class StringUtils {
     public static String replaceEach(String text, String[] searchList, String[] replacementList) {
         return org.apache.commons.lang3.StringUtils.replaceEach(text, searchList, replacementList);
     }
+
+    public static String[] splitByCharacterTypeCamelCase(String text) {
+        return org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase(text);
+    }
 }
