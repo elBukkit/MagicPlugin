@@ -73,17 +73,14 @@ public final class ColorHD {
             long g = 0;
             long b = 0;
             long a = 255;
-            if (pieces.length == 3) {
+            if (pieces.length >= 3) {
                 try {
                     r = Long.parseLong(pieces[0], 16);
                     g = Long.parseLong(pieces[1], 16);
                     b = Long.parseLong(pieces[2], 16);
-                } catch (Exception ignored) {
-                }
-            }
-            if (pieces.length == 4) {
-                try {
-                    a = Long.parseLong(pieces[3], 16);
+                    if (pieces.length == 4) {
+                        a = Long.parseLong(pieces[3], 16);
+                    }
                 } catch (Exception ignored) {
                 }
             }
@@ -98,12 +95,12 @@ public final class ColorHD {
                 red = 0;
                 green = 0;
                 blue = 0;
-                alpha = 255;
+                alpha = (long)255 << COMPONENT_SHIFT;
             } else {
-                red = color.getRed() << COMPONENT_SHIFT;
-                green = color.getGreen() << COMPONENT_SHIFT;
-                blue = color.getBlue() << COMPONENT_SHIFT;
-                alpha = color.getAlpha() << COMPONENT_SHIFT;
+                red = (long)color.getRed() << COMPONENT_SHIFT;
+                green = (long)color.getGreen() << COMPONENT_SHIFT;
+                blue = (long)color.getBlue() << COMPONENT_SHIFT;
+                alpha = (long)color.getAlpha() << COMPONENT_SHIFT;
             }
         }
         color = createColor();
