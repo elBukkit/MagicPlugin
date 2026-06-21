@@ -75,6 +75,8 @@ public interface MaterialAndData {
     boolean isDifferent(Material material);
     boolean isDifferent(ItemStack itemStack);
     @Nullable
+    ItemStack getItemStack();
+    @Nullable
     ItemStack getItemStack(int amount);
     @Nullable
     ItemStack getItemStack(int amount, ItemUpdatedCallback callback);

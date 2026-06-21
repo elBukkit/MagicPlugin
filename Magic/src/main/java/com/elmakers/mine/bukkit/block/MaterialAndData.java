@@ -950,6 +950,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     @Nullable
     @Override
+    public ItemStack getItemStack() {
+        return getItemStack(1, null);
+    }
+
+    @Nullable
+    @Override
     public ItemStack getItemStack(int amount) {
         return getItemStack(amount, null);
     }
