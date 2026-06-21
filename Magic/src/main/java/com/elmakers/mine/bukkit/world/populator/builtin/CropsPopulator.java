@@ -75,7 +75,8 @@ public class CropsPopulator extends BaseBlockPopulator {
                 } else {
                     if (cropData == null) {
                         MaterialAndData cropMaterial = RandomUtils.getRandom(foodBlocks, random);
-                        cropData = cropMaterial.createBlockData();
+                        cropData = cropMaterial == null ? null : cropMaterial.createBlockData();
+                        if (cropData == null) continue;
                         if (cropData instanceof Ageable) {
                             Ageable crops = (Ageable)cropData;
                             double ageRatio = age.getRandom(random);

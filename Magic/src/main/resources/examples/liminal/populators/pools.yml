@@ -1,7 +1,15 @@
 pools_vines:
-  # TODO: vines
-  class: Crops
-  vines: minecraft:cave_vines[age=0,berries=true]
+  class: Vines
+  height: 8 | 32
+  vines:
+    - cave_vines[age=0,berries=true]
+    - cave_vines
+
+pools_features:
+  class: Random
+  populators:
+    pools_vines: 0.02
+    none: 1
 
 pools_mobs:
   class: Spawn

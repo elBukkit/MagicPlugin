@@ -11,16 +11,15 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class VinesPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
     private int searchY = 16;
-    private int minHeight = 0;
-    private int maxHeight = 16;
-    private int minPosition = 0;
-    private int maxPosition = 14;
+    private IntegerRange position;
+    private IntegerRange height;
 
     private List<MaterialAndData> vineBlocks = Collections.emptyList();
 
@@ -28,10 +27,8 @@ public class VinesPopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection config) {
         consistent = config.getBoolean("consistent", consistent);
         vineBlocks = parseBlocks(config, "vines", "all_vines");
-        minPosition = config.getInt("min_x", minPosition);
-        maxPosition = config.getInt("max_x", maxPosition);
-        minHeight = config.getInt("min_height", minHeight);
-        maxHeight = config.getInt("max_height", maxHeight);
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 15);
+        height = IntegerRange.fromConfig(getLogger(), config, "height", 4, 64);
         searchY = config.getInt("search_y", searchY);
         return true;
     }
@@ -39,9 +36,9 @@ public class VinesPopulator extends BaseBlockPopulator {
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
         final int groundLevel = world.getGroundLevel();
-        final int height = RandomUtils.range(random, minHeight, maxHeight);
-        final int startX = RandomUtils.range(random, minPosition, maxPosition);
-        final int startZ = RandomUtils.range(random, minPosition, maxPosition);
+        final int height = this.height.getRandom(random);
+        final int startX = this.position.getRandom(random);
+        final int startZ = this.position.getRandom(random);
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
 
@@ -49,14 +46,22 @@ public class VinesPopulator extends BaseBlockPopulator {
 
         final int x = chunkGlobalX + startX;
         final int z = chunkGlobalZ + startZ;
-        int groundY = getTopBlock(worldInfo, region, x, groundLevel, z);
+        final int groundY = getTopBlock(worldInfo, region, x, groundLevel, z);
+        final int ceilingY = searchBlock(worldInfo, region, x, groundY + 1, z, searchY, 1, true, true);
+        if (!region.isInRegion(x, ceilingY + 1, z) || !region.getType(x, ceilingY + 1, z).isSolid()) {
+            return;
+        }
+
         for (int dy = 0; dy < height; dy++) {
-            // TODO: From ceiling down
-            final int y = groundY + 1 + dy;
+            final int y = ceilingY - dy;
+            if (y <= groundY) break;
+
             if (vineData == null) {
                 MaterialAndData vineMaterial = RandomUtils.getRandom(vineBlocks, random);
-                vineData = vineMaterial.createBlockData();
+                vineData = vineMaterial == null ? null : vineMaterial.createBlockData();
             }
+            if (vineData == null) continue;
+
             region.setBlockData(x, y, z, vineData);
             if (!consistent) {
                 vineData = null;

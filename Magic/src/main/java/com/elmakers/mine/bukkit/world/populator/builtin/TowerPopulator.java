@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -12,8 +11,6 @@ import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.noise.PerlinNoiseGenerator;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.random.DoubleRange;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
@@ -31,15 +28,7 @@ public class TowerPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        MagicController controller = world.getController();
-        MaterialSet wallSet = controller.getMaterialSetManager().fromConfig(config, "blocks");
-        if (wallSet == null) {
-            world.getLogger().warning("Invalid block set: " + config.getString("blocks") + ", defaulting to stones");
-            wallSet = controller.getMaterialSetManager().getMaterialSet("stones");
-        }
-        if (wallSet != null) {
-            wallBlocks = new ArrayList<>(wallSet.getMaterialsWithData());
-        }
+        wallBlocks = parseBlocks(config, "blocks", "stones");
         height = IntegerRange.fromConfig(getLogger(), config, "height", 32, 128);
         width = IntegerRange.fromConfig(getLogger(), config, "width", 24, 48);
         taper = DoubleRange.fromConfig(getLogger(), config, "taper", 0, 0);

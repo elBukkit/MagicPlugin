@@ -10,6 +10,7 @@ pools_surface:
   double_door_probability: 0.5
   populators:
     - pools_mobs
+    - pools_features
   floor_blocks:
     - blue_concrete
     - light_blue_concrete
@@ -29,4 +30,3 @@ pools:
   generators:
     - bedrock
     - pools_surface
-    - pools_mobs

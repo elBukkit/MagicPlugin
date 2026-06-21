@@ -160,29 +160,30 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return true;
     }
 
-    protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+    protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
         if (!region.isInRegion(x, y, z)) {
             return y;
         }
+        int blockCount = 0;
         Material material = region.getType(x, y, z);
-        while (y < worldInfo.getMaxHeight() && !material.isAir()) {
-            y++;
+        while (((direction > 0 && y < worldInfo.getMaxHeight() - 1) || (direction < 0 && y > worldInfo.getMinHeight() + 1))
+                && material.isAir() == throughAir
+                && blockCount < maxSearch) {
+            y += direction;
+            blockCount++;
             material = region.getType(x, y, z);
         }
-        return y - 1;
+        return throughAir == returnAir ? y - direction : y;
+    }
+
+    protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, false, false);
     }
 
     protected int getBottomBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
-        if (!region.isInRegion(x, y, z)) {
-            return y;
-        }
-        Material material = region.getType(x, y, z);
-        while (y > worldInfo.getMinHeight() && material.isAir()) {
-            y--;
-            material = region.getType(x, y, z);
-        }
-        return y;
+        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), -1, true, false);
     }
+
     protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key) {
         return parseBlocks(config, key, null);
     }
