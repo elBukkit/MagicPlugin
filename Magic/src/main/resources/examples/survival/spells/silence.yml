@@ -43,7 +43,7 @@ silence:
              class: SmokeEffect
              iterations: 16
              particle: spell_mob
-             color: 210B61
+             color: 88210B61
         -  class: EffectSingle
            location: target
            effectlib:
@@ -51,7 +51,7 @@ silence:
              iterations: 45
              period: .1
              particle: spell_mob
-             color: 210B61
+             color: 88210B61
              radius: 1
              particles: 20
     costs:

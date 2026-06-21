@@ -60,6 +60,7 @@
  - The `save` spell now outputs structure files (.nbt) instead of schmeatics
  - Add `custom_name` and `custom_name_visible` parameters to EntityProjectile action
  - Add `mount_name_visible` parameter to MountArmorStand action
+ - Some survival spells now used transparency in their colored particle effects
 
 ## New Features
 
@@ -76,6 +77,7 @@
  - Add support for loading structure files (.nbt), same as schematics
  - Magic mob entity attributes can now be used as equation variables (e.g. `scale: target_scale + 1`)
  - Colors now support ARGB for alpha transparency, as well as config via sections with (alpha,red,green,blue)
+   - This is mainly for the mob_effect particles
 
 # 11.2.2
 

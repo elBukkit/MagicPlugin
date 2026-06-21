@@ -41,7 +41,7 @@ disarm:
            sound: entity_generic_explode
         -  class: EffectRing
            particle: spell_mob
-           color: FF0000
+           color: 88FF0000
            location: self
         fizzle:
         -  class: EffectSingle

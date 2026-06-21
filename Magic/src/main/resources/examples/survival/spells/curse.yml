@@ -53,7 +53,7 @@ curse:
              class: SmokeEffect
              iterations: 16
              particle: spell_mob
-             color: 210B61
+             color: 88210B61
         hit_entity:
         -  location: target
            source_location: body
@@ -68,7 +68,7 @@ curse:
              effect:
                  class: SphereEffect
                  particle: spell_mob
-                 color: 210B61
+                 color: 88210B61
                  particles: 20
                  disappear_with_origin_entity: true
         -  location: target
