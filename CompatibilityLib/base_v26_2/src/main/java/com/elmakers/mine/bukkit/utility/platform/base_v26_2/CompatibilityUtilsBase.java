@@ -2281,7 +2281,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         Projectile projectile = null;
         try {
             Object entityType = null;
-            constructor = projectileType.getConstructor(net.minecraft.world.entity.EntityTypes.class, net.minecraft.world.level.Level.class);
+            constructor = projectileType.getConstructor(net.minecraft.world.entity.EntityType.class, net.minecraft.world.level.Level.class);
             entityType = projectileEntityTypes.get(projectileType.getSimpleName());
             if (entityType == null) {
                 throw new Exception("Failed to find entity type for projectile class " + projectileType.getName());
