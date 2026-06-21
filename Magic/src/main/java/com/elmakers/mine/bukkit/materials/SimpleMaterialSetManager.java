@@ -109,9 +109,11 @@ public final class SimpleMaterialSetManager
     @Nullable
     @Override
     public MaterialSet fromConfig(ConfigurationSection configuration, String key) {
-        List<String> adhoc = configuration.getStringList(key);
-        String configString = StringUtils.join(adhoc, ",");
-        return fromConfig(configString);
+        if (configuration.isList(key)) {
+            List<String> materialList = configuration.getStringList(key);
+            return createMaterialSetFromStringList(materialList);
+        }
+        return fromConfig(configuration.getString(key));
     }
 
     @Override
