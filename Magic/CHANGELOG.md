@@ -61,6 +61,7 @@
  - Add `custom_name` and `custom_name_visible` parameters to EntityProjectile action
  - Add `mount_name_visible` parameter to MountArmorStand action
  - Some survival spells now used transparency in their colored particle effects
+ - Path icons now support using pre-defined icons, and added `upgrade_wand_icon` to allow turning off wand icon changes
 
 ## New Features
 
