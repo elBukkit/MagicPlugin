@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+# 11.2.3
+
+ - Fix spawning projectiles in 26.2
+
 # 11.2.2
  
  - Add support for Spigot/Paper 26.2
