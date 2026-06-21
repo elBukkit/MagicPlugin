@@ -43,7 +43,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
                     ConfigurationSection generatorConfig = typeConfigs.getConfigurationSection(typeId);
                     typeId = generatorConfig.getString("type", typeId);
                     EntityData entityData = controller.getMob(typeId);
-                    DistanceWeighted<EntityData> entry = DistanceWeighted.fromConfig(entityData, generatorConfig);
+                    DistanceWeighted<EntityData> entry = DistanceWeighted.fromConfig(world.getLogger(), entityData, generatorConfig);
                     spawns.add(entry);
                 } else {
                     EntityData entityData = controller.getMob(typeId);

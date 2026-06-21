@@ -27,6 +27,7 @@ import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -140,6 +141,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandProperties;
 import com.elmakers.mine.bukkit.wand.WandSet;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
@@ -1980,6 +1982,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // above where entityData is ticked if present.
         Player player = getPlayer();
         if (player != null && player.isOnline()) {
+            checkWorld(player.getWorld());
             checkWand();
             updateBlocking(player);
             checkActionBarQueue();
@@ -2022,6 +2025,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+    }
+
+    private void checkWorld(World world) {
+        final MagicWorld magicWorld = controller.getMagicWorld(world.getName());
+        magicWorld.updateMage(this);
     }
 
     public int processPendingBatches(int maxWorldAllowed) {

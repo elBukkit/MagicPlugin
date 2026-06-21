@@ -26,7 +26,7 @@ public class RandomPopulator extends BaseBlockPopulator {
                     ConfigurationSection populatorConfig = populatorsConfig.getConfigurationSection(populatorId);
                     populatorId = populatorConfig.getString("populator", populatorId);
                     BaseBlockPopulator populator = BaseBlockPopulator.loadPopulator(world, populatorId);
-                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromConfig(populator, populatorConfig);
+                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromConfig(world.getLogger(), populator, populatorConfig);
                     populators.add(entry);
                 } else {
                     BaseBlockPopulator generator = BaseBlockPopulator.loadPopulator(world, populatorId);

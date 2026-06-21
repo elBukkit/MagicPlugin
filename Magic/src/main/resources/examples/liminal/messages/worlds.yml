@@ -2,10 +2,6 @@ worlds:
   world_concrete:
     name: "&8The Concrete Wastes"
   world_pools:
-    name: "&bThe Shallow Pools"
-  world_dark_pools:
-    name: "&9The Dark Pools"
-  world_flooded_pools:
-    name: "&1The Flooded Pools"
+    name: "&bThe Pools"
   world_abyss:
     name: "&8The Abyss"

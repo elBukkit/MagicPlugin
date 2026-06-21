@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
+import com.elmakers.mine.bukkit.utility.random.LongRange;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
@@ -69,13 +70,14 @@ public class MagicWorld {
     private BaseChunkGenerator generator;
     private int groundLevel = 64;
     private int bedrockLevel = 0;
-    private Integer time;
     private Integer titleDelay;
     private Vector spawnPosition;
     private Map<String, Boolean> gameRules = new HashMap<>();
     private String respawnWorld;
     private CustomSound[] ambientSounds = {};
     private IntegerRange ambientSoundTime;
+    private IntegerRange time;
+    private LongRange timeDistanceSquared;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -150,7 +152,13 @@ public class MagicWorld {
         blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
         cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
-        time = ConfigurationUtils.getOptionalInteger(config, "time");
+        time = IntegerRange.fromOptionalConfig(getLogger(), config, "time");
+        IntegerRange timeDistance = IntegerRange.fromOptionalConfig(getLogger(), config, "time_distance");
+        if (timeDistance != null) {
+            timeDistanceSquared = timeDistance.squared();
+        } else {
+            timeDistanceSquared = null;
+        }
         titleDelay = ConfigurationUtils.getOptionalInteger(config, "title_delay");
         respawnWorld = config.getString("respawn");
         ConfigurationSection generatorConfig = config.getConfigurationSection("generator");
@@ -270,7 +278,7 @@ public class MagicWorld {
             }
         }
         if (time != null) {
-            world.setTime(time);
+            world.setTime(time.getMin());
         }
     }
 
@@ -375,8 +383,30 @@ public class MagicWorld {
     }
 
     public void playerLeft(Mage mage, MagicWorld nextWorld) {
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return;
+        }
         if (leavingGameMode != null && (nextWorld == null || nextWorld.gameMode == null)) {
             mage.getPlayer().setGameMode(leavingGameMode);
+        }
+        if (timeDistanceSquared != null) {
+            player.resetPlayerTime();
+        }
+    }
+
+    public void updateMage(Mage mage) {
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return;
+        }
+        if (timeDistanceSquared != null) {
+            final int x = player.getLocation().getBlockX();
+            final int z = player.getLocation().getBlockZ();
+            final long distanceSquared = x * x + z * z;
+            final double factor = timeDistanceSquared.getFactor(distanceSquared);
+            final int currentTime = time.lerp(factor);
+            player.setPlayerTime(currentTime, false);
         }
     }
 
