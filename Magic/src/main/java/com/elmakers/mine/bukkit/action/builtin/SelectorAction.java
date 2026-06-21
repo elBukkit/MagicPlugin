@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -195,6 +196,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String warpKey = null;
         protected @Nullable ConfigurationSection castSpellParameters = null;
         protected @Nullable String unlockClass = null;
+        protected @Nullable String upgradePath = null;
         protected @Nullable List<String> lockClasses = null;
         protected @Nullable String selectedMessage = null;
         protected @Nullable String selectedFreeMessage = null;
@@ -279,6 +281,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 ? configuration.getConfigurationSection("cast_spell_parameters") : castSpellParameters;
             unlockClass = Strings.emptyToNull(
                     configuration.getString("unlock_class", unlockClass));
+            upgradePath = Strings.emptyToNull(configuration.getString("upgrade_path", upgradePath));
             lockClasses = ConfigurationUtils.getStringList(configuration, "lock_classes", lockClasses);
             String lockClass = configuration.getString("lock_class");
             if (lockClass != null && !lockClass.isEmpty()) {
@@ -555,6 +558,13 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     return true;
                 }
             }
+            if (upgradePath != null) {
+                MageClass activeClass = mage.getActiveClass();
+                ProgressionPath activePath = activeClass == null ? null : activeClass.getPath();
+                if (activePath != null && activePath.hasPath(upgradePath)) {
+                    return true;
+                }
+            }
 
             return false;
         }
@@ -574,6 +584,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (unlockClass != null) {
                 if (mage.hasClassUnlocked(unlockClass)) {
                     return new RequirementsResult(SpellResult.NO_TARGET, getMessage("has_class").replace("$class", unlockClass));
+                }
+            }
+
+            if (upgradePath != null) {
+                MageClass activeClass = mage.getActiveClass();
+                ProgressionPath activePath = activeClass == null ? null : activeClass.getPath();
+                if (activePath != null && activePath.hasPath(upgradePath)) {
+                    return new RequirementsResult(SpellResult.NO_TARGET, getMessage("has_path").replace("$path", upgradePath));
                 }
             }
 
@@ -629,6 +647,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.attributeAmount = defaults.attributeAmount;
             this.allowAttributeReduction = defaults.allowAttributeReduction;
             this.unlockClass = defaults.unlockClass;
+            this.upgradePath = defaults.upgradePath;
             this.lockClasses = defaults.lockClasses;
             this.kitKey = defaults.kitKey;
             this.switchClass = defaults.switchClass;
@@ -706,6 +725,15 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     controller.getLogger().warning("Unknown class in selector config: " + unlockClass);
                 }
             }
+            if (name.isEmpty() && upgradePath != null) {
+                ProgressionPath path = controller.getPath(upgradePath);
+                name = getMessage("upgrade_path");
+                if (path != null) {
+                    name = name.replace("$path", path.getName());
+                } else {
+                    controller.getLogger().warning("Unknown path in selector config: " + upgradePath);
+                }
+            }
             if (name.isEmpty() && kitKey != null && !kitKey.isEmpty()) {
                 Kit kit = controller.getKit(kitKey);
                 if (kit != null) {
@@ -774,6 +802,13 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         description = mageClass.getDescription();
                     } else {
                         controller.getLogger().warning("Unknown class in selector config: " + unlockClass);
+                    }
+                } else if (upgradePath != null && !upgradePath.isEmpty()) {
+                    ProgressionPath path = controller.getPath(upgradePath);
+                    if (path != null) {
+                        description = path.getDescription();
+                    } else {
+                        controller.getLogger().warning("Unknown path in selector config: " + upgradePath);
                     }
                 } else if (castSpell != null && !castSpell.isEmpty()) {
                     SpellTemplate spell = controller.getSpellTemplate(castSpell);
@@ -992,44 +1027,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
-            // Choose icon if none was set in config
-            if (icon == null && items != null) {
-                ItemStack item = items.get(0);
-                if (unavailable) {
-                    String spellKey = controller.getSpell(item);
-                    SpellTemplate spellTemplate = spellKey == null ? null : controller.getSpellTemplate(spellKey);
-                    if (spellTemplate != null && spellTemplate.getDisabledIcon() != null) {
-                        icon = spellTemplate.getDisabledIcon().getItemStack(1);
-                    }
-                }
-                if (icon == null) {
-                    icon = CompatibilityLib.getItemUtils().getCopy(item);
-                }
-                // This prevents getting two copies of the lore
-                // Only do this if lore was actually provided, since this setting is on by default for the Shop action
-                if (applyLoreToItem && this.lore != null && !this.lore.isEmpty()) {
-                    ItemMeta meta = icon.getItemMeta();
-                    meta.setLore(null);
-                    icon.setItemMeta(meta);
-                } else if ((applyToWand || applyToCaster) && controller.isWandUpgrade(icon)) {
-                    // This is a bit of a hack to get rid of the upgrade_item_description lore
-                    List<String> iconLore = CompatibilityLib.getCompatibilityUtils().getRawLore(icon);
-                    if (iconLore != null && !iconLore.isEmpty()) {
-                        iconLore.remove(iconLore.size() - 1);
-                        CompatibilityLib.getCompatibilityUtils().setRawLore(icon, iconLore);
-                    }
-                }
-            } else {
-                if (iconHideFlags == null) {
-                    // We default to hiding all flags if not using an item as an icon
-                    iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
-                }
-                if (unbreakableIcon == null) {
-                    // We also default to unbreakable icons, mainly for backwards compatibility
-                    // with damage-value based custom items
-                    unbreakableIcon = true;
-                }
-            }
+            // Choose icon if none was set in config .. use paths, classes and more important selections first
+            // Items should be last since the may be included as part of an unlock
 
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
                 String spellToCast = getCastSpell(context.getWand());
@@ -1113,6 +1112,20 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
+            if (icon == null && upgradePath != null) {
+                ProgressionPath path = controller.getPath(upgradePath);
+                if (path != null) {
+                    MaterialAndData disabledIcon = path.getDisabledIcon();
+                    if (iconDisabledKey == null && disabledIcon != null && disabledIcon.isValid()) {
+                        iconDisabledKey = disabledIcon.getKey();
+                    }
+                    MaterialAndData pathIcon = path.getIcon();
+                    if (pathIcon != null && pathIcon.isValid()) {
+                        icon = pathIcon.getItemStack();
+                    }
+                }
+            }
+
             if (icon == null && kitKey != null && !kitKey.isEmpty()) {
                 Kit kit = controller.getKit(kitKey);
                 if (kit != null) {
@@ -1126,6 +1139,43 @@ public class SelectorAction extends CompoundAction implements GUIAction
                             icon = iconData.getItemStack();
                         }
                     }
+                }
+            }
+            if (icon == null && items != null) {
+                ItemStack item = items.get(0);
+                if (unavailable) {
+                    String spellKey = controller.getSpell(item);
+                    SpellTemplate spellTemplate = spellKey == null ? null : controller.getSpellTemplate(spellKey);
+                    if (spellTemplate != null && spellTemplate.getDisabledIcon() != null) {
+                        icon = spellTemplate.getDisabledIcon().getItemStack(1);
+                    }
+                }
+                if (icon == null) {
+                    icon = CompatibilityLib.getItemUtils().getCopy(item);
+                }
+                // This prevents getting two copies of the lore
+                // Only do this if lore was actually provided, since this setting is on by default for the Shop action
+                if (applyLoreToItem && this.lore != null && !this.lore.isEmpty()) {
+                    ItemMeta meta = icon.getItemMeta();
+                    meta.setLore(null);
+                    icon.setItemMeta(meta);
+                } else if ((applyToWand || applyToCaster) && controller.isWandUpgrade(icon)) {
+                    // This is a bit of a hack to get rid of the upgrade_item_description lore
+                    List<String> iconLore = CompatibilityLib.getCompatibilityUtils().getRawLore(icon);
+                    if (iconLore != null && !iconLore.isEmpty()) {
+                        iconLore.remove(iconLore.size() - 1);
+                        CompatibilityLib.getCompatibilityUtils().setRawLore(icon, iconLore);
+                    }
+                }
+            } else {
+                if (iconHideFlags == null) {
+                    // We default to hiding all flags if not using an item as an icon
+                    iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
+                }
+                if (unbreakableIcon == null) {
+                    // We also default to unbreakable icons, mainly for backwards compatibility
+                    // with damage-value based custom items
+                    unbreakableIcon = true;
                 }
             }
 
@@ -1310,6 +1360,22 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     if (lockClass != null && !lockClass.isEmpty()) {
                         mage.lockClass(lockClass);
                     }
+                }
+            }
+
+            if (upgradePath != null) {
+                MageClass activeClass = mage.getActiveClass();
+                ProgressionPath activePath = activeClass == null ? null : activeClass.getPath();
+                if (activePath != null) {
+                    if (activePath.hasPath(upgradePath)) {
+                        String hasPathMessage = getMessage("has_path").replace("$path", name);
+                        context.showMessage(hasPathMessage);
+                        return SpellResult.NO_TARGET;
+                    } else {
+                        activePath.upgradeTo(upgradePath, mage, mage.getActiveWand());
+                    }
+                } else {
+                    activeClass.setPath(upgradePath);
                 }
             }
 

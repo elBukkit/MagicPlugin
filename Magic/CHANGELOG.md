@@ -79,6 +79,7 @@
  - Magic mob entity attributes can now be used as equation variables (e.g. `scale: target_scale + 1`)
  - Colors now support ARGB for alpha transparency, as well as config via sections with (alpha,red,green,blue)
    - This is mainly for the mob_effect particles
+ - Add `upgrade_path` Selector option for path selection GUIs (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/coven)
 
 # 11.2.2
 
