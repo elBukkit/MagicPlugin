@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -795,8 +796,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Nullable
     @Override
     public String getModernBlockData() {
-        if (blockData == null && material != null) {
-            return material.createBlockData().getAsString();
+        if (blockData == null) {
+            BlockData blockData = createBlockData();
+            return blockData == null ? null : blockData.toString();
         }
         return blockData;
     }
@@ -804,11 +806,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public BlockData createBlockData() {
         if (cachedBlockData == null) {
-            if (blockData != null) {
-                cachedBlockData = CompatibilityLib.getPlatform().getPlugin().getServer().createBlockData(blockData);
-            }
-            if (cachedBlockData == null && material != null) {
-                cachedBlockData = CompatibilityLib.getPlatform().getPlugin().getServer().createBlockData(material);
+            final Plugin plugin = CompatibilityLib.getPlatform().getPlugin();
+            try {
+                if (blockData != null && material != null) {
+                    String fullData = material.name().toLowerCase() + blockData;
+                    cachedBlockData = plugin.getServer().createBlockData(fullData);
+                }
+                if (cachedBlockData == null && material != null) {
+                    cachedBlockData = plugin.getServer().createBlockData(material);
+                }
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Error creating block for: " + getKey() + ": " + ex.getMessage());
             }
         }
 
@@ -889,8 +897,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         if (blockData != null) {
             materialKey += "?" + blockData;
-        }
-        if (itemData != null) {
+        } else if (itemData != null) {
             materialKey += itemData;
         }
         if (itemModel != null && !itemModel.isEmpty()) {
