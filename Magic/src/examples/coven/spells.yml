@@ -1,0 +1,31 @@
+choose_coven:
+  icon: gunpowder
+  category: shop
+  hidden: true
+  actions:
+    cast:
+      - class: CheckRequirements
+        actions:
+        - class: Selector
+  parameters:
+    target: self
+    requirement:
+      path_exact: adept
+    options:
+      - upgrade_path: coven_light
+        selected: "You praise the light and joined $name"
+        items:
+          - apple@32
+        free: true
+        limit: 1
+      - upgrade_path: coven_dark
+        selected: "You gave in and joined $name"
+        items:
+          - poisonous_potato@32
+        free: true
+        limit: 1
+    confirm: true
+    auto_close: true
+    quiet: false
+    loud: true
+    confirm_filler: light_blue_stained_glass
