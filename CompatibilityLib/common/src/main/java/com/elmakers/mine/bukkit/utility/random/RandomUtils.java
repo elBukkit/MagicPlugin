@@ -43,6 +43,16 @@ public class RandomUtils {
         return (int)Math.round((double)min + value * (double) (max - min));
     }
 
+    public static long lerp(long min, long max, double value) {
+        if (max == min) return min;
+        if (min > max) {
+            long temp = min;
+            min = max;
+            max = temp;
+        }
+        return (long)Math.round((double)min + value * (double) (max - min));
+    }
+
     public static double lerp(double min, double max, double value) {
         if (max == min) return min;
         if (min > max) {
@@ -313,6 +323,14 @@ public class RandomUtils {
         }
         // Bounds is exclusive but we want to include it
         return min + random.nextInt(max - min + 1);
+    }
+
+    public static long range(Random random, long min, long max) {
+        if (min >= max) {
+            return min;
+        }
+        // Bounds is exclusive but we want to include it
+        return min + random.nextLong(max - min + 1);
     }
 
     public static int range(int min, int max) {

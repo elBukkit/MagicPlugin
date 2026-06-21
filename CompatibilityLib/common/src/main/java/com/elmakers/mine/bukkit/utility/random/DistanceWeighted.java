@@ -8,25 +8,22 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class DistanceWeighted<T> {
     private final T value;
-    private final int minDistanceSquared;
-    private final int maxDistanceSquared;
+    private final LongRange distanceSquared;
     private final double weight;
     private final int frequency;
 
-    public static <T> DistanceWeighted<T> fromConfig(T value, ConfigurationSection config) {
-        return new DistanceWeighted<>(value, config);
+    public static <T> DistanceWeighted<T> fromConfig(Logger logger, T value, ConfigurationSection config) {
+        return new DistanceWeighted<>(logger, value, config);
     }
 
     public static <T> DistanceWeighted<T> fromString(Logger logger, T value, String stringConfig) {
         return new DistanceWeighted<>(logger, value, stringConfig);
     }
 
-    private DistanceWeighted(T value, ConfigurationSection config) {
+    private DistanceWeighted(Logger logger, T value, ConfigurationSection config) {
         this.value = value;
-        int minDistance = config.getInt("min_distance");
-        minDistanceSquared = minDistance * minDistance;
-        int maxDistance = config.getInt("max_distance");
-        maxDistanceSquared = maxDistance * maxDistance;
+        IntegerRange distance = IntegerRange.fromConfig(logger, config, "distance", 0, 0);
+        distanceSquared = distance.squared();
         weight = config.getDouble("weight", 1);
         // Frequency is defined in terms of chunks
         frequency = config.getInt("frequency") * 16;
@@ -36,8 +33,8 @@ public class DistanceWeighted<T> {
         this.value = value;
         String[] pieces = StringUtils.split(weightConfig, ",");
         double weight = 1;
-        int minDistance = 0;
-        int maxDistance = 0;
+        long minDistance = 0;
+        long maxDistance = 0;
         int frequency = 0;
         try {
             weight = Double.parseDouble(pieces[0]);
@@ -53,8 +50,7 @@ public class DistanceWeighted<T> {
         } catch (Exception ex) {
             logger.warning("Invalid distance weighted config: " + weightConfig);
         }
-        minDistanceSquared = minDistance * minDistance;
-        maxDistanceSquared = maxDistance * maxDistance;
+        distanceSquared = new LongRange(minDistance * minDistance, maxDistance * maxDistance);
         this.frequency = frequency;
         this.weight = weight;
     }
@@ -64,13 +60,7 @@ public class DistanceWeighted<T> {
             return 0;
         }
         final long distanceSquared = x * x + z * z;
-        if (distanceSquared >= maxDistanceSquared) {
-            return weight;
-        }
-        if (distanceSquared < minDistanceSquared) {
-            return 0;
-        }
-        return weight * Math.min(1.0, ((double)distanceSquared - minDistanceSquared) / (maxDistanceSquared - minDistanceSquared));
+        return this.distanceSquared.getFactor(distanceSquared) * weight;
     }
 
     public T getValue() {

@@ -17,21 +17,17 @@ concrete_surface:
   class: Random
   generators:
     concrete_food:
-      min_distance: 64
-      max_distance: 512
+      distance: 64 | 512
       weight: 0.01
     concrete_car:
-      min_distance: 16
-      max_distance: 512
+      distance: 16 | 512
       weight: 0.1
     concrete_tower:
-      min_distance: 32
-      max_distance: 512
+      distance: 32 | 512
       weight: 0.5
       frequency: 4
     concrete_exit:
-      min_distance: 512
-      max_distance: 2048
+      distance: 512 | 2048
       weight: 0.2
       frequency: 4
     none: 1

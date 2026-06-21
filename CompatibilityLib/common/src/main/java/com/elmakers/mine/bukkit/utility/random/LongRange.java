@@ -7,42 +7,42 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.StringUtils;
 
-public class IntegerRange {
-    final int min;
-    final int max;
+public class LongRange {
+    final long min;
+    final long max;
 
-    public IntegerRange(int min, int max) {
+    public LongRange(long min, long max) {
         this.min = min;
         this.max = max;
     }
 
-    public int getRandom(Random random) {
+    public long getRandom(Random random) {
         return RandomUtils.range(random, min, max);
     }
 
-    public int lerp(double value) {
+    public long lerp(double value) {
         return RandomUtils.lerp(min, max, value);
     }
 
-    public double getFactor(int value) {
+    public double getFactor(long value) {
         if (value < min) return 0;
-        if (value > max) return 1;
+        if (value >= max) return 1;
         return (double)(value - min) / (double)(max - min);
     }
 
     public LongRange squared() {
-        return new LongRange((long)min * min, (long)max * max);
+        return new LongRange(min * min, max * max);
     }
 
-    public int getMin() {
+    public long getMin() {
         return min;
     }
 
-    public int getMax() {
+    public long getMax() {
         return max;
     }
 
-    public int clip(int value, int minValue) {
+    public long clip(long value, long minValue) {
         if (max > minValue) {
             value = Math.min(value, max);
         }
@@ -52,24 +52,24 @@ public class IntegerRange {
         return value;
     }
 
-    public int clip(int value) {
+    public long clip(long value) {
         return Math.max(Math.min(value, max), min);
     }
 
-    public static IntegerRange fromOptionalConfig(Logger logger, ConfigurationSection config, String key) {
+    public static LongRange fromOptionalConfig(Logger logger, ConfigurationSection config, String key) {
         if (!config.contains(key)) {
             return null;
         }
-        return IntegerRange.fromConfig(logger, config, key, 0, 0);
+        return LongRange.fromConfig(logger, config, key, 0, 0);
     }
 
-    public static IntegerRange fromConfig(Logger logger, ConfigurationSection config, String key, int defaultMin, int defaultMax) {
-        IntegerRange value = null;
+    public static LongRange fromConfig(Logger logger, ConfigurationSection config, String key, int defaultMin, int defaultMax) {
+        LongRange value = null;
         if (config.contains(key)) {
             try {
                 if (config.isConfigurationSection(key)) {
                     ConfigurationSection valueConfig = config.getConfigurationSection(key);
-                    value = new IntegerRange(valueConfig.getInt("min"), valueConfig.getInt("max"));
+                    value = new LongRange(valueConfig.getLong("min"), valueConfig.getLong("max"));
                 } else if (config.isString(key)) {
                     String stringValue = config.getString(key);
                     // Handle rand() format by stripping out before/after parenthesis
@@ -81,16 +81,16 @@ public class IntegerRange {
                     // So we should not use : as a delimiter.
                     char separator = (stringValue.contains(",") ? ',' : '|');
                     String[] pieces = StringUtils.split(stringValue, separator);
-                    int min = Integer.parseInt(pieces[0].trim());
-                    int max = pieces.length > 1 ? Integer.parseInt(pieces[1].trim()) : min;
-                    value = new IntegerRange(min, max);
-                } else if (config.isInt(key)) {
-                    value = new IntegerRange(config.getInt(key), config.getInt(key));
+                    long min = Long.parseLong(pieces[0].trim());
+                    long max = pieces.length > 1 ? Long.parseLong(pieces[1].trim()) : min;
+                    value = new LongRange(min, max);
+                } else if (config.isLong(key) || config.isInt(key)) {
+                    value = new LongRange(config.getInt(key), config.getInt(key));
                 }
             } catch (Exception ex) {
                 logger.warning("Invalid randomized config value for " + key + ": " + config.get(key));
             }
         }
-        return value != null ? value : new IntegerRange(defaultMin, defaultMax);
+        return value != null ? value : new LongRange(defaultMin, defaultMax);
     }
 }

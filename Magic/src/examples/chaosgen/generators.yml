@@ -38,8 +38,9 @@ chaos_surface:
     chaos_build14:
       weight: 1
     chaos_tower:
-      min_distance: 32
-      max_distance: 512
+      distance:
+        min: 32
+        max: 512
       weight: 0.5
       frequency: 3
     none: 1
