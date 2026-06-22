@@ -2029,7 +2029,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private void checkWorld(World world) {
         final MagicWorld magicWorld = controller.getMagicWorld(world.getName());
-        magicWorld.updateMage(this);
+        if (magicWorld != null) {
+            magicWorld.updateMage(this);
+        }
     }
 
     public int processPendingBatches(int maxWorldAllowed) {
