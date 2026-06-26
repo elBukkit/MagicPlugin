@@ -25,6 +25,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 
@@ -338,5 +339,21 @@ public class NBTUtils extends NBTUtilsBase {
         }
         SpawnEggItem spawnEggItem = (SpawnEggItem)item;
         return CraftEntityType.minecraftToBukkit(spawnEggItem.getType(null));
+    }
+
+    @Override
+    public Object copyTag(Object tag) {
+        if (tag == null || !(tag instanceof CompoundTag)) return null;
+        return ((CompoundTag)tag).copy();
+    }
+
+    @Override
+    public Object parseTag(String data) {
+        try {
+            return TagParser.parseTag(data);
+        } catch (Throwable ex) {
+            platform.getLogger().warning("Error parsing NBT: " + data);
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -49,7 +50,7 @@ public abstract class EntityExtraData {
     }
 
     // This is only used for specific entity types that require special spawning
-    public SpawnedEntityExtraData spawn(Location location) {
+    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
         return null;
     }
 }

@@ -8,6 +8,7 @@ import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
@@ -84,7 +85,7 @@ public class EntityItemFrameData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(Location location) {
+    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
         Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
         return new SpawnedEntityExtraData(newEntity, false);
     }

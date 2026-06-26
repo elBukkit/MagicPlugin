@@ -8,11 +8,15 @@ import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.craftbukkit.v1_21_R6.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R6.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R6.entity.CraftEntityType;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -36,6 +40,9 @@ import com.elmakers.mine.bukkit.utility.platform.v1_21_10.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_10.goal.SpinGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_10.goal.TriggerGoal;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -900,5 +907,20 @@ public class MobUtils extends MobUtilsBase {
         Mob mob = (Mob) nmsEntity;
         mob.getNavigation().moveTo(nmstarget, speed);
         return true;
+    }
+
+    @Override
+    public Entity spawnWithData(EntityType entityType, Location location, Object data) {
+        if (entityType == null) return null;
+        net.minecraft.world.entity.EntityType<?> nmsType = CraftEntityType.bukkitToMinecraft(entityType);
+        ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
+        net.minecraft.world.entity.Entity nmsEntity = net.minecraft.world.entity.EntityType.loadEntityRecursive(nmsType, (CompoundTag)data, nmsWorld, EntitySpawnReason.COMMAND, (e) -> {
+            e.setXRot(location.getPitch());
+            e.setYRot(location.getYaw());
+            e.setPos(location.getX(), location.getY(), location.getZ());
+            return e;
+        });
+        if (nmsEntity == null) return null;
+        return nmsEntity.getBukkitEntity();
     }
 }

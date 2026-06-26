@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Painting;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -66,7 +67,7 @@ public class EntityPaintingData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(Location location) {
+    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
         Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createPainting(location, facing, art);
         return new SpawnedEntityExtraData(newEntity, false);
     }

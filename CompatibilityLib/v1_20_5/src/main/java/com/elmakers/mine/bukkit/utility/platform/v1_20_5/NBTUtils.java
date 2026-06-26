@@ -37,6 +37,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.CustomData;
@@ -603,5 +604,21 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public CompoundTag getCompoundTagFromCustomData(Object customData) {
         return customData == null || !(customData instanceof CustomData) ? null : ((CustomData)customData).getUnsafe();
+    }
+
+    @Override
+    public Object copyTag(Object tag) {
+        if (tag == null || !(tag instanceof CompoundTag)) return null;
+        return ((CompoundTag)tag).copy();
+    }
+
+    @Override
+    public Object parseTag(String data) {
+        try {
+            return TagParser.parseTag(data);
+        } catch (Throwable ex) {
+            platform.getLogger().warning("Error parsing NBT: " + data);
+        }
+        return null;
     }
 }

@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
@@ -59,7 +60,7 @@ public class EntityDroppedItemData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(Location location) {
+    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
         Entity newEntity = null;
         if (!PlatformInterpreter.getPlatform().getItemUtils().isEmpty(item)) {
             newEntity = location.getWorld().dropItem(location, item);

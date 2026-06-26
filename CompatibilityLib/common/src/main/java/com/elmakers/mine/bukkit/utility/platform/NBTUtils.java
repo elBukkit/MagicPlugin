@@ -132,4 +132,8 @@ public interface NBTUtils {
     Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException;
 
     void convertIntegers(Map<String, Object> m);
+
+    Object parseTag(String data);
+
+    Object copyTag(Object tag);
 }

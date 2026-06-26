@@ -35,6 +35,11 @@ public class Platform extends PlatformBase {
     }
 
     @Override
+    protected com.elmakers.mine.bukkit.utility.platform.MobUtils createMobUtils() {
+        return new MobUtils(this);
+    }
+
+    @Override
     protected com.elmakers.mine.bukkit.utility.platform.SkinUtils createSkinUtils() {
         return new SkinUtils(this);
     }

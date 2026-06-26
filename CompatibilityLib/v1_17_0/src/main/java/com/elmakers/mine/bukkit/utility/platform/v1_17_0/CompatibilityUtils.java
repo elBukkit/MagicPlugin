@@ -318,7 +318,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason) {
         ServerLevel level = ((CraftWorld)world).getHandle();
         net.minecraft.world.entity.Entity entityHandle = ((CraftEntity)entity).getHandle();
-        level.addEntity(entityHandle, reason);
+        if (reason == CreatureSpawnEvent.SpawnReason.DEFAULT) {
+            level.addFreshEntityWithPassengers(entityHandle);
+        } else {
+            level.addEntity(entityHandle, reason);
+        }
         return true;
     }
 

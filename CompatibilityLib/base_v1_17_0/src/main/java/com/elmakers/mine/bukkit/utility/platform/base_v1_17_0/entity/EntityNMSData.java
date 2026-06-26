@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.entity;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
+import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
@@ -30,6 +33,7 @@ public class EntityNMSData extends EntityExtraData {
         Object currentTag = platform.getCompatibilityUtils().getEntityData(entity);
         if (currentTag != null && tag != null) {
             NBTUtils nbt = platform.getNBTUtils();
+            tag = nbt.copyTag(tag);
             nbt.setTag(tag, "WorldUUIDMost", nbt.getTag(currentTag, "WorldUUIDMost"));
             nbt.setTag(tag, "WorldUUIDLeast", nbt.getTag(currentTag, "WorldUUIDLeast"));
             nbt.setTag(tag, "UUID", nbt.getTag(currentTag, "UUID"));
@@ -39,5 +43,14 @@ public class EntityNMSData extends EntityExtraData {
             nbt.setTag(tag, "TileZ", nbt.getTag(currentTag, "TileZ"));
         }
         platform.getCompatibilityUtils().setEntityData(entity, tag);
+    }
+
+    @Override
+    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
+        Entity entity = platform.getMobUtils().spawnWithData(entityType, location, tag);
+        if (entity == null) {
+            return null;
+        }
+        return new SpawnedEntityExtraData(entity, false);
     }
 }

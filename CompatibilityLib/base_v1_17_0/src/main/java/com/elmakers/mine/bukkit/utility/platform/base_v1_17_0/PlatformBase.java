@@ -162,9 +162,7 @@ public abstract class PlatformBase implements Platform {
         return new DeprecatedUtilsBase(this);
     }
 
-    protected MobUtils createMobUtils() {
-        return new MobUtilsBase();
-    }
+    protected abstract MobUtils createMobUtils();
 
     @Override
     public MageController getController() {

@@ -2,8 +2,10 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.Collection;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
@@ -30,4 +32,6 @@ public interface MobUtils {
     boolean addTargetGoal(Entity entity, GoalConfiguration goal);
 
     boolean setPathfinderTarget(Entity entity, Entity target, double speed);
+
+    Entity spawnWithData(EntityType entityType, Location location, Object data);
 }

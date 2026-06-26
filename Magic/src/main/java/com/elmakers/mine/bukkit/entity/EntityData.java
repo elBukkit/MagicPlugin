@@ -517,10 +517,19 @@ public class EntityData
             tags = new HashSet<>(tagList);
         }
 
-        try {
-            extraData = type == null ? null : CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
-        } catch (Exception ex) {
-            controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
+
+        String tagData = parameters.getString("data");
+        if (tagData != null && !tagData.isEmpty()) {
+            Object tag = CompatibilityLib.getNBTUtils().parseTag(tagData);
+            if (tag != null) {
+                extraData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
+            }
+        } else {
+            try {
+                extraData = type == null ? null : CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
+            }
         }
 
         ConfigurationSection attributeConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "entity_attributes");
@@ -718,16 +727,18 @@ public class EntityData
                 controller.getLogger().warning("Could not spawn mythic mob: " + mythicMobKey + " from mob config " + getKey());
             }
         }
+        boolean extraSpawned = false;
         if (spawned == null && type != null && type != EntityType.PLAYER) {
             controller.setDisableSpawnReplacement(true);
             try {
                 SpawnedEntityExtraData spawnedEntity = null;
                 if (extraData != null) {
-                    spawnedEntity = extraData.spawn(location);
+                    spawnedEntity = extraData.spawn(type, location);
                 }
                 if (spawnedEntity != null) {
                     spawned = spawnedEntity.getEntity();
                     addedToWorld = spawnedEntity.isAddedToWorld();
+                    extraSpawned = true;
                 } else {
                     spawned = CompatibilityLib.getCompatibilityUtils().createEntity(location, type);
                 }
@@ -745,7 +756,7 @@ public class EntityData
                     CompatibilityLib.getCompatibilityUtils().addToWorld(location.getWorld(), spawned, reason);
                     isSpawning = false;
                 }
-                modifyPostSpawn(spawned, region);
+                modifyPostSpawn(spawned, region, !extraSpawned);
             } catch (Exception ex) {
                  org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for: " + getType() + " at " + getLocation(), ex);
             }
@@ -893,7 +904,7 @@ public class EntityData
             controller.registerMob(entity, this);
         }
         boolean modifiedPre = modifyPreSpawn(entity, false, false);
-        boolean modifiedPost = modifyPostSpawn(entity, null);
+        boolean modifiedPost = modifyPostSpawn(entity, null, true);
         return modifiedPre || modifiedPost;
     }
 
@@ -1096,11 +1107,14 @@ public class EntityData
         return mageData != null ? mageData.mageProperties : null;
     }
 
-    private boolean modifyPostSpawn(Entity entity, RegionAccessor region) {
+    private boolean modifyPostSpawn(Entity entity, RegionAccessor region, boolean applyExtraData) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
             entity.teleport(location);
+        }
+        if (extraData != null && applyExtraData) {
+            extraData.applyPostSpawn(entity);
         }
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
@@ -1157,9 +1171,6 @@ public class EntityData
         }
         if (this.ownerId != null) {
             CompatibilityLib.getCompatibilityUtils().setOwner(entity, ownerId);
-        }
-        if (extraData != null) {
-            extraData.applyPostSpawn(entity);
         }
         applyBrain(entity);
         return true;

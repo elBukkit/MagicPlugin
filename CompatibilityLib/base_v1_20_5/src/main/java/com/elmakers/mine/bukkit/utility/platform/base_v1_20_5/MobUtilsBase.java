@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 
-public class MobUtilsBase implements MobUtils {
+public abstract class MobUtilsBase implements MobUtils {
     @Override
     public boolean removeGoals(Entity entity) {
         return false;

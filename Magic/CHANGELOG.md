@@ -69,6 +69,7 @@
  - Add support for vanilla-style item definitions
    - For example: `shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]`
    - Won't work for wand icons, but should work anywhere else
+ - Add support for vanilla-style entity data, using the `data` property. (BDEngine compatible)
  - Add `/mwarp world` command to easily go to the spawn point of a specific world
  - Added `FreezeEntity` action, to apply the frostbite effect to an entity. Now used in the `frost` spell.
  - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)

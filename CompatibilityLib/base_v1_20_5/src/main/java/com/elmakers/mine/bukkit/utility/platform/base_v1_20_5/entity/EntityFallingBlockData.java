@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -89,13 +90,13 @@ public class EntityFallingBlockData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(Location location) {
+    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
         String blockDataString = getBlockData();
         if (blockDataString != null && !blockDataString.isEmpty()) {
             BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
             Entity newEntity = location.getWorld().spawnFallingBlock(location, blockData);
             return new SpawnedEntityExtraData(newEntity, true);
         }
-        return super.spawn(location);
+        return super.spawn(entityType, location);
     }
 }

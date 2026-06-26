@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_20_5.NBTUtilsBase;
+import com.mojang.brigadier.StringReader;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.ByteArrayTag;
@@ -36,6 +37,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.component.CustomData;
 
 public class NBTUtils extends NBTUtilsBase {
@@ -602,5 +604,21 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public CompoundTag getCompoundTagFromCustomData(Object customData) {
         return customData == null || !(customData instanceof CustomData) ? null : ((CustomData)customData).getUnsafe();
+    }
+
+    @Override
+    public Object copyTag(Object tag) {
+        if (tag == null || !(tag instanceof CompoundTag)) return null;
+        return ((CompoundTag)tag).copy();
+    }
+
+    @Override
+    public Object parseTag(String data) {
+        try {
+            return TagParser.parseCompoundAsArgument(new StringReader(data));
+        } catch (Throwable ex) {
+            platform.getLogger().warning("Error parsing NBT: " + data);
+        }
+        return null;
     }
 }
