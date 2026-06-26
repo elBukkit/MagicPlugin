@@ -14,8 +14,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -136,6 +138,7 @@ import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Blaze;
@@ -870,6 +873,15 @@ public class MobUtils extends MobUtilsBase {
         Mob mob = (Mob)nmsEntity;
         mob.getNavigation().moveTo(nmstarget, speed);
         return true;
+    }
+
+    @Override
+    public Item dropItem(Location loc, org.bukkit.inventory.ItemStack item) {
+        if (item == null || item.getType().isAir()) return null;
+        ServerLevel level = ((CraftWorld)loc.getWorld()).getHandle();
+        ItemEntity entity = new ItemEntity(level, loc.getX(), loc.getY(), loc.getZ(), CraftItemStack.asNMSCopy(item));
+        entity.pickupDelay = 10;
+        return (Item)entity.getBukkitEntity();
     }
 
     @Override

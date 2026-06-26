@@ -61,13 +61,7 @@ public class EntityDroppedItemData extends EntityExtraData {
 
     @Override
     public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
-        Entity newEntity = null;
-        if (!PlatformInterpreter.getPlatform().getItemUtils().isEmpty(item)) {
-            newEntity = location.getWorld().dropItem(location, item);
-        }
-        if (newEntity != null && pickupDelay != null && newEntity instanceof Item) {
-            ((Item)newEntity).setPickupDelay(pickupDelay);
-        }
-        return new SpawnedEntityExtraData(newEntity, true);
+        Entity newEntity = getPlatform().getMobUtils().dropItem(location, item);
+        return new SpawnedEntityExtraData(newEntity, false);
     }
 }

@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
@@ -34,4 +36,6 @@ public interface MobUtils {
     boolean setPathfinderTarget(Entity entity, Entity target, double speed);
 
     Entity spawnWithData(EntityType entityType, Location location, Object data);
+
+    Item dropItem(Location loc, ItemStack item);
 }
