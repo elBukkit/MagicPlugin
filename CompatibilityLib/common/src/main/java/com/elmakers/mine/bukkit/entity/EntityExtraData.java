@@ -50,7 +50,7 @@ public abstract class EntityExtraData {
     }
 
     // This is only used for specific entity types that require special spawning
-    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
+    public Entity spawn(EntityType entityType, Location location) {
         return null;
     }
 }

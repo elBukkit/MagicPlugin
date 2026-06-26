@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Location;
-import org.bukkit.RegionAccessor;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -66,13 +65,13 @@ public interface EntityData extends Cloneable {
     boolean isFriendly(Entity other);
     boolean hasPermission(String node);
     @Nullable
+    Entity create(Location location);
+    @Nullable
     Entity spawn();
     @Nullable
     Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason);
     @Nullable
     Entity spawn(Location location);
-    @Nullable
-    Entity spawn(Location location, RegionAccessor region);
     @Deprecated
     @Nullable
     Entity spawn(MageController controller, Location location);

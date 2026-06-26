@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
@@ -46,11 +45,7 @@ public class EntityNMSData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
-        Entity entity = platform.getMobUtils().spawnWithData(entityType, location, tag);
-        if (entity == null) {
-            return null;
-        }
-        return new SpawnedEntityExtraData(entity, false);
+    public Entity spawn(EntityType entityType, Location location) {
+        return platform.getMobUtils().spawnWithData(entityType, location, tag);
     }
 }

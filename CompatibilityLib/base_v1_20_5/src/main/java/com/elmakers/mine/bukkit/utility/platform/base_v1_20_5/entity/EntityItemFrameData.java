@@ -15,7 +15,6 @@ import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
@@ -85,9 +84,8 @@ public class EntityItemFrameData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
-        Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
-        return new SpawnedEntityExtraData(newEntity, false);
+    public Entity spawn(EntityType entityType, Location location) {
+        return PlatformInterpreter.getPlatform().getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
     }
 
     @Override

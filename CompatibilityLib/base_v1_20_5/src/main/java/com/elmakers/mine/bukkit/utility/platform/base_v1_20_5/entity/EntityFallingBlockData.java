@@ -13,7 +13,6 @@ import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
@@ -90,12 +89,11 @@ public class EntityFallingBlockData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
+    public Entity spawn(EntityType entityType, Location location) {
         String blockDataString = getBlockData();
         if (blockDataString != null && !blockDataString.isEmpty()) {
             BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
-            Entity newEntity = getPlatform().getMobUtils().spawnFallingBlock(location, blockData);
-            return new SpawnedEntityExtraData(newEntity, false);
+            return getPlatform().getMobUtils().spawnFallingBlock(location, blockData);
         }
         return super.spawn(entityType, location);
     }

@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
@@ -59,8 +58,7 @@ public class EntityDroppedItemData extends EntityExtraData {
     }
 
     @Override
-    public SpawnedEntityExtraData spawn(EntityType entityType, Location location) {
-        Entity newEntity = getPlatform().getMobUtils().dropItem(location, item);
-        return new SpawnedEntityExtraData(newEntity, false);
+    public Entity spawn(EntityType entityType, Location location) {
+        return getPlatform().getMobUtils().dropItem(location, item);
     }
 }

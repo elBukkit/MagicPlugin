@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
@@ -86,7 +87,8 @@ public class SpawnPopulator extends BaseBlockPopulator {
                 for (int y = baseY - searchY; y < baseY + searchY && !spawned; y++) {
                     if (!region.isInRegion(x, y, z) || !region.isInRegion(x, y + 1, z) || !region.isInRegion(x, y - 1, z)) continue;
                     if (region.getType(x, y, z).isAir() && region.getType(x, y + 1, z).isAir() && !region.getType(x, y - 1, z).isAir()) {
-                        entityData.spawn(new Location(targetWorld, x, y, z), region);
+                        Entity entity = entityData.create(new Location(targetWorld, x, y, z));
+                        region.addEntity(entity);
                         spawned = true;
                     }
                 }
