@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_21_10;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,14 +11,17 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_21_R6.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R6.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_21_R6.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_21_R6.entity.CraftEntityType;
 import org.bukkit.craftbukkit.v1_21_R6.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -140,6 +144,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -185,6 +190,7 @@ import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class MobUtils extends MobUtilsBase {
     private final Platform platform;
@@ -934,5 +940,19 @@ public class MobUtils extends MobUtilsBase {
         });
         if (nmsEntity == null) return null;
         return nmsEntity.getBukkitEntity();
+    }
+
+    @Override
+    public FallingBlock spawnFallingBlock(Location location, BlockData blockData) {
+        ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
+        try {
+            Constructor<FallingBlockEntity> constructor = FallingBlockEntity.class.getDeclaredConstructor(net.minecraft.world.level.Level.class, Double.TYPE, Double.TYPE, Double.TYPE, BlockState.class);
+            constructor.setAccessible(true);
+            FallingBlockEntity entity = constructor.newInstance(nmsWorld, location.getX(), location.getY(), location.getZ(), ((CraftBlockData)blockData).getState());
+            return (FallingBlock)entity.getBukkitEntity();
+        } catch (Exception ex) {
+            platform.getLogger().warning("Error spawning falling block: " + ex.getMessage());
+            return null;
+        }
     }
 }

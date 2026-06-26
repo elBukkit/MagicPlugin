@@ -10,13 +10,16 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -137,6 +140,7 @@ import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -894,5 +898,12 @@ public class MobUtils extends MobUtilsBase {
         });
         if (nmsEntity == null) return null;
         return nmsEntity.getBukkitEntity();
+    }
+
+    @Override
+    public FallingBlock spawnFallingBlock(Location location, BlockData blockData) {
+        ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
+        FallingBlockEntity entity = new FallingBlockEntity(nmsWorld, location.getX(), location.getY(), location.getZ(), ((CraftBlockData)blockData).getState());
+        return (FallingBlock)entity.getBukkitEntity();
     }
 }

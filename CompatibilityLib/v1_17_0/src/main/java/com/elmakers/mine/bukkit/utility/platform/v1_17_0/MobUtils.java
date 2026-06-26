@@ -1,16 +1,20 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_0;
 
 import org.bukkit.Location;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.MobUtilsBase;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 
 public class MobUtils extends MobUtilsBase {
@@ -42,5 +46,12 @@ public class MobUtils extends MobUtilsBase {
         });
         if (nmsEntity == null) return null;
         return nmsEntity.getBukkitEntity();
+    }
+
+    @Override
+    public FallingBlock spawnFallingBlock(Location location, BlockData blockData) {
+        ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
+        FallingBlockEntity entity = new FallingBlockEntity(nmsWorld, location.getX(), location.getY(), location.getZ(), ((CraftBlockData)blockData).getState());
+        return (FallingBlock)entity.getBukkitEntity();
     }
 }

@@ -3,9 +3,11 @@ package com.elmakers.mine.bukkit.utility.platform;
 import java.util.Collection;
 
 import org.bukkit.Location;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,4 +40,6 @@ public interface MobUtils {
     Entity spawnWithData(EntityType entityType, Location location, Object data);
 
     Item dropItem(Location loc, ItemStack item);
+
+    FallingBlock spawnFallingBlock(Location location, BlockData blockData);
 }

@@ -94,8 +94,8 @@ public class EntityFallingBlockData extends EntityExtraData {
         String blockDataString = getBlockData();
         if (blockDataString != null && !blockDataString.isEmpty()) {
             BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
-            Entity newEntity = location.getWorld().spawnFallingBlock(location, blockData);
-            return new SpawnedEntityExtraData(newEntity, true);
+            Entity newEntity = getPlatform().getMobUtils().spawnFallingBlock(location, blockData);
+            return new SpawnedEntityExtraData(newEntity, false);
         }
         return super.spawn(entityType, location);
     }
