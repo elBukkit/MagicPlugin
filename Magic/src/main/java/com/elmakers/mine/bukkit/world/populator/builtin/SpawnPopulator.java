@@ -88,7 +88,9 @@ public class SpawnPopulator extends BaseBlockPopulator {
                     if (!region.isInRegion(x, y, z) || !region.isInRegion(x, y + 1, z) || !region.isInRegion(x, y - 1, z)) continue;
                     if (region.getType(x, y, z).isAir() && region.getType(x, y + 1, z).isAir() && !region.getType(x, y - 1, z).isAir()) {
                         Entity entity = entityData.create(new Location(targetWorld, x, y, z));
-                        region.addEntity(entity);
+                        if (entity != null) {
+                            region.addEntity(entity);
+                        }
                         spawned = true;
                     }
                 }

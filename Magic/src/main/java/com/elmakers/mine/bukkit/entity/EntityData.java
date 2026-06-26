@@ -748,7 +748,13 @@ public class EntityData
                  org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for: " + getType() + " at " + getLocation(), ex);
             }
         }
-        return spawned;
+        Entity root = spawned;
+        Entity vehicle = spawned == null ? null : spawned.getVehicle();
+        while (vehicle != null) {
+            root = vehicle;
+            vehicle = vehicle.getVehicle();
+        }
+        return root;
     }
 
     @Nullable
