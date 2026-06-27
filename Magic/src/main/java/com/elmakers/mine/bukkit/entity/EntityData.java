@@ -701,7 +701,7 @@ public class EntityData
     }
 
     @Nullable
-    protected Entity trySpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld) {
+    protected Entity trySpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld, boolean register) {
         if (location == null) {
             return null;
         }
@@ -736,7 +736,7 @@ public class EntityData
         }
         if (spawned != null) {
             try {
-                modifyPreSpawn(spawned, true, true);
+                modifyPreSpawn(spawned, true);
                 if (addToWorld) {
                     isSpawning = true;
                     reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
@@ -753,6 +753,10 @@ public class EntityData
         while (vehicle != null) {
             root = vehicle;
             vehicle = vehicle.getVehicle();
+        }
+        if (register) {
+            // TODO: Should we be registering non-magic mobs (no key)?
+            controller.registerMob(root, this);
         }
         return root;
     }
@@ -815,8 +819,12 @@ public class EntityData
         return doSpawn(location, null, false);
     }
 
-    public Entity doSpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld) {
-        Entity entity = trySpawn(location, reason, addToWorld);
+    private Entity doSpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld) {
+        return doSpawn(location, reason, addToWorld, true);
+    }
+
+    private Entity doSpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld, boolean register) {
+        Entity entity = trySpawn(location, reason, addToWorld, register);
         if (entity != null && mageData != null) {
             Mage mage = controller.getMage(entity);
             mageData.trigger(mage, "spawn");
@@ -836,7 +844,7 @@ public class EntityData
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
             } else if (location != null) {
-                entity = trySpawn(location, null, true);
+                entity = trySpawn(location, null, true, true);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
 
@@ -896,22 +904,17 @@ public class EntityData
         if (register && !(entity instanceof Player)) {
             controller.registerMob(entity, this);
         }
-        boolean modifiedPre = modifyPreSpawn(entity, false, false);
+        boolean modifiedPre = modifyPreSpawn(entity, false);
         boolean modifiedPost = modifyPostSpawn(entity, true);
         return modifiedPre || modifiedPost;
     }
 
-    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn, boolean register) {
+    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
-
-        if (!(entity instanceof Player) && register) {
-            controller.registerMob(entity, this);
-        }
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
             extraData.apply(entity);
         }
-
         if (persist != null) {
             CompatibilityLib.getCompatibilityUtils().setPersist(entity, persist);
         }
@@ -1129,7 +1132,7 @@ public class EntityData
             // This prevents respawning mounts on chunk load for persistent mobs
             boolean addToWorld = entity.isInWorld();
             if (mountEntity == null) {
-                mountEntity = mount.doSpawn(entity.getLocation(), null, addToWorld);
+                mountEntity = mount.doSpawn(entity.getLocation(), null, addToWorld, false);
             } else {
                 if (mountEntity.getType() == mount.getType()) {
                     // Don't re-mount
@@ -1140,7 +1143,7 @@ public class EntityData
                     // Mount type has changed, now we need to respawn it
                     mountEntity.remove();
                     entity.eject();
-                    mountEntity = mount.doSpawn(entity.getLocation(), null, addToWorld);
+                    mountEntity = mount.doSpawn(entity.getLocation(), null, addToWorld, false);
                 }
             }
             if (allowMount && mountEntity != null) {
