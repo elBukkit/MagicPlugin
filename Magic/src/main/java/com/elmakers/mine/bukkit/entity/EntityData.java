@@ -777,45 +777,57 @@ public class EntityData
     @Nullable
     @Override
     public Entity spawn() {
-        return doSpawn(location, null, true);
+        return spawn(location, null, true);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location) {
-        return doSpawn(location, null, true);
+        return spawn(location, null, true);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller) {
-        return doSpawn(null, null, true);
+        return spawn(null, null, true);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
-        return doSpawn(location, null, true);
+        return spawn(location, null, true);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
-        return doSpawn(location, reason, true);
+        return spawn(location, reason, true);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
+        return spawn(location, reason, true);
+    }
+
+    private Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld) {
+        // For randomization
+        if (reload) {
+            load(configuration);
+        }
         return doSpawn(location, reason, true);
     }
 
     @Nullable
     @Override
     public Entity create(Location location) {
+        // For randomization
+        if (reload) {
+            load(configuration);
+        }
         return doSpawn(location, null, false);
     }
 
@@ -894,11 +906,6 @@ public class EntityData
     }
 
     private boolean modify(Entity entity, boolean register) {
-        // For randomization
-        if (reload) {
-            load(configuration);
-        }
-
         // Don't check isValid here since it will be false on the spawn event!
         if (entity.isDead()) return false;
         if (register && !(entity instanceof Player)) {
