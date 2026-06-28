@@ -700,7 +700,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (material != null) {
                 Material currentMaterial = block.getType();
 
-                String extendedBlockData = this.blockData;
+                String extendedBlockData = this.getBlockDataString();
                 if (data == null && extendedBlockData == null) {
                     extendedBlockData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
                 }
@@ -793,14 +793,22 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return data == null ? null : (byte)(short)data;
     }
 
+    private String getBlockDataString() {
+        if (blockData != null && !blockData.contains("?") && material != null) {
+            return material.name().toLowerCase() + blockData;
+        }
+        return blockData;
+    }
+
     @Nullable
     @Override
     public String getModernBlockData() {
-        if (blockData == null) {
+        String blockDataString = getBlockDataString();
+        if (blockDataString == null) {
             BlockData blockData = createBlockData();
             return blockData == null ? null : blockData.getAsString();
         }
-        return blockData;
+        return blockDataString;
     }
 
     @Override
@@ -808,9 +816,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (cachedBlockData == null) {
             final Plugin plugin = CompatibilityLib.getPlatform().getPlugin();
             try {
-                if (blockData != null && material != null) {
-                    String fullData = material.name().toLowerCase() + blockData;
-                    cachedBlockData = plugin.getServer().createBlockData(fullData);
+                String blockData = getBlockDataString();
+                if (blockData != null) {
+                    cachedBlockData = plugin.getServer().createBlockData(blockData);
                 }
                 if (cachedBlockData == null && material != null) {
                     cachedBlockData = plugin.getServer().createBlockData(material);
