@@ -66,7 +66,7 @@ public class CropsPopulator extends BaseBlockPopulator {
                 final int x = chunkGlobalX + dx;
                 final int z = chunkGlobalZ + dz;
                 int groundY = searchUp ? getTopBlock(worldInfo, region, x, groundLevel, z) : groundLevel;
-                final boolean isBorder = x == startX || x == endX - 1 || z == startZ || z == endZ - 1;
+                final boolean isBorder = dx == startX || dx == endX - 1 || dz == startZ || dz == endZ - 1;
                 if (hasBorder && isBorder) {
                     region.setBlockData(x, groundY + 1, z, borderBlock.createBlockData());
                     if (supportBlock != null) {
