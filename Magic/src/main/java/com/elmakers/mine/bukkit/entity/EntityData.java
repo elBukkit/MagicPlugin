@@ -134,6 +134,8 @@ public class EntityData
     protected Boolean canPickupItems;
     protected Integer fireTicks;
     protected Set<String> permissions;
+    protected Float yaw;
+    protected Float pitch;
 
     protected Collection<PotionEffect> potionEffects = null;
     protected Collection<PotionEffectType> removeEffects = null;
@@ -406,6 +408,8 @@ public class EntityData
         hasGravity = ConfigUtils.getOptionalBoolean(parameters, "gravity");
         isCollidable = ConfigUtils.getOptionalBoolean(parameters, "collidable");
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
+        yaw = ConfigurationUtils.getOptionalFloat(parameters, "yaw");
+        pitch = ConfigurationUtils.getOptionalFloat(parameters,"pitch");
 
         isSuperProtected = parameters.getBoolean("protected", false);
         stay = ConfigUtils.getOptionalBoolean(parameters, "stay");
@@ -704,6 +708,12 @@ public class EntityData
     protected Entity trySpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld, boolean register) {
         if (location == null) {
             return null;
+        }
+        if (yaw != null) {
+            location.setYaw(yaw);
+        }
+        if (pitch != null) {
+            location.setYaw(pitch);
         }
         Entity spawned = null;
         if (spawned == null && mythicMobKey != null && addToWorld) {
