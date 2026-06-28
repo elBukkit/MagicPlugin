@@ -1,0 +1,13 @@
+yellow_floaty:
+  name: "Yellow Floaty"
+  type: block_display
+  reload: true
+  yaw: rand(0,359)
+  # Note: Be careful to use a literal string block here so it's not parsed as a yaml section
+  data: |
+    {Passengers:[{id:"minecraft:block_display",block_state:{Name:"minecraft:yellow_candle",Properties:{candles:"1",lit:"false"}},transformation:[0f,-3f,0f,0.5625f,3f,0f,0f,-2.3125f,0f,0f,3f,-1f,0f,0f,0f,1f]},{id:"minecraft:block_display",block_state:{Name:"minecraft:yellow_candle",Properties:{candles:"1",lit:"false"}},transformation:[0f,0f,-3f,0.931875f,3f,0f,0f,-2.31625f,0f,-3f,0f,0.59375f,0f,0f,0f,1f]},{id:"minecraft:block_display",block_state:{Name:"minecraft:yellow_candle",Properties:{candles:"1",lit:"false"}},transformation:[0f,0f,-3f,1.494375f,-0.7764914979f,-2.8977682712f,0f,0.709375f,-2.8977682712f,0.7764914979f,0f,0.52875f,0f,0f,0f,1f]},{id:"minecraft:block_display",block_state:{Name:"minecraft:yellow_candle",Properties:{candles:"1",lit:"false"}},transformation:[0f,0f,3f,-1.005625f,3f,0f,0f,-2.31625f,0f,3f,0f,-0.65625f,0f,0f,0f,1f]},{id:"minecraft:block_display",block_state:{Name:"minecraft:yellow_candle",Properties:{candles:"1",lit:"false"}},transformation:[0f,3f,0f,-0.661875f,3f,0f,0f,-2.3125f,0f,0f,-3f,0.9375f,0f,0f,0f,1f]},{id:"minecraft:block_display",block_state:{Name:"minecraft:orange_candle",Properties:{candles:"1",lit:"false"}},transformation:[0f,0f,-2f,0.994375f,-0.9659288576f,0.258807732f,0f,0.48875f,0.258807732f,0.9659288576f,0f,-1.465625f,0f,0f,0f,1f]}]}  mount:
+  mount:
+    type: sulfur_cube
+    invisible: true
+    data: |
+      {Size:1,equipment:{body:{id:"minecraft:yellow_wool",count:1}}}

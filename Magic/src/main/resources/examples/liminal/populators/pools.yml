@@ -15,4 +15,6 @@ pools_mobs:
   class: Spawn
   types:
     hopper: 0.05
+    pink_floaty: 0.02
+    yellow_floaty: 0.02
     none: 1
