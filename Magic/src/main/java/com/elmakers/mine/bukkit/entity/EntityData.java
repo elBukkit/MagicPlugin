@@ -87,6 +87,7 @@ public class EntityData
 
     protected EntityType type;
     protected EntityExtraData extraData;
+    protected EntityExtraData nmsData;
     protected Location location;
     protected Vector relativeLocation;
     protected boolean hasMoved = false;
@@ -521,14 +522,13 @@ public class EntityData
         if (tagData != null && !tagData.isEmpty()) {
             Object tag = CompatibilityLib.getNBTUtils().parseTag(tagData);
             if (tag != null) {
-                extraData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
+                nmsData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
             }
-        } else {
-            try {
-                extraData = type == null ? null : CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
-            }
+        }
+        try {
+            extraData = type == null ? null : CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
 
         ConfigurationSection attributeConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "entity_attributes");
@@ -638,7 +638,7 @@ public class EntityData
             return null;
         }
         EntityData data = new EntityData(controller, entityType);
-        data.extraData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
+        data.nmsData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
         data.relativeLocation = location.clone();
         return data;
     }
@@ -721,7 +721,10 @@ public class EntityData
         if (spawned == null && type != null && type != EntityType.PLAYER) {
             controller.setDisableSpawnReplacement(true);
             try {
-                if (extraData != null) {
+                if (nmsData != null) {
+                    spawned = nmsData.spawn(type, location);
+                }
+                if (spawned == null && extraData != null) {
                     spawned = extraData.spawn(type, location);
                 }
                 if (spawned != null) {
@@ -919,6 +922,9 @@ public class EntityData
     private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
         boolean isPlayer = (entity instanceof Player);
+        if (nmsData != null) {
+            nmsData.apply(entity);
+        }
         if (extraData != null) {
             extraData.apply(entity);
         }
@@ -1115,6 +1121,9 @@ public class EntityData
 
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
             entity.teleport(location);
+        }
+        if (nmsData != null && applyExtraData) {
+            nmsData.applyPostSpawn(entity);
         }
         if (extraData != null && applyExtraData) {
             extraData.applyPostSpawn(entity);
