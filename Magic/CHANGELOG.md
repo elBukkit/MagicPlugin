@@ -49,6 +49,7 @@
  - Fixed `hover_message_key` parameter in `CheckChatClick` action
  - Fix `commit` spell, it should commit all pending spells which it was not doing
  - Fix saved schematics being upside down or backwards depending on the click order
+ - Fix invalid bed icon references in Recall and Locator spells
 
 ## Changes
 

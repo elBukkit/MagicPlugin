@@ -144,7 +144,7 @@ recall:
       icon_field: wood_door
       icon_wand: stick{CustomModelData:18001}
       icon_spawn: wood_door
-      icon_home: bed
+      icon_home: red_bed
       icon_town: iron_door
       icon_marker: redstone_block
       icon_move_marker: redstone_block
