@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+# 11.2.4
+
+- Fix invalid bed icon references in Recall and Locator spells
+
 # 11.2.3
 
  - Fix spawning projectiles in 26.2
