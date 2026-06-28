@@ -2,7 +2,7 @@ concrete_ground:
   - black_concrete
 
 concrete_top:
-  - polished_blackstone_slab
+  - polished_blackstone_slab[waterlogged=true]
   - polished_blackstone
   - blackstone_slab
   - blackstone
