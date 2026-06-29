@@ -24,7 +24,7 @@ public class RoomGenerator extends BaseChunkGenerator {
     private IntegerRange hallwayWidth;
     private int yOffset;
     private double wallProbability = 0.75;
-    private double windowProbability = 0.3;
+    private double windowProbability = 0;
     private double islandProbability = 0.75;
     private double poolProbability = 0.75;
     private double doubleDoorProbability = 0.5;
@@ -97,32 +97,23 @@ public class RoomGenerator extends BaseChunkGenerator {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 final boolean isSunRoof = hasSunRoof && x >= 7 && z >= 7 && x <= 9 && z <= 9;
-                if (x == 0 || z == 0) {
-                    if ((hasXWall && z == 0) || (hasZWall && x == 0)) {
-                        // Walls and doorway
-                        boolean isDoorway = (x >= doorwayLeft && x <= doorwayRight) || (z >= doorwayLeft && z <= doorwayRight);
-                        if (!hasXDoor && z == 0) isDoorway = false;
-                        else if (!hasZDoor && x == 0) isDoorway = false;
-                        for (int y = floorLevel + 1; y <= roofMaxLevel; y++) {
-                            if (isDoorway && y <= doorwayLevel) continue;
-                            chunk.setBlock(x, y, z, wallBlock);
-                        }
-                    } else {
-                        for (int y = roofLevel; y <= roofMaxLevel; y++) {
-                            chunk.setBlock(x, y, z, wallBlock);
-                        }
+                final boolean isSunRoofBorder = hasSunRoof && !isSunRoof && x >= 6 && z >= 6 && x <= 10 && z <= 10;
+
+                // Walls and doorway
+                if ((hasXWall && z == 0) || (hasZWall && x == 0)) {
+                    boolean isDoorway = (x >= doorwayLeft && x <= doorwayRight) || (z >= doorwayLeft && z <= doorwayRight);
+                    if (!hasXDoor && z == 0) isDoorway = false;
+                    else if (!hasZDoor && x == 0) isDoorway = false;
+                    for (int y = floorLevel + 1; y <= roofMaxLevel; y++) {
+                        if (isDoorway && y <= doorwayLevel) continue;
+                        chunk.setBlock(x, y, z, wallBlock);
                     }
-                } else if (x == 1 || z == 1 || x == 15 || z == 15) {
-                    // Border around sunroof
-                    chunk.setBlock(x, roofLevel, z, ceilingBlock);
-                } else if (!isSunRoof) {
-                    // Roof
-                    chunk.setBlock(x, roofLevel, z, ceilingBlock);
                 }
 
-                // Extend ceiling up
+                // Ceiling extends up to max ceiling height so rooms of differing heights align
                 if (!isSunRoof) {
-                    for (int y = roofLevel + 1; y <= roofMaxLevel; y++) {
+                    for (int y = roofLevel; y <= roofMaxLevel + 1; y++) {
+                        if (isSunRoofBorder && y == roofLevel) continue;
                         chunk.setBlock(x, y, z, ceilingBlock);
                     }
                 }
