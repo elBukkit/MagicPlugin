@@ -27,8 +27,16 @@ pools_pools:
     island_probability: 0.75
     depth: 1 | 2
     walkway_width: 1 | 12
+    light_probability: 0.9
+    light_blocks:
+      - sea_lantern
 
 pools_lights:
+  class: Probability
+  probability: 0.5
+  populator:
     class: Lights
+    floor_probability: 1
+    position: 8
     light_blocks:
       - sea_lantern

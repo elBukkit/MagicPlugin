@@ -15,7 +15,7 @@ pools_rooms:
   double_door_probability: 0.5
   populators:
     - pools_pools
-    #- pools_lights
+    - pools_light
     - pools_mobs
     - pools_features
   wall_blocks:

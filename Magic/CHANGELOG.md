@@ -20,18 +20,20 @@
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
    - Added new populators: 
-     - EndGateway : Build some configurations of end gateway blocks, use `target_world` to send to a specific world
-     - EndPortal : Build some configurations of an end portal, use `target_world` to send to a specific world
+     - EndGateway: Build some configurations of end gateway blocks, use `target_world` to send to a specific world
+     - EndPortal: Build some configurations of an end portal, use `target_world` to send to a specific world
      - Frequency: Only fill every N chunks
-     - Grid : Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
+     - Grid: Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
+     - Light: Add a light to the floor or ceiling
+     - Pools: Add pools of various depth and shapes
      - Probability: A distance-weighted chance for a populator to run
      - Random: Randomly choose one populators from a distance-weighted probability map
      - Repeat: Repeat another populator some random amount of times
-     - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
+     - Schematic: Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
      - Sequence: Run multiple other populators in order
-     - Spawn : Spawn some mobs from a distance-weighted probability map
-     - Tower : Build a randomized tower
-     - Tunnel : Make tunnels/doorways through the center of a region
+     - Spawn: Spawn some mobs from a distance-weighted probability map
+     - Tower: Build a randomized tower
+     - Tunnel: Make tunnels/doorways through the center of a region
      - Vines: Grow some vines
  - Use generators in world configs for completely custom world gen
  - Editor support exists, use `/meditor populator` or `/meditor generator`

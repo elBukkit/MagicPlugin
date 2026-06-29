@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.world.populator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
@@ -168,20 +169,25 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return true;
     }
 
+
     protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
+        return searchBlock(worldInfo, region, x, y, z, maxSearch, direction, throughAir, returnAir, material -> material.isAir());
+    }
+
+    protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughBlocks, boolean returnBlocks, Predicate<Material> materialPredicate) {
         if (!region.isInRegion(x, y, z)) {
             return y;
         }
         int blockCount = 0;
         Material material = region.getType(x, y, z);
         while (((direction > 0 && y < worldInfo.getMaxHeight() - 1) || (direction < 0 && y > worldInfo.getMinHeight() + 1))
-                && material.isAir() == throughAir
+                && materialPredicate.test(material) == throughBlocks
                 && blockCount < maxSearch) {
             y += direction;
             blockCount++;
             material = region.getType(x, y, z);
         }
-        return throughAir == returnAir ? y - direction : y;
+        return throughBlocks == returnBlocks ? y - direction : y;
     }
 
     protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
