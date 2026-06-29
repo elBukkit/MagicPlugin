@@ -18,7 +18,6 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 public class LightPopulator extends BaseBlockPopulator {
     private IntegerRange position;
     private double floorProbability;
-    private int searchY = 32;
     private List<MaterialAndData> lightBlocks = Collections.emptyList();
 
     @Override
@@ -26,7 +25,6 @@ public class LightPopulator extends BaseBlockPopulator {
         position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 15);
         lightBlocks = parseBlocks(config, "light_blocks", "all_lights");
         floorProbability = config.getDouble("floor_probability", 0);
-        searchY = config.getInt("search_y", searchY);
         return true;
     }
 
@@ -38,13 +36,7 @@ public class LightPopulator extends BaseBlockPopulator {
         final int x = chunkGlobalX + position.getRandom(random);
         final int z = chunkGlobalZ + position.getRandom(random);
         final boolean isFloor = random.nextDouble() < floorProbability;
-        final int topY = searchBlock(worldInfo, region, x, world.getBedrockLevel(), z, searchY, 1, true, true, material -> material.isSolid());
-        final int y;
-        if (isFloor) {
-            y = topY;
-        } else {
-            y = searchBlock(worldInfo, region, x, topY + 1, z, searchY, 1, true, false);
-        }
+        final int y = getSolidFloorOrCeiling(isFloor, worldInfo, region, x, world.getBedrockLevel(), z);
         region.setBlockData(x, y, z, lightBlock);
     }
 }

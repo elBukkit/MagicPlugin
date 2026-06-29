@@ -190,6 +190,25 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return throughBlocks == returnBlocks ? y - direction : y;
     }
 
+    protected int getSolidFloorOrCeiling(boolean isFloor, final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        final int topY = getTopSolidBlock(worldInfo, region, x, y, z);
+        final int solidY;
+        if (isFloor) {
+            solidY = topY;
+        } else {
+            solidY = getSolidBlockAbove(worldInfo, region, x, topY, z);
+        }
+        return solidY;
+    }
+
+    protected int getTopSolidBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, true, material -> material.isSolid());
+    }
+
+    protected int getSolidBlockAbove(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y + 1, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, false, material -> !material.isSolid());
+    }
+
     protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
         return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, false, false);
     }
