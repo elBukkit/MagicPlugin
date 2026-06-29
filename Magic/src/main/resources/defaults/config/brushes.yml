@@ -58,6 +58,9 @@ brush_replacements:
   carrot: carrots
   potato: potatoes
   frosted_ice: ice
+  end_gateway: end_portal_frame
+  end_portal: end_portal_frame
+  nether_portal: crying_obsidian
   black_wall_banner: black_banner
   blue_wall_banner: blue_banner
   brown_wall_banner: brown_banner
