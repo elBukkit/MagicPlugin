@@ -31,6 +31,7 @@
      - Repeat: Repeat another populator some random amount of times
      - Schematic: Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
      - Sequence: Run multiple other populators in order
+     - Shaft: A shaft going up or down through the ceiling or floor
      - Spawn: Spawn some mobs from a distance-weighted probability map
      - Tower: Build a randomized tower
      - Tunnel: Make tunnels/doorways through the center of a region
