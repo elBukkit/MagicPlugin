@@ -18,8 +18,7 @@ public class ProbabilityPopulator extends BaseBlockPopulator {
 
     public boolean onLoad(ConfigurationSection config) {
         probability = DistanceWeighted.fromConfig(getLogger(), config);
-        String populatorId = config.getString("populator");
-        populator = BaseBlockPopulator.loadPopulator(world, populatorId);
+        populator = BaseBlockPopulator.parsePopulator(world, config);
         return populator != null;
     }
 

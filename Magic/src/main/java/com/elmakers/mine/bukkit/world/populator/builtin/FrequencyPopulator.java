@@ -15,8 +15,7 @@ public class FrequencyPopulator extends BaseBlockPopulator {
 
     public boolean onLoad(ConfigurationSection config) {
         frequency = config.getInt("frequency", frequency);
-        String populatorId = config.getString("populator");
-        populator = BaseBlockPopulator.loadPopulator(world, populatorId);
+        populator = BaseBlockPopulator.parsePopulator(world, config);
         return populator != null;
     }
 

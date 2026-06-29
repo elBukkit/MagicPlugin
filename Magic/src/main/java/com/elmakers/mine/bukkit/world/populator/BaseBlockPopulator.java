@@ -81,6 +81,14 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return populator;
     }
 
+    public static BaseBlockPopulator parsePopulator(MagicWorld world, ConfigurationSection config) {
+        ConfigurationSection populatorConfig = config.getConfigurationSection("populator");
+        if (populatorConfig == null) {
+            return loadPopulator(world, populatorConfig.getString("populator", ""));
+        }
+        return loadPopulator(world, null, populatorConfig);
+    }
+
     public static BaseBlockPopulator loadPopulator(MagicWorld world, String key) {
         MagicController controller = world.getController();
         if (key.isEmpty() || key.equals("none")) return null;

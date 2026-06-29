@@ -28,10 +28,7 @@ public class GridPopulator extends BaseBlockPopulator {
             ConfigurationSection entry = gridConfig.getConfigurationSection(entryKey);
             final int x = entry.getInt("x", 0);
             final int z = entry.getInt("z", 0);
-            final String populatorKey = entry.getString("populator", entryKey);
-            BaseBlockPopulator populator = entry.contains("class")
-                ? BaseBlockPopulator.loadPopulator(world, populatorKey, entry)
-                : BaseBlockPopulator.loadPopulator(world, populatorKey);
+            BaseBlockPopulator populator = BaseBlockPopulator.parsePopulator(world, entry);
             if (populator != null) {
                 entries.add(new GridEntry(
                     populator, x, z

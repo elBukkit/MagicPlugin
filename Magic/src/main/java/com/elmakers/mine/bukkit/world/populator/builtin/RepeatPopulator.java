@@ -16,8 +16,7 @@ public class RepeatPopulator extends BaseBlockPopulator {
 
     public boolean onLoad(ConfigurationSection config) {
         repeat = IntegerRange.fromConfig(getLogger(), config, "repeat", 2, 2);
-        String populatorId = config.getString("populator");
-        populator = BaseBlockPopulator.loadPopulator(world, populatorId);
+        populator = BaseBlockPopulator.parsePopulator(world, config);
         return populator != null;
     }
 
