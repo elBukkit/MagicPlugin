@@ -33,6 +33,11 @@ public class DoubleRange {
     }
 
     public static DoubleRange fromConfig(Logger logger, ConfigurationSection config, String key, double defaultMin, double defaultMax) {
+        return fromConfig(logger, config, key, defaultMin, defaultMax, null, null);
+    }
+
+
+    public static DoubleRange fromConfig(Logger logger, ConfigurationSection config, String key, double defaultMin, double defaultMax, Double singleMin, Double singleMax) {
         DoubleRange value = null;
         if (config.contains(key)) {
             try {
@@ -55,7 +60,8 @@ public class DoubleRange {
                     double max = pieces.length > 1 ? Double.parseDouble(pieces[1].trim()) : min;
                     value = new DoubleRange(min, max);
                 } else if (config.isDouble(key)) {
-                    value = new DoubleRange(config.getDouble(key), config.getDouble(key));
+                    double configValue = config.getDouble(key);
+                    value = new DoubleRange(singleMin == null ? configValue : singleMin, singleMax == null ? configValue : singleMax);
                 }
             } catch (Exception ex) {
                 logger.warning("Invalid randomized config value for " + key + ": " + config.get(key));
