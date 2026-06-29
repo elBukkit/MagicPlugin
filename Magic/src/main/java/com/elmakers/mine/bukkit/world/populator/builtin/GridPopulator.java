@@ -18,17 +18,23 @@ public class GridPopulator extends BaseBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection config) {
         entries.clear();
-        ConfigurationSection gridConfig = config.getConfigurationSection("grid");
+        ConfigurationSection gridConfig = config.getConfigurationSection("populators");
         WorldController controller = world.getController().getWorlds();
         if (gridConfig == null) {
-            controller.getLogger().warning("Grid populator missing 'grid' layout");
+            controller.getLogger().warning("Grid populator missing 'populators' layout");
             return false;
         }
         for (String entryKey : gridConfig.getKeys(false)) {
             ConfigurationSection entry = gridConfig.getConfigurationSection(entryKey);
             final int x = entry.getInt("x", 0);
             final int z = entry.getInt("z", 0);
-            BaseBlockPopulator populator = BaseBlockPopulator.parsePopulator(world, entry);
+            BaseBlockPopulator populator;
+            if (entry.contains("populator") || entry.contains("class")) {
+                populator = BaseBlockPopulator.parsePopulator(world, entry);
+            } else {
+                populator = BaseBlockPopulator.loadPopulator(world, entryKey);
+            }
+
             if (populator != null) {
                 entries.add(new GridEntry(
                     populator, x, z
