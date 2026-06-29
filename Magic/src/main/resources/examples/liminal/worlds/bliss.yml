@@ -1,0 +1,8 @@
+bliss:
+  inherit: liminal_base
+  world: world_bliss
+  generator: bliss_hills
+  time: 6000
+  bedrock_level: 60
+  ground_level: 61
+  ambient_sound_time: 60 | 600

@@ -1,0 +1,13 @@
+bliss_hills:
+  class: Perlin
+  biome: plains
+  noise: 0.05
+  blocks: moss_block
+  elevation: 0 | 24
+  clip_elevation: 0
+
+bliss:
+  class: Sequence
+  generators:
+    - bedrock
+    - bliss_hills

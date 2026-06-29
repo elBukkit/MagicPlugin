@@ -1,6 +1,8 @@
 worlds:
   world_concrete:
     name: "&8The Concrete Wastes"
+  world_bliss:
+    name: "&aThe Neighborhood"
   world_pools:
     name: "&bThe Pools"
   world_abyss:
