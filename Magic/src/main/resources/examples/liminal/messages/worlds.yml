@@ -1,9 +1,13 @@
 worlds:
-  world_concrete:
-    name: "&8The Concrete Wastes"
-  world_bliss:
-    name: "&aThe Neighborhood"
-  world_pools:
-    name: "&bThe Pools"
   world_abyss:
     name: "&8The Abyss"
+  world_bliss:
+    name: "&aThe Neighborhood"
+  world_concrete:
+    name: "&8The Concrete Wastes"
+  world_lobby:
+    name: "&6The Lobby"
+  world_office:
+    name: "&7The Office"
+  world_pools:
+    name: "&bThe Pools"

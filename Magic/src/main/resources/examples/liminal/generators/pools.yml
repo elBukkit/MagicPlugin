@@ -35,7 +35,6 @@ pools_room:
   sunroof_probability: 0.8
   populators:
     - pools_pools
-    - pools_entrance
     - pools_light
     - pools_mobs
     - pools_features

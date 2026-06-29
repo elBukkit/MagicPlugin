@@ -51,7 +51,7 @@ pools_pools:
     light_blocks:
       - sea_lantern
 
-pools_lights:
+pools_light:
   class: Probability
   probability: 0.5
   populator:
