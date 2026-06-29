@@ -1,9 +1,9 @@
-lobby_lights:
+office_lights:
   class: Repeat
-  repeat: 0 | 10
+  repeat: 0 | 20
   populator:
     class: Lights
     floor_probability: 0
     position: 2 | 14
     light_blocks:
-      - ochre_froglight
+      - pearlescent_froglight

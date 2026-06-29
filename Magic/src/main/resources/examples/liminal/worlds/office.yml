@@ -1,7 +1,7 @@
-lobby:
+office:
   inherit: liminal_base
-  world: world_lobby
-  generator: lobby
+  world: world_office
+  generator: office
   time: 6000
   spawn: 8,-28,8
   bedrock_level: -30

@@ -1,0 +1,30 @@
+office_surface:
+  class: Flat
+  biome: lush_caves
+  blocks:
+    - gray_wool
+
+office_room:
+  class: Room
+  roof_height: 6
+  doorway_height: 4 | 6
+  doorway_width: 2 | 10
+  wall_probability: 1
+  window_probability: 0
+  double_door_probability: 0.4
+  sunroof_probability: 0
+  populators:
+    - office_lights
+  wall_blocks:
+    - white_concrete
+    - gray_concrete
+    - light_gray_concrete
+  ceiling_blocks:
+    - smooth_stone
+
+office:
+  class: Sequence
+  generators:
+    - bedrock
+    - office_surface
+    - office_room
