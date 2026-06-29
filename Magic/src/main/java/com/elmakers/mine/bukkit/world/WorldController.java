@@ -149,6 +149,14 @@ public class WorldController implements Listener {
         return Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
     }
 
+    public BaseChunkGenerator parseGenerator(MagicWorld world, ConfigurationSection baseConfig) {
+        ConfigurationSection generatorConfig = baseConfig.getConfigurationSection("generator");
+        if (generatorConfig == null) {
+            return createGenerator(world, baseConfig.getString("generator", ""));
+        }
+        return BaseChunkGenerator.create(world, null, generatorConfig);
+    }
+
     public BaseChunkGenerator createGenerator(MagicWorld world, String generatorKey) {
         if (generatorKey.isEmpty() || generatorKey.equals("none")) return null;
         ConfigurationSection generatorConfig = generatorConfigs.get(generatorKey);
@@ -158,25 +166,12 @@ public class WorldController implements Listener {
                 ConfigurationSection voidConfig = new MemoryConfiguration();
                 voidConfig.set("populators", generatorKey);
                 generatorConfigs.put(generatorKey, voidConfig);
-                return createGenerator(world, voidConfig);
+                return BaseChunkGenerator.create(world, generatorKey, voidConfig);
             }
             controller.getLogger().warning("Invalid chunk generator: " + generatorKey);
             return null;
         }
-        return createGenerator(world, generatorConfig);
-    }
-
-    public BaseChunkGenerator createGenerator(MagicWorld world, ConfigurationSection generatorConfig) {
-        final String generatorClass = generatorConfig.getString("class");
-        BaseChunkGenerator generator = BaseChunkGenerator.create(controller, generatorClass);
-        if (generator == null) {
-            controller.getLogger().warning("Invalid chunk generator class: " + generatorClass);
-        } else {
-            if (!generator.load(world, generatorConfig)) {
-                generator = null;
-            }
-        }
-        return generator;
+        return BaseChunkGenerator.create(world, generatorKey, generatorConfig);
     }
 
     public ConfigurationSection getPopulatorConfig(String populatorKey) {

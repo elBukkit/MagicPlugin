@@ -21,7 +21,6 @@ import org.bukkit.generator.WorldInfo;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.biomes.SingleBiomeProvider;
@@ -31,12 +30,15 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.generator.builtin";
 
     protected MagicWorld world;
+    private String key;
+    private ConfigurationSection configuration;
     private BiomeProvider biomeProvider;
     private List<BaseBlockPopulator> populators = new ArrayList<>();
     private BlockPopulator passthroughPopulator = new PassthroughBlockPopulator(this);
 
     @Nullable
-    public static BaseChunkGenerator create(MageController controller, String className) {
+    public static BaseChunkGenerator create(MagicWorld world, String key, ConfigurationSection config) {
+        String className = config.getString("class");
         if (className == null) {
             className = "Void";
         }
@@ -52,7 +54,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         try {
             handlerClass = Class.forName(className);
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "Error loading chunk generator: " + className, ex);
+            world.getLogger().log(Level.WARNING, "Error loading chunk generator: " + className, ex);
             return null;
         }
 
@@ -60,16 +62,24 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         try {
             newObject = handlerClass.getDeclaredConstructor().newInstance();
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "Error loading chunk generator: " + className, ex);
+            world.getLogger().log(Level.WARNING, "Error loading chunk generator: " + className, ex);
             return null;
         }
 
         if (newObject == null || !(newObject instanceof BaseChunkGenerator)) {
-            controller.getLogger().warning("Error loading chunk generator: " + className + ", does it extend MagicChunkGenerator?");
+            world.getLogger().warning("Error loading chunk generator " + key + " of class: " + className + ", does it extend MagicChunkGenerator?");
             return null;
         }
 
-        return (BaseChunkGenerator)newObject;
+        BaseChunkGenerator generator = (BaseChunkGenerator)newObject;
+        generator.key = key;
+        generator.configuration = config;
+        if (!generator.load(world, config)) {
+            world.getLogger().warning("Invalid configuration for chunk generator: " + key);
+            generator = null;
+        }
+
+        return generator;
     }
 
     public abstract boolean onLoad(ConfigurationSection configuration);
@@ -151,5 +161,13 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
             }
         }
         return null;
+    }
+
+    public void reload() {
+        if (key != null) {
+            world.getController().getWorlds().reloadGenerator(world, this, key);
+        } else if (configuration != null) {
+            load(world, configuration);
+        }
     }
 }

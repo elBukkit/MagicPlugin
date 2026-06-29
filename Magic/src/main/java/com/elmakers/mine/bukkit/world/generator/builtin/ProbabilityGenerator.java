@@ -21,8 +21,7 @@ public class ProbabilityGenerator extends BaseChunkGenerator {
     public boolean onLoad(ConfigurationSection config) {
         probability = DistanceWeighted.fromConfig(getLogger(), config);
         WorldController controller = world.getController().getWorlds();
-        String generatorId = config.getString("generator");
-        generator = controller.createGenerator(world, generatorId);
+        generator = controller.parseGenerator(world, config);
         return generator != null;
     }
 

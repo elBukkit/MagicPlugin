@@ -161,16 +161,7 @@ public class MagicWorld {
         }
         titleDelay = ConfigurationUtils.getOptionalInteger(config, "title_delay");
         respawnWorld = config.getString("respawn");
-        ConfigurationSection generatorConfig = config.getConfigurationSection("generator");
-        String generatorKey = null;
-        if (generatorConfig != null) {
-            generator = controller.getWorlds().createGenerator(this, generatorConfig);
-        } else {
-            generatorKey = config.getString("generator");
-            if (generatorKey != null && !generatorKey.isEmpty()) {
-                generator = controller.getWorlds().createGenerator(this, generatorKey);
-            }
-        }
+        generator = controller.getWorlds().parseGenerator(this, config);
         gameRules.clear();
         ConfigurationSection gameRulesConfig = config.getConfigurationSection("game_rules");
         if (gameRulesConfig != null) {
@@ -182,7 +173,7 @@ public class MagicWorld {
         // Reconfigure existing worlds
         World existingWorld = Bukkit.getServer() != null ? Bukkit.getWorld(worldName) : null;
         if (existingWorld != null) {
-            reconfigureWorld(existingWorld, generatorKey, generatorConfig);
+            reconfigureWorld(existingWorld);
         }
 
         scheduleAmbientSounds();
@@ -245,16 +236,12 @@ public class MagicWorld {
         return world;
     }
 
-    private void reconfigureWorld(World world, String generatorKey, ConfigurationSection generatorConfig) {
+    private void reconfigureWorld(World world) {
         if (world == null) return;
 
         ChunkGenerator chunkGenerator = world.getGenerator();
         if (chunkGenerator instanceof BaseChunkGenerator generator) {
-            if (generatorConfig != null) {
-                generator.load(this, generatorConfig);
-            } else if (generatorKey != null && !generatorKey.isEmpty()) {
-                controller.getWorlds().reloadGenerator(this, generator, generatorKey);
-            }
+            generator.reload();
         }
 
         configureWorld(world);

@@ -18,8 +18,7 @@ public class FrequencyGenerator extends BaseChunkGenerator {
     public boolean onLoad(ConfigurationSection config) {
         frequency = config.getInt("frequency", frequency);
         WorldController controller = world.getController().getWorlds();
-        String generatorId = config.getString("generator");
-        generator = controller.createGenerator(world, generatorId);
+        generator = controller.parseGenerator(world, config);
         return generator != null;
     }
 
