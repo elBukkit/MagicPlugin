@@ -16,8 +16,8 @@ public class TunnelPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        tunnelWidth = IntegerRange.fromConfig(getLogger(), config, "tunnel_width", 3, 3);
-        tunnelHeight = IntegerRange.fromConfig(getLogger(), config, "tunnel_height", 2, 4);
+        tunnelWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
+        tunnelHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         return true;
     }
 

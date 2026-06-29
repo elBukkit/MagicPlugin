@@ -20,8 +20,8 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        gatewayWidth = IntegerRange.fromConfig(getLogger(), config, "gateway_width", 3, 3);
-        gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "gateway_height", 2, 4);
+        gatewayWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
+        gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         targetWorld = config.getString("target_world", targetWorld);
         return gatewayWidth.getMax() > 0;
     }

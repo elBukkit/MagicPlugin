@@ -21,13 +21,13 @@ concrete_food:
 concrete_portal:
   class: EndGateway
   target_world: world_pools
-  gateway_height: 10
-  gateway_width: 8
+  height: 10
+  width: 8
 
 concrete_tunnel:
   class: Tunnel
-  tunnel_width: 1 | 8
-  tunnel_height: 2 | 10
+  width: 1 | 8
+  height: 2 | 10
 
 concrete_car:
   class: Spawn

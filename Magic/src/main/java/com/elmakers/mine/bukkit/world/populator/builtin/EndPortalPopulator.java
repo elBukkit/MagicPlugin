@@ -19,8 +19,8 @@ public class EndPortalPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        portalWidth = IntegerRange.fromConfig(getLogger(), config, "portal_width", 3, 3);
-        portalDepth = IntegerRange.fromConfig(getLogger(), config, "portal_depth", 0, 0);
+        portalWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
+        portalDepth = IntegerRange.fromConfig(getLogger(), config, "depth", 0, 0);
         targetWorld = config.getString("target_world", targetWorld);
         return true;
     }
