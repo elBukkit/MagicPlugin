@@ -18,3 +18,12 @@ pools_mobs:
     pink_floaty: 0.02
     yellow_floaty: 0.02
     none: 1
+
+pools_pools:
+  class: Pools
+  island_probability: 0.75
+
+pools_lights:
+    class: Lights
+    light_blocks:
+      - sea_lantern

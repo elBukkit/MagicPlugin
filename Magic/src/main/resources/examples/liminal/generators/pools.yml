@@ -1,19 +1,23 @@
 pools_surface:
-  class: Pools
+  class: Flat
   biome: lush_caves
+  blocks:
+    - blue_concrete
+    - light_blue_concrete
+
+pools_rooms:
+  class: Room
   roof_height: 6 | 16
   doorway_height: 3 | 6
   doorway_width: 6 | 10
   wall_probability: 0.75
   window_probability: 0.3
-  island_probability: 0.75
   double_door_probability: 0.5
   populators:
+    #- pools_pools
+    #- pools_lights
     - pools_mobs
     - pools_features
-  floor_blocks:
-    - blue_concrete
-    - light_blue_concrete
   wall_blocks:
     - polished_diorite
     - diorite
@@ -22,11 +26,10 @@ pools_surface:
     - polished_diorite
     - diorite
     - quartz_block
-  light_blocks:
-    - sea_lantern
 
 pools:
   class: Sequence
   generators:
     - bedrock
     - pools_surface
+    - pools_rooms
