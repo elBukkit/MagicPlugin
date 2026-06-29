@@ -15,13 +15,13 @@ import org.bukkit.generator.WorldInfo;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
-import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
+import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class SpawnPopulator extends BaseBlockPopulator {
-    private List<DistanceWeighted<EntityData>> spawns = new ArrayList<>();
+    private List<DistanceWeightedValue<EntityData>> spawns = new ArrayList<>();
     private IntegerRange position;
     private int searchY = 16;
     private int searchX = 2;
@@ -44,11 +44,11 @@ public class SpawnPopulator extends BaseBlockPopulator {
                     ConfigurationSection generatorConfig = typeConfigs.getConfigurationSection(typeId);
                     typeId = generatorConfig.getString("type", typeId);
                     EntityData entityData = controller.getMob(typeId);
-                    DistanceWeighted<EntityData> entry = DistanceWeighted.fromConfig(world.getLogger(), entityData, generatorConfig);
+                    DistanceWeightedValue<EntityData> entry = DistanceWeightedValue.fromConfig(world.getLogger(), entityData, generatorConfig);
                     spawns.add(entry);
                 } else {
                     EntityData entityData = controller.getMob(typeId);
-                    DistanceWeighted<EntityData> entry = DistanceWeighted.fromString(world.getLogger(), entityData, typeConfigs.getString(typeId));
+                    DistanceWeightedValue<EntityData> entry = DistanceWeightedValue.fromString(world.getLogger(), entityData, typeConfigs.getString(typeId));
                     spawns.add(entry);
                 }
             }
@@ -57,7 +57,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
             if (typeList != null && !typeList.isEmpty()) {
                 for (String typeId : typeList) {
                     EntityData entityData = controller.getMob(typeId);
-                    DistanceWeighted<EntityData> entry = DistanceWeighted.fromString(world.getLogger(), entityData, "1");
+                    DistanceWeightedValue<EntityData> entry = DistanceWeightedValue.fromString(world.getLogger(), entityData, "1");
                     spawns.add(entry);
                 }
             } else {

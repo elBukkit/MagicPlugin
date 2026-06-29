@@ -6,22 +6,20 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.StringUtils;
 
-public class DistanceWeighted<T> {
-    private final T value;
+public class DistanceWeighted {
     private final LongRange distanceSquared;
     private final DoubleRange weight;
     private final int frequency;
 
-    public static <T> DistanceWeighted<T> fromConfig(Logger logger, T value, ConfigurationSection config) {
-        return new DistanceWeighted<>(logger, value, config);
+    public static DistanceWeighted fromConfig(Logger logger, ConfigurationSection config) {
+        return new DistanceWeighted(logger, config);
     }
 
-    public static <T> DistanceWeighted<T> fromString(Logger logger, T value, String stringConfig) {
-        return new DistanceWeighted<>(logger, value, stringConfig);
+    public static DistanceWeighted fromString(Logger logger, String stringConfig) {
+        return new DistanceWeighted(logger, stringConfig);
     }
 
-    private DistanceWeighted(Logger logger, T value, ConfigurationSection config) {
-        this.value = value;
+    protected DistanceWeighted(Logger logger, ConfigurationSection config) {
         IntegerRange distance = IntegerRange.fromConfig(logger, config, "distance", 0, 0);
         distanceSquared = distance.squared();
         weight = DoubleRange.fromConfig(logger, config, "weight", 0, 1, 0.0, null);
@@ -29,8 +27,7 @@ public class DistanceWeighted<T> {
         frequency = config.getInt("frequency") * 16;
     }
 
-    private DistanceWeighted(Logger logger, T value, String weightConfig) {
-        this.value = value;
+    protected DistanceWeighted(Logger logger, String weightConfig) {
         String[] pieces = StringUtils.split(weightConfig, ",");
         double weight = 1;
         long minDistance = 0;
@@ -61,9 +58,5 @@ public class DistanceWeighted<T> {
         }
         final long distanceSquared = x * x + z * z;
         return weight.lerp(this.distanceSquared.getFactor(distanceSquared));
-    }
-
-    public T getValue() {
-        return value;
     }
 }

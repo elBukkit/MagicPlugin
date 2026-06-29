@@ -10,13 +10,13 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
-import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
+import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 
 public class RandomGenerator extends BaseChunkGenerator {
-    private List<DistanceWeighted<BaseChunkGenerator>> generators = new ArrayList<>();
+    private List<DistanceWeightedValue<BaseChunkGenerator>> generators = new ArrayList<>();
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -29,11 +29,11 @@ public class RandomGenerator extends BaseChunkGenerator {
                     ConfigurationSection generatorConfig = generatorsConfig.getConfigurationSection(generatorId);
                     generatorId = generatorConfig.getString("generator", generatorId);
                     BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
-                    DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromConfig(world.getLogger(), generator, generatorConfig);
+                    DistanceWeightedValue<BaseChunkGenerator> entry = DistanceWeightedValue.fromConfig(world.getLogger(), generator, generatorConfig);
                     generators.add(entry);
                 } else {
                     BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
-                    DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
+                    DistanceWeightedValue<BaseChunkGenerator> entry = DistanceWeightedValue.fromString(world.getLogger(), generator, generatorsConfig.getString(generatorId));
                     generators.add(entry);
                 }
             }
@@ -42,7 +42,7 @@ public class RandomGenerator extends BaseChunkGenerator {
             if (generatorIds != null) {
                 for (String generatorId : generatorIds) {
                     BaseChunkGenerator generator = controller.createGenerator(world, generatorId);
-                    DistanceWeighted<BaseChunkGenerator> entry = DistanceWeighted.fromString(world.getLogger(), generator, "1");
+                    DistanceWeightedValue<BaseChunkGenerator> entry = DistanceWeightedValue.fromString(world.getLogger(), generator, "1");
                     generators.add(entry);
                 }
             } else {

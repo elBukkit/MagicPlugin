@@ -9,12 +9,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
-import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
+import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class RandomPopulator extends BaseBlockPopulator {
-    private List<DistanceWeighted<BaseBlockPopulator>> populators = new ArrayList<>();
+    private List<DistanceWeightedValue<BaseBlockPopulator>> populators = new ArrayList<>();
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -26,11 +26,11 @@ public class RandomPopulator extends BaseBlockPopulator {
                     ConfigurationSection populatorConfig = populatorsConfig.getConfigurationSection(populatorId);
                     populatorId = populatorConfig.getString("populator", populatorId);
                     BaseBlockPopulator populator = BaseBlockPopulator.loadPopulator(world, populatorId);
-                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromConfig(world.getLogger(), populator, populatorConfig);
+                    DistanceWeightedValue<BaseBlockPopulator> entry = DistanceWeightedValue.fromConfig(world.getLogger(), populator, populatorConfig);
                     populators.add(entry);
                 } else {
                     BaseBlockPopulator generator = BaseBlockPopulator.loadPopulator(world, populatorId);
-                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromString(world.getLogger(), generator, populatorsConfig.getString(populatorId));
+                    DistanceWeightedValue<BaseBlockPopulator> entry = DistanceWeightedValue.fromString(world.getLogger(), generator, populatorsConfig.getString(populatorId));
                     populators.add(entry);
                 }
             }
@@ -39,7 +39,7 @@ public class RandomPopulator extends BaseBlockPopulator {
             if (populatorIds != null) {
                 for (String populatorId : populatorIds) {
                     BaseBlockPopulator generator = BaseBlockPopulator.loadPopulator(world, populatorId);
-                    DistanceWeighted<BaseBlockPopulator> entry = DistanceWeighted.fromString(world.getLogger(), generator, "1");
+                    DistanceWeightedValue<BaseBlockPopulator> entry = DistanceWeightedValue.fromString(world.getLogger(), generator, "1");
                     populators.add(entry);
                 }
             } else {
