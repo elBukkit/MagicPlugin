@@ -7,25 +7,32 @@
 
 - New `liminal` built in example to demonstrate new world gen features
  - Create chunk generators via `generators` configuration, including Builtin generators:
-   - Perlin: Perlin noise for elevation and/or block patterns
+   - Bedrock: A single flat layer of bedrock
    - Crops: Generate simple crop farms
-   - Sequence: Run multiple other generators in order
-   - Random: Randomly choose one generator from a distance-weighted probability map
+   - Flat: A flat layer
    - Frequency: Only fill every N chunks
+   - Perlin: Perlin noise for elevation and/or block patterns
+   - Probability: A distance-weighted chance for a populator to run
+   - Random: Randomly choose one generator from a distance-weighted probability map
+   - Room: Create walls and a ceiling with doorways in various configurations
+   - Sequence: Run multiple other generators in order
    - Vanilla: Use vanilla world generation
  - Create block populators via `populators` configuration
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
    - Added new populators: 
-     - Grid : Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
-     - Tower : Build a randomized tower
-     - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
-     - Spawn : Spawn some mobs from a distance-weighted probability map
+     - EndGateway : Build some configurations of end gateway blocks, use `target_world` to send to a specific world
      - EndPortal : Build some configurations of an end portal, use `target_world` to send to a specific world
-     - Tunnel : Make tunnels/doorways through the center of a region
      - Frequency: Only fill every N chunks
-     - Sequence: Run multiple other populators in order
+     - Grid : Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
+     - Probability: A distance-weighted chance for a populator to run
      - Random: Randomly choose one populators from a distance-weighted probability map
      - Repeat: Repeat another populator some random amount of times
+     - Schematic : Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
+     - Sequence: Run multiple other populators in order
+     - Spawn : Spawn some mobs from a distance-weighted probability map
+     - Tower : Build a randomized tower
+     - Tunnel : Make tunnels/doorways through the center of a region
+     - Vines: Grow some vines
  - Use generators in world configs for completely custom world gen
  - Editor support exists, use `/meditor populator` or `/meditor generator`
  - See: https://reference.elmakers.com/#generators and https://reference.elmakers.com/#populators

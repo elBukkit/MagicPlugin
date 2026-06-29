@@ -341,12 +341,15 @@ public class RandomUtils {
         return range(random, min, max);
     }
 
-    @Nullable
-    public static <T> T getDistanceWeighted(List<DistanceWeightedValue<T>> options, long worldSeed, int chunkX, int chunkZ) {
+    public static SplittableRandom getStableRandom(long worldSeed, int chunkX, int chunkZ) {
         final long chunkSeed = worldSeed
                 ^ (long) chunkX * 0x9E3779B97F4A7C15L
                 ^ (long) chunkZ * 0xD1B54A32D192ED03L;
+        return new SplittableRandom(chunkSeed);
+    }
 
+    @Nullable
+    public static <T> T getDistanceWeighted(List<DistanceWeightedValue<T>> options, long worldSeed, int chunkX, int chunkZ) {
         double totalWeight = 0;
         final int x = chunkX * 16;
         final int z = chunkZ * 16;
@@ -357,7 +360,7 @@ public class RandomUtils {
             return null;
         }
 
-        double weight = new SplittableRandom(chunkSeed).nextDouble(totalWeight);
+        double weight = getStableRandom(worldSeed, chunkX, chunkZ).nextDouble(totalWeight);
         for (DistanceWeightedValue<T> entry : options) {
             double entryWeight = entry.getWeight(x, z);
             if (entryWeight <= 0) {
