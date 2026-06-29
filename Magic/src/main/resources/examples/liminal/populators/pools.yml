@@ -19,6 +19,26 @@ pools_mobs:
     yellow_floaty: 0.02
     none: 1
 
+pools_entrance_pool:
+  class: Pools
+  island_probability: 0
+  depth: 1
+  width: 8
+  walkway_width: 0
+  light_probability: 1
+  light_blocks:
+    - sea_lantern
+
+pools_entrance_shaft:
+  class: Shaft
+  floor_probability: 0
+  height: 400
+  width: 3
+  blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+
 pools_pools:
   class: Probability
   probability: 0.9

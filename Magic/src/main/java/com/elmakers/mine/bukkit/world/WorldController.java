@@ -150,9 +150,13 @@ public class WorldController implements Listener {
     }
 
     public BaseChunkGenerator parseGenerator(MagicWorld world, ConfigurationSection baseConfig) {
-        ConfigurationSection generatorConfig = baseConfig.getConfigurationSection("generator");
+        return parseGenerator(world, baseConfig, "generator");
+    }
+
+    public BaseChunkGenerator parseGenerator(MagicWorld world, ConfigurationSection baseConfig, String generatorConfigKey) {
+        ConfigurationSection generatorConfig = baseConfig.getConfigurationSection(generatorConfigKey);
         if (generatorConfig == null) {
-            return createGenerator(world, baseConfig.getString("generator", ""));
+            return createGenerator(world, baseConfig.getString(generatorConfigKey, ""));
         }
         return BaseChunkGenerator.create(world, null, generatorConfig);
     }

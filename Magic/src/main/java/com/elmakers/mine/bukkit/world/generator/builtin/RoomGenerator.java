@@ -65,8 +65,6 @@ public class RoomGenerator extends BaseChunkGenerator {
 
     @Override
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkGenerator.ChunkData chunk) {
-        // TODO: Abstract this somehow
-        final boolean isStartingChunk = chunkX == 0 && chunkZ == 0;
         final int floorLevel = world.getGroundLevel() + yOffset;
         final int roofLevel = floorLevel + roofHeight.getRandom(random);
         final int roofMaxLevel = floorLevel + roofHeight.getMax();
@@ -88,7 +86,7 @@ public class RoomGenerator extends BaseChunkGenerator {
         final boolean hasZWall = random.nextDouble() < wallProbability;
         final boolean hasXWindow = canHaveWindow && random.nextDouble() < windowProbability;
         final boolean hasZWindow = canHaveWindow && random.nextDouble() < windowProbability;
-        final boolean hasSunRoof = isStartingChunk || random.nextDouble() < sunroofProbability;
+        final boolean hasSunRoof = random.nextDouble() < sunroofProbability;
         final boolean hasDoubleDoor = random.nextDouble() < doubleDoorProbability;
         final boolean doorXSide = random.nextDouble() < 0.5;
         final boolean hasXDoor = hasDoubleDoor || doorXSide;
@@ -124,8 +122,7 @@ public class RoomGenerator extends BaseChunkGenerator {
 
                 // Extend ceiling up
                 if (!isSunRoof) {
-                    final int ceilingHeight = isStartingChunk ? worldInfo.getMaxHeight() : roofMaxLevel;
-                    for (int y = roofLevel + 1; y <= ceilingHeight; y++) {
+                    for (int y = roofLevel + 1; y <= roofMaxLevel; y++) {
                         chunk.setBlock(x, y, z, ceilingBlock);
                     }
                 }
@@ -141,10 +138,6 @@ public class RoomGenerator extends BaseChunkGenerator {
                 if (hallwayWidthHalf > 0) {
                     int hallwayLeft = 8 - hallwayWidthHalf;
                     int hallwayRight = 8 + hallwayWidthHalf;
-                    if (isStartingChunk) {
-                        hallwayLeft = Math.min(hallwayLeft, 6);
-                        hallwayRight = Math.max(hallwayRight, 10);
-                    }
                     if (x < hallwayLeft || x > hallwayRight || z < hallwayLeft || z > hallwayRight) {
                         for (int y = floorLevel; y <= roofLevel; y++) {
                             chunk.setBlock(x, y, z, wallBlock);

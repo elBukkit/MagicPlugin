@@ -6,18 +6,19 @@
 ## World Generation
 
 - New `liminal` built in example to demonstrate new world gen features
- - Create chunk generators via `generators` configuration, including Builtin generators:
+ - Create chunk generators via `generator` configuration, including Builtin generators:
    - Bedrock: A single flat layer of bedrock
    - Crops: Generate simple crop farms
    - Flat: A flat layer
    - Frequency: Only fill every N chunks
+   - Grid: Run specific generators depending on chunk x/z coordinates
    - Perlin: Perlin noise for elevation and/or block patterns
    - Probability: A distance-weighted chance for a populator to run
    - Random: Randomly choose one generator from a distance-weighted probability map
    - Room: Create walls and a ceiling with doorways in various configurations
    - Sequence: Run multiple other generators in order
    - Vanilla: Use vanilla world generation
- - Create block populators via `populators` configuration
+ - Create block populators via `populators` configuration in a generator
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
    - Added new populators: 
      - EndGateway: Build some configurations of end gateway blocks, use `target_world` to send to a specific world
