@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class PoolsPopulator extends BaseBlockPopulator {
+    private IntegerRange poolsWidth;
     private IntegerRange depth;
     private IntegerRange walkwayWidth;
     private double islandProbability = 0.75;
@@ -25,6 +26,7 @@ public class PoolsPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
+        poolsWidth = IntegerRange.fromConfig(getLogger(), config, "width", 14, 14);
         depth = IntegerRange.fromConfig(getLogger(), config, "depth", 1, 1);
         walkwayWidth = IntegerRange.fromConfig(getLogger(), config, "walkway_width", 0, 10);
         islandProbability = config.getDouble("island_probability", islandProbability);
@@ -48,9 +50,12 @@ public class PoolsPopulator extends BaseBlockPopulator {
         final BlockData lightBlock = RandomUtils.getRandom(lightBlocks, random).createBlockData();
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
+        final int width = poolsWidth.getRandom(random);
+        final int start = 8 - (int)Math.floor((double)width / 2);
+        final int stop = 8 + (int)Math.ceil((double)width / 2);
 
-        for (int dx = 1; dx < 15; dx++) {
-            for (int dz = 1; dz < 15; dz++) {
+        for (int dx = start; dx < stop; dx++) {
+            for (int dz = start; dz < stop; dz++) {
                 final int x = chunkGlobalX + dx;
                 final int z = chunkGlobalZ + dz;
                 if (!region.getType(x, floorLevel + 1, z).isAir()) continue;
