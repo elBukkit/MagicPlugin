@@ -45,6 +45,14 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return world.getLogger();
     }
 
+    public static BaseBlockPopulator parsePopulator(MagicWorld world, ConfigurationSection config) {
+        ConfigurationSection populatorConfig = config.getConfigurationSection("populator");
+        if (populatorConfig == null) {
+            return loadPopulator(world, populatorConfig.getString("populator", ""));
+        }
+        return loadPopulator(world, null, populatorConfig);
+    }
+
     public static List<BaseBlockPopulator> loadPopulators(MagicWorld world, ConfigurationSection config) {
         ConfigurationSection populatorConfig = config.getConfigurationSection("populators");
         if (populatorConfig == null) {
@@ -79,14 +87,6 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
             controller.info("Skipping invalid " + key + " populator for " + world.getName());
         }
         return populator;
-    }
-
-    public static BaseBlockPopulator parsePopulator(MagicWorld world, ConfigurationSection config) {
-        ConfigurationSection populatorConfig = config.getConfigurationSection("populator");
-        if (populatorConfig == null) {
-            return loadPopulator(world, populatorConfig.getString("populator", ""));
-        }
-        return loadPopulator(world, null, populatorConfig);
     }
 
     public static BaseBlockPopulator loadPopulator(MagicWorld world, String key) {

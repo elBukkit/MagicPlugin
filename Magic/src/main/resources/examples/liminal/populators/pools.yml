@@ -20,8 +20,13 @@ pools_mobs:
     none: 1
 
 pools_pools:
-  class: Pools
-  island_probability: 0.75
+  class: Probability
+  probability: 0.9
+  populator:
+    class: Pools
+    island_probability: 0.75
+    depth: 1 | 2
+    walkway_width: 1 | 12
 
 pools_lights:
     class: Lights

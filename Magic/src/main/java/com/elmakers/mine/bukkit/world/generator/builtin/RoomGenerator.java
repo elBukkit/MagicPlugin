@@ -21,7 +21,6 @@ public class RoomGenerator extends BaseChunkGenerator {
     private IntegerRange roofHeight;
     private IntegerRange doorwayHeight;
     private IntegerRange doorwayWidth;
-    private IntegerRange walkwayWidth;
     private IntegerRange hallwayWidth;
     private int yOffset;
     private double wallProbability = 0.75;
@@ -39,7 +38,6 @@ public class RoomGenerator extends BaseChunkGenerator {
         roofHeight = IntegerRange.fromConfig(getLogger(), config, "roof_height", 4, 10);
         doorwayWidth = IntegerRange.fromConfig(getLogger(), config, "doorway_width", 0, 6);
         doorwayHeight = IntegerRange.fromConfig(getLogger(), config, "doorway_height", 2, 4);
-        walkwayWidth = IntegerRange.fromConfig(getLogger(), config, "walkway_width", 0, 10);
         hallwayWidth = IntegerRange.fromConfig(getLogger(), config, "hallway_width", 0, 0);
 
         wallProbability = config.getDouble("wall_probability", wallProbability);
@@ -77,9 +75,6 @@ public class RoomGenerator extends BaseChunkGenerator {
         final int hallwayWidthHalf = (int)Math.ceil((double)hallwayWidth.getRandom(random) / 2);
         final int doorwayLeft = 7 - doorwayWidthHalf;
         final int doorwayRight = 9 + doorwayWidthHalf;
-        final int walkwayWidthHalf = isStartingChunk ? 0 : walkwayWidth.getRandom(random);
-        final int walkwayLeft = 8 - walkwayWidthHalf;
-        final int walkWayRight = 8 + walkwayWidthHalf;
         final boolean canHaveWindow = doorwayWidthHalf < 4;
         int xWindowLocation = 0;
         int zWindowLocation = 0;
@@ -104,7 +99,6 @@ public class RoomGenerator extends BaseChunkGenerator {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 final boolean isSunRoof = hasSunRoof && x >= 7 && z >= 7 && x <= 9 && z <= 9;
-                final boolean isWalkway = (x > walkwayLeft && x < walkWayRight) || (z > walkwayLeft && z < walkWayRight);
                 if (x == 0 || z == 0) {
                     if ((hasXWall && z == 0) || (hasZWall && x == 0)) {
                         // Walls and doorway
@@ -123,11 +117,6 @@ public class RoomGenerator extends BaseChunkGenerator {
                 } else if (x == 1 || z == 1 || x == 15 || z == 15) {
                     // Border around sunroof
                     chunk.setBlock(x, roofLevel, z, ceilingBlock);
-                } else if (isWalkway) {
-                    // Pathways
-                    if (!isSunRoof) {
-                        chunk.setBlock(x, roofLevel, z, ceilingBlock);
-                    }
                 } else if (!isSunRoof) {
                     // Roof
                     chunk.setBlock(x, roofLevel, z, ceilingBlock);
@@ -149,8 +138,7 @@ public class RoomGenerator extends BaseChunkGenerator {
                 }
 
                 // Fill in hallways after
-                boolean isCenterWalkway = isWalkway || x == 8 || z == 8;
-                if (!isCenterWalkway && hallwayWidthHalf > 0) {
+                if (hallwayWidthHalf > 0) {
                     int hallwayLeft = 8 - hallwayWidthHalf;
                     int hallwayRight = 8 + hallwayWidthHalf;
                     if (isStartingChunk) {
