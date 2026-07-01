@@ -21,7 +21,7 @@ public class RandomPopulator extends OptionalPopulator {
             for (String populatorId : populatorsConfig.getKeys(false)) {
                 if (populatorsConfig.isConfigurationSection(populatorId)) {
                     ConfigurationSection populatorConfig = populatorsConfig.getConfigurationSection(populatorId);
-                    BaseBlockPopulator populator = BaseBlockPopulator.parsePopulator(world, populatorConfig);
+                    BaseBlockPopulator populator = BaseBlockPopulator.parsePopulator(world, populatorConfig, populatorId);
                     DistanceWeightedValue<BaseBlockPopulator> entry = DistanceWeightedValue.fromConfig(world.getLogger(), populator, populatorConfig);
                     populators.add(entry);
                 } else {

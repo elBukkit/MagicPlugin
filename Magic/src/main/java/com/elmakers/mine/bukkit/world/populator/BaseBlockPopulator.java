@@ -48,9 +48,13 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     }
 
     public static BaseBlockPopulator parsePopulator(MagicWorld world, ConfigurationSection config) {
+        return parsePopulator(world, config, "");
+    }
+
+    public static BaseBlockPopulator parsePopulator(MagicWorld world, ConfigurationSection config, String defaultId) {
         ConfigurationSection populatorConfig = config.getConfigurationSection("populator");
         if (populatorConfig == null) {
-            return loadPopulator(world, populatorConfig.getString("populator", ""));
+            return loadPopulator(world, config.getString("populator", defaultId));
         }
         return loadPopulator(world, null, populatorConfig);
     }
@@ -163,7 +167,7 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
 
     protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {
         if (!region.isInRegion(x, y, z)) {
-            getController().info("Trying to set out-of-range block: " + x + "," + y + "," + z);
+            getController().info("Trying to set out-of-range block in world " + world.getName() + ": " + x + "," + y + "," + z);
             return false;
         }
         region.setBlockData(x, y, z, blockData);

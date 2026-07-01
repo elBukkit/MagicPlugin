@@ -23,7 +23,7 @@ public class RandomGenerator extends OptionalGenerator {
             for (String generatorId : generatorsConfig.getKeys(false)) {
                 if (generatorsConfig.isConfigurationSection(generatorId)) {
                     ConfigurationSection generatorConfig = generatorsConfig.getConfigurationSection(generatorId);
-                    BaseChunkGenerator generator = controller.parseGenerator(world, generatorConfig);
+                    BaseChunkGenerator generator = controller.parseGenerator(world, generatorConfig, generatorId);
                     DistanceWeightedValue<BaseChunkGenerator> entry = DistanceWeightedValue.fromConfig(world.getLogger(), generator, generatorConfig);
                     generators.add(entry);
                 } else {
