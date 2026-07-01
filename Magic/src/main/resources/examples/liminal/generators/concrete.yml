@@ -20,7 +20,7 @@ concrete_surface:
       weight: 0.01
     concrete_car:
       distance: 16 | 512
-      weight: 0.1
+      weight: 0.01
     concrete_tower:
       distance: 32 | 512
       weight: 0.5
