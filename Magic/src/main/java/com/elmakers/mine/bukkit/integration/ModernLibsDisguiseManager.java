@@ -64,8 +64,13 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
                 DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
                 switch (disguiseType) {
                     case PLAYER:
-                        Deque<WeightedPair<String>> skins = RandomUtils.createStringProbabilityMap(configuration, "skin");
-                        String skin = RandomUtils.weightedRandom(skins);
+                        String skin;
+                        if (configuration.isList("skin") || configuration.isConfigurationSection("skin")) {
+                            Deque<WeightedPair<String>> skins = RandomUtils.createStringProbabilityMap(configuration, "skin");
+                            skin = RandomUtils.weightedRandom(skins);
+                        } else {
+                            skin = configuration.getString("skin");
+                        }
                         String name = configuration.getString("name", entity.getCustomName());
                         if (name == null || name.isEmpty()) {
                             name = skin;
