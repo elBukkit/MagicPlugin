@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -83,7 +84,12 @@ public class SchematicPopulator extends BaseBlockPopulator {
                     final Material material = block == null ? null : block.getMaterial();
                     if (material != null) {
                         if (material.isAir() && !fillAir) continue;
-                        setBlockData(region, x, y, z, block.createBlockData());
+                        BlockData blockData = block.createBlockData();
+                        if (blockData == null) {
+                            // world.getLogger().warning("Failed to create block data for " + material + " from schematic " + schematicName);
+                            continue;
+                        }
+                        setBlockData(region, x, y, z, blockData);
                     }
                 }
             }
