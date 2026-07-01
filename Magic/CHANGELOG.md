@@ -61,6 +61,7 @@
  - Fix `commit` spell, it should commit all pending spells which it was not doing
  - Fix saved schematics being upside down or backwards depending on the click order
  - Fix invalid bed icon references in Recall and Locator spells
+ - Fix EntityProjectile not removing passengers from the projectile entity
 
 ## Changes
 

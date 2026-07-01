@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Collection;
+import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
@@ -208,11 +209,19 @@ public class EntityProjectileAction extends CustomProjectileAction {
         return result;
     }
 
+    private void removeEntity(Entity entity) {
+        List<Entity> passengers = CompatibilityLib.getCompatibilityUtils().getPassengers(entity);
+        for (Entity passenger : passengers) {
+            removeEntity(passenger);
+        }
+        entity.remove();
+    }
+
     @Override
     public void finishEffects() {
         super.finishEffects();
         if (entity != null) {
-            entity.remove();
+            removeEntity(entity);
             entity = null;
         }
     }
