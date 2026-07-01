@@ -106,6 +106,7 @@ public class WorldController implements Listener {
 
         Set<String> worldKeys = configuration.getKeys(false);
         for (String worldName : worldKeys) {
+            controller.getLogger().setContext("worlds." + worldName);
             ConfigurationSection worldConfiguration = configuration.getConfigurationSection(worldName);
             if (worldConfiguration == null) {
                 controller.getLogger().warning("Was expecting a properties section in world config for key '" + worldName + "', but got: " + configuration.get(worldName));
