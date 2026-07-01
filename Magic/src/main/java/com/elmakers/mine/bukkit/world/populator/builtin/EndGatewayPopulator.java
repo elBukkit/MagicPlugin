@@ -11,12 +11,14 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
+import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class EndGatewayPopulator extends BaseBlockPopulator {
     private IntegerRange gatewayWidth;
     private IntegerRange gatewayHeight;
     private String targetWorld;
+    private SearchType searchType = SearchType.AREA_UP_MIN;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -49,12 +51,14 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
         final int maxExitX = chunkGlobalX + portalRight;
         final int minExitZ = chunkGlobalZ + portalLeft;
         final int maxExitZ = chunkGlobalZ + portalRight;
-        final int maxExitY = floorLevel + gatewayHeight;
         final BlockData gatewayBlock = getGatewayBlock();
+        final int startY = searchArea(searchType, worldInfo, region, minExitX - 1, floorLevel, minExitZ - 1, maxExitX + 1, maxExitZ + 1);
 
         for (int x = minExitX - 1; x <= maxExitX; x++) {
             for (int z = minExitZ - 1; z <= maxExitZ; z++) {
-                for (int y = floorLevel + 1; y <= maxExitY; y++) {
+                final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, floorLevel);
+                final int maxExitY = startY + gatewayHeight;
+                for (int y = groundY + 1; y <= maxExitY; y++) {
                     region.setBlockData(x, y, z, gatewayBlock);
                 }
             }
