@@ -40,7 +40,7 @@ chaos_build6:
 chaos_build7:
   class: Schematic
   position: -16 | 31
-  schematic: elder_tree
+  schematic: lantern
 
 chaos_build8:
   class: Schematic
