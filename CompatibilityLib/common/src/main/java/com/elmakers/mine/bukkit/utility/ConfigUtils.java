@@ -857,4 +857,19 @@ public class ConfigUtils {
 
         return map;
     }
+
+    public static <E extends Enum<E>> E parseEnum(ConfigurationSection config, String key, E defaultValue, Logger logger) {
+        String value = config.getString(key);
+        if (value == null || value.isEmpty()) {
+            return defaultValue;
+        }
+        try {
+            return Enum.valueOf(defaultValue.getDeclaringClass(), value);
+        } catch (Exception ex) {
+            if (logger != null) {
+                logger.warning("Invalid value for " + key + " of type " + defaultValue.getDeclaringClass().getSimpleName() + ": " + value);
+            }
+            return defaultValue;
+        }
+    }
 }
