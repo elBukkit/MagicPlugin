@@ -794,7 +794,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     private String getBlockDataString() {
-        if (blockData != null && !blockData.contains("?") && material != null) {
+        if (blockData != null && !blockData.contains("?") && blockData.startsWith("[") && material != null) {
             return material.name().toLowerCase() + blockData;
         }
         return blockData;
@@ -843,9 +843,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public String getKey(Short data) {
         String materialKey = material == null ? "*" : material.name().toLowerCase();
-        if (data == null) {
-            materialKey += ":*";
-        } else {
+        if (data != null) {
             // Some special keys
             if (DefaultMaterials.isPlayerSkull(this) && extraData != null && extraData instanceof BlockSkull) {
                 BlockSkull skullData = (BlockSkull)extraData;
@@ -859,8 +857,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         materialKey += ":" + skinURL;
                     }
                 }
-            }
-            else if (DefaultMaterials.isMobSpawner(material) && extraData != null && extraData instanceof BlockMobSpawner) {
+            } else if (DefaultMaterials.isMobSpawner(material) && extraData != null && extraData instanceof BlockMobSpawner) {
                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;
                 if (spawnerData.mobName != null && !spawnerData.mobName.isEmpty()) {
                     materialKey += ":" + spawnerData.mobName;
