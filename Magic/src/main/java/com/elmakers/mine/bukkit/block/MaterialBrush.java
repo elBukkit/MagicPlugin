@@ -33,14 +33,16 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.data.BrushData;
+import com.elmakers.mine.bukkit.api.item.Icon;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.map.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
 
@@ -604,7 +606,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                         Player player = fromMage != null ? fromMage.getPlayer() : null;
                         List<MapRenderer> renderers = mapView.getRenderers();
                         if (renderers.size() > 0) {
-                            mapCanvas = new BufferedMapCanvas();
+                            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+                            mapCanvas = compatibilityUtils.createMapCanvas();
                             MapRenderer renderer = renderers.get(0);
                             // This is mainly here as a hack for my own urlmaps that do their own caching
                             // Bukkit *seems* to want to do caching at the MapView level, but looking at the code-
@@ -612,7 +615,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                             // Anyway render gets called constantly so I'm not re-rendering on each render... but then
                             // how to force a render to a canvas? So we re-initialize.
                             renderer.initialize(mapView);
-                            renderer.render(mapView, mapCanvas, player);
+                            compatibilityUtils.renderMap(renderer, mapView, mapCanvas, player);
                         }
                     }
                 } catch (Exception ex) {
@@ -723,11 +726,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             World targetWorld = cloneTarget.getWorld();
             List<Entity> targetEntities = targetWorld.getEntities();
             for (Entity entity : targetEntities) {
-                // Schematics currently only deal with Hanging entities
-                if (mode == BrushMode.SCHEMATIC && !(entity instanceof Hanging)) continue;
-
                 // Note that we ignore players and NPCs
-                if (!(entity instanceof Player) && !mage.getController().isNPC(entity)) {
+                if (!(entity instanceof Player) && !mage.getController().isNPC(entity) && !mage.getController().isPet(entity)) {
                     targetData.add(entity);
                 }
             }
@@ -893,7 +893,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public boolean isErase()
     {
-        return mode == BrushMode.ERASE || (mode == BrushMode.MATERIAL && material == Material.AIR);
+        return mode == BrushMode.ERASE || (mode == BrushMode.MATERIAL && DefaultMaterials.isAir(material));
     }
 
     @Nullable
@@ -948,6 +948,17 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 icon = replacementMaterial;
             }
             extraLore = messages.get("wand.building_material_description").replace("$material", customName);
+        }
+
+        if (itemStack == null) {
+            String[] keyPieces = StringUtils.split(this.getKey(), ':');
+            Icon iconItem = controller.getIcon("brush_" + this.getKey());
+            if (iconItem == null && keyPieces.length > 1) {
+                iconItem = controller.getIcon("brush_" + keyPieces[0]);
+            }
+            if (iconItem != null) {
+                icon = (MaterialAndData)iconItem.getItemMaterial(controller);
+            }
         }
 
         if (itemStack == null) {

@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;
@@ -126,7 +127,8 @@ public class ExplosionController implements Listener {
         if (cancel) {
             event.setCancelled(true);
         }
-        if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.TNT) {
+        EntityType tnt = CompatibilityLib.getEntityUtils().getEntityType(VersionedEntityType.TNT);
+        if (maxTNTPerChunk > 0 && explodingEntity.getType() == tnt) {
             if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(explodingEntity.getLocation())) return;
             Chunk chunk = explodingEntity.getLocation().getChunk();
             if (chunk == null || !chunk.isLoaded()) return;
@@ -134,7 +136,7 @@ public class ExplosionController implements Listener {
             int tntCount = 0;
             Entity[] entities = chunk.getEntities();
             for (Entity entity : entities) {
-                if (entity != null && entity.getType() == EntityType.TNT) {
+                if (entity != null && entity.getType() == tnt) {
                     tntCount++;
                 }
             }

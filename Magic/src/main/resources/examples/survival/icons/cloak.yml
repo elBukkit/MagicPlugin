@@ -7,4 +7,5 @@ cloak:
   type: spell
   glyph: "\uE92B"
   vanilla_item: 'chainmail_chestplate{18001}'
+  vanilla_item_enabled: 'chainmail_chestplate{19001}'
   vanilla_item_disabled: 'chainmail_chestplate{18002}'

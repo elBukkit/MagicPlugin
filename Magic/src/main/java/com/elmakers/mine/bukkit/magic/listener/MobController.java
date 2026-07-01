@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.EntityTeleportEvent;
@@ -47,6 +47,7 @@ import com.elmakers.mine.bukkit.tasks.CheckEntitySpawnTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 
 public class MobController implements Listener, ChunkLoadListener {
     public static boolean REMOVE_INVULNERABLE = false;
@@ -114,14 +115,16 @@ public class MobController implements Listener, ChunkLoadListener {
 
     public void updateAllMobs() {
         // Not clearing the map, but hopefully everything in it will be replaced
-        Map<Entity, EntityData> currentMobs = new HashMap<>(activeMobs);
-        for (Map.Entry<Entity, EntityData> entry : currentMobs.entrySet()) {
-            EntityData mob = entry.getValue();
-            String key = mob.getKey();
-            if (key == null || key.isEmpty()) continue;
-            mob = controller.getMob(key);
-            if (mob != null) {
-                mob.modify(entry.getKey());
+        synchronized (activeMobs) {
+            Map<Entity, EntityData> currentMobs = new HashMap<>(activeMobs);
+            for (Map.Entry<Entity, EntityData> entry : currentMobs.entrySet()) {
+                EntityData mob = entry.getValue();
+                String key = mob.getKey();
+                if (key == null || key.isEmpty()) continue;
+                mob = controller.getMob(key);
+                if (mob != null && !mob.shouldReload()) {
+                    mob.modify(entry.getKey());
+                }
             }
         }
     }
@@ -152,7 +155,7 @@ public class MobController implements Listener, ChunkLoadListener {
             String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
             if (npcId != null) {
                 checkNPC(entity, npcId);
-            } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.ITEM
+            } else if (REMOVE_INVULNERABLE && entity.getType() != CompatibilityLib.getEntityUtils().getEntityType(VersionedEntityType.ITEM)
                 && CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity)) {
                 // Don't remove invulnerable items since those could be dropped wands
                 Location location = entity.getLocation();
@@ -348,27 +351,29 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
-        EntityData mob = activeMobs.get(entity);
-        if (mob == null) {
-            return;
-        }
+        synchronized (activeMobs) {
+            EntityData mob = activeMobs.get(entity);
+            if (mob == null) {
+                return;
+            }
 
-        if (entity instanceof Player) {
-            controller.getLogger().warning("A player has magic mob data on death, this shouldn't happen");
-            return;
-        }
+            if (entity instanceof Player) {
+                controller.getLogger().warning("A player has magic mob data on death, this shouldn't happen");
+                return;
+            }
 
-        // Prevent processing double-death events
-        activeMobs.remove(entity);
-        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
-        Bukkit.getPluginManager().callEvent(deathEvent);
+            // Prevent processing double-death events
+            activeMobs.remove(entity);
+            MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
+            Bukkit.getPluginManager().callEvent(deathEvent);
 
-        mob.onDeath(entity);
-        if (!mob.isSplittable()) {
-            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NOSPLIT, true);
-        }
-        if (!CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_DROPS)) {
-            mob.modifyDrops(event);
+            mob.onDeath(entity);
+            if (!mob.isSplittable()) {
+                CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NOSPLIT, true);
+            }
+            if (!CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_DROPS)) {
+                mob.modifyDrops(event);
+            }
         }
     }
 
@@ -393,21 +398,27 @@ public class MobController implements Listener, ChunkLoadListener {
     }
 
     public void register(@Nonnull Entity entity, @Nonnull EntityData entityData) {
-        EntityData existing = activeMobs.get(entity);
-        if (existing != null && existing != entityData) {
-            entityData = existing.createVariant(entityData.getConfiguration());
+        synchronized (activeMobs) {
+            EntityData existing = activeMobs.get(entity);
+            if (existing != null && existing != entityData) {
+                entityData = existing.createVariant(entityData.getConfiguration());
+            }
+            activeMobs.put(entity, entityData);
         }
-        activeMobs.put(entity, entityData);
     }
 
     @Nullable
     public EntityData getEntityData(Entity entity) {
-        return activeMobs.get(entity);
+        synchronized (activeMobs) {
+            return activeMobs.get(entity);
+        }
     }
 
     @Nonnull
     public Collection<Entity> getActiveMobs() {
-        return new ArrayList<>(activeMobs.keySet());
+        synchronized (activeMobs) {
+            return new ArrayList<>(activeMobs.keySet());
+        }
     }
 
     @Nonnull
@@ -440,19 +451,19 @@ public class MobController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
-    public void onEntityDismount(EntityDismountEvent event) {
-        if (CompatibilityLib.getCompatibilityUtils().isTeleporting()) return;
+    public boolean onEntityDismount(Entity entity) {
+        if (CompatibilityLib.getCompatibilityUtils().isTeleporting()) return false;
 
-        EntityData entityData = getEntityData(event.getEntity());
+        EntityData entityData = getEntityData(entity);
         if (entityData != null && entityData.isPreventDismount()) {
-            event.setCancelled(true);
+           return true;
         } else {
-            Mage mage = controller.getRegisteredMage(event.getEntity());
+            Mage mage = controller.getRegisteredMage(entity);
             if (mage != null && mage.isPreventDismount()) {
-                event.setCancelled(true);
+                return true;
             }
         }
+        return false;
     }
 
     @EventHandler
@@ -460,6 +471,20 @@ public class MobController implements Listener, ChunkLoadListener {
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventTeleport()) {
             event.setCancelled(true);
+        }
+    }
+
+    public void tick() {
+        synchronized (activeMobs) {
+            for (Iterator<Map.Entry<Entity, EntityData>> iterator = activeMobs.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<Entity, EntityData> entry = iterator.next();
+                Entity entity = entry.getKey();
+                if (!entity.isValid()) {
+                    iterator.remove();
+                    continue;
+                }
+                entry.getValue().tick(entity);
+            }
         }
     }
 }

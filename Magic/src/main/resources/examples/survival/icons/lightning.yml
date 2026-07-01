@@ -7,4 +7,5 @@ lightning:
   type: spell
   glyph: "\uE96B"
   vanilla_item: 'quartz{18001}'
+  vanilla_item_enabled: 'quartz{19001}'
   vanilla_item_disabled: 'quartz{18002}'

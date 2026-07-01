@@ -47,6 +47,7 @@ public interface EntityData extends Cloneable {
     double getHealth();
     void setHasMoved(boolean hasMoved);
     void setDamaged(boolean damaged);
+    void setHasFrozen(boolean frozen);
     boolean isDocile();
     boolean isRelentless();
     boolean isPreventProjectiles();
@@ -63,6 +64,8 @@ public interface EntityData extends Cloneable {
     boolean canTarget(Entity other);
     boolean isFriendly(Entity other);
     boolean hasPermission(String node);
+    @Nullable
+    Entity create(Location location);
     @Nullable
     Entity spawn();
     @Nullable

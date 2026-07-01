@@ -1,0 +1,3 @@
+kelp_shears:
+  name: "&bKelp Shears"
+  item: shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]

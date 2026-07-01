@@ -196,6 +196,12 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (!arenaController.isEnabled()) {
+            sender.sendMessage(ChatColor.RED + "Arenas have been disabled.");
+            sender.sendMessage(ChatColor.WHITE + "Use " + ChatColor.GRAY + "/mconfig configure config arenas.enabled true" + ChatColor.WHITE + " to re-enable them");
+            return true;
+        }
+
         if (args.length == 0) {
             sender.sendMessage(ChatColor.YELLOW + "---------" +  ChatColor.WHITE  + "Help: MagicArenas " + ChatColor.YELLOW +   "--------");
             sender.sendMessage("/marena add [name] <type> : Add a new arena");

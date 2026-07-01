@@ -1,0 +1,62 @@
+chaos_ground:
+  class: Perlin
+  biome: lush_caves
+  noise: 0.05
+  blocks: concretes
+  max_elevation: 20
+  min_elevation: 0
+
+chaos_surface:
+  class: Random
+  generators:
+    chaos_build1:
+      weight: 1
+    chaos_build2:
+      weight: 1
+    chaos_build3:
+      weight: 1
+    chaos_build4:
+      weight: 1
+    chaos_build5:
+      weight: 1
+    chaos_build6:
+      weight: 1
+    chaos_build7:
+      weight: 1
+    chaos_build8:
+      weight: 1
+    chaos_build9:
+      weight: 1
+    chaos_build10:
+      weight: 1
+    chaos_build11:
+      weight: 1
+    chaos_build12:
+      weight: 1
+    chaos_build13:
+      weight: 1
+    chaos_build14:
+      weight: 1
+    chaos_tower:
+      distance:
+        min: 32
+        max: 512
+      weight: 0.5
+      frequency: 3
+    none: 1
+
+chaos:
+  class: Sequence
+  generators:
+    - chaos_ground
+    - chaos_surface
+
+vanilla_ground:
+  class: Vanilla
+  generate_structures: false
+
+vanilla_chaos:
+  class: Sequence
+  generators:
+    - vanilla_ground
+    - chaos_surface

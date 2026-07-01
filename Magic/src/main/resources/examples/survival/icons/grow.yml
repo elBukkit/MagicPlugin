@@ -7,4 +7,5 @@ grow:
   type: spell
   glyph: "\uE958"
   vanilla_item: 'cookie{18001}'
+  vanilla_item_enabled: 'cookie{19001}'
   vanilla_item_disabled: 'cookie{18002}'

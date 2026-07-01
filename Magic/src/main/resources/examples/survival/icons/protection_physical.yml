@@ -7,4 +7,5 @@ protection_physical:
   type: spell
   glyph: "\uE98D"
   vanilla_item: 'shield{18018}'
+  vanilla_item_enabled: 'shield{19018}'
   vanilla_item_disabled: 'shield{18019}'

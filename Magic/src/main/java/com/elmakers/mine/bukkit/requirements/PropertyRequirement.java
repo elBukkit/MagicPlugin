@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.requirements;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-class PropertyRequirement extends RangedRequirement {
+class PropertyRequirement extends DoubleRangedRequirement {
     public final String key;
 
     public PropertyRequirement(String type, ConfigurationSection configuration) {

@@ -7,4 +7,5 @@ secure:
   type: spell
   glyph: "\uE9A0"
   vanilla_item: 'trapped_chest{18001}'
+  vanilla_item_enabled: 'trapped_chest{19001}'
   vanilla_item_disabled: 'trapped_chest{18002}'

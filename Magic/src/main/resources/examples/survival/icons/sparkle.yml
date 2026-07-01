@@ -5,4 +5,5 @@ sparkle:
   type: spell
   glyph: "\uE9AD"
   vanilla_item: 'glowstone_dust{18003}'
+  vanilla_item_enabled: 'glowstone_dust{19003}'
   vanilla_item_disabled: 'glowstone_dust{18004}'

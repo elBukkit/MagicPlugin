@@ -1,0 +1,8 @@
+car_item:
+  item: leather_horse_armor
+  custom_model_data: 19001
+  reload: true
+  color:
+    red: rand(0,255)
+    green: rand(0,255)
+    blue: rand(0,255)

@@ -1,0 +1,63 @@
+pools_surface:
+  class: Flat
+  biome: lush_caves
+  blocks:
+    - blue_concrete
+    - light_blue_concrete
+
+pools_entrance:
+  class: Room
+  roof_height: 6 | 16
+  wall_probability: 0
+  window_probability: 0
+  sunroof_probability: 0
+  populators:
+    - pools_entrance_shaft
+    - pools_entrance_pool
+    - pools_light
+  wall_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+  ceiling_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+
+pools_room:
+  class: Room
+  roof_height: 6 | 16
+  doorway_height: 3 | 6
+  doorway_width: 6 | 10
+  wall_probability: 0.75
+  window_probability: 0.3
+  double_door_probability: 0.5
+  sunroof_probability: 0.8
+  populators:
+    - pools_pools
+    - pools_light
+    - pools_mobs
+    - pools_features
+  wall_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+  ceiling_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+
+pools_rooms:
+  class: Grid
+  generators:
+    pools_entrance:
+      x: 0
+      z: 0
+  fallback: pools_room
+
+pools:
+  class: Sequence
+  generators:
+    - bedrock
+    - pools_surface
+    - pools_rooms

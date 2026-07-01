@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedEntityType;
 
 public class PowerBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;
@@ -57,7 +58,8 @@ public class PowerBlockAction extends BaseSpellAction {
                 block.setType(Material.AIR);
 
                 // Kaboomy time!
-                context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.TNT));
+                EntityType tntType = CompatibilityLib.getEntityUtils().getEntityType(VersionedEntityType.TNT);
+                context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), tntType));
             }
             if (updateBlockState) {
                 blockState.update();

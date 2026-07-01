@@ -1,0 +1,17 @@
+spells:
+  choose_coven:
+    no_target: You must be an Adept to choose a coven.
+
+paths:
+  neophyte:
+    name: Neophyte
+    description: Just starting out
+  adept:
+    name: Adept
+    description: Ready to choose a coven
+  coven_light:
+    name: Coven of Light
+    description: The magic of healing and light
+  coven_dark:
+    name: Coven of Darkness
+    description: The magic of pain and death

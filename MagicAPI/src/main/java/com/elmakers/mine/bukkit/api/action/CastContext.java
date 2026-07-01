@@ -117,6 +117,7 @@ public interface CastContext extends MageContext {
     void registerForUndo(Block block);
     void registerModified(Entity entity);
     void registerDamaged(Entity entity);
+    void registerFrozen(Entity entity);
     void clearAttachables(Block block);
     void updateBlock(Block block);
     void registerVelocity(Entity entity);

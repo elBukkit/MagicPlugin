@@ -7,4 +7,5 @@ shell:
   type: spell
   glyph: "\uE9A3"
   vanilla_item: 'turtle_scute{18001}'
+  vanilla_item_enabled: 'turtle_scute{19001}'
   vanilla_item_disabled: 'turtle_scute{18002}'

@@ -1,0 +1,31 @@
+magedamage:
+  name: MagePhobia
+  description: When around a Mage, take damage
+  icon: turtle_scute{129}
+  icon_disabled: turtle_scute{29}
+  hidden: false
+  passive: true
+  inherit: base_passive
+  toggle: none
+  toggleable: true
+  triggers:
+    - trigger: interval
+      interval: 1000
+  actions:
+    cast:
+      - class: AreaOfEffect
+        radius: 100
+        actions:
+          - class: CheckRequirements
+            requirements:
+              - class:
+                  class: mage
+            actions:
+              - class: ChangeContext
+                swap_source_and_target: true
+                actions:
+                  - class: Damage
+  parameters:
+    target: any
+    target_type: Player
+    target_self: true

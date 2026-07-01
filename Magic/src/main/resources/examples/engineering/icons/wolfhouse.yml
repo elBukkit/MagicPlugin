@@ -1,0 +1,9 @@
+wolfhouse:
+  item: 'skull:http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b{18391}'
+  vanilla_item: crimson_sign{18003}
+  vanilla_item_disabled: crimson_sign{CustomModelData:18004}
+  legacy_item: spell_icon:7
+  legacy_item_disabled: spell_icon_disabled:7
+  url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
+  glyph: "\uE746"
+  type: other

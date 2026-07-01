@@ -13,6 +13,7 @@ public class MageConfigureParameters extends MageParameters {
         super(mage, context);
         propertyValue = target.getProperty(property, Double.NaN);
         silent = true;
+        defaultValue = null;
     }
 
     @Override

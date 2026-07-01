@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -26,7 +24,7 @@ public class RaiseBlockAction extends BaseSpellAction
 {
     private int verticalSearchDistance;
     private List<BlockFace> directions;
-    private Deque<WeightedPair<Integer>> slopeProbability;
+    private List<WeightedPair<Integer>> slopeProbability;
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
     private int maxHeight;
@@ -36,7 +34,7 @@ public class RaiseBlockAction extends BaseSpellAction
         super.initialize(spell, parameters);
 
         if (parameters.contains("slopes")) {
-            slopeProbability = new ArrayDeque<>();
+            slopeProbability = new ArrayList<>();
             RandomUtils.populateIntegerProbabilityMap(slopeProbability, ConfigurationUtils.getConfigurationSection(parameters, "slopes"));
         }
     }

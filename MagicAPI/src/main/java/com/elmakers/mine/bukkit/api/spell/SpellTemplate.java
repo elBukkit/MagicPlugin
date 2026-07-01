@@ -56,12 +56,14 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     double getWorth();
     double getEarns();
     double getRange();
+    double getDamage();
     SpellCategory getCategory();
     long getCastCount();
     void setCastCount(long count);
     String getUsage();
     MaterialAndData getIcon();
     MaterialAndData getDisabledIcon();
+    MaterialAndData getEnabledIcon();
     String getIconURL();
     String getDisabledIconURL();
     @Nullable

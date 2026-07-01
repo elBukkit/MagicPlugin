@@ -1,0 +1,26 @@
+car:
+  name: "&fCar"
+  type: item_display
+  item: car_item
+  # This will cause the config to be reloaded every time a new mob spawns, allowing
+  # the randomization to work
+  reload: true
+  transformation:
+    scale:
+      x: rand(1.5,2.0)
+      y: rand(1.5,2.0)
+      z: rand(1.5,2.0)
+    rotation_left:
+      angle: rand(-180,180)
+      x: 1
+      y: 0
+      z: 0
+    rotation_right:
+      angle: rand(-180,180)
+      x: 0
+      y: 0
+      z: 1
+    translation:
+      x: 0
+      y: rand(-1,0)
+      z: 0

@@ -1,7 +1,6 @@
 airbending:
     inherit: base_bending
     class: airbender
-    migrate_icon: golden_axe
-    icon: wand_icon:19
+    icon: blaze_rod{18019}
     effect_color: 'FFFFFF'
 

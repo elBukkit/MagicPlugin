@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.magic.command.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class NewSessionRequest extends Session {
@@ -20,6 +22,9 @@ public class NewSessionRequest extends Session {
     protected List<String> currencies;
     protected List<String> arenas;
     protected List<String> icons;
+    protected List<String> generators;
+    protected List<String> populators;
+    protected List<String> worlds;
 
     public NewSessionRequest(MageController controller, String type) {
         this.type = type;
@@ -38,6 +43,9 @@ public class NewSessionRequest extends Session {
         currencies = new ArrayList<>(controller.getCurrencyKeys());
         arenas = new ArrayList<>(controller.getArenaKeys());
         icons = new ArrayList<>(controller.getIconKeys());
+        populators = new ArrayList<>(controller.getBlockPopulatorKeys());
+        generators = new ArrayList<>(controller.getChunkGeneratorKeys());
+        worlds = new ArrayList<>(Bukkit.getWorlds().stream().map(org.bukkit.World::getName).toList());
     }
 
     public List<String> getAttributes() {
@@ -150,5 +158,29 @@ public class NewSessionRequest extends Session {
 
     public void setIcons(List<String> icons) {
         this.icons = icons;
+    }
+
+    public List<String> getGenerators() {
+        return generators;
+    }
+
+    public void setGenerators(List<String> generators) {
+        this.generators = generators;
+    }
+
+    public List<String> getPopulators() {
+        return populators;
+    }
+
+    public void setPopulators(List<String> populators) {
+        this.populators = populators;
+    }
+
+    public List<String> getWorlds() {
+        return worlds;
+    }
+
+    public void setWorlds(List<String> worlds) {
+        this.worlds = worlds;
     }
 }

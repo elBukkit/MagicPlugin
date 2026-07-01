@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -22,11 +21,11 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
-import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class ChestPopulator extends MagicChunkPopulator {
-    private final Deque<WeightedPair<Integer>> baseProbability = new ArrayDeque<>();
-    private final Deque<WeightedPair<String>> itemProbability = new ArrayDeque<>();
+public class ChestPopulator extends BaseBlockPopulator {
+    private final List<WeightedPair<Integer>> baseProbability = new ArrayList<>();
+    private final List<WeightedPair<String>> itemProbability = new ArrayList<>();
     private final Set<Material> removeItems = new HashSet<>();
     private boolean clearItems = false;
     private int maxY = 255;
@@ -59,7 +58,7 @@ public class ChestPopulator extends MagicChunkPopulator {
                     Material itemType = Material.valueOf(removeItemKey.toUpperCase());
                     removeItems.add(itemType);
                 } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid material in remove_items list: " + removeItemKey);
+                    getController().getLogger().warning("Invalid material in remove_items list: " + removeItemKey);
                 }
             }
         }
@@ -93,7 +92,7 @@ public class ChestPopulator extends MagicChunkPopulator {
             itemsAdded = new String[itemCount];
             for (int i = 0; i < itemCount; i++) {
                 String wandName = RandomUtils.weightedRandom(itemProbability);
-                ItemStack item = controller.createItem(wandName);
+                ItemStack item = getController().createItem(wandName);
                 if (item != null) {
                     chest.getInventory().addItem(item);
                 } else {
@@ -121,15 +120,15 @@ public class ChestPopulator extends MagicChunkPopulator {
             if (block.getType() == Material.CHEST) {
                 String[] itemsAdded = populateChest(chest);
                 int itemsRemoved = clearChest(chest);
-                if (controller != null) {
+                if (getController() != null) {
                     Location location = block.getLocation();
                     if (clearItems) {
-                        controller.info("Cleared chest at: " + location.getWorld().getName() + "," + location.toVector());
+                        getController().info("Cleared chest at: " + location.getWorld().getName() + "," + location.toVector());
                     } else if (itemsRemoved > 0) {
-                        controller.info("Removed " + itemsRemoved + " items from chest at: " + location.getWorld().getName() + "," + location.toVector());
+                        getController().info("Removed " + itemsRemoved + " items from chest at: " + location.getWorld().getName() + "," + location.toVector());
                     }
                     if (itemsAdded != null && itemsAdded.length > 0) {
-                        controller.info("Added items to chest: " + StringUtils.join(itemsAdded, ", ") + " at "
+                        getController().info("Added items to chest: " + StringUtils.join(itemsAdded, ", ") + " at "
                                 + location.getWorld().getName() + "," + location.toVector());
                     }
                 }

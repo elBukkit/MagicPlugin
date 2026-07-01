@@ -7,4 +7,5 @@ shrink:
   type: spell
   glyph: "\uE9A4"
   vanilla_item: 'red_mushroom{18001}'
+  vanilla_item_enabled: 'red_mushroom{19001}'
   vanilla_item_disabled: 'red_mushroom{18002}'

@@ -1,7 +1,6 @@
 firebending:
     inherit: base_bending
     class: firebender
-    migrate_icon: gold_pickaxe
-    icon: wand_icon:22
+    icon: blaze_rod{18022}
     effect_color: '880000'
 

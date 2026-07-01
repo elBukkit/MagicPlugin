@@ -64,6 +64,8 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     @Nullable
     EntityData damage(Entity entity);
     @Nullable
+    EntityData freeze(Entity entity);
+    @Nullable
     EntityData modify(Entity entity);
     void move(Entity entity);
     void modifyVelocity(Entity entity);

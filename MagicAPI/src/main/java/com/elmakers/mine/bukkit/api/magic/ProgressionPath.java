@@ -14,6 +14,8 @@ public interface ProgressionPath {
     String getKey();
     String getName();
     MaterialAndData getIcon();
+    MaterialAndData getDisabledIcon();
+    MaterialAndData getEnabledIcon();
     boolean requiresSpell(String spellKey);
     boolean hasExtraSpell(String spellKey);
     String getDescription();
@@ -35,6 +37,7 @@ public interface ProgressionPath {
     boolean checkUpgradeRequirements(CasterProperties caster, boolean quiet);
     boolean checkUpgradeRequirements(Wand wand, Mage mage);
     void upgrade(@Nullable Mage mage, @Nullable Wand wand);
+    void upgradeTo(String path, @Nullable Mage mage, @Nullable Wand wand);
     ConfigurationSection getProperties();
     boolean isAutomaticProgression();
 

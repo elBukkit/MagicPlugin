@@ -128,6 +128,8 @@ public interface MageController {
     @Nullable
     ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback);
     @Nullable
+    ItemStack createForItemData(String magicItemKey, ItemUpdatedCallback callback);
+    @Nullable
     ItemStack createGenericItem(String itemKey);
     Wand createUpgrade(String wandKey);
     @Nullable
@@ -188,6 +190,8 @@ public interface MageController {
     Collection<String> getAutoDiscoverRecipeKeys();
     Collection<String> getArenaKeys();
     Collection<String> getArenaTemplateKeys();
+    Collection<String> getBlockPopulatorKeys();
+    Collection<String> getChunkGeneratorKeys();
     @Nullable
     SpellTemplate getSpellTemplate(String key);
     Set<String> getWandPathKeys();
@@ -204,6 +208,8 @@ public interface MageController {
 
     @Nullable
     Schematic loadSchematic(String name);
+    @Nullable
+    Schematic loadSchematic(String name, boolean synchronous);
 
     /**
      * @return Manager of material sets.
@@ -370,6 +376,7 @@ public interface MageController {
      *
      * <p>If so, Magic will work as a passthrough API.
      */
+    @Deprecated
     boolean elementalsEnabled();
 
     /**
@@ -380,6 +387,7 @@ public interface MageController {
      * @param creator The creator of the elemental, may be null.
      * @return False on failure, such as if there are already too many elementals in the world.
      */
+    @Deprecated
     boolean createElemental(Location location, String templateName, CommandSender creator);
 
     /**
@@ -388,6 +396,7 @@ public interface MageController {
      * @param entity The entity to check
      * @return true if this Entity is an Elemental, or part of one.
      */
+    @Deprecated
     boolean isElemental(Entity entity);
 
     /**
@@ -411,6 +420,7 @@ public interface MageController {
      * @param attacker The attacker, initiator of damage. May be a command block or console, or null.
      * @return False if the entity is not a living Elemental.
      */
+    @Deprecated
     boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker);
 
     /**
@@ -422,6 +432,7 @@ public interface MageController {
      * @param scale The new scale
      * @return False if the entity is not an Elemental, or other failure
      */
+    @Deprecated
     boolean setElementalScale(Entity entity, double scale);
 
     /**
@@ -430,6 +441,7 @@ public interface MageController {
      * @param entity The entity representing the Elemental to interrogate
      * @return The scale of the elemental, or 0 on error.
      */
+    @Deprecated
     double getElementalScale(Entity entity);
 
     /**
@@ -889,6 +901,7 @@ public interface MageController {
     Icon getDefaultIcon();
     void onEntitiesLoaded(Chunk chunk, List<Entity> entities);
     boolean onEntityPickupItem(Entity entity, Item item);
+    boolean onEntityDismount(Entity entity);
     Collection<Requirement> getRequirements(ConfigurationSection configuration);
 
     boolean isDebugConfigurationFiles();

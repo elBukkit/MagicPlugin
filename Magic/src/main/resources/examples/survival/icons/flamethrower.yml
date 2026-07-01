@@ -7,4 +7,5 @@ flamethrower:
   type: spell
   glyph: "\uE944"
   vanilla_item: 'campfire{18001}'
+  vanilla_item_enabled: 'campfire{19001}'
   vanilla_item_disabled: 'campfire{18002}'

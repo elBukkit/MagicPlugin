@@ -8,7 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 
-class CurrencyRequirement extends RangedRequirement {
+class CurrencyRequirement extends DoubleRangedRequirement {
     public final String currencyKey;
 
     private CurrencyRequirement(ConfigurationSection configuration, String defaultType) {
@@ -19,7 +19,6 @@ class CurrencyRequirement extends RangedRequirement {
     private CurrencyRequirement(String[] configValues, String defaultType) {
         super(configValues[configValues.length - 1]);
         currencyKey = configValues.length > 1 ? configValues[0] : defaultType;
-
     }
 
     private CurrencyRequirement(String configValue, String defaultType) {

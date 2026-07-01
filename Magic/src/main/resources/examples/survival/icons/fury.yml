@@ -7,4 +7,5 @@ fury:
   type: spell
   glyph: "\uE94D"
   vanilla_item: 'seagrass{18001}'
+  vanilla_item_enabled: 'seagrass{19001}'
   vanilla_item_disabled: 'seagrass{18002}'

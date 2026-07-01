@@ -7,4 +7,5 @@ day:
   type: spell
   glyph: "\uE934"
   vanilla_item: 'honeycomb{18001}'
+  vanilla_item_enabled: 'honeycomb{19001}'
   vanilla_item_disabled: 'honeycomb{18002}'

@@ -1,10 +1,5 @@
 ferrari_item:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:diamond_pickaxe
-    count: 1
-    components:
-      minecraft:unbreakable: '{}'
-      minecraft:custom_name: '"§aFerrari"'
-    schema_version: 1
+  item: diamond_pickaxe
+  name: "&Ferrari"
+  custom_model_data: 18011
+  unbreakable: true

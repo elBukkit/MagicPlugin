@@ -7,4 +7,6 @@ pull:
   type: spell
   glyph: "\uE98F"
   vanilla_item: 'fishing_rod{18001}'
+  vanilla_item_enabled: 'fishing_rod{19001}'
+  vanilla_item_enabled: 'fishing_rod{19001}'
   vanilla_item_disabled: 'fishing_rod{18002}'

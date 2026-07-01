@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
         <artifactId>CompatibilityLib-parent</artifactId>
-        <version>10.11.1-SNAPSHOT</version>
+        <version>11.3-SNAPSHOT</version>
     </parent>
     <artifactId>CompatibilityLib-common</artifactId>
 
@@ -26,6 +26,13 @@
             <artifactId>commons-text</artifactId>
             <version>1.13.0</version>
         </dependency>
+        <!-- Effect library (shaded, also included in Magic) -->
+        <dependency>
+            <groupId>com.elmakers.mine.bukkit</groupId>
+            <artifactId>EffectLib</artifactId>
+            <version>11.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -41,6 +48,10 @@
                         <relocation>
                             <pattern>org.apache</pattern>
                             <shadedPattern>com.elmakers.mine.bukkit.apache</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.slikey</pattern>
+                            <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

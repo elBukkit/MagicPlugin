@@ -1,8 +1,14 @@
 hylian_shield:
   worth: 200.0
   item:
-    ==: org.bukkit.inventory.ItemStack
+    bukkit_class: org.bukkit.inventory.ItemStack
     DataVersion: 4325
     id: minecraft:shield
     count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"gray",pattern:"minecraft:curly_border"},{color:"orange",pattern:"minecraft:flower"},{color:"yellow",pattern:"minecraft:half_horizontal"},{color:"blue",pattern:"minecraft:triangle_top"},{color:"yellow",pattern:"minecraft:stripe_top"},{color:"gray",pattern:"minecraft:border"}]'
+      minecraft:base_color: '"yellow"'
     schema_version: 1
+  name: "&aHylian Shield"
+  lore:
+    - Link's Shield

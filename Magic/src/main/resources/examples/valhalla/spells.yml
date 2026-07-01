@@ -1,6 +1,7 @@
 # Change all spells to earn Valhalla XP instead of magic SP
 override:
   earns_type: valhalla_xp_magic
+  earns_multiplier: 10
 
 # Change the spell shop to open the Valhalla skill tree
 spellshop:

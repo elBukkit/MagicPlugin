@@ -3,12 +3,12 @@ package com.elmakers.mine.bukkit.utility.platform;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
@@ -85,7 +85,7 @@ public interface NBTUtils {
 
     void setByteArray(Object tag, String key, byte[] value);
 
-    void setEmptyList(Object tag, String key);
+    Object setEmptyList(Object tag, String key);
 
     void removeMeta(Object node, String tag);
 
@@ -99,11 +99,19 @@ public interface NBTUtils {
 
     Set<String> getAllKeys(Object tag);
 
-    Collection<Object> getTagList(Object tag, String key);
+    List<Object> getTagList(Object tag, String key);
+
+    List<Integer> getIntList(Object tag, String key);
 
     Object newCompoundTag();
 
-    boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData);
+    boolean setSpawnEggEntityData(ItemStack spawnEgg, EntityType entityType, Object entityData);
+
+    Object getSpawnEggEntityData(ItemStack spawnEgg);
+
+    EntityType getSpawnEggEntityType(ItemStack itemStack);
+
+    void removeSpawnEggEntityData(ItemStack spawnEgg);
 
     boolean saveTagsToItem(ConfigurationSection tags, ItemStack item);
 
@@ -115,8 +123,7 @@ public interface NBTUtils {
 
     boolean addTagsToNBT(Map<String, Object> tags, Object node);
 
-    Object wrapInTag(Object value)
-            throws IllegalAccessException, InvocationTargetException, InstantiationException;
+    Object wrapInTag(Object value);
 
     Set<String> getTagKeys(Object tag);
 
@@ -125,4 +132,8 @@ public interface NBTUtils {
     Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException;
 
     void convertIntegers(Map<String, Object> m);
+
+    Object parseTag(String data);
+
+    Object copyTag(Object tag);
 }

@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.automata;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -14,8 +14,8 @@ import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
 public class AutomatonLevel {
-    private final Deque<WeightedPair<String>> tickSpells;
-    private final Deque<WeightedPair<String>> deathSpells;
+    private final List<WeightedPair<String>> tickSpells;
+    private final List<WeightedPair<String>> deathSpells;
     private final String spellParameters;
     private final Integer delay;
     private final Integer moveRange;
@@ -49,13 +49,13 @@ public class AutomatonLevel {
         }
 
         if (template.contains("cast")) {
-            tickSpells = new ArrayDeque<>();
+            tickSpells = new ArrayList<>();
             RandomUtils.populateStringProbabilityMap(tickSpells, template.getConfigurationSection("cast"), levelIndex, nextLevelIndex, distance);
         } else {
             tickSpells = null;
         }
         if (template.contains("death_cast")) {
-            deathSpells = new ArrayDeque<>();
+            deathSpells = new ArrayList<>();
             RandomUtils.populateStringProbabilityMap(deathSpells, template.getConfigurationSection("death_cast"), levelIndex, nextLevelIndex, distance);
         } else {
             deathSpells = null;

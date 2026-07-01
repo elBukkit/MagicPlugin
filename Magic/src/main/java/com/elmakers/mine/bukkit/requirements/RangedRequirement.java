@@ -2,10 +2,10 @@ package com.elmakers.mine.bukkit.requirements;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-class RangedRequirement {
-    public Double max;
-    public Double min;
-    public Double value;
+abstract class RangedRequirement<T extends Comparable<T>> {
+    public T max;
+    public T min;
+    public T value;
     public boolean inclusive = false;
 
     protected RangedRequirement() {
@@ -15,23 +15,23 @@ class RangedRequirement {
         try {
             if (value.startsWith("<")) {
                 if (value.startsWith("<=")) {
-                    max = Double.parseDouble(value.substring(2));
+                    max = parseValue(value.substring(2));
                     inclusive = true;
                 } else {
-                    max = Double.parseDouble(value.substring(1));
+                    max = parseValue(value.substring(1));
                 }
             } else if (value.startsWith(">")) {
                 if (value.startsWith(">=")) {
-                    min = Double.parseDouble(value.substring(2));
+                    min = parseValue(value.substring(2));
                     inclusive = true;
                 } else {
-                    min = Double.parseDouble(value.substring(1));
+                    min = parseValue(value.substring(1));
                 }
             } else if (value.startsWith("=")) {
-                this.value = Double.parseDouble(value.substring(1));
+                this.value = parseValue(value.substring(1));
             } else {
                 // Default to >= which is what we normally mean
-                this.min = Double.parseDouble(value);
+                this.min = parseValue(value);
                 this.inclusive = true;
             }
         } catch (Exception ignore) {
@@ -40,25 +40,28 @@ class RangedRequirement {
 
     public RangedRequirement(ConfigurationSection configuration) {
         if (configuration.contains("min")) {
-            min = configuration.getDouble("min");
+            min = getValue(configuration, "min");
         }
         if (configuration.contains("max")) {
-            max = configuration.getDouble("max");
+            max = getValue(configuration, "max");
         }
         if (configuration.contains("value")) {
-            value = configuration.getDouble("value");
+            value = getValue(configuration, "value");
         }
         inclusive = configuration.getBoolean("inclusive");
     }
 
-    public boolean check(Double value) {
+    abstract T parseValue(String value);
+    abstract T getValue(ConfigurationSection configuration, String key);
+
+    public boolean check(T value) {
         if (this.value != null && (value == null || !value.equals(this.value))) return false;
         if (inclusive)  {
-            if (this.min != null && (value == null || value < this.min)) return false;
-            if (this.max != null && (value != null && value > this.max)) return false;
+            if (this.min != null && (value == null || value.compareTo(this.min) < 0)) return false;
+            if (this.max != null && (value != null && value.compareTo(this.max) > 0)) return false;
         } else {
-            if (this.min != null && (value == null || value <= this.min)) return false;
-            if (this.max != null && (value != null && value >= this.max)) return false;
+            if (this.min != null && (value == null || value.compareTo(this.min) <= 0)) return false;
+            if (this.max != null && (value != null && value.compareTo(this.max) >= 0)) return false;
         }
         return true;
     }

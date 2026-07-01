@@ -1,10 +1,10 @@
 mutant_captain:
   type: piglin_brute
   item: iron_sword
-  chestplate: gold_chestplate
-  leggings: gold_leggings
-  helmet: gold_helmet
-  boots: gold_boots
+  chestplate: golden_chestplate
+  leggings: golden_leggings
+  helmet: golden_helmet
+  boots: golden_boots
   health: 50
   default_drops: false
   transformable: false

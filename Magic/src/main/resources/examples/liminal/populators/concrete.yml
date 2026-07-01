@@ -1,0 +1,34 @@
+concrete_tower:
+  class: Tower
+  blocks: concrete_tower
+  height: 32 | 128
+  taper: 0 | 1
+  taper_start: 0.5 | 0.75
+  width: 24 | 48
+  noise: 0.01 | 0.75
+  solid_amount: 0.2 | 0.8
+
+concrete_food:
+  class: Crops
+  border: pale_oak_pressure_plate
+  crops: carrots,potatoes
+  support: white_concrete
+  soil: glowstone
+  age: 0.2 | 1
+  width: 1 | 3
+  position: 0 | 14
+
+concrete_portal:
+  class: EndGateway
+  target_world: world_pools
+  height: 10
+  width: 8
+
+concrete_tunnel:
+  class: Tunnel
+  width: 1 | 8
+  height: 2 | 10
+
+concrete_car:
+  class: Spawn
+  types: car

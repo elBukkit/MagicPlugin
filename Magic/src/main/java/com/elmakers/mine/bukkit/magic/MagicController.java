@@ -49,6 +49,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -154,7 +155,6 @@ import com.elmakers.mine.bukkit.economy.LevelCurrency;
 import com.elmakers.mine.bukkit.economy.ManaCurrency;
 import com.elmakers.mine.bukkit.economy.SpellPointCurrency;
 import com.elmakers.mine.bukkit.economy.VaultCurrency;
-import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.PermissionsTeamProvider;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.EssentialsController;
@@ -254,6 +254,7 @@ import com.elmakers.mine.bukkit.tasks.MageLoadTask;
 import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MagicBlockUpdateTask;
+import com.elmakers.mine.bukkit.tasks.MagicMobUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
 import com.elmakers.mine.bukkit.tasks.MigrationTask;
 import com.elmakers.mine.bukkit.tasks.PostStartupLoadTask;
@@ -507,6 +508,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private BukkitTask logWatchdogTimer = null;
     private Plugin plugin = null;
     private int magicBlockUpdateFrequency = 1;
+    private int magicMobUpdateFrequency = 1;
     private int mageUpdateFrequency = 5;
     private int workFrequency = 1;
     private int undoFrequency = 10;
@@ -564,7 +566,6 @@ public class MagicController implements MageController, ChunkLoadListener {
     private AnvilController anvil = null;
     private MapController maps = null;
     private DynmapController dynmap = null;
-    private ElementalsController elementals = null;
     private CitizensController citizens = null;
     private BlockController blockController = null;
     private HangingController hangingController = null;
@@ -831,11 +832,8 @@ public class MagicController implements MageController, ChunkLoadListener {
             throws PluginNotLoadedException, NoSuchMageException {
         checkNotNull(mageId);
 
-        if (!loaded) {
-            if (entity instanceof Player) {
-                getLogger().warning("Player data request for " + mageId + " (" + commandSender.getName() + ") failed, plugin not loaded yet");
-            }
-
+        if (!loaded && entity instanceof Player) {
+            getLogger().warning("Player data request for " + mageId + " (" + commandSender.getName() + ") failed, plugin not loaded yet");
             throw new PluginNotLoadedException();
         }
 
@@ -1407,33 +1405,63 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Nullable
     @Override
     public Schematic loadSchematic(String schematicName) {
+        return loadSchematic(schematicName, false);
+    }
+
+    @Nullable
+    @Override
+    public Schematic loadSchematic(String schematicName, boolean synchronous) {
         if (schematicName == null || schematicName.length() == 0) return null;
 
-        if (schematics.containsKey(schematicName)) {
-            WeakReference<Schematic> schematic = schematics.get(schematicName);
-            if (schematic != null) {
-                Schematic cached = schematic.get();
-                if (cached != null) {
-                    return cached;
+        Schematic schematic = null;
+        InputStream inputSchematic = null;
+        synchronized (schematics) {
+            if (schematics.containsKey(schematicName)) {
+                WeakReference<Schematic> schematicReference = schematics.get(schematicName);
+                if (schematicReference != null) {
+                    schematic = schematicReference.get();
+                }
+            }
+            if (schematic == null) {
+                inputSchematic = findSchematic(schematicName, "schem");
+                if (inputSchematic != null) {
+                    schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
+                    schematics.put(schematicName, new WeakReference<>(schematic));
+                } else {
+                    inputSchematic = findSchematic(schematicName, "nbt");
+                    if (inputSchematic != null) {
+                        schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
+                        schematics.put(schematicName, new WeakReference<>(schematic));
+                    }
                 }
             }
         }
-        final InputStream inputSchematic = findSchematic(schematicName, "schem");
-        if (inputSchematic != null) {
-            com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
-            schematics.put(schematicName, new WeakReference<>(schematic));
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                try {
-                    CompatibilityLib.getSchematicUtils().loadSchematic(inputSchematic, schematic, getLogger());
-                    info("Finished loading schematic");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
 
-            return schematic;
+        if (inputSchematic != null && schematic != null) {
+            final InputStream loadInputSchematic = inputSchematic;
+            final com.elmakers.mine.bukkit.block.Schematic loadSchematic = (com.elmakers.mine.bukkit.block.Schematic)schematic;
+            Runnable loadTask = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        CompatibilityLib.getSchematicUtils().loadSchematic(loadInputSchematic, loadSchematic, getLogger());
+                        info("Finished loading schematic synchronously");
+                    } catch (Exception ex) {
+                        getLogger().warning("Failed to load schematic: " + schematicName);
+                    }
+                    try {
+                        loadInputSchematic.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+            };
+            if (synchronous) {
+                loadTask.run();
+            } else {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, loadTask);
+            }
         }
-        return null;
+        return schematic;
     }
 
     @Override
@@ -1509,10 +1537,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         return schematicNames;
     }
 
-    /*
-     * Saving and loading
-     */
-    public void initialize() {
+    public void initializeControllers() {
         warpController = new WarpController(this);
         kitController = new KitController(this);
         crafting = new CraftingController(this);
@@ -1529,10 +1554,16 @@ public class MagicController implements MageController, ChunkLoadListener {
         requirementsController = new RequirementsController(this);
         worldController = new WorldController(this);
         arenaController = new ArenaController(this);
-        arenaController.start();
         if (CompatibilityLib.hasStatistics() && !CompatibilityLib.hasJumpEvent()) {
             jumpController = new JumpController(this);
         }
+    }
+
+    /*
+     * Saving and loading
+     */
+    public void initialize() {
+        initializeControllers();
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         examplesFolder.mkdirs();
 
@@ -1651,7 +1682,6 @@ public class MagicController implements MageController, ChunkLoadListener {
                             valueMap.put("Dynmap", controller.hasDynmap ? 1 : 0);
                             valueMap.put("Factions", controller.factionsManager.isEnabled() ? 1 : 0);
                             valueMap.put("WorldGuard", controller.worldGuardManager.isEnabled() ? 1 : 0);
-                            valueMap.put("Elementals", controller.elementalsEnabled() ? 1 : 0);
                             valueMap.put("Citizens", controller.citizens != null ? 1 : 0);
                             valueMap.put("CommandBook", controller.hasCommandBook ? 1 : 0);
                             valueMap.put("PvpManager", controller.pvpManager.isEnabled() ? 1 : 0);
@@ -2144,7 +2174,17 @@ public class MagicController implements MageController, ChunkLoadListener {
         logger.setContext(null);
         log("Loaded " + magicBlockTemplates.size() + " automata templates");
 
-        // Load worlds, which may use mobs, blocks or spells
+        logger.setContext("populators");
+        loadPopulators(loader.getPopulators());
+        logger.setContext(null);
+        log("Loaded " + worldController.getPopulatorKeys().size() + " block populators");
+
+        logger.setContext("generators");
+        loadGenerators(loader.getGenerators());
+        logger.setContext(null);
+        log("Loaded " + worldController.getGeneratorKeys().size() + " chunk generators");
+
+        // Load worlds, which may use mobs, generators, blocks or spells
         logger.setContext("worlds");
         loadWorlds(loader.getWorlds());
         logger.setContext(null);
@@ -3049,6 +3089,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
     }
 
+    public void tickMagicMobs() {
+        mobs.tick();
+    }
+
     @Override
     @Nullable
     @Deprecated
@@ -3524,7 +3568,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         castManagers.clear();
         playerWarpManagers.clear();
         targetingProviders.clear();
-        registeredAttributes.clear();
+
+        // Specifically avoiding clearing attributes so we don't have
+        // load-order issues when reloading
+        // registeredAttributes.clear();
     }
 
     protected void registerHandlers(ConfigurationSection configuration) {
@@ -3645,7 +3692,15 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
     }
 
+    private void registerPlayerAttribute(String attribute) {
+        registeredAttributes.add(attribute);
+        registeredAttributes.add("target_" + attribute);
+    }
+
     private void finalizeAttributes() {
+        for (Attribute entityAttribute : Attribute.values()) {
+            registerPlayerAttribute(entityAttribute.name().toLowerCase());
+        }
         registeredAttributes.addAll(builtinMageAttributes);
         registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(builtinTargetAttributes);
@@ -5051,6 +5106,30 @@ public class MagicController implements MageController, ChunkLoadListener {
         worldController.loadWorlds(properties);
     }
 
+    public void loadPopulators(ConfigurationSection properties) {
+        Set<String> generatorKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : generatorKeys) {
+            logger.setContext("populators." + key);
+            ConfigurationSection populatorConfig = resolveConfiguration(key, properties, templateConfigurations);
+            populatorConfig = MagicConfiguration.getKeyed(this, populatorConfig, "populator", key);
+            properties.set(key, populatorConfig);
+        }
+        worldController.loadPopulators(properties);
+    }
+
+    public void loadGenerators(ConfigurationSection properties) {
+        Set<String> generatorKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : generatorKeys) {
+            logger.setContext("generators." + key);
+            ConfigurationSection generatorConfig = resolveConfiguration(key, properties, templateConfigurations);
+            generatorConfig = MagicConfiguration.getKeyed(this, generatorConfig, "generator", key);
+            properties.set(key, generatorConfig);
+        }
+        worldController.loadGenerators(properties);
+    }
+
     @Override
     public void timeSkipped(World changedWorld, long skippedAmount) {
         for (MagicWorld world : worldController.getWorlds()) {
@@ -5100,37 +5179,39 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Override
+    @Deprecated
     public boolean elementalsEnabled() {
-        return (elementals != null);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean createElemental(Location location, String templateName, CommandSender creator) {
-        return elementals.createElemental(location, templateName, creator);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean isElemental(Entity entity) {
-        if (elementals == null || entity.getType() != EntityType.FALLING_BLOCK) return false;
-        return elementals.isElemental(entity);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker) {
-        if (elementals == null) return false;
-        return elementals.damageElemental(entity, damage, fireTicks, attacker);
+        return false;
     }
 
     @Override
+    @Deprecated
     public boolean setElementalScale(Entity entity, double scale) {
-        if (elementals == null) return false;
-        return elementals.setElementalScale(entity, scale);
+        return false;
     }
 
     @Override
+    @Deprecated
     public double getElementalScale(Entity entity) {
-        if (elementals == null) return 0;
-        return elementals.getElementalScale(entity);
+        return 1;
     }
 
     @Nullable
@@ -5315,9 +5396,9 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (target instanceof Player) {
             return display ? ((Player) target).getDisplayName() : target.getName();
         }
-
-        if (isElemental(target)) {
-            return "Elemental";
+        EntityData mob = getMob(target);
+        if (mob != null && mob.getName() != null) {
+            return mob.getName();
         }
 
         if (display) {
@@ -5709,6 +5790,11 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Nullable
+    public ItemStack createForItemData(String magicItemKey, ItemUpdatedCallback callback) {
+        return createItem(magicItemKey, null, false, callback, false, false);
+    }
+
+    @Nullable
     @Override
     public ItemStack createItem(String magicItemKey, Mage mage) {
         return createItem(magicItemKey, mage, false, null);
@@ -5734,6 +5820,11 @@ public class MagicController implements MageController, ChunkLoadListener {
 
     @Nullable
     public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback, boolean disabled) {
+        return createItem(magicItemKey, mage, brief, callback, disabled, true);
+    }
+
+    @Nullable
+    public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback, boolean disabled, boolean lookupGeneric) {
         ItemStack itemStack = null;
         if (magicItemKey == null || magicItemKey.isEmpty()) {
             if (callback != null) {
@@ -5939,12 +6030,17 @@ public class MagicController implements MageController, ChunkLoadListener {
         // Final fallback, may be a plain item without any data, a
         // custom item key, or some form of MaterialAnData
         // also as some fallbacks for wands and classes wtihout a prefix
+        boolean debug = MaterialAndData.DEBUG;
         if (itemStack == null && items != null) {
             try {
+                // Prevent debug errors unless we get to the end of the method with creating an item
+                MaterialAndData.DEBUG = false;
+
                 // try generic item first
-                ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback);
+                ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback, lookupGeneric);
                 if (genericItem != null) {
                     // NOTE: getGenericItemStack calls the callback and sets the amount.
+                    MaterialAndData.DEBUG = debug;
                     return genericItem;
                 }
 
@@ -5978,7 +6074,14 @@ public class MagicController implements MageController, ChunkLoadListener {
                         }
                     }
                 }
+
+                // Restore debug state, print message on failure
+                MaterialAndData.DEBUG = debug;
+                if (debug && itemStack == null) {
+                    getLogger().log(Level.WARNING, "Invalid item key: " + magicItemKey);
+                }
             } catch (Exception ex) {
+                MaterialAndData.DEBUG = debug;
                 getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
             }
         }
@@ -6030,14 +6133,16 @@ public class MagicController implements MageController, ChunkLoadListener {
         return spawnEgg;
     }
 
-    protected ItemStack getGenericItemStack(String magicItemKey, int amount, ItemUpdatedCallback callback) {
-        ItemData customItem = items.get(magicItemKey);
-        if (customItem != null) {
-            ItemStack itemStack = customItem.getItemStack(amount);
-            if (callback != null) {
-                callback.updated(itemStack);
+    protected ItemStack getGenericItemStack(String magicItemKey, int amount, ItemUpdatedCallback callback, boolean allowCustom) {
+        if (allowCustom) {
+            ItemData customItem = items.get(magicItemKey);
+            if (customItem != null) {
+                ItemStack itemStack = customItem.getItemStack(amount);
+                if (callback != null) {
+                    callback.updated(itemStack);
+                }
+                return itemStack;
             }
-            return itemStack;
         }
         MaterialAndData item = new MaterialAndData(magicItemKey);
         if (item.isValid()) {
@@ -6051,7 +6156,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     public ItemStack createGenericItem(String key) {
         ConfigurationSection template = getWandTemplateConfiguration(key);
         if (template == null || !template.contains("icon")) {
-            return getGenericItemStack(key, 1, null);
+            return getGenericItemStack(key, 1, null, true);
         }
         MaterialAndData icon = ConfigurationUtils.toMaterialAndData(template.getString("icon"));
         ItemStack item = icon.getItemStack(1);
@@ -6559,7 +6664,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Override
     @Nullable
     public com.elmakers.mine.bukkit.entity.EntityData getMob(String key) {
-        if (key == null) return null;
+        if (key == null || key.isEmpty() || key.equals("none")) return null;
 
         // This null check is hopefully temporary, but deals with actions that look up a mob during interrogation.
         com.elmakers.mine.bukkit.entity.EntityData mob = mobs == null ? null : mobs.get(key);
@@ -7486,6 +7591,16 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Override
+    public Collection<String> getBlockPopulatorKeys() {
+        return worldController.getPopulatorKeys();
+    }
+
+    @Override
+    public Collection<String> getChunkGeneratorKeys() {
+        return worldController.getGeneratorKeys();
+    }
+
+    @Override
     public Collection<String> getAutoDiscoverRecipeKeys() {
         return crafting.getAutoDiscoverRecipeKeys();
     }
@@ -8218,22 +8333,6 @@ public class MagicController implements MageController, ChunkLoadListener {
             getLogger().info("dynmap found, integrating.");
         }
 
-        // Try to link to Elementals:
-        try {
-            Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
-            if (elementalsPlugin != null && elementalsPlugin.isEnabled()) {
-                elementals = new ElementalsController(elementalsPlugin);
-            } else {
-                elementals = null;
-            }
-        } catch (Throwable ex) {
-            getLogger().warning(ex.getMessage());
-        }
-
-        if (elementals != null) {
-            getLogger().info("Elementals found, integrating.");
-        }
-
         // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not
         // present
         hasShopkeepers = pluginManager.isPluginEnabled("Shopkeepers");
@@ -8422,6 +8521,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         final MagicBlockUpdateTask blockTask = new MagicBlockUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, magicBlockUpdateFrequency);
 
+        // Set up the Mob timer
+        final MagicMobUpdateTask mobsTask = new MagicMobUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mobsTask, 0, magicMobUpdateFrequency);
+
         // Set up the Update check timer
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
@@ -8480,6 +8583,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
         magicBlockUpdateFrequency = properties.getInt("magic_block_update_frequency", magicBlockUpdateFrequency);
+        magicMobUpdateFrequency = properties.getInt("magic_mob_update_frequency", magicMobUpdateFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
         pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
@@ -8947,6 +9051,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         } else {
             log("Skin-based spell icons disabled");
         }
+        arenaController.load(properties.getBoolean("enable_arenas"));
 
         // Set up sandbox config update timer
         int configUpdateInterval = properties.getInt("config_update_interval");
@@ -9223,6 +9328,11 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Override
     public boolean onEntityPickupItem(Entity entity, Item item) {
         return playerController.onEntityPickupItem(entity, item);
+    }
+
+    @Override
+    public boolean onEntityDismount(Entity entity) {
+        return mobs.onEntityDismount(entity);
     }
 
     @Override

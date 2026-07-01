@@ -1,11 +1,11 @@
 warlockspawner:
   worth: 50000.0
+  name: Warlock Spawner
   item:
-    ==: org.bukkit.inventory.ItemStack
+    bukkit_class: org.bukkit.inventory.ItemStack
     DataVersion: 4325
     id: minecraft:spawner
     count: 1
     components:
-      minecraft:custom_data: '{BlockEntityTag:{Delay:100,MaxNearbyEntities:5,MaxSpawnDelay:500,MinSpawnDelay:200,RequiredPlayerRange:12,SpawnCount:1,SpawnData:{BukkitValues:{"magic:magicmob":"warlock"},id:"minecraft:zombie"},SpawnPotentials:[],SpawnRange:8},display:{Name:''{"text":"Warlock
-        Spawner"}''}}'
+      minecraft:block_entity_data: '{Delay:100s,MaxNearbyEntities:5s,MaxSpawnDelay:500s,MinSpawnDelay:200s,RequiredPlayerRange:12s,SpawnCount:1s,SpawnData:{entity:{id:"minecraft:zombie"}},SpawnPotentials:[],SpawnRange:8s,id:"minecraft:mob_spawner"}'
     schema_version: 1

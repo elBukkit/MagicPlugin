@@ -7,4 +7,5 @@ rubberize:
   type: spell
   glyph: "\uE99E"
   vanilla_item: 'slime_block{18001}'
+  vanilla_item_enabled: 'slime_block{19001}'
   vanilla_item_disabled: 'slime_block{18002}'

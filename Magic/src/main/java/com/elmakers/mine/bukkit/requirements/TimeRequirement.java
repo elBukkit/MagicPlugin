@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-class TimeRequirement extends RangedRequirement {
+class TimeRequirement extends DoubleRangedRequirement {
     public TimeRequirement(String value, Logger logger) {
         try {
             if (value.startsWith("<")) {

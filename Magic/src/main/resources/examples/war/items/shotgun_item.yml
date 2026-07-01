@@ -1,11 +1,5 @@
 shotgun_item:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:diamond_pickaxe
-    count: 1
-    components:
-      minecraft:custom_model_data: '{floats:[18004.0f]}'
-      minecraft:unbreakable: '{}'
-      minecraft:custom_name: '"§aShotgun"'
-    schema_version: 1
+  item: diamond_pickaxe
+  name: "&aShotgun"
+  custom_model_data: 18004
+  unbreakable: true

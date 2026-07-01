@@ -30,8 +30,12 @@ import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 
+import de.slikey.effectlib.util.ColorUtils;
+
 /**
  * This was originally part of EffectLib, but I wanted to make an independent copy to use for Magic.
+ * CompatibilityLib now uses EffectLib so it would be nice to merge these. It'd probably have to become
+ * non-static, however, due to the special-cased creation of TranslatingConfigurationSection.
  */
 public class ConfigUtils {
 
@@ -89,7 +93,6 @@ public class ConfigUtils {
 
         return configMap;
     }
-
 
     public static void set(ConfigurationSection node, String path, Object value) {
         if (value == null) {
@@ -701,20 +704,7 @@ public class ConfigUtils {
         } else if (o instanceof Long) {
             return Color.fromRGB((int) (long) (Long) o);
         } else if (o instanceof String) {
-            try {
-                String s = (String)o;
-                if (s.length() == 0) return null;
-                if (s.charAt(0) == '#') {
-                    s = s.substring(1);
-                }
-                if (s.startsWith("rand")) {
-                    return Color.fromRGB(random.nextInt(16777216));
-                }
-                int rgb = Integer.parseInt(s, 16);
-                return Color.fromRGB(rgb);
-            } catch (NumberFormatException ex) {
-                return null;
-            }
+            return ColorUtils.parse((String)o);
         } else if (o instanceof ConfigurationSection) {
             ConfigurationSection config = (ConfigurationSection)o;
             ColorHD color = new ColorHD(config);

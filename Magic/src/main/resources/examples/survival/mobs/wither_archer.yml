@@ -1,0 +1,4 @@
+wither_archer:
+  type: wither_skeleton
+  item: bow
+  name: Wither Archer

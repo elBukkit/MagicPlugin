@@ -1,0 +1,4 @@
+gatling:
+  vanilla_item: 'chain{18001}'
+  vanilla_item_enabled: 'chain{19001}'
+  vanilla_item_disabled: 'chain{18002}'

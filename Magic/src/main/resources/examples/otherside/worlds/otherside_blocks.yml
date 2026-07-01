@@ -3,10 +3,7 @@ otherside_blocks:
   time_offset: 12000
   world: world_other
   autoload: true
-  chunk_generate:
-    replace:
-      class: ReplacePopulator
-      replace: otherside
+  populators: otherside_replace
 
 otherside_blocks_backup:
   inherit: otherside_blocks

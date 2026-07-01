@@ -41,14 +41,25 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
     }
 
     protected boolean hasPermission(Player player, Location location, RoleFlag flag, boolean sendMessage) {
-        LandWorld landWorld = lands.getWorld(player.getWorld());
-        LandPlayer landPlayer = lands.getLandPlayer(player.getUniqueId());
-
-        if (landWorld != null) {
-            return landWorld.hasRoleFlag(landPlayer, location, flag, null, sendMessage);
+        if (player == null) {
+            return true;
         }
 
-        return true;
+        LandPlayer landPlayer = lands.getLandPlayer(player.getUniqueId());
+        LandWorld landWorld = lands.getWorld(player.getWorld());
+
+        // If the world has not enabled the claiming feature
+        if (landWorld == null) {
+            return true;
+        }
+
+        if (landPlayer != null) {
+            // If the player is online, check if the player has bypassed permissions.
+            return landWorld.hasRoleFlag(landPlayer, location, flag, null, sendMessage);
+        } else {
+            // If the player is offline, it does not check whether the player has bypassed permissions.
+            return landWorld.hasRoleFlag(player.getUniqueId(), location, flag);
+        }
     }
 
     @Override
@@ -93,9 +104,9 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
             Player sourcePlayer = (Player) source;
 
             if (target instanceof Monster) {
-                return hasPermission(sourcePlayer, target.getLocation(), Flags.ATTACK_MONSTER, true);
+                return hasPermission(sourcePlayer, target.getLocation(), Flags.ATTACK_MONSTER, false);
             } else if (target instanceof Animals) {
-                return hasPermission(sourcePlayer, target.getLocation(), Flags.ATTACK_ANIMAL, true);
+                return hasPermission(sourcePlayer, target.getLocation(), Flags.ATTACK_ANIMAL, false);
             } else {
                 return hasPermission(sourcePlayer, target.getLocation(), Flags.INTERACT_GENERAL, false);
             }
@@ -110,6 +121,9 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
     @Override
     public Collection<PlayerWarp> getWarps(@Nonnull Player player) {
         LandPlayer landPlayer = lands.getLandPlayer(player.getUniqueId());
+        if (landPlayer == null) {
+            return null;
+        }
 
         Collection<? extends Land> joinedLands = landPlayer.getLands();
 
@@ -119,7 +133,9 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
         Collection<PlayerWarp> warps = new ArrayList<>();
         for (Land joinedLand : joinedLands) {
             Location location = joinedLand.getSpawn();
-            if (location != null) {
+            if (location != null
+                    && hasPermission(player, location, Flags.SPAWN_TELEPORT, false)
+                    && hasPermission(player, location, Flags.LAND_ENTER, false)) {
                 PlayerWarp warp = new PlayerWarp(joinedLand.getName(), location);
                 warps.add(warp);
             }

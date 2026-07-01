@@ -7,4 +7,5 @@ stash:
   type: spell
   glyph: "\uE9B1"
   vanilla_item: 'ender_chest{18001}'
+  vanilla_item_enabled: 'ender_chest{19001}'
   vanilla_item_disabled: 'ender_chest{18002}'

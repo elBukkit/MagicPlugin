@@ -7,4 +7,5 @@ sweep:
   type: spell
   glyph: "\uE9EB"
   vanilla_item: 'dried_kelp{18001}'
+  vanilla_item_enabled: 'dried_kelp{19001}'
   vanilla_item_disabled: 'dried_kelp{18002}'

@@ -7,4 +7,5 @@ frost:
   type: spell
   glyph: "\uE94C"
   vanilla_item: 'snowball{18001}'
+  vanilla_item_enabled: 'snowball{19001}'
   vanilla_item_disabled: 'snowball{18002}'

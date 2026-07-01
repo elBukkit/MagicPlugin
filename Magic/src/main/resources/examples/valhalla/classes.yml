@@ -1,4 +1,0 @@
-mage:
-  path:
-  mana_max: valhalla_level_magic * 10 + 50
-  mana_regeneration: valhalla_level_magic * 2 + 5

@@ -1,71 +1,231 @@
 package com.elmakers.mine.bukkit.world.populator;
 
-import java.util.Random;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Nullable;
 
-import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.world.BlockResult;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 
-public abstract class BaseBlockPopulator extends MagicChunkPopulator {
-    private Integer maxY = null;
-    private Integer minY = null;
-    private Integer maxAirY = null;
-    private int cooldown;
-    private long lastPopulate;
-    private Set<Biome> biomes;
-    private Set<Biome> notBiomes;
+public abstract class BaseBlockPopulator extends BlockPopulator {
+    public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
-    @Override
-    public boolean load(ConfigurationSection config, MagicController controller) {
-        if (!super.load(config, controller)) {
+    protected MagicWorld world;
+
+    public boolean load(MagicWorld world, ConfigurationSection config) {
+        this.world = world;
+        return onLoad(config);
+    }
+
+    public abstract boolean onLoad(ConfigurationSection config);
+
+    protected void logBlockRule(String message) {
+        getController().info(message);
+    }
+
+    public MagicController getController() {
+        return world.getController();
+    }
+
+    protected Logger getLogger() {
+        return world.getLogger();
+    }
+
+    public static BaseBlockPopulator parsePopulator(MagicWorld world, ConfigurationSection config) {
+        ConfigurationSection populatorConfig = config.getConfigurationSection("populator");
+        if (populatorConfig == null) {
+            return loadPopulator(world, populatorConfig.getString("populator", ""));
+        }
+        return loadPopulator(world, null, populatorConfig);
+    }
+
+    public static List<BaseBlockPopulator> loadPopulators(MagicWorld world, ConfigurationSection config) {
+        ConfigurationSection populatorConfig = config.getConfigurationSection("populators");
+        if (populatorConfig == null) {
+            populatorConfig = config.getConfigurationSection("chunk_generate");
+        }
+        if (populatorConfig == null) {
+            return loadFromList(world, ConfigurationUtils.getStringList(config, "populators"));
+        }
+        return loadFromSections(world, populatorConfig);
+    }
+
+    public static BaseBlockPopulator loadPopulator(MagicWorld world, String key, ConfigurationSection config) {
+        MagicController controller = world.getController();
+        if (config == null) {
+            controller.getLogger().warning("Was expecting a properties section in world populators config for key '" + world.getName());
+            return null;
+        }
+        if (!config.getBoolean("enabled", true)) {
+            return null;
+        }
+
+        String className = config.getString("class");
+        BaseBlockPopulator populator = BaseBlockPopulator.create(controller, className);
+        if (populator != null) {
+            if (populator.load(world, config)) {
+                controller.info("Adding " + key + " populator to " + world.getName());
+            } else {
+                populator = null;
+            }
+        }
+        if (populator == null) {
+            controller.info("Skipping invalid " + key + " populator for " + world.getName());
+        }
+        return populator;
+    }
+
+    public static BaseBlockPopulator loadPopulator(MagicWorld world, String key) {
+        MagicController controller = world.getController();
+        if (key.isEmpty() || key.equals("none")) return null;
+        ConfigurationSection populatorConfig = controller.getWorlds().getPopulatorConfig(key);
+        if (populatorConfig == null) {
+            controller.getLogger().warning("Invalid block populator: " + key);
+            return null;
+        }
+        return loadPopulator(world, key, populatorConfig);
+    }
+
+    private static List<BaseBlockPopulator> loadFromSections(MagicWorld world, ConfigurationSection populatorConfigs) {
+        List<BaseBlockPopulator> populators = new ArrayList<>();
+        for (String key : populatorConfigs.getKeys(false)) {
+            ConfigurationSection handlerConfig = populatorConfigs.getConfigurationSection(key);
+            BaseBlockPopulator populator = loadPopulator(world, key, handlerConfig);
+            if (populator != null) {
+                populators.add(populator);
+            }
+        }
+        return populators;
+    }
+
+    private static List<BaseBlockPopulator> loadFromList(MagicWorld world, List<String> populatorConfigs) {
+        List<BaseBlockPopulator> populators = new ArrayList<>();
+        if (populatorConfigs == null || populatorConfigs.isEmpty()) return populators;
+        for (String key : populatorConfigs) {
+            BaseBlockPopulator populator = loadPopulator(world, key);
+            if (populator != null) {
+                populators.add(populator);
+            }
+        }
+        return populators;
+    }
+
+    @Nullable
+    public static BaseBlockPopulator create(MageController controller, String className) {
+        if (className == null) return null;
+
+        if (className.indexOf('.') <= 0) {
+            className = BUILTIN_CLASSPATH + "." + className;
+            if (!className.endsWith("Populator")) {
+                className += "Populator";
+            }
+        }
+
+        Class<?> handlerClass = null;
+        try {
+            handlerClass = Class.forName(className);
+        } catch (Throwable ex) {
+            controller.getLogger().log(Level.WARNING, "Error loading block populator: " + className, ex);
+            return null;
+        }
+
+        Object newObject;
+        try {
+            newObject = handlerClass.getDeclaredConstructor().newInstance();
+        } catch (Throwable ex) {
+            controller.getLogger().log(Level.WARNING, "Error loading block populator: " + className, ex);
+            return null;
+        }
+
+        if (newObject == null || !(newObject instanceof BaseBlockPopulator)) {
+            controller.getLogger().warning("Error loading block populator: " + className + ", does it extend MagicBlockPopulator?");
+            return null;
+        }
+
+        return (BaseBlockPopulator)newObject;
+    }
+
+    protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {
+        if (!region.isInRegion(x, y, z)) {
+            getController().info("Trying to set out-of-range block: " + x + "," + y + "," + z);
             return false;
         }
-        maxY = ConfigurationUtils.getOptionalInteger(config, "max_y");
-        minY = ConfigurationUtils.getOptionalInteger(config, "min_y");
-        maxAirY = ConfigurationUtils.getOptionalInteger(config, "max_air_y");
-        cooldown = config.getInt("cooldown", 0);
-        biomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(config, "biomes"), controller.getLogger(), "block populator");
-        notBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(config, "not_biomes"), controller.getLogger(), "block populator");
+        region.setBlockData(x, y, z, blockData);
         return true;
     }
 
-    @Override
-    public void populate(World world, Random random, Chunk chunk) {
-        int minY = this.minY != null ? this.minY : CompatibilityLib.getCompatibilityUtils().getMinHeight(world);
-        int maxY = this.maxY != null ? this.maxY : CompatibilityLib.getCompatibilityUtils().getMaxHeight(world);
-        for (int x = 0; x <= 15; x++) {
-            for (int z = 0; z <= 15; z++) {
-                for (int y = minY; y <= maxY; y++) {
-                    Block block = chunk.getBlock(x,  y, z);
-                    if (maxAirY != null && y > maxAirY && block.getType() == Material.AIR) {
-                        break;
-                    }
-                    if (biomes != null && !biomes.contains(block.getBiome()))
-                        continue;
-                    if (notBiomes != null && notBiomes.contains(block.getBiome()))
-                        continue;
 
-                    long now = System.currentTimeMillis();
-                    if (cooldown > 0 && now < lastPopulate + cooldown)
-                        continue;
-
-                    BlockResult result = populate(block, random);
-                    if (result != BlockResult.SKIP) {
-                        lastPopulate = now;
-                    }
-                }
-            }
-        }
+    protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
+        return searchBlock(worldInfo, region, x, y, z, maxSearch, direction, throughAir, returnAir, material -> material.isAir());
     }
 
-    public abstract BlockResult populate(Block block, Random random);
+    protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughBlocks, boolean returnBlocks, Predicate<Material> materialPredicate) {
+        if (!region.isInRegion(x, y, z)) {
+            return y;
+        }
+        int blockCount = 0;
+        Material material = region.getType(x, y, z);
+        while (((direction > 0 && y < worldInfo.getMaxHeight() - 1) || (direction < 0 && y > worldInfo.getMinHeight() + 1))
+                && materialPredicate.test(material) == throughBlocks
+                && blockCount < maxSearch) {
+            y += direction;
+            blockCount++;
+            material = region.getType(x, y, z);
+        }
+        return throughBlocks == returnBlocks ? y - direction : y;
+    }
+
+    protected int getSolidFloorOrCeiling(boolean isFloor, final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        final int topY = getTopSolidBlock(worldInfo, region, x, y, z);
+        final int solidY;
+        if (isFloor) {
+            solidY = topY;
+        } else {
+            solidY = getSolidBlockAbove(worldInfo, region, x, topY, z);
+        }
+        return solidY;
+    }
+
+    protected int getTopSolidBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, true, material -> material.isSolid());
+    }
+
+    protected int getSolidBlockAbove(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y + 1, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, false, material -> !material.isSolid());
+    }
+
+    protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, false, false);
+    }
+
+    protected int getBottomBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
+        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), -1, true, false);
+    }
+
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key) {
+        return parseBlocks(config, key, null);
+    }
+
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key, String defaultSet) {
+        return world.getController().getWorlds().parseBlocks(world.getName(), config, key, defaultSet);
+    }
+
+    public String getPortalTargetWorld(Location location) {
+        return null;
+    }
 }

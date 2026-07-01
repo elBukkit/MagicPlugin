@@ -72,6 +72,16 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("convertall"))
+        {
+            if (!api.hasPermission(sender, "magic.commands.mitem.convertall")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            boolean check = (args.length > 1 && args[1].equalsIgnoreCase("--check"));
+            return onConvertAll(sender, check);
+        }
+
         if (args[0].equalsIgnoreCase("spawn"))
         {
             if (!api.hasPermission(sender, "magic.commands.mitem.spawn")) {
@@ -126,6 +136,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mitem.", "duplicate");
             addIfPermissible(sender, options, "magic.commands.mitem.", "amount");
             addIfPermissible(sender, options, "magic.commands.mitem.", "save");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "serialize");
             addIfPermissible(sender, options, "magic.commands.mitem.", "delete");
             addIfPermissible(sender, options, "magic.commands.mitem.", "destroy");
             addIfPermissible(sender, options, "magic.commands.mitem.", "clean");
@@ -135,6 +146,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mitem.", "damage");
             addIfPermissible(sender, options, "magic.commands.mitem.", "skull");
             addIfPermissible(sender, options, "magic.commands.mitem.", "spawn");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "convertall");
         }
 
         if (args.length == 2)
@@ -318,6 +330,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         {
             return onItemSave(sender, player, item, args);
         }
+        else if (subCommand.equalsIgnoreCase("serialize"))
+        {
+            return onItemSerialize(sender, player, item, args);
+        }
         else if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc"))
         {
             return onItemDescribe(sender, player, item, args);
@@ -482,14 +498,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemSerialize(CommandSender sender, Player player, ItemStack item) {
-        YamlConfiguration configuration = new YamlConfiguration();
-        configuration.set("item", item);
-        String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
-        sender.sendMessage(itemString);
-        return true;
-    }
-
     public boolean onItemWorth(CommandSender sender, Player player, ItemStack item) {
         MageController controller = api.getController();
         Double worth = controller.getWorth(item);
@@ -623,6 +631,81 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
+    public boolean onConvertAll(CommandSender sender, boolean check) {
+        MageController controller = api.getController();
+        Collection<String> itemKeys = controller.getItemKeys();
+        File itemFolder = new File(controller.getConfigFolder(), "items");
+        int itemCount = 0;
+        int invalidItemCount = 0;
+        for (String itemKey : itemKeys) {
+            ItemData existing = controller.getItem(itemKey);
+            ItemStack item = existing.getItemStack();
+            YamlConfiguration itemConfig = new YamlConfiguration();
+            ConfigurationSection itemSection = itemConfig.createSection(itemKey);
+            boolean invalid = false;
+            if (item == null || item.getType() == Material.AIR) {
+                sender.sendMessage(ChatColor.RED + "Skipping invalid item: " + ChatColor.AQUA + itemKey);
+                invalid = check;
+                itemSection.set("item", "air");
+                itemSection.set("notes", "Item was invalid and could not be converted");
+            } else {
+                if (!item.hasItemMeta()) {
+                    // sender.sendMessage(ChatColor.RED + "Skipping simple item: " + ChatColor.AQUA + itemKey);
+                    continue;
+                }
+                String creatorId = existing.getCreatorId();
+                String creator = existing.getCreator();
+                double worth = existing.getWorth();
+                double earns = existing.getEarns();
+
+                itemSection.set("creator_id", creatorId);
+                itemSection.set("creator", creator);
+                if (worth > 0) {
+                    itemSection.set("worth", worth);
+                }
+                if (existing.hasCustomEarns()) {
+                    itemSection.set("earns", earns);
+                }
+
+                ItemData itemData = new com.elmakers.mine.bukkit.item.ItemData(item, controller);
+                ItemStack itemStack = itemData.save(itemSection);
+                invalid = itemStack.hasItemMeta() || itemSection.contains("tags");
+                if (invalid) {
+                    itemSection.set("notes", "Item has unsupported data, saved as a Bukkit serialized item which may have forward-compatibility issues");
+                }
+            }
+            File targetFolder = itemFolder;
+            if (invalid && check) {
+                targetFolder = new File(targetFolder, "unsupported");
+            } else {
+                targetFolder = new File(targetFolder, "converted");
+            }
+            targetFolder.mkdirs();
+            File itemFile = new File(targetFolder, itemKey + ".yml");
+            try {
+                itemConfig.save(itemFile);
+                if (invalid) {
+                    invalidItemCount++;
+                } else {
+                    itemCount++;
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                sender.sendMessage(ChatColor.RED + "Can't write to file " + itemFile.getName());
+            }
+        }
+        sender.sendMessage(ChatColor.GREEN + "Wrote " + itemCount + " items to: " + itemFolder.getName() + "/converted");
+        if (invalidItemCount > 0) {
+            sender.sendMessage(ChatColor.RED + "Found " + invalidItemCount + " invalid or unsupported items");
+            if (check) {
+                sender.sendMessage(ChatColor.GRAY + "Invalid items were written to " + itemFolder.getName() + "/unsupported");
+            } else {
+                sender.sendMessage(ChatColor.GRAY + "Run again with --check parameter to separate out unsupported files");
+            }
+        }
+        return true;
+    }
+
     public boolean onItemSpawn(CommandSender sender, String[] args) {
         if (!(sender instanceof Player) && args.length < 2) {
             sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "mitem spawn <item> <x> <y> <z> <world>");
@@ -711,7 +794,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters)
+    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters, boolean serialize)
     {
         if (parameters.length < 1) {
             sender.sendMessage("Use: /mitem save <filename> [worth] [earns]");
@@ -766,7 +849,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             itemSection.set("earns", existing.getEarns());
         }
 
-        itemSection.set("item", item);
+        if (serialize) {
+            itemSection.set("item", item);
+        } else {
+            ItemData itemData = new com.elmakers.mine.bukkit.item.ItemData(item, controller);
+            itemData.save(itemSection);
+        }
 
         File itemFolder = new File(controller.getConfigFolder(), "items");
         File itemFile = new File(itemFolder, template + ".yml");
@@ -792,6 +880,16 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(message);
         }
         return true;
+    }
+
+    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters)
+    {
+        return onItemSave(sender, player, item, parameters, false);
+    }
+
+    public boolean onItemSerialize(CommandSender sender, Player player, ItemStack item, String[] parameters)
+    {
+        return onItemSave(sender, player, item, parameters, true);
     }
 
     public boolean onItemName(CommandSender sender, Player player, ItemStack item, String[] parameters)
@@ -964,7 +1062,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         ItemStack newItem = CompatibilityLib.getItemUtils().makeReal(item);
         CompatibilityLib.getCompatibilityUtils().removeItemAttribute(newItem, attribute);
-        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal(), UUID.randomUUID())) {
+        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.name(), UUID.randomUUID())) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";
             }

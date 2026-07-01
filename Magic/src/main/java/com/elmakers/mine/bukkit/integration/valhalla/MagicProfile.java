@@ -31,6 +31,6 @@ public class MagicProfile extends Profile {
 
     @Override
     public Profile getBlankProfile(UUID uuid) {
-        return ProfileRegistry.copyDefaultStats(new MagicProfile(owner, this));
+        return ProfileRegistry.copyDefaultStats(new MagicProfile(uuid, this));
     }
 }

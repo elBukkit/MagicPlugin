@@ -106,6 +106,16 @@ public final class SimpleMaterialSetManager
         return v != null ? v : fallback;
     }
 
+    @Nullable
+    @Override
+    public MaterialSet fromConfig(ConfigurationSection configuration, String key) {
+        if (configuration.isList(key)) {
+            List<String> materialList = configuration.getStringList(key);
+            return createMaterialSetFromStringList(materialList);
+        }
+        return fromConfig(configuration.getString(key));
+    }
+
     @Override
     public MaterialSet fromConfigEmpty(String name) {
         return fromConfig(name, MaterialSets.empty());
@@ -152,7 +162,13 @@ public final class SimpleMaterialSetManager
             negate = false;
         }
 
-        String[] names = StringUtils.split(materialString, ',');
+        String[] names;
+        // TODO: Maybe regex this, or nah
+        if (materialString.contains("[") || materialString.contains("{")) {
+            names = new String[] { materialString };
+        } else {
+            names = StringUtils.split(materialString, ',');
+        }
         MaterialSet created = createMaterialSetFromStringList(Arrays.asList(names));
         return negate ? created.not() : created;
     }
@@ -231,7 +247,7 @@ public final class SimpleMaterialSetManager
             MaterialSet resolved = parseMaterialSet(matName);
             if (resolved != null) {
                 union.add(resolved);
-            } else if (matName.contains("|") || matName.contains(":")) {
+            } else if (matName.contains("|") || matName.contains(":") || matName.contains("[")) {
                 // TODO: Warn on invalid data
                 MaterialAndData material = ConfigurationUtils
                         .toMaterialAndData(matName);

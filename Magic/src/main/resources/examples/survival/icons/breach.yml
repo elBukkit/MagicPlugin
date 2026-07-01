@@ -7,4 +7,5 @@ breach:
   type: spell
   glyph: "\uE91F"
   vanilla_item: 'acacia_door{18001}'
+  vanilla_item_enabled: 'acacia_door{19001}'
   vanilla_item_disabled: 'acacia_door{18002}'

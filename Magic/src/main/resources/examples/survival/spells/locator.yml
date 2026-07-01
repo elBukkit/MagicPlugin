@@ -65,7 +65,7 @@ locator:
     icon_soul: skeleton_skull
     icon_field: wood_door
     icon_spawn: wood_door
-    icon_home: bed
+    icon_home: red_bed
     icon_town: iron_door
     cooldown: 2000
     teleport: false

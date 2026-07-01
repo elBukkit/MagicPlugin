@@ -7,4 +7,5 @@ hat:
   type: spell
   glyph: "\uE95A"
   vanilla_item: 'leather_helmet{18001}'
+  vanilla_item_enabled: 'leather_helmet{19001}'
   vanilla_item_disabled: 'leather_helmet{18002}'

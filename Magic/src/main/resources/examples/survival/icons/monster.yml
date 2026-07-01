@@ -7,4 +7,5 @@ monster:
   type: spell
   glyph: "\uE973"
   vanilla_item: 'rabbit_hide{18001}'
+  vanilla_item_enabled: 'rabbit_hide{19001}'
   vanilla_item_disabled: 'rabbit_hide{18002}'

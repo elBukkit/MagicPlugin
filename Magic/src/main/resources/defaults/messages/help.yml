@@ -188,7 +188,8 @@ help:
     `<li>``<command command="marena configure testing add spawn" text="Add a new player spawn location">`
     `<li>``<command command="marena configure testing lobby" text="Set the lobby location, where players wait before joining">`
     `<li>``<command command="marena configure testing exit" text="Set the exit location">`
-    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Arenas" text="Detailed isntructions, including a mob arena tutorial, on the wiki">`
+    `<li>``<command command="mconfig configure config enable_arenas false" text="Turn off all arena functionality">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Arenas" text="Detailed instructions, including a mob arena tutorial, on the wiki">`
   links: |-
     `<title text="Links">`
     `<li>`Configuration reference: &6https://reference.elmakers.com/
@@ -359,18 +360,19 @@ help:
     `<li>`&dMagic integrates with &bEssentials&f and &bCommandBook&f for `<help topic="warps" text="warps">`
     `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell `<help topic="disguises" text="disguises">`
     `<li>`&dMagic integrates with &bMythicMobs&f for mythic mob spawning
-    `<li>`&dMagic integrates with &b<`help topic="aureliumskills" text="AureliumSkills">`&f for skills, stats and (optionally) mana
+    `<li>`&dMagic integrates with &b<`help topic="auraskills" text="AuraSkills">`&f for skills, stats and (optionally) mana
     `<li>`&dMagic integrates with &b`<help topic="dynmap" text="dynmap">`&f to show warps, spell casts and lost wands on maps
     `<li>`You can use `<help topic="skript" text="Skript">` to react to spell casts, SP earn or other events.
     `<li>`You can use &6`<help topic="placeholders" text="placeholders">` via &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f to show magic properties in various places
     `<li>``<help topic="compatibility" text="Compatibility or issues with other plugins">`
-  aureliumskills: |-
-    `<title text="Aurelium Skills">`
-    `<p>`&dMagic integrates with `<link url="https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/" text="Aurelium Skills">`
-    `<p>`Aurelium Skills stat and skill points can be used as variables in Magic configs.
+  auraskills: |-
+    `<title text="Aura Skills">`
+    `<p>`The plugin formally known as &bAureliumSkills&f
+    `<p>`&dMagic integrates with `<link url="https://www.spigotmc.org/resources/auraskills.81069/" text="Aura Skills">`
+    `<p>`Aura Skills stat and skill points can be used as variables in Magic configs.
     `<p>`Simply use the name of the skill or stat, make sure to uppercase it such as SORCERY.
-    `<p>`Magic will not use Aurelium Skills mana by default, but you can `<command command="mconfig config aurelium_skills.use_mana true" text="turn it on">` if you want.
-    `<p>`Note that you may have progression issues since Aurelium mana will not increase in lockstep with Magic path progression.
+    `<p>`Magic will not use Aura Skills mana by default, but you can `<command command="mconfig config aurelium_skills.use_mana true" text="turn it on">` if you want.
+    `<p>`Note that you may have progression issues since Aura mana will not increase in lockstep with Magic path progression.
     `<p>`So, some additional customization may be required if using AS mana.
   disguises: |-
     `<title text="Disgusies">`
@@ -597,9 +599,10 @@ help:
     `<p>`&6Spell points&f &7(&bSP&7)&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
     `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
     `<p>`This means that once you have more than one spell, using each one frequently is the fastest way to earn SP!
-    `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
+    `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get players going.
     `<p>`Once players have more than one spell they can earn SP much faster by using all of their spells frequently.
     `<li>``<command command="mgive @p sp 1000" text="Give yourself some SP">`
+    `<li>``<command command="mgive @p sp:1000" text="Give yourself SP as an item">`
     `<li>``<command command="mconfig spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="See the wiki for more info">
   paths: |-

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.wand;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -26,6 +25,7 @@ import org.bukkit.util.NumberConversions;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
+import com.elmakers.mine.bukkit.api.item.Icon;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -81,7 +81,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private Set<String> tags;
     private boolean hidden = false;
     private boolean earnsSP = true;
+    private boolean upgradeWandIcon;
     private MaterialAndData icon;
+    private MaterialAndData disabledIcon;
+    private MaterialAndData enabledIcon;
     private MaterialAndData migrateIcon;
     private ConfigurationSection properties;
 
@@ -119,11 +122,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             this.earnsSP = inherit.earnsSP;
             this.levelMap = new TreeMap<>(inherit.levelMap);
             this.icon = inherit.icon;
+            this.disabledIcon = inherit.disabledIcon;
+            this.enabledIcon = inherit.enabledIcon;
             this.migrateIcon = inherit.migrateIcon;
             this.maxMana = inherit.maxMana;
             this.manaRegeneration = inherit.manaRegeneration;
             this.upgradeBroadcast = inherit.upgradeBroadcast;
             this.allowPropertyOverrides = inherit.allowPropertyOverrides;
+            this.upgradeWandIcon = inherit.upgradeWandIcon;
             effects.putAll(inherit.effects);
             allRequiredSpells.addAll(inherit.allRequiredSpells);
             allSpells.addAll(inherit.allSpells);
@@ -150,6 +156,15 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 }
             }
         }
+    }
+
+    protected MaterialAndData loadIcon(MageController controller, ConfigurationSection template, String iconType) {
+        String iconKey = ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), iconType);
+        Icon existingIcon = controller.getIcon(iconKey);
+        if (existingIcon != null) {
+            return (MaterialAndData)existingIcon.getItemMaterial(controller);
+        }
+        return ConfigurationUtils.toMaterialAndData(iconKey);
     }
 
     protected void load(MageController controller, String key, ConfigurationSection template) {
@@ -198,8 +213,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
 
         // Icon information for upgrading/migrating wands
-        icon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled()));
-        migrateIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "migrate_icon"));
+        icon = loadIcon(controller, template, "icon");
+        migrateIcon = loadIcon(controller, template, "migrate_icon");
+        disabledIcon = loadIcon(controller, template, "disabled_icon");
+        enabledIcon = loadIcon(controller, template, "enabled_icon");
+        upgradeWandIcon = template.getBoolean("upgrade_wand_icon", upgradeWandIcon);
 
         // Validate requirements - disabling a required spell disables the upgrade.
         for (PrerequisiteSpell requiredSpell : requiredSpells) {
@@ -608,6 +626,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return icon;
     }
 
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon() {
+        return disabledIcon == null ? icon : disabledIcon;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getEnabledIcon() {
+        return enabledIcon == null ? icon : enabledIcon;
+    }
+
     public void upgraded(MageController controller, com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {
         CommandSender sender = Bukkit.getConsoleSender();
         Location location = null;
@@ -691,7 +719,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (levelMap == null) return false;
 
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
-        Deque<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(properties);
+        List<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(properties);
 
         Mage mage = properties.getMage();
         if (mage != null && mage.getDebugLevel() > 0) {
@@ -832,6 +860,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return pathKey;
     }
 
+    @Override
+    public final void upgradeTo(String newPath, com.elmakers.mine.bukkit.api.magic.Mage mage, com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        doUpgrade(newPath, mage, wand);
+    }
+
     protected void upgradeTo(CasterProperties properties) {
         properties.setPath(getKey());
 
@@ -888,7 +921,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private void upgrade(@Nonnull com.elmakers.mine.bukkit.api.wand.Wand wand, @Nonnull WandUpgradePath newPath) {
         if (this.icon != null && this.icon.equals(wand.getIcon())) {
             com.elmakers.mine.bukkit.api.block.MaterialAndData newIcon = newPath.getIcon();
-            if (newIcon != null) {
+            if (newIcon != null && newPath.upgradeWandIcon) {
                 wand.setIcon(newIcon);
             }
         }
@@ -896,16 +929,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public final void upgrade(@Nullable Mage mage, @Nullable com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        doUpgrade(mage, wand);
+        doUpgrade(null, mage, wand);
     }
 
     @Override
     public final void upgrade(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        doUpgrade(mage, wand);
+        doUpgrade(null, mage, wand);
     }
 
-    private void doUpgrade(@Nullable Mage mage, @Nullable com.elmakers.mine.bukkit.api.wand.Wand wand) {
-        WandUpgradePath newPath = getUpgrade();
+    private void doUpgrade(@Nullable String newPathKey, @Nullable Mage mage, @Nullable com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        WandUpgradePath newPath = newPathKey == null ? getUpgrade() : getPath(newPathKey);
         MageController controller = null;
         if (mage != null) {
             controller = mage.getController();

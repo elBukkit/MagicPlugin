@@ -7,4 +7,5 @@ collapse:
   type: spell
   glyph: "\uE92D"
   vanilla_item: 'nether_sprouts{18001}'
+  vanilla_item_enabled: 'nether_sprouts{19001}'
   vanilla_item_disabled: 'nether_sprouts{18002}'

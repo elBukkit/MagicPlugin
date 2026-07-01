@@ -1,10 +1,10 @@
 # TODO
 
-# Actually Somewhat Recent
-
- - Magic mob spawner blocks don't work
-
 # Next
+
+ - Quests module fixes
+ - Look at class requirement again
+
 
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets
 

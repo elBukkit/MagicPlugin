@@ -10,6 +10,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
@@ -29,6 +30,8 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 public class ModifyBlockAction extends BaseSpellAction {
     private boolean spawnFallingBlocks;
     private boolean fallingBlocksHurt;
+    private boolean display;
+    private double displayScale;
     private double fallingBlockSpeed;
     private Vector fallingBlockDirection;
     private float fallingBlockFallDamage;
@@ -60,6 +63,8 @@ public class ModifyBlockAction extends BaseSpellAction {
         fallingBlocksHurt = parameters.getBoolean("falling_hurts", false);
         checkChunk = parameters.getBoolean("check_chunk", true);
         replaceSame = parameters.getBoolean("replace_same", false);
+        display = parameters.getBoolean("display", false);
+        displayScale = parameters.getDouble("display_scale", 1);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
@@ -146,8 +151,19 @@ public class ModifyBlockAction extends BaseSpellAction {
         if (spawnFalling && fallingProbability < 1) {
             spawnFalling = context.getRandom().nextDouble() < fallingProbability;
         }
-
-        if (!spawnFalling || brush.isErase()) {
+        if (display) {
+            Location location = block.getLocation();
+            if (displayScale != 1) {
+                Location center = context.getTargetCenterLocation();
+                if (center != null) {
+                    location = location.subtract(center).multiply(displayScale).add(center);
+                }
+            }
+            if (!brush.isErase()) {
+                Entity displayEntity = CompatibilityLib.getCompatibilityUtils().createBlockDisplayEntity(location, brush, displayScale);
+                context.registerForUndo(displayEntity);
+            }
+        } else if (!spawnFalling || brush.isErase()) {
             if (!commit) {
                 context.registerForUndo(block);
                 if (brush.isErase() && !DefaultMaterials.isAir(block.getType())) {

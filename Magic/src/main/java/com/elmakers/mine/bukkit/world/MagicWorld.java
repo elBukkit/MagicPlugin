@@ -1,11 +1,17 @@
 package com.elmakers.mine.bukkit.world;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.GameRule;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
@@ -13,17 +19,25 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
+import com.elmakers.mine.bukkit.utility.random.LongRange;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
+import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
-import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
 import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
 import com.elmakers.mine.bukkit.world.tasks.CopyWorldTask;
+
+import de.slikey.effectlib.util.CustomSound;
 
 public class MagicWorld {
     private enum WorldState { UNLOADED, LOADING, LOADED }
@@ -53,11 +67,22 @@ public class MagicWorld {
     private Integer minHeight;
     private GameMode gameMode;
     private GameMode leavingGameMode;
+    private BaseChunkGenerator generator;
+    private int groundLevel = 64;
+    private int bedrockLevel = 0;
+    private Integer titleDelay;
+    private Vector spawnPosition;
+    private Map<String, Boolean> gameRules = new HashMap<>();
+    private String respawnWorld;
+    private CustomSound[] ambientSounds = {};
+    private IntegerRange ambientSoundTime;
+    private IntegerRange time;
+    private LongRange timeDistanceSquared;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
         seed = random.nextLong();
-        chunkHandler = new MagicChunkHandler(controller);
+        chunkHandler = new MagicChunkHandler(this);
         spawnHandler = new MagicSpawnHandler(controller);
         blockPlaceHandler = new MagicBlockHandler(controller);
         blockBreakHandler = new MagicBlockHandler(controller);
@@ -71,10 +96,15 @@ public class MagicWorld {
         if (config.contains("min_height")) {
             minHeight = config.getInt("min_height");
         }
+        groundLevel = config.getInt("ground_level", groundLevel);
+        bedrockLevel = config.getInt("bedrock_level", bedrockLevel);
         copyFrom = config.getString("copy", copyFrom);
         synchronizeTime = config.getBoolean("synchronize_time", synchronizeTime);
         synchronizedTimeOffset = config.getLong("time_offset", synchronizedTimeOffset);
         resourcePack = config.getString("resource_pack", resourcePack);
+        spawnPosition = ConfigurationUtils.getVector(config, "spawn");
+        ambientSoundTime = IntegerRange.fromConfig(getLogger(), config, "ambient_sound_time", 0, 0);
+        ambientSounds = ConfigurationUtils.getSounds(config, "ambient_sounds");
         if (config.contains("environment")) {
             String typeString = config.getString("environment");
             try {
@@ -117,11 +147,36 @@ public class MagicWorld {
         }
         seed = config.getLong("seed", this.seed);
         autoLoad = config.getBoolean("autoload", autoLoad);
-        chunkHandler.load(worldName, config.getConfigurationSection("chunk_generate"));
+        chunkHandler.load(this, config);
         blockBreakHandler.load(worldName, "break", config.getConfigurationSection("block_break"));
         blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
         cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
+        time = IntegerRange.fromOptionalConfig(getLogger(), config, "time");
+        IntegerRange timeDistance = IntegerRange.fromOptionalConfig(getLogger(), config, "time_distance");
+        if (timeDistance != null) {
+            timeDistanceSquared = timeDistance.squared();
+        } else {
+            timeDistanceSquared = null;
+        }
+        titleDelay = ConfigurationUtils.getOptionalInteger(config, "title_delay");
+        respawnWorld = config.getString("respawn");
+        generator = controller.getWorlds().parseGenerator(this, config);
+        gameRules.clear();
+        ConfigurationSection gameRulesConfig = config.getConfigurationSection("game_rules");
+        if (gameRulesConfig != null) {
+            for (String rule : gameRulesConfig.getKeys(false)) {
+                gameRules.put(rule, gameRulesConfig.getBoolean(rule));
+            }
+        }
+
+        // Reconfigure existing worlds
+        World existingWorld = Bukkit.getServer() != null ? Bukkit.getWorld(worldName) : null;
+        if (existingWorld != null) {
+            reconfigureWorld(existingWorld);
+        }
+
+        scheduleAmbientSounds();
     }
 
     public void finalizeLoad() {
@@ -162,7 +217,11 @@ public class MagicWorld {
             worldCreator.seed(seed);
             worldCreator.environment(worldEnvironment);
             worldCreator.type(worldType);
-            worldCreator.generateStructures(true);
+            if (generator != null) {
+                worldCreator.generator(generator);
+            } else {
+                worldCreator.generateStructures(true);
+            }
             try {
                 world = worldCreator.createWorld();
             } catch (Exception ex) {
@@ -173,16 +232,46 @@ public class MagicWorld {
                 controller.getLogger().warning("Failed to create world: " + worldName);
             }
         }
-        if (world != null && appearanceEnvironment != null) {
+        configureWorld(world);
+        return world;
+    }
+
+    private void reconfigureWorld(World world) {
+        if (world == null) return;
+
+        ChunkGenerator chunkGenerator = world.getGenerator();
+        if (chunkGenerator instanceof BaseChunkGenerator generator) {
+            generator.reload();
+        }
+
+        configureWorld(world);
+    }
+
+    private void configureWorld(World world) {
+        if (world == null) return;
+
+        if (appearanceEnvironment != null) {
             CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
             controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
         }
-        return world;
+
+        for (Map.Entry<String, Boolean> entry : gameRules.entrySet()) {
+            String key = entry.getKey();
+            GameRule rule = GameRule.getByName(key);
+            if (rule != null) {
+                world.setGameRule(rule, entry.getValue());
+            } else {
+                controller.getLogger().warning("Invalid game rule: " + key);
+            }
+        }
+        if (time != null) {
+            world.setTime(time.getMin());
+        }
     }
 
     public void installPopulators(World world) {
         if (world == null || installed || chunkHandler.isEmpty()) return;
-        Collection<MagicChunkPopulator> populators = chunkHandler.getPopulators();
+        Collection<BaseBlockPopulator> populators = chunkHandler.getPopulators();
         if (populators == null || populators.isEmpty()) return;
         controller.info("Installing Populators in " + world.getName());
         world.getPopulators().addAll(populators);
@@ -264,11 +353,47 @@ public class MagicWorld {
         if (gameMode != null && (previousWorld == null || previousWorld.gameMode != gameMode)) {
             mage.getPlayer().setGameMode(gameMode);
         }
+        Player player = mage.getPlayer();
+        if (titleDelay != null && player != null) {
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().runTaskLater(
+                    plugin,
+                    () -> player.sendTitle(
+                            ChatColor.translateAlternateColorCodes('&', getTitle()),
+                            null,
+                            2 * 20,
+                            4 * 20,
+                            2 * 20
+                    ),
+                    titleDelay * 20 / 1000);
+        }
     }
 
     public void playerLeft(Mage mage, MagicWorld nextWorld) {
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return;
+        }
         if (leavingGameMode != null && (nextWorld == null || nextWorld.gameMode == null)) {
             mage.getPlayer().setGameMode(leavingGameMode);
+        }
+        if (timeDistanceSquared != null) {
+            player.resetPlayerTime();
+        }
+    }
+
+    public void updateMage(Mage mage) {
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return;
+        }
+        if (timeDistanceSquared != null) {
+            final int x = player.getLocation().getBlockX();
+            final int z = player.getLocation().getBlockZ();
+            final long distanceSquared = x * x + z * z;
+            final double factor = timeDistanceSquared.getFactor(distanceSquared);
+            final int currentTime = time.lerp(factor);
+            player.setPlayerTime(currentTime, false);
         }
     }
 
@@ -323,6 +448,33 @@ public class MagicWorld {
         }
     }
 
+    private void scheduleAmbientSounds() {
+        final int soundTime = this.ambientSoundTime.getRandom(random) * 20;
+        if (soundTime == 0 || ambientSounds.length == 0) {
+            return;
+        }
+
+        final Plugin plugin = controller.getPlugin();
+        plugin.getServer().getScheduler().runTaskLater(
+            plugin,
+            () -> {
+                final CustomSound sound = ambientSounds[random.nextInt(ambientSounds.length)];
+                final World world = getWorld();
+                if (world != null) {
+                    for (Player player : world.getPlayers()) {
+                        sound.play(plugin, player);
+                    }
+                    scheduleAmbientSounds();
+                }
+            },
+            soundTime
+        );
+    }
+
+    public World getWorld() {
+        return Bukkit.getWorld(worldName);
+    }
+
     public boolean isCancelSpellsOnSave() {
         return cancelSpellsOnSave;
     }
@@ -333,5 +485,47 @@ public class MagicWorld {
 
     public int getMinHeight(int defaultHeight) {
         return minHeight != null ? minHeight : defaultHeight;
+    }
+
+    public String getName() {
+        return worldName;
+    }
+
+    public String getTitle() {
+        return controller.getMessages().get("worlds." + worldName + ".name", worldName);
+    }
+
+    public Logger getLogger() {
+        return controller.getLogger();
+    }
+
+    public MagicController getController() {
+        return controller;
+    }
+
+    public Location getSpawnLocation(World world) {
+        if (spawnPosition != null) {
+            return new Location(world, spawnPosition.getX(), spawnPosition.getY(), spawnPosition.getZ());
+        }
+        return null;
+    }
+
+    public int getGroundLevel() {
+        return groundLevel;
+    }
+
+    public int getBedrockLevel() {
+        return bedrockLevel;
+    }
+
+    public String getRespawnWorld() {
+        return respawnWorld;
+    }
+
+    public String getPortalTargetWorld(Location location) {
+        if (generator == null) {
+            return null;
+        }
+        return generator.getPortalTargetWorld(location);
     }
 }

@@ -39,7 +39,7 @@ torture:
            particle_offset_z: 0.2
         -  location: target
            particle: spell_mob
-           color: "010101"
+           color: "88010101"
         hit:
         -  class: EffectSingle
            location: target
@@ -52,7 +52,7 @@ torture:
              effect:
                class: Sphere
                particle: spell_mob
-               color: "010101"
+               color: "88010101"
                disappear_with_origin_entity: true
         -  class: EffectSingle
            requires_entity_target: true

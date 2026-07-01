@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -40,6 +41,9 @@ import com.elmakers.mine.bukkit.configuration.TranslatingConfiguration;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.magic.MagicController;
+
+import de.slikey.effectlib.util.CustomSound;
+import de.slikey.effectlib.util.ParticleUtil;
 
 public class ConfigurationUtils extends ConfigUtils {
     private static MagicController controller;
@@ -80,6 +84,9 @@ public class ConfigurationUtils extends ConfigUtils {
     public static MaterialAndData toMaterialAndData(Object o) {
         if (o instanceof MaterialAndData) {
             return (MaterialAndData)o;
+        }
+        if (o instanceof Material) {
+            return new MaterialAndData((Material)o);
         }
         if (o instanceof String) {
             String matName = (String)o;
@@ -395,16 +402,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     @Nullable
     public static Particle toParticleEffect(String effectParticleName) {
-        Particle effectParticle = null;
-        if (effectParticleName.length() > 0) {
-            String particleName = effectParticleName.toUpperCase();
-            try {
-                effectParticle = Particle.valueOf(particleName);
-            } catch (Exception ignored) {
-            }
-        }
-
-        return effectParticle;
+        return ParticleUtil.getParticle(effectParticleName.toLowerCase(Locale.ROOT));
     }
 
     public static Collection<String> getKeysOrList(@Nonnull ConfigurationSection node, @Nonnull String key) {
@@ -818,5 +816,25 @@ public class ConfigurationUtils extends ConfigUtils {
                 }
             }
         }
+    }
+
+    public static String getColorTranslated(ConfigurationSection configuration, String key, String defaultValue) {
+        if (!configuration.contains(key)) {
+            return defaultValue;
+        }
+        return CompatibilityLib.getCompatibilityUtils().translateColors(configuration.getString(key));
+    }
+
+    public static CustomSound[] getSounds(ConfigurationSection config, String key) {
+        List<String> soundNames = config.getStringList(key);
+        if (soundNames == null || soundNames.isEmpty()) {
+            return new CustomSound[0];
+        }
+        CustomSound[] sounds = new CustomSound[soundNames.size()];
+        for (int i = 0; i < soundNames.size(); i++) {
+            String soundName = soundNames.get(i);
+            sounds[i] = new CustomSound(soundName);
+        }
+        return sounds;
     }
 }

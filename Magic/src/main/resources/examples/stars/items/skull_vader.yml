@@ -1,4 +1,8 @@
 skull_vader:
-  item: "skull:http://textures.minecraft.net/texture/2109290a24de6afad18e23eadceea5cb0ff5d7988a79c86e54ff2c7a1b6393ec"
-  worth: 1000
+  worth: 1000.0
+  item: player_head
   name: Darth Vader's Helmet
+  player:
+    uuid: 142afd30-00f0-3854-b5b2-ff11b2cc2936
+    skin: http://textures.minecraft.net/texture/2109290a24de6afad18e23eadceea5cb0ff5d7988a79c86e54ff2c7a1b6393ec
+    name: MHF_Question

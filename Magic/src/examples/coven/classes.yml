@@ -1,0 +1,7 @@
+witch:
+  parent: caster
+  locked: false
+  effect_color: random
+  path: neophyte
+  spells:
+    - missile

@@ -1,0 +1,7 @@
+# Disable some recipes
+
+magicbow:
+  enabled: false
+
+magicsword:
+  enabled: false

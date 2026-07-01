@@ -28,7 +28,7 @@ public class WandProperties extends TemplatedProperties {
             "alternate_spell5", "alternate_spell6", "alternate_spell7",
             "bound", "has_uses", "uses", "upgrade", "indestructible", "use_mode", "bound_name",
             "undroppable", "boostable",
-            "effect_bubbles", "effect_color",
+            "effect_bubbles", "effect_color", "effect_bubbles_particle",
             "effect_particle", "effect_particle_count", "effect_particle_data",
             "effect_particle_interval",
             "effect_particle_min_velocity",

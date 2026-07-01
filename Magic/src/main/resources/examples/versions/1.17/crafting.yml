@@ -1,0 +1,11 @@
+nether_compass:
+  enabled: false
+  inherit: false
+
+overworld_compass:
+  enabled: false
+  inherit: false
+
+end_compass:
+  enabled: false
+  inherit: false

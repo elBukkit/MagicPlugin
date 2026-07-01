@@ -1,0 +1,17 @@
+world_dungeon:
+  autoload: true
+  world: world_dungeon
+  generator: dungeon
+  time: 6000
+  bedrock_level: 0
+  ground_level: 1
+  spawn: 6,2,6
+  game_rules:
+    advance_weather: false
+    advance_time: false
+    spawn_mobs: false
+    spawn_monsters: false
+    spawn_phantoms: false
+    spawn_patrols: false
+    command_block_output: false
+    command_blocks_work: true

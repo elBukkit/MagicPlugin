@@ -1,0 +1,10 @@
+dungeon_floor:
+  class: Perlin
+  noise: 0
+  blocks: bedrock
+
+dungeon:
+  class: Sequence
+  generators:
+    - dungeon_floor
+    - dungeon_surface

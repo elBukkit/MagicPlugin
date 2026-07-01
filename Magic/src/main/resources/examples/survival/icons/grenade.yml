@@ -7,4 +7,5 @@ grenade:
   type: spell
   glyph: "\uE957"
   vanilla_item: 'tnt{18001}'
+  vanilla_item_enabled: 'tnt{19001}'
   vanilla_item_disabled: 'tnt{18002}'

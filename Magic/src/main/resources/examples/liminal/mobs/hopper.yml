@@ -1,0 +1,10 @@
+hopper:
+  name: "&3Hopper"
+  type: item_display
+  item: hopper_item
+  passenger_rotation_speed: 8
+  mount:
+    remove_mounts: "*"
+    default_drops: false
+    type: rabbit
+    invisible: true

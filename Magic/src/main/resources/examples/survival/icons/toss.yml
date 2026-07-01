@@ -7,4 +7,5 @@ toss:
   type: spell
   glyph: "\uE9D6"
   vanilla_item: 'black_dye{18003}'
+  vanilla_item_enabled: 'black_dye{19003}'
   vanilla_item_disabled: 'black_dye{18004}'

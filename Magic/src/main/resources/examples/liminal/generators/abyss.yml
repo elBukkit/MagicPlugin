@@ -1,0 +1,13 @@
+abyss_floor:
+  class: Perlin
+  biome: deep_ocean
+  elevation: 1 | 6
+  noise: 0.1
+  blocks:
+    - sand
+
+abyss:
+  class: Sequence
+  generators:
+    - bedrock
+    - abyss_floor

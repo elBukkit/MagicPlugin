@@ -7,4 +7,5 @@ singularity:
   type: spell
   glyph: "\uE9A9"
   vanilla_item: 'coal{18001}'
+  vanilla_item_enabled: 'coal{19001}'
   vanilla_item_disabled: 'coal{18002}'

@@ -1,9 +1,7 @@
 package com.elmakers.mine.bukkit.world.spawn.builtin;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -22,7 +20,7 @@ import com.elmakers.mine.bukkit.world.spawn.SpawnRule;
 
 public class CastRule extends SpawnRule {
     protected List<CastSpell>        spells;
-    protected Deque<WeightedPair<CastSpell>> spellProbability;
+    protected List<WeightedPair<CastSpell>> spellProbability;
     protected int                     yOffset;
 
     @Override
@@ -31,7 +29,7 @@ public class CastRule extends SpawnRule {
         Collection<String> spells = parameters.getStringList("spells");
         if (spells == null || spells.size() == 0) {
             ConfigurationSection spellMap = parameters.getConfigurationSection("spells");
-            spellProbability = new ArrayDeque<>();
+            spellProbability = new ArrayList<>();
             RandomUtils.populateProbabilityMap(CastSpellParser.getInstance(), spellProbability, spellMap);
             if (spellProbability.isEmpty()) {
                 return;

@@ -7,4 +7,5 @@ gasp:
   type: spell
   glyph: "\uE94F"
   vanilla_item: 'glass_bottle{18001}'
+  vanilla_item_enabled: 'glass_bottle{19001}'
   vanilla_item_disabled: 'glass_bottle{18002}'

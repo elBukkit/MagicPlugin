@@ -146,6 +146,8 @@ quaffle:
 
 customlore:
   inherit: wand
+  mana_max_boost: 1.5
+  mana_regeneration_boost: 1.25
   lore:
   - This wand has
   - completely
@@ -157,8 +159,10 @@ customlore:
   - $spells
   - $brushes
   - $mana_regeneration
+  - $mana_regeneration_boost
   - $path
   - $mana_max
+  - $mana_max_boost
   
 testing:
   inherit: base_wand

@@ -1,0 +1,31 @@
+liminal_base:
+  # This is a base config inherited by other liminal world configs
+  # It does not itself generate a world
+  world: ""
+  autoload: true
+  bedrock_level: 0
+  ground_level: 1
+  spawn: 0,2,0
+  game_mode: adventure
+  leave_game_mode: survival
+  title_delay: 2000
+  respawn: world_concrete
+  ambient_sounds:
+    - ambient_basalt_deltas_additions
+    - ambient_cave
+    - ambient_crimson_forest_additions
+    - ambient_nether_wastes_additions
+    - ambient_soul_sand_valley_additions
+    - ambient_warped_forest_additions
+    - ambient_underwater_loop_additions
+    - ambient_underwater_loop_additions_rare
+    - ambient_underwater_loop_additions_ultra_rare
+  game_rules:
+    advance_weather: false
+    advance_time: false
+    spawn_mobs: false
+    spawn_monsters: false
+    spawn_phantoms: false
+    spawn_patrols: false
+    command_block_output: false
+    command_blocks_work: true

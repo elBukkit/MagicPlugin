@@ -7,4 +7,5 @@ blob:
   type: spell
   glyph: "\uE918"
   vanilla_item: 'clay_ball{18001}'
+  vanilla_item_enabled: 'clay_ball{19001}'
   vanilla_item_disabled: 'clay_ball{18002}'

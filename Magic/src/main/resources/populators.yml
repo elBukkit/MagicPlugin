@@ -1,0 +1,9 @@
+#
+# Modify this file to add and configure block populators
+# These generators can be used by world configurations for custom world generation.
+#
+# See the liminal or otherside examples
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#

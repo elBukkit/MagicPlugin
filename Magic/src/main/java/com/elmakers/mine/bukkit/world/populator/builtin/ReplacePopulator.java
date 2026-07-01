@@ -13,9 +13,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.SimpleBlockPopulator;
 
-public class ReplacePopulator extends BaseBlockPopulator {
+public class ReplacePopulator extends SimpleBlockPopulator {
     private static final int WARNING_INTERVAL = 10000;
     private MaterialMap replaceMap = null;
     private Map<Biome, Biome> replaceBiomes = null;
@@ -25,7 +25,7 @@ public class ReplacePopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection config) {
         replaceMap = null;
         replaceBiomes = null;
-        replaceMap = controller.getMaterialSetManager().mapFromConfig(config, "replace");
+        replaceMap = getController().getMaterialSetManager().mapFromConfig(config, "replace");
 
         ConfigurationSection replaceBiomeSection = config.getConfigurationSection("replace_biomes");
         if (replaceBiomeSection != null) {
@@ -37,14 +37,14 @@ public class ReplacePopulator extends BaseBlockPopulator {
                 try {
                     biome = Biome.valueOf(biomeKey.toUpperCase());
                 } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid biome: " + biomeKey);
+                    getController().getLogger().warning("Invalid biome: " + biomeKey);
                     continue;
                 }
                 Biome toBiome;
                 try {
                     toBiome = Biome.valueOf(toBiomeKey.toUpperCase());
                 } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid biome: " + toBiomeKey);
+                    getController().getLogger().warning("Invalid biome: " + toBiomeKey);
                     continue;
                 }
                 replaceBiomes.put(biome, toBiome);
@@ -66,7 +66,7 @@ public class ReplacePopulator extends BaseBlockPopulator {
                     long now = System.currentTimeMillis();
                     if (now - lastBiomeWarning > WARNING_INTERVAL) {
                         lastBiomeWarning = now;
-                        controller.getLogger().warning("Could not set biome to " + newBiome);
+                        getController().getLogger().warning("Could not set biome to " + newBiome);
                     }
                 }
             }

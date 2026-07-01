@@ -7,4 +7,5 @@ chop:
   type: spell
   glyph: "\uE92A"
   vanilla_item: 'iron_axe{18001}'
+  vanilla_item_enabled: 'iron_axe{19001}'
   vanilla_item_disabled: 'iron_axe{18002}'

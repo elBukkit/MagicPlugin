@@ -7,4 +7,5 @@ wolf:
   type: spell
   glyph: "\uE9E7"
   vanilla_item: 'beef{18001}'
+  vanilla_item_enabled: 'beef{19001}'
   vanilla_item_disabled: 'beef{18002}'

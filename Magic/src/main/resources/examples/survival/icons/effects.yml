@@ -7,4 +7,5 @@ effects:
   type: spell
   glyph: "\uE9B5"
   vanilla_item: 'orange_dye{18001}'
+  vanilla_item_enabled: 'orange_dye{19001}'
   vanilla_item_disabled: 'orange_dye{18002}'

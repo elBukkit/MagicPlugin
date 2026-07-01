@@ -7,4 +7,5 @@ wave:
   type: spell
   glyph: "\uE9E1"
   vanilla_item: 'light_blue_dye{18001}'
+  vanilla_item_enabled: 'light_blue_dye{19001}'
   vanilla_item_disabled: 'light_blue_dye{18002}'

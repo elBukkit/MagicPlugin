@@ -1,0 +1,79 @@
+chaos_tower:
+  class: Tower
+  blocks: concretes
+  height: 32 | 128
+  taper: 0 | 0.2
+  width: 24 | 48
+  noise: 0.1 | 0.5
+
+chaos_build1:
+  class: Schematic
+  position: -16 | 31
+  schematic: cage
+
+chaos_build2:
+  class: Schematic
+  position: -16 | 31
+  schematic: church
+
+chaos_build3:
+  class: Schematic
+  position: -16 | 31
+  schematic: compact_house
+
+chaos_build4:
+  class: Schematic
+  position: -16 | 31
+  schematic: beacon
+
+chaos_build5:
+  class: Schematic
+  position: -16 | 31
+  schematic: blacksmith
+
+chaos_build6:
+  class: Schematic
+  position: -16 | 31
+  conform: true
+  schematic: creeper_rug
+
+chaos_build7:
+  class: Schematic
+  position: -16 | 31
+  schematic: elder_tree
+
+chaos_build8:
+  class: Schematic
+  position: -16 | 31
+  schematic: garden_house
+
+chaos_build9:
+  class: Schematic
+  position: -16 | 31
+  schematic: geode
+
+chaos_build10:
+  class: Schematic
+  position: -16 | 31
+  conform: true
+  schematic: rainbow
+
+chaos_build11:
+  class: Schematic
+  position: -16 | 31
+  schematic: warped_house
+
+chaos_build12:
+  class: Schematic
+  position: -16 | 31
+  schematic: tent
+
+chaos_build13:
+  class: Schematic
+  position: -16 | 31
+  schematic: tech_tower
+
+chaos_build14:
+  class: Schematic
+  position: -16 | 31
+  schematic: nathanwolf

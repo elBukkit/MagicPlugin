@@ -29,6 +29,11 @@ public interface MaterialSet {
     Collection<Material> getMaterials();
 
     /**
+     * @return An iterable that can be used to list all materials specified, including additional data.
+     */
+    Collection<MaterialAndData> getMaterialsWithData();
+
+    /**
      * Tests whether the specified material matches.
      *
      * @param material

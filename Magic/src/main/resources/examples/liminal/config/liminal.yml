@@ -1,0 +1,11 @@
+# Use a special RP
+resource_pack: liminal
+
+# Use a different RP when combined with other configs
+add_resource_pack: liminal-all
+
+world_modification:
+  transfer:
+    world: world_concrete
+    world_nether: world_concrete
+    world_the_end: world_concrete

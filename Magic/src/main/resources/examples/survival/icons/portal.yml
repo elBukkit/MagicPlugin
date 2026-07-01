@@ -7,4 +7,5 @@ portal:
   type: spell
   glyph: "\uE987"
   vanilla_item: 'crying_obsidian{18001}'
+  vanilla_item_enabled: 'crying_obsidian{19001}'
   vanilla_item_disabled: 'crying_obsidian{18002}'

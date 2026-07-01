@@ -7,4 +7,5 @@ fire:
   type: spell
   glyph: "\uE942"
   vanilla_item: 'flint_and_steel{18001}'
+  vanilla_item_enabled: 'flint_and_steel{19001}'
   vanilla_item_disabled: 'flint_and_steel{18002}'

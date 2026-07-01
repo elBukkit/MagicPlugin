@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Deque;
+import java.util.List;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -42,7 +42,7 @@ import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
 public class SpawnEntityAction extends CompoundAction
 {
-    private Deque<WeightedPair<String>> entityTypeProbability;
+    private List<WeightedPair<String>> entityTypeProbability;
 
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
 
@@ -315,7 +315,7 @@ public class SpawnEntityAction extends CompoundAction
 
         if (parameters.contains("entity_types"))
         {
-            entityTypeProbability = new ArrayDeque<>();
+            entityTypeProbability = new ArrayList<>();
             RandomUtils.populateStringProbabilityMap(entityTypeProbability, ConfigurationUtils.getConfigurationSection(parameters, "entity_types"), 0, 0, 0);
         }
     }

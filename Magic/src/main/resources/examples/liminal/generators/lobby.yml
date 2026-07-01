@@ -1,0 +1,28 @@
+lobby_surface:
+  class: Flat
+  biome: lush_caves
+  blocks:
+    - hay_block
+
+lobby_room:
+  class: Room
+  roof_height: 6
+  doorway_height: 4 | 6
+  doorway_width: 2 | 10
+  wall_probability: 0.8
+  window_probability: 0
+  double_door_probability: 0.4
+  sunroof_probability: 0
+  populators:
+    - lobby_lights
+  wall_blocks:
+    - bamboo_planks
+  ceiling_blocks:
+    - polished_sulfur
+
+lobby:
+  class: Sequence
+  generators:
+    - bedrock
+    - lobby_surface
+    - lobby_room

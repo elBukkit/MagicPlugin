@@ -1,0 +1,10 @@
+pools:
+  inherit: liminal_base
+  world: world_pools
+  generator: pools
+  time: 6000 | 18000
+  time_distance: 64 | 512
+  spawn: 8,300,8
+  bedrock_level: 60
+  ground_level: 65
+  ambient_sound_time: 60 | 600

@@ -7,4 +7,5 @@ rocket:
   type: spell
   glyph: "\uE99B"
   vanilla_item: 'firework_rocket{18001}'
+  vanilla_item_enabled: 'firework_rocket{19001}'
   vanilla_item_disabled: 'firework_rocket{18002}'

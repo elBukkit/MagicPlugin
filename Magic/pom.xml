@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.elmakers.mine.bukkit</groupId>
         <artifactId>Magic-parent</artifactId>
-        <version>10.11.1-SNAPSHOT</version>
+        <version>11.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>10.12</version>
+            <version>11.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
@@ -196,18 +196,6 @@
             <artifactId>towny</artifactId>
             <version>0.98.1.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.nothingspecial</groupId>
-            <artifactId>Splateds_Elementals</artifactId>
-            <version>B.1.6</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.bekvon.bukkit</groupId>
@@ -396,10 +384,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>mc.alk</groupId>
-            <artifactId>BattleArena</artifactId>
-            <version>3.9.16.4</version>
+            <groupId>org.battleplugins</groupId>
+            <artifactId>arena</artifactId>
+            <version>4.0.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>us.ajg0702</groupId>
@@ -527,6 +521,11 @@
         <repository>
             <id>opencollab-snapshot</id>
             <url>https://repo.opencollab.dev/main/</url>
+        </repository>
+        <repository>
+            <id>battleplugins-releases</id>
+            <name>BattlePlugins Releases</name>
+            <url>https://repo.battleplugins.org/releases</url>
         </repository>
         <repository>
             <id>repsy</id>
@@ -708,6 +707,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/generators.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/generators">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/items.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/items">
                                         <include name="**/*.yml"/>
@@ -745,6 +749,11 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/paths.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/paths">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/populators.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/populators">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
@@ -991,6 +1000,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/otherside/populators.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/otherside/populators">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/otherside/spells.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/otherside/spells">
                                         <include name="**/*.yml"/>
@@ -998,6 +1012,54 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/otherside/worlds.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/otherside/worlds">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Liminal Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/generators.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/generators">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/items.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/items">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/materials.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/materials">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/populators.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/populators">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/liminal/worlds.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/liminal/worlds">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

@@ -1,0 +1,40 @@
+concrete_ground:
+  class: Perlin
+  biome: basalt_deltas
+  noise: 0.05
+  blocks: concrete_ground
+  top_blocks: concrete_top
+  elevation: 0 | 1
+  clip_elevation: 0
+
+concrete_exit:
+  populators:
+  - concrete_tower
+  - concrete_tunnel
+  - concrete_portal
+
+concrete_surface:
+  class: Random
+  generators:
+    concrete_food:
+      distance: 64 | 512
+      weight: 0.01
+    concrete_car:
+      distance: 16 | 512
+      weight: 0.1
+    concrete_tower:
+      distance: 32 | 512
+      weight: 0.5
+      frequency: 4
+    concrete_exit:
+      distance: 512 | 2048
+      weight: 0.2
+      frequency: 4
+    none: 1
+
+concrete:
+  class: Sequence
+  generators:
+    - bedrock
+    - concrete_ground
+    - concrete_surface

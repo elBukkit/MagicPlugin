@@ -1,0 +1,7 @@
+dragonbodylightred:
+  item: leather_horse_armor
+  custom_model_data: 18001
+  color:
+    red: 176
+    green: 46
+    blue: 38

@@ -7,4 +7,5 @@ harden:
   type: spell
   glyph: "\uE959"
   vanilla_item: 'obsidian{18001}'
+  vanilla_item_enabled: 'obsidian{19001}'
   vanilla_item_disabled: 'obsidian{18002}'

@@ -1,4 +1,5 @@
 giant:
+  requires: LibsDisguises
   type: husk
   health: 100
   entity_attributes:

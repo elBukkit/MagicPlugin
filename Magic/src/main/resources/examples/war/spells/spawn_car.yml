@@ -1,5 +1,5 @@
 spawn_car:
-    icon: diamond_pickaxe:10
+    icon: model3_item
     actions:
       cast:
       - class: SpawnEntity

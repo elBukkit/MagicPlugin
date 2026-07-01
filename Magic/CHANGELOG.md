@@ -1,13 +1,219 @@
 
 # CHANGELOG
 
+# 11.3
+
+## World Generation
+
+- New `liminal` built in example to demonstrate new world gen features
+ - Create chunk generators via `generator` configuration, including Builtin generators:
+   - Bedrock: A single flat layer of bedrock
+   - Crops: Generate simple crop farms
+   - Flat: A flat layer
+   - Frequency: Only fill every N chunks
+   - Grid: Run specific generators depending on chunk x/z coordinates
+   - Perlin: Perlin noise for elevation and/or block patterns
+   - Probability: A distance-weighted chance for a populator to run
+   - Random: Randomly choose one generator from a distance-weighted probability map
+   - Room: Create walls and a ceiling with doorways in various configurations
+   - Sequence: Run multiple other generators in order
+   - Vanilla: Use vanilla world generation
+ - Create block populators via `populators` configuration in a generator
+   - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
+   - Added new populators: 
+     - EndGateway: Build some configurations of end gateway blocks, use `target_world` to send to a specific world
+     - EndPortal: Build some configurations of an end portal, use `target_world` to send to a specific world
+     - Frequency: Only fill every N chunks
+     - Grid: Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
+     - Light: Add a light to the floor or ceiling
+     - Pools: Add pools of various depth and shapes
+     - Probability: A distance-weighted chance for a populator to run
+     - Random: Randomly choose one populators from a distance-weighted probability map
+     - Repeat: Repeat another populator some random amount of times
+     - Schematic: Place a schematic in the world (see https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/chaos)
+     - Sequence: Run multiple other populators in order
+     - Shaft: A shaft going up or down through the ceiling or floor
+     - Spawn: Spawn some mobs from a distance-weighted probability map
+     - Tower: Build a randomized tower
+     - Tunnel: Make tunnels/doorways through the center of a region
+     - Vines: Grow some vines
+ - Use generators in world configs for completely custom world gen
+ - Editor support exists, use `/meditor populator` or `/meditor generator`
+ - See: https://reference.elmakers.com/#generators and https://reference.elmakers.com/#populators
+ - Allow modifying game rules of a world via `game_rules` config
+ - Add `time` parameter to set a world to a specific time of day
+ - Add `time_distance` world parameter, can be used with `time` where both are ranges, and time will vary by distance from spawn
+ - Add `title_delay` parameter to show players a title when they enter a world
+ - Add `respawn_world` parameter to force players to respawn in a different world
+ - Add `world_modification.transfer` map, to transfer players from one world to another automatically
+ - Add ambient sound parameters:
+   - `min_ambient_sound_time`, `max_ambient_sound_time` : Randomized time between ambient sounds
+   - `ambient_sounds` : A list of ambient sounds to play to all players in the world
+
+## Fixes
+
+ - Fix warnings from vengeance spell on config load
+ - Added pale oak signs to `signs` material list
+ - Fix issues with ops using arena signs
+ - The ThrowItem action will now use extra data brovided via brushes
+ - Fix snowy grass not undoing after using the Frost spell
+ - Fixed `hover_message_key` parameter in `CheckChatClick` action
+ - Fix `commit` spell, it should commit all pending spells which it was not doing
+ - Fix saved schematics being upside down or backwards depending on the click order
+ - Fix invalid bed icon references in Recall and Locator spells
+ - Fix EntityProjectile not removing passengers from the projectile entity
+
+## Changes
+
+ - Changed `arenas.enabled` config option to `enable_arenas`
+ - The `chunk_generate` property has been replaced by `populators`, though the former is still supported
+   - This can now be a string list, referring to populators defined in populator configs
+ - Removed support for the Elementals plugin (not updated since MC 1.7, I assume no one will miss it)
+ - Block checks will now check extra block data, if block data was set in the material set
+ - The Place spell no longer uses the auto_block_state parameter (this feature is broken on Paper)
+ - The `save` spell now outputs structure files (.nbt) instead of schmeatics
+ - Add `custom_name` and `custom_name_visible` parameters to EntityProjectile action
+ - Add `mount_name_visible` parameter to MountArmorStand action
+ - Some survival spells now used transparency in their colored particle effects
+ - Path icons now support using pre-defined icons, and added `upgrade_wand_icon` to allow turning off wand icon changes
+
+## New Features
+
+ - Add support for vanilla-style item definitions
+   - For example: `shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]`
+   - Won't work for wand icons, but should work anywhere else
+ - Add support for vanilla-style entity data, using the `data` property. (BDEngine compatible)
+ - Add `/mwarp world` command to easily go to the spawn point of a specific world
+ - Added `FreezeEntity` action, to apply the frostbite effect to an entity. Now used in the `frost` spell.
+ - Added `additive` and `reduce` parameters to the `Ignite` action (also present in `FreezeEntity`)
+ - Add support for FAWE schematic format
+ - Add `reload` parameter to entity configs, for randomized entities (see `car` in liminal example)
+ - Add `reload` parameter to item configs, replaces/inverts the existing `cache` parameter
+ - Add `keep` parameter for magic items, works the same as on a wand (keep on death)
+ - Add support for loading structure files (.nbt), same as schematics
+ - Magic mob entity attributes can now be used as equation variables (e.g. `scale: target_scale + 1`)
+ - Colors now support ARGB for alpha transparency, as well as config via sections with (alpha,red,green,blue)
+   - This is mainly for the mob_effect particles
+ - Add `upgrade_path` Selector option for path selection GUIs (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/coven)
+ - Add `pitch` and `yaw` proeprties to entity data, to allow for mobs spawning with specific rotations
+
+# 11.2.2
+
+ - Add support for 26.2
+ - Fix (re) creating paintings in 26.1
+
+# 11.2.1
+
+ - Fix infinite recursion taming mobs in 1.17 to 1.20
+
+# 11.2
+
+## Fixes
+
+ - Fix Valhalla save data not persisting
+ - Fix server version check in wand GUI controls (CheckRequirements server_version)
+ - Allow using color codes in spell names and descriptions
+ - Add damage value to spell lore.
+   - Uses the `damage` value, if present, set in spell parameters.
+   - Will also use `player_damage` or `entity_damage` if present, in that order
+   - You can override the display with `damage` on base spell properties, set to 0 to remove the lore
+   - Base lore template can be overridden with `wand.damage_description`
+
+## New Features
+
+ - (WIP) Added support for block and display entities (1.20.5 and up), configuration options:
+   - See `giant_block` and `giant_wand` examples in survival configs   
+   - Both `item_display` and `block_display`:
+     - `transformation`:
+       - See: https://minecraft.wiki/w/Display#Data_values 
+       - `translation` : A vector, either {x: , y: , z: } config section or "x,y,z" as string
+       - `scale` : A vector, either {x: , y: , z: } config section, "x,y,z" as string or "scale" as string
+       - `rotation_left`, `rotation_right` : An axis angle, either {angle:, x: , y: , z: } config section or "angle,x,y,z" as string
+       - All angles are specified in degrees (converted to radians when applied)
+     - view_display: How far away the entity can  be seen
+     - shadow_radius: The size of the shadow
+   - `item_display` type:
+     - `item`: An item key to display
+   - `block_display` type: 
+     - `block`: A block to display   
+   - `text_display` type:
+     - `text`: The text to display
+ - Add `display` option to ModifyBlock action, which will create display entities rather than blocks
+   - Add `display_scale` option to scale the display entity
+   - Add `giant_house` and `tiny_house` spells to survival configs
+ - Add `ItemProjectile` action which can generally replace uses of `ArmorStandProjectile` 
+   - Used in `war` `rocketlauncher` spell, which has also been fixed to use custom model data for the shell 
+
+# 11.1
+
+ - Fix loading saved player skulls in 1.20.5 and later
+ - Allow (or fix?) getting a player skull via `/mgive skull:<playername>`
+ - Fix Cow.Variant issues on Paper
+ - Fix spam and errors from Lands integration (thank you, XXY233!)
+
+# 11.0
+
+## Backwards Compatibility
+
+ - Requires Java 17 to run
+ - Compatible from Spigot/Paper 1.17 up
+ - Vanilla item spell icons will be used in 1.19 and lower, skull icons in 1.20 and up
+
+## FIXES
+
+ - Fix setting string properties via configure commands, broken in 10.11
+ - Prevent re-rewarding Valhalla perk rewards
+ - Fix lots of broken items in the vanilla/valhalla RP (thanks to Stiktabulous for checking!)
+ - Fix custom spawn eggs and spawners
+ - Attribute values will not be fetched from the wand and class
+   - This should fixes various issues with attributes which get set to the class, such as with the
+     `/mage attribute` command.
+ - Fix using variables in the ModifyAttributes and ModifyProperties actions
+ - Fix EffectLib's ExplodeEffect and BigBangEffect
+ - Fix being able to put `unstashable` wands in chests if they were in your main hand
+ - Fix an error that could occor if a spell kills its own caster inside of an Asyncronous action
+ - Update BattleArena integration
+ - Fix spell, wand and item icons in war, bending and stars configs
+
+## Changes
+
+ - Change `/mitem save` to store most item components as config and try to avoid serializing items
+ - Add `/mitem serialize` to use only Bukkit serialization to save an item
+ - Change Valhalla perk rewards to be "p:" permanent by default
+ - Change Valhalla XP rewards to use the `SKILL_ACTION` reason by default (was `PLUGIN`)
+   - This will make them react to XP multipliers
+   - This can be reconfigured per currency using `gain_reason`
+ - Add left click events to `spell_blocks` definitions, right click events no longer trigger on left click
+ - Separate `damager` and `last_damager` target types, the former now updates with any damage taken, including self damage
+ - The `debug_effects` config option is now on by default
+   - Use `/mconfig configure config debug_effects false` to turn it back off if it's spammy for some reason
+
+## Improvements
+
+ - Allow giving multiple spells in a single Valhalla `learn_spell` perk reward
+ - Add support for pasting entities via Volume-based actions
+ - Add "enabled" icon variants to the vanilla and valhalla RP, used for showing when a spell has been unlocked
+   - You will need to delete the ValhallaMMO/skills/magic_progression.yml file for the above changes to take affect
+ - Add `effect_bubbles_particle` config option to wands, defaults to entity_effect
+ - Add `wither_archer` mob to go along with pre-existing spawner
+ - Add `earns_multiplier` option to spells, for easily scaling SP earn
+ - Add `arenas.enabled false` config optiont to disable Magic Arenas features
+ - Automatically generate maybe-unique keys for item attributes, add optional `key` config to override
+ - Add `mana_max_boost` and `mana_regeneration_boost` custom lore options for wands
+
+## API
+
+ - Added `Mage.getModifiers` method
+
 # 10.11.1
 
- - Drop all pre-26.1 compatibility layers, Java 25 bytecode makes it impossible to run on older servers. 
-   Sorry!
+ - Fix backwards compatibility, back to 1.20.5 again
  - Fix world gen errors by reducing max world height by one
  - More Valhalla integration:
    - Add `valhalla` example to enable the options found on the wiki: https://github.com/elBukkit/MagicPlugin/wiki/Valhalla
+   - This will enable an out-of-the-box integration that presents a select set of spells as a new
+     skill set in Valhalla. New spells and path rankups are now learned via the skill tree.
+   - Add `learn_spell`, `discover_recipe` and `path_upgrade` perk reward types
    - Combine profile and skill XP so there is just one read/write representation of both
    - The level attributes are now keyed by skill instead of profile
    - Force update wand lore on level up, in case mana is driven by Valhalla

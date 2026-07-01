@@ -88,6 +88,7 @@ import com.elmakers.mine.bukkit.utility.ArrayUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -182,6 +183,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     private String creatorName;
     private Cost cost;
     private Cost earns;
+    private double damage;
+    private Double damageOverride;
     private Color color;
     private String particle;
     private SpellCategory category;
@@ -194,6 +197,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private List<SpellKey> removesSpells;
     private MaterialAndData iconMaterial =  null;
     private MaterialAndData disabledIconMaterial = null;
+    private MaterialAndData enabledIconMaterial = null;
     private com.elmakers.mine.bukkit.api.item.Icon icon;
     protected Set<EntityType> friendlyEntityTypes = null;
     private double requiredHealth;
@@ -953,6 +957,19 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected void loadTemplate(ConfigurationSection node, SpellParameters parameters) {
         // Get variable definitions
         variablesList = ConfigurationUtils.getNodeList(node, "variables");
+        if (variablesList == null || variablesList.isEmpty()) {
+            List<String> simpleList = ConfigurationUtils.getStringList(node, "variables");
+            if (simpleList != null && !simpleList.isEmpty()) {
+                variablesList = new ArrayList<>();
+                for (String variableName : simpleList) {
+                    ConfigurationSection variableNode = ConfigurationUtils.newConfigurationSection();
+                    variableNode.set("variable", variableName);
+                    variableNode.set("scope", "spell");
+                    variableNode.set("default", 0);
+                    variablesList.add(variableNode);
+                }
+            }
+        }
         variablesSection = node.getConfigurationSection("variables");
 
         initializeVariables(parameters);
@@ -1062,12 +1079,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Individual spell configuration overrides all
-        name = node.getString("name", name);
+        name = ConfigurationUtils.getColorTranslated(node, "name", name);
         alias = node.getString("alias", "");
-        extendedDescription = node.getString("extended_description", extendedDescription);
-        description = node.getString("description", description);
-        levelDescription = node.getString("level_description", levelDescription);
-        progressDescription = node.getString("progress_description", progressDescription);
+        extendedDescription = ConfigurationUtils.getColorTranslated(node,"extended_description", extendedDescription);
+        description = ConfigurationUtils.getColorTranslated(node,"description", description);
+        levelDescription = ConfigurationUtils.getColorTranslated(node,"level_description", levelDescription);
+        progressDescription = ConfigurationUtils.getColorTranslated(node,"progress_description", progressDescription);
 
         // Parameterize level description
         if (levelDescription != null && !levelDescription.isEmpty()) {
@@ -1090,6 +1107,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         iconMaterial = icon.getItemMaterial(controller);
         disabledIconMaterial = icon.getItemDisabledMaterial(controller);
+        enabledIconMaterial = icon.getItemEnabledMaterial(controller);
 
         color = ConfigurationUtils.getColor(node, "color", null);
         if (node.contains("worth_sp")) {
@@ -1106,6 +1124,11 @@ public class BaseSpell implements MageSpell, Cloneable {
             String earnsType = node.getString("earns_type", "sp");
             earns = Cost.parseCost(controller, node.getString("earns"), earnsType);
         }
+        if (earns != null) {
+            double earnsMultiplier = node.getDouble("earns_multiplier", 1);
+            earns.scale(earnsMultiplier);
+        }
+        damageOverride = ConfigurationUtils.getOptionalDouble(node, "damage");
         earnCooldown = node.getInt("earns_cooldown", 0);
         double earnCooldownScale = node.getDouble("earns_cooldown_scale", 1);
         earnCooldown = (int)Math.ceil(earnCooldownScale * earnCooldown);
@@ -1400,7 +1423,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassWeakness = workingParameters.getBoolean("bypass_weakness", bypassWeakness);
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !mage.isSuperPowered()) {
-            if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.NAUSEA)) {
+            if (!bypassConfusion && livingEntity.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getPotionEffectType(VersionedPotionEffectType.NAUSEA))) {
                 processResult(SpellResult.CURSED, workingParameters);
                 sendCastDebugMessage(SpellResult.CURSED, " (no cast)");
                 return false;
@@ -2132,6 +2155,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassAll = parameters.getBoolean("bypass", false);
         duration = parameters.getInt("duration", 0);
         totalDuration = parameters.getInt("total_duration", -1);
+        damage = parameters.getDouble("entity_damage", 0);
+        damage = parameters.getDouble("player_damage", damage);
+        damage = parameters.getDouble("damage", damage);
 
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
         consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
@@ -2419,6 +2445,12 @@ public class BaseSpell implements MageSpell, Cloneable {
     public final com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon()
     {
         return disabledIconMaterial;
+    }
+
+    @Override
+    public final com.elmakers.mine.bukkit.api.block.MaterialAndData getEnabledIcon()
+    {
+        return enabledIconMaterial;
     }
 
     @Override
@@ -2755,6 +2787,12 @@ public class BaseSpell implements MageSpell, Cloneable {
     public double getRange()
     {
         return 0;
+    }
+
+    @Override
+    public double getDamage()
+    {
+        return damageOverride != null ? damageOverride : damage;
     }
 
     @Override
@@ -3230,6 +3268,14 @@ public class BaseSpell implements MageSpell, Cloneable {
             String message = messages.getRangeDescription(range, "wand.range_description");
             if (!message.isEmpty()) {
                 lore.add(ChatColor.GRAY + message);
+            }
+        }
+
+        double damage = getDamage();
+        if (damage > 0) {
+            String damageMessage = messages.getDamageDescription(damage, "wand.damage_description");
+            if (!damageMessage.isEmpty()) {
+                lore.add(ChatColor.GRAY + damageMessage);
             }
         }
 

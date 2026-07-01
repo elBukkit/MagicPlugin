@@ -7,4 +7,5 @@ cat:
   type: spell
   glyph: "\uE928"
   vanilla_item: 'cod{18001}'
+  vanilla_item_enabled: 'cod{19001}'
   vanilla_item_disabled: 'cod{18002}'

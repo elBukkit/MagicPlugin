@@ -27,6 +27,7 @@ import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -48,6 +49,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -133,11 +135,13 @@ import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.VersionedPotionEffectType;
 import com.elmakers.mine.bukkit.wand.ActiveWandSet;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandProperties;
 import com.elmakers.mine.bukkit.wand.WandSet;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
@@ -227,6 +231,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private MageTargeting targeting;
     private WeakReference<Entity> lastDamageSource;
     private WeakReference<Entity> lastDamageTarget;
+    private WeakReference<Entity> damager;
     private Block lastBlockBroken;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
@@ -532,6 +537,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public @Nullable Entity getDamager() {
+        return damager == null ? null : damager.get();
+    }
+
+    @Override
     public @Nullable Entity getLastDamageTarget() {
         return lastDamageTarget == null ? null : lastDamageTarget.get();
     }
@@ -549,6 +559,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void damagedBy(@Nonnull Entity initialDamager, double damage) {
         lastDamage = damage;
         Entity damager = controller.getDamageSource(initialDamager);
+        this.damager = new WeakReference<>(damager);
 
         // Don't count self-attacks
         if (damager == null || damager == getEntity()) return;
@@ -640,6 +651,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         String damageType = currentDamageType;
         currentDamageType = null;
         lastDamage = event.getDamage();
+        if (!(event instanceof EntityDamageByEntityEvent)) {
+            damager = null;
+        }
         LivingEntity entity = getLivingEntity();
         if (entity == null) {
             return;
@@ -1968,6 +1982,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // above where entityData is ticked if present.
         Player player = getPlayer();
         if (player != null && player.isOnline()) {
+            checkWorld(player.getWorld());
             checkWand();
             updateBlocking(player);
             checkActionBarQueue();
@@ -1991,7 +2006,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Avoid getting kicked for large jump effects
             // It'd be nice to filter this by amplitude, but as
             // it turns out that is not easy to check efficiently.
-            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getJumpPotionEffectType()))
+            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getPotionEffectType(VersionedPotionEffectType.JUMP_BOOST)))
             {
                 controller.addFlightExemption(player, JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION);
             }
@@ -2009,6 +2024,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     deactivateSpell(spell);
                 }
             }
+        }
+    }
+
+    private void checkWorld(World world) {
+        final MagicWorld magicWorld = controller.getMagicWorld(world.getName());
+        if (magicWorld != null) {
+            magicWorld.updateMage(this);
         }
     }
 
@@ -5434,6 +5456,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         }
                         return 0.0;
                     }
+                    try {
+                        Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+                        return living.getAttribute(attribute).getValue();
+                    } catch (Exception ignore) {
+                    }
                 }
                 return null;
         }
@@ -5821,6 +5848,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nonnull
     public Set<String> getModifierKeys() {
         return modifiers.keySet();
+    }
+
+    @Override
+    @Nonnull
+    public Collection<com.elmakers.mine.bukkit.api.magic.MageModifier> getModifiers() {
+        return new ArrayList<>(modifiers.values());
     }
 
     @Override

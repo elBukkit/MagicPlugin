@@ -29,6 +29,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
     private String contextField;
     private Set<String> workingParameters;
     protected boolean silent = false;
+    protected Double defaultValue = 0.0;
 
     protected ParameterizedConfiguration(String context) {
         this.context = context;
@@ -126,13 +127,18 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
             }
             warn("Error evaluating transform in " + thisContext + ": '" + expression + "': " + ex.getMessage());
         }
-        return Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
+        return Double.isNaN(value) || Double.isInfinite(value) ? defaultValue : (Double)value;
     }
 
     @Override
     @Nullable
     public Double getVariable(String variable) {
-        return workingParameters != null && workingParameters.contains(variable) ? getParameter(variable) : null;
+        Set<String> parameters = getWorkingParameters();
+        return parameters != null && parameters.contains(variable) ? getParameter(variable) : null;
+    }
+
+    protected Set<String> getWorkingParameters() {
+        return workingParameters;
     }
 
     protected abstract Set<String> getParameters();

@@ -7,4 +7,5 @@ time:
   type: spell
   glyph: "\uE9D1"
   vanilla_item: 'pumpkin_pie{18001}'
+  vanilla_item_enabled: 'pumpkin_pie{19001}'
   vanilla_item_disabled: 'pumpkin_pie{18002}'

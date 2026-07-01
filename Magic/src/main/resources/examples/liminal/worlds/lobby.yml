@@ -1,0 +1,9 @@
+lobby:
+  inherit: liminal_base
+  world: world_lobby
+  generator: lobby
+  time: 6000
+  spawn: 8,-28,8
+  bedrock_level: -30
+  ground_level: -29
+  ambient_sound_time: 60 | 600

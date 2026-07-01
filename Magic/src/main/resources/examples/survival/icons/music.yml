@@ -7,4 +7,5 @@ music:
   type: spell
   glyph: "\uE975"
   vanilla_item: 'music_disc_mellohi{18001}'
+  vanilla_item_enabled: 'music_disc_mellohi{19001}'
   vanilla_item_disabled: 'music_disc_mellohi{18002}'

@@ -1,6 +1,6 @@
 ferrari:
   name: Ferrari California
-  icon: diamond_pickaxe{18011}
+  icon: ferrari_item
   active_spell: spawn_car
   right_click: cast
   indestructible: true

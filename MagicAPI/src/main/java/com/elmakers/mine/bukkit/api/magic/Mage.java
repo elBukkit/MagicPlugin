@@ -603,6 +603,8 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     Entity getLastDamager();
     @Nullable
+    Entity getDamager();
+    @Nullable
     Entity getTopDamager();
     @Nullable
     Entity getLastDamageTarget();
@@ -792,6 +794,8 @@ public interface Mage extends CostReducer, CooldownReducer {
     Set<String> getModifierKeys();
     @Nullable
     MageModifier getModifier(String key);
+    @Nonnull
+    Collection<MageModifier> getModifiers();
     boolean isBypassEnabled();
     void setBypassEnabled(boolean enable);
     @Nullable

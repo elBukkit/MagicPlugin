@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.integration;
 
 import static com.google.common.base.Verify.verifyNotNull;
 
-import java.util.Deque;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -66,7 +66,7 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
                     case PLAYER:
                         String skin;
                         if (configuration.isList("skin") || configuration.isConfigurationSection("skin")) {
-                            Deque<WeightedPair<String>> skins = RandomUtils.createStringProbabilityMap(configuration, "skin");
+                            List<WeightedPair<String>> skins = RandomUtils.createStringProbabilityMap(configuration, "skin");
                             skin = RandomUtils.weightedRandom(skins);
                         } else {
                             skin = configuration.getString("skin");

@@ -1,0 +1,23 @@
+rocket_launcher:
+  actions:
+    cast:
+      - class: ArmorStandProjectile
+        actions:
+          - class: Damage
+            damage_max_distance: 0
+            player_damage: 8
+            entity_damage: 10
+          - class: AreaOfEffect
+            actions:
+              - class: Damage
+              - class: Velocity
+                speed: 1.5
+          - class: Sphere
+            actions:
+              - class: ModifyBlock
+                ignore_result: true
+  parameters:
+    helmet_item: diamond_pickaxe{18009}
+    orient_head: true
+    armor_stand_small: true
+    armor_stand_gravity: false

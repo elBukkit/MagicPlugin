@@ -1,0 +1,5 @@
+diving_helmet:
+    name: "&bDiving Helmet"
+    item: chainmail_helmet[attribute_modifiers=[{id:"oxygen",type:"oxygen_bonus",amount:10,operation:"add_value",slot:"head",display:{type:"hidden"}}],tooltip_display={hidden_components:["attribute_modifiers"]}]
+    lore:
+        - Wear to breathe underwater for a little longer

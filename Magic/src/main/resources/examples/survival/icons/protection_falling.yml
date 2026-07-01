@@ -7,4 +7,5 @@ protection_falling:
   type: spell
   glyph: "\uE98B"
   vanilla_item: 'shield{18014}'
+  vanilla_item_enabled: 'shield{19014}'
   vanilla_item_disabled: 'shield{18015}'

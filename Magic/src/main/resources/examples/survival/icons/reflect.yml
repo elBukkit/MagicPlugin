@@ -7,4 +7,5 @@ reflect:
   type: spell
   glyph: "\uE998"
   vanilla_item: 'pink_dye{18001}'
+  vanilla_item_enabled: 'pink_dye{19001}'
   vanilla_item_disabled: 'pink_dye{18002}'

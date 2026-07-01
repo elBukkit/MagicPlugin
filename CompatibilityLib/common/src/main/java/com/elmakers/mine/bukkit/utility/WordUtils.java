@@ -17,4 +17,8 @@ public class WordUtils {
     public static String capitalizeFully(String str) {
         return org.apache.commons.text.WordUtils.capitalizeFully(str);
     }
+
+    public static String capitalizeFully(String str, char[] separatorChars) {
+        return org.apache.commons.text.WordUtils.capitalizeFully(str, separatorChars);
+    }
 }

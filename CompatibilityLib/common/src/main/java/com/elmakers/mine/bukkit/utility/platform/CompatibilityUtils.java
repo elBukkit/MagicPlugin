@@ -61,6 +61,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -70,6 +71,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.map.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 
@@ -242,9 +245,11 @@ public interface CompatibilityUtils {
 
     boolean removeItemAttributes(ItemStack item);
 
-    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation);
+    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation);
 
-    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID);
+    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID);
+
+    boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID, String attributeKey);
 
     void sendExperienceUpdate(Player player, float experience, int level);
 
@@ -541,11 +546,23 @@ public interface CompatibilityUtils {
 
     Enchantment getPowerEnchantment();
 
-    PotionEffectType getJumpPotionEffectType();
-
     Set<PotionEffectType> getNegativeEffects();
 
     boolean isDestructive(EntityExplodeEvent explosion);
 
     Attribute getMinecraftAttribute(String attributeKey);
+
+    PotionEffectType getPotionEffectType(VersionedPotionEffectType type);
+
+    void renderMap(MapRenderer renderer, MapView map, BufferedMapCanvas canvas, Player player);
+
+    BufferedMapCanvas createMapCanvas();
+
+    Entity createBlockDisplayEntity(Location location, MaterialAndData materialAndData, double scale);
+
+    Entity createItemDisplayEntity(Location location, ItemStack itemStack, double scale);
+
+    ItemStack createItemStack(Material material, String itemData);
+
+    boolean lockFreezeTicks(Entity entity, boolean lock);
 }

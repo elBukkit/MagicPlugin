@@ -7,4 +7,5 @@ gather:
   type: spell
   glyph: "\uE950"
   vanilla_item: 'soul_lantern{18001}'
+  vanilla_item_enabled: 'soul_lantern{19001}'
   vanilla_item_disabled: 'soul_lantern{18002}'

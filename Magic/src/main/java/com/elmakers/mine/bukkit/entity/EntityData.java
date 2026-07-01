@@ -1,10 +1,8 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +61,6 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -90,10 +87,12 @@ public class EntityData
 
     protected EntityType type;
     protected EntityExtraData extraData;
+    protected EntityExtraData nmsData;
     protected Location location;
     protected Vector relativeLocation;
     protected boolean hasMoved = false;
     protected boolean hasChangedHealth = false;
+    protected boolean hasFrozen = false;
     protected boolean isTemporary = false;
     protected boolean cancelExplosion = false;
     protected boolean magicSpawned = false;
@@ -135,6 +134,8 @@ public class EntityData
     protected Boolean canPickupItems;
     protected Integer fireTicks;
     protected Set<String> permissions;
+    protected Float yaw;
+    protected Float pitch;
 
     protected Collection<PotionEffect> potionEffects = null;
     protected Collection<PotionEffectType> removeEffects = null;
@@ -150,19 +151,19 @@ public class EntityData
     protected boolean isSuperProtected = false;
     protected boolean registerByName = false;
 
-    protected Deque<WeightedPair<ItemData>> itemInHand;
-    protected Deque<WeightedPair<ItemData>> itemInOffhand;
-    protected Deque<WeightedPair<ItemData>> helmet;
-    protected Deque<WeightedPair<ItemData>> chestplate;
-    protected Deque<WeightedPair<ItemData>> leggings;
-    protected Deque<WeightedPair<ItemData>> boots;
+    protected List<WeightedPair<ItemData>> itemInHand;
+    protected List<WeightedPair<ItemData>> itemInOffhand;
+    protected List<WeightedPair<ItemData>> helmet;
+    protected List<WeightedPair<ItemData>> chestplate;
+    protected List<WeightedPair<ItemData>> leggings;
+    protected List<WeightedPair<ItemData>> boots;
 
     protected Integer xp;
     protected Integer dropXp;
 
     protected boolean defaultDrops;
     protected boolean dropsRequirePlayerKiller;
-    protected List<Deque<WeightedPair<String>>> drops;
+    protected List<List<WeightedPair<String>>> drops;
     protected ConfigurationSection loot;
     protected ConfigurationSection brain;
     protected int interval;
@@ -181,11 +182,13 @@ public class EntityData
     protected ConfigurationSection disguise;
     protected ConfigurationSection model;
     protected BossBarConfiguration bossBar;
+    private double passengerRotationSpeed;
 
     protected EntityMageData mageData;
     protected EntityData mount;
     protected String mountType;
 
+    protected boolean reload = false;
     protected ConfigurationSection configuration;
 
     public EntityData(MageController controller, Entity entity) {
@@ -310,6 +313,7 @@ public class EntityData
     @Override
     public void load(ConfigurationSection parameters) {
         this.configuration = parameters;
+        reload = parameters.getBoolean("reload", false);
         // This is required to allow changes to health
         hasChangedHealth = true;
         name = parameters.getString("name");
@@ -333,6 +337,7 @@ public class EntityData
         mythicMobLevel = ConfigUtils.getOptionalDouble(parameters, "mythic_mob_level");
         health = ConfigUtils.getOptionalDouble(parameters, "health");
         maxHealth = ConfigUtils.getOptionalDouble(parameters, "max_health");
+        passengerRotationSpeed = configuration.getDouble("passenger_rotation_speed", 0);
         // Shortcut for max_health
         if (health != null && maxHealth == null) maxHealth = health;
         isSilent = ConfigUtils.getOptionalBoolean(parameters, "silent");
@@ -403,6 +408,8 @@ public class EntityData
         hasGravity = ConfigUtils.getOptionalBoolean(parameters, "gravity");
         isCollidable = ConfigUtils.getOptionalBoolean(parameters, "collidable");
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
+        yaw = ConfigurationUtils.getOptionalFloat(parameters, "yaw");
+        pitch = ConfigurationUtils.getOptionalFloat(parameters,"pitch");
 
         isSuperProtected = parameters.getBoolean("protected", false);
         stay = ConfigUtils.getOptionalBoolean(parameters, "stay");
@@ -489,13 +496,13 @@ public class EntityData
                     } else {
                         table = (ConfigurationSection)item;
                     }
-                    Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
+                    List<WeightedPair<String>> dropProbability = new ArrayList<>();
                     RandomUtils.populateStringProbabilityMap(dropProbability, table, 0, 0, 0);
                     drops.add(dropProbability);
                 } else {
                     List<String> dropList = ConfigurationUtils.getStringList(item);
                     if (dropList != null) {
-                        Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
+                        List<WeightedPair<String>> dropProbability = new ArrayList<>();
                         RandomUtils.populateStringProbabilityList(dropProbability, dropList);
                         drops.add(dropProbability);
                     }
@@ -514,6 +521,14 @@ public class EntityData
             tags = new HashSet<>(tagList);
         }
 
+
+        String tagData = parameters.getString("data");
+        if (tagData != null && !tagData.isEmpty()) {
+            Object tag = CompatibilityLib.getNBTUtils().parseTag(tagData);
+            if (tag != null) {
+                nmsData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
+            }
+        }
         try {
             extraData = type == null ? null : CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
         } catch (Exception ex) {
@@ -552,10 +567,11 @@ public class EntityData
             }
             for (String attributeKey : keys) {
                 try {
+                    if (attributeConfiguration.isString(attributeKey) && attributeConfiguration.getString(attributeKey).isEmpty()) continue;
                     Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                     attributes.put(attribute, attributeConfiguration.getDouble(attributeKey));
                 } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Invalid attribute type: " + attributeKey);
+                    controller.getLogger().log(Level.WARNING, "Invalid attribute type: " + attributeKey + " (" + ex.getMessage() + ")");
                 }
             }
         }
@@ -616,7 +632,8 @@ public class EntityData
     @Nullable
     public static EntityData loadNMS(MageController controller, Vector location, Object tag) {
         // We need a world for the registry, hopefully it doesn't matter what world?
-        World mainWorld = Bukkit.getWorlds().getFirst();
+        List<World> worlds = Bukkit.getWorlds();
+        World mainWorld = worlds.isEmpty() ? null : worlds.get(0);
         if (mainWorld == null) {
             return null;
         }
@@ -625,7 +642,7 @@ public class EntityData
             return null;
         }
         EntityData data = new EntityData(controller, entityType);
-        data.extraData = new EntityNMSData(CompatibilityLib.getPlatform(), tag);
+        data.nmsData = CompatibilityLib.getEntityUtils().getNMSData(controller, tag);
         data.relativeLocation = location.clone();
         return data;
     }
@@ -688,30 +705,40 @@ public class EntityData
     }
 
     @Nullable
-    protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
+    protected Entity trySpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld, boolean register) {
+        if (location == null) {
+            return null;
+        }
+        if (yaw != null) {
+            location.setYaw(yaw);
+        }
+        if (pitch != null) {
+            location.setYaw(pitch);
+        }
         Entity spawned = null;
-        boolean addedToWorld = false;
-        if (mythicMobKey != null) {
+        if (spawned == null && mythicMobKey != null && addToWorld) {
             spawned = controller.spawnMythicMob(mythicMobKey, location);
             if (spawned != null) {
                 if (mythicMobLevel != null) {
                     controller.setMythicMobLevel(spawned, mythicMobLevel == null ? 1 : mythicMobLevel);
                 }
-                addedToWorld = true;
+                addToWorld = false;
             } else {
                 controller.getLogger().warning("Could not spawn mythic mob: " + mythicMobKey + " from mob config " + getKey());
             }
         }
+        boolean extraSpawned = false;
         if (spawned == null && type != null && type != EntityType.PLAYER) {
             controller.setDisableSpawnReplacement(true);
             try {
-                SpawnedEntityExtraData spawnedEntity = null;
-                if (extraData != null) {
-                    spawnedEntity = extraData.spawn(location);
+                if (nmsData != null) {
+                    spawned = nmsData.spawn(type, location);
                 }
-                if (spawnedEntity != null) {
-                    spawned = spawnedEntity.getEntity();
-                    addedToWorld = spawnedEntity.isAddedToWorld();
+                if (spawned == null && extraData != null) {
+                    spawned = extraData.spawn(type, location);
+                }
+                if (spawned != null) {
+                    extraSpawned = true;
                 } else {
                     spawned = CompatibilityLib.getCompatibilityUtils().createEntity(location, type);
                 }
@@ -722,19 +749,29 @@ public class EntityData
         }
         if (spawned != null) {
             try {
-                modifyPreSpawn(spawned, true, true);
-                if (!addedToWorld) {
+                modifyPreSpawn(spawned, true);
+                if (addToWorld) {
                     isSpawning = true;
                     reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
                     CompatibilityLib.getCompatibilityUtils().addToWorld(location.getWorld(), spawned, reason);
                     isSpawning = false;
                 }
-                modifyPostSpawn(spawned);
+                modifyPostSpawn(spawned, !extraSpawned);
             } catch (Exception ex) {
-                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for] " + getType() + " at " + getLocation(), ex);
+                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for: " + getType() + " at " + getLocation(), ex);
             }
         }
-        return spawned;
+        Entity root = spawned;
+        Entity vehicle = spawned == null ? null : spawned.getVehicle();
+        while (vehicle != null) {
+            root = vehicle;
+            vehicle = vehicle.getVehicle();
+        }
+        if (register) {
+            // TODO: Should we be registering non-magic mobs (no key)?
+            controller.registerMob(root, this);
+        }
+        return root;
     }
 
     @Nullable
@@ -753,42 +790,66 @@ public class EntityData
     @Nullable
     @Override
     public Entity spawn() {
-        return spawn((Location)null, null);
+        return spawn(location, null, true);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location) {
-        return spawn(location, null);
+        return spawn(location, null, true);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller) {
-        return spawn((Location)null, null);
+        return spawn(null, null, true);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
-        return spawn(location, null);
+        return spawn(location, null, true);
     }
 
     @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
-        return spawn(location, reason);
+        return spawn(location, reason, true);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
-        if (location != null) this.location = location;
-        else if (this.location == null) return null;
-        Entity entity = trySpawn(reason);
+        return spawn(location, reason, true);
+    }
+
+    private Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld) {
+        // For randomization
+        if (reload) {
+            load(configuration);
+        }
+        return doSpawn(location, reason, true);
+    }
+
+    @Nullable
+    @Override
+    public Entity create(Location location) {
+        // For randomization
+        if (reload) {
+            load(configuration);
+        }
+        return doSpawn(location, null, false);
+    }
+
+    private Entity doSpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld) {
+        return doSpawn(location, reason, addToWorld, true);
+    }
+
+    private Entity doSpawn(Location location, CreatureSpawnEvent.SpawnReason reason, boolean addToWorld, boolean register) {
+        Entity entity = trySpawn(location, reason, addToWorld, register);
         if (entity != null && mageData != null) {
             Mage mage = controller.getMage(entity);
             mageData.trigger(mage, "spawn");
@@ -807,8 +868,8 @@ public class EntityData
             WeakReference<Entity> respawnedEntity = respawned.get(uuid);
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
-            } else {
-                entity = trySpawn(null);
+            } else if (location != null) {
+                entity = trySpawn(location, null, true, true);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
 
@@ -863,22 +924,20 @@ public class EntityData
         if (register && !(entity instanceof Player)) {
             controller.registerMob(entity, this);
         }
-        boolean modifiedPre = modifyPreSpawn(entity, false, false);
-        boolean modifiedPost = modifyPostSpawn(entity);
+        boolean modifiedPre = modifyPreSpawn(entity, false);
+        boolean modifiedPost = modifyPostSpawn(entity, true);
         return modifiedPre || modifiedPost;
     }
 
-    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn, boolean register) {
+    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
-
-        if (!(entity instanceof Player) && register) {
-            controller.registerMob(entity, this);
-        }
         boolean isPlayer = (entity instanceof Player);
+        if (nmsData != null) {
+            nmsData.apply(entity);
+        }
         if (extraData != null) {
             extraData.apply(entity);
         }
-
         if (persist != null) {
             CompatibilityLib.getCompatibilityUtils().setPersist(entity, persist);
         }
@@ -995,6 +1054,11 @@ public class EntityData
             }
         }
 
+        if (hasFrozen) {
+            CompatibilityLib.getCompatibilityUtils().lockFreezeTicks(entity, false);
+            entity.setFreezeTicks(0);
+        }
+
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
@@ -1062,11 +1126,17 @@ public class EntityData
         return mageData != null ? mageData.mageProperties : null;
     }
 
-    private boolean modifyPostSpawn(Entity entity) {
+    private boolean modifyPostSpawn(Entity entity, boolean applyExtraData) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
             entity.teleport(location);
+        }
+        if (nmsData != null && applyExtraData) {
+            nmsData.applyPostSpawn(entity);
+        }
+        if (extraData != null && applyExtraData) {
+            extraData.applyPostSpawn(entity);
         }
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
@@ -1086,8 +1156,9 @@ public class EntityData
                 allowMount = false;
             }
             // This prevents respawning mounts on chunk load for persistent mobs
+            boolean addToWorld = entity.isInWorld();
             if (mountEntity == null) {
-                mountEntity = mount.spawn(entity.getLocation());
+                mountEntity = mount.doSpawn(entity.getLocation(), null, addToWorld, false);
             } else {
                 if (mountEntity.getType() == mount.getType()) {
                     // Don't re-mount
@@ -1098,7 +1169,7 @@ public class EntityData
                     // Mount type has changed, now we need to respawn it
                     mountEntity.remove();
                     entity.eject();
-                    mountEntity = mount.spawn(entity.getLocation());
+                    mountEntity = mount.doSpawn(entity.getLocation(), null, addToWorld, false);
                 }
             }
             if (allowMount && mountEntity != null) {
@@ -1123,9 +1194,6 @@ public class EntityData
         }
         if (this.ownerId != null) {
             CompatibilityLib.getCompatibilityUtils().setOwner(entity, ownerId);
-        }
-        if (extraData != null) {
-            extraData.applyPostSpawn(entity);
         }
         applyBrain(entity);
         return true;
@@ -1239,7 +1307,7 @@ public class EntityData
         }
     }
 
-    protected void copyEquipmentPieceTo(Deque<WeightedPair<ItemData>> item, ItemUpdatedCallback callback) {
+    protected void copyEquipmentPieceTo(List<WeightedPair<ItemData>> item, ItemUpdatedCallback callback) {
         ItemData itemData = RandomUtils.weightedRandom(item);
         if (itemData != null) {
             itemData.getItemStack(1, callback);
@@ -1260,6 +1328,11 @@ public class EntityData
     @Override
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
+    }
+
+    @Override
+    public void setHasFrozen(boolean frozen) {
+        this.hasFrozen = frozen;
     }
 
     @Override
@@ -1389,7 +1462,7 @@ public class EntityData
         }
 
         if (drops != null) {
-            for (Deque<WeightedPair<String>> dropTable : drops) {
+            for (List<WeightedPair<String>> dropTable : drops) {
                 String key = RandomUtils.weightedRandom(dropTable);
                 if (key != null && !key.equalsIgnoreCase("none")) {
                     ItemStack item = controller.createItem(key);
@@ -1461,6 +1534,23 @@ public class EntityData
     public void tick(Mage mage) {
         if (mageData != null) {
             mageData.tick(mage);
+        }
+    }
+
+    public void tick(Entity entity) {
+        if (passengerRotationSpeed > 0) {
+            Entity passenger = entity;
+            Entity vehicle = passenger.getVehicle();
+            while (vehicle != null) {
+                final Location vehicleLocation = vehicle.getLocation();
+                final float yaw = passenger.getLocation().getYaw();
+                final float targetYaw = RandomUtils.applyRotation(vehicleLocation.getYaw(), yaw, (float)passengerRotationSpeed);
+                final float pitch = passenger.getLocation().getPitch();
+                final float targetPitch = RandomUtils.applyRotation(vehicleLocation.getPitch(), pitch, (float)passengerRotationSpeed);
+                passenger.setRotation(targetYaw, targetPitch);
+                passenger = vehicle;
+                vehicle = passenger.getVehicle();
+            }
         }
     }
 
@@ -1709,5 +1799,9 @@ public class EntityData
         variant.load(effectiveParameters);
 
         return variant;
+    }
+
+    public boolean shouldReload() {
+        return reload;
     }
 }

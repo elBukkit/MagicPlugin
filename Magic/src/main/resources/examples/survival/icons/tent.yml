@@ -7,4 +7,5 @@ tent:
   type: spell
   glyph: "\uE9CF"
   vanilla_item: 'brown_wool{18001}'
+  vanilla_item_enabled: 'brown_wool{19001}'
   vanilla_item_disabled: 'brown_wool{18002}'

@@ -7,4 +7,5 @@ mob:
   type: spell
   glyph: "\uE972"
   vanilla_item: 'salmon_bucket{18001}'
+  vanilla_item_enabled: 'salmon_bucket{19001}'
   vanilla_item_disabled: 'salmon_bucket{18002}'

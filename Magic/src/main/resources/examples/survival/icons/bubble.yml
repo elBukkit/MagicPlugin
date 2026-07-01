@@ -7,4 +7,5 @@ bubble:
   type: spell
   glyph: "\uE923"
   vanilla_item: 'cyan_dye{18001}'
+  vanilla_item_enabled: 'cyan_dye{19001}'
   vanilla_item_disabled: 'cyan_dye{18002}'

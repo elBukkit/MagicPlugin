@@ -7,4 +7,5 @@ push:
   type: spell
   glyph: "\uE991"
   vanilla_item: 'wheat{18001}'
+  vanilla_item_enabled: 'wheat{19001}'
   vanilla_item_disabled: 'wheat{18002}'

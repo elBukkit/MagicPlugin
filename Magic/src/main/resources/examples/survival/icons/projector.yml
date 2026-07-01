@@ -7,4 +7,5 @@ projector:
   type: spell
   glyph: "\uE97A"
   vanilla_item: 'white_stained_glass{18001}'
+  vanilla_item_enabled: 'white_stained_glass{19001}'
   vanilla_item_disabled: 'white_stained_glass{18002}'

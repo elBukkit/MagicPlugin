@@ -7,4 +7,5 @@ vengeance:
   type: spell
   glyph: "\uE98E"
   vanilla_item: 'spider_eye{18001}'
+  vanilla_item_enabled: 'spider_eye{19001}'
   vanilla_item_disabled: 'spider_eye{18002}'

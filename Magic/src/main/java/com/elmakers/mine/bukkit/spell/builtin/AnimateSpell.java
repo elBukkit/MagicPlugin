@@ -1,10 +1,8 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -29,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 public class AnimateSpell extends SimulateSpell
 {
     private static Random random = new Random();
-    private Deque<WeightedPair<Integer>> levelWeights = null;
+    private List<WeightedPair<Integer>> levelWeights = null;
 
     public static final String[] ANIMATE_PARAMETERS = {
         "animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget", "create_mage", "animate_spell"
@@ -217,7 +215,7 @@ public class AnimateSpell extends SimulateSpell
 
             RandomUtils.extrapolateFloatList(levels);
 
-            levelWeights = new ArrayDeque<>();
+            levelWeights = new ArrayList<>();
             float threshold = 0;
             for (AscendingPair<Float> level : levels) {
                 float weight = level.getValue();

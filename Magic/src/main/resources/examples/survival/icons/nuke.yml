@@ -7,4 +7,5 @@ nuke:
   type: spell
   glyph: "\uE978"
   vanilla_item: 'brown_mushroom{18001}'
+  vanilla_item_enabled: 'brown_mushroom{19001}'
   vanilla_item_disabled: 'brown_mushroom{18002}'

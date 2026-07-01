@@ -7,4 +7,5 @@ earthquake:
   type: spell
   glyph: "\uE93A"
   vanilla_item: 'brown_dye{18001}'
+  vanilla_item_enabled: 'brown_dye{19001}'
   vanilla_item_disabled: 'brown_dye{18002}'

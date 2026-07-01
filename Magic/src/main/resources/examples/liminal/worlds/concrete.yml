@@ -1,0 +1,6 @@
+concrete:
+  inherit: liminal_base
+  world: world_concrete
+  generator: concrete
+  time: 13000
+  ambient_sound_time: 90 | 900

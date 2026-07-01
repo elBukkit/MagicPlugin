@@ -45,17 +45,6 @@ public class ShrinkEntityAction extends DamageAction
     {
         Entity targetEntity = context.getTargetEntity();
         MageController controller = context.getController();
-        if (controller.isElemental(targetEntity))
-        {
-            double elementalSize = controller.getElementalScale(targetEntity);
-            if (elementalSize < 0.1) {
-                return super.perform(context);
-            }
-            elementalSize /= 2;
-            controller.setElementalScale(targetEntity, elementalSize);
-            return SpellResult.CAST;
-        }
-
         if (!(targetEntity instanceof LivingEntity)) return SpellResult.NO_TARGET;
 
         LivingEntity li = (LivingEntity)targetEntity;

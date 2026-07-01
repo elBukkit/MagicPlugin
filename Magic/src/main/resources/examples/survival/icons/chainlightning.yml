@@ -7,4 +7,5 @@ chainlightning:
   type: spell
   glyph: "\uE929"
   vanilla_item: 'sweet_berries{18001}'
+  vanilla_item_enabled: 'sweet_berries{19001}'
   vanilla_item_disabled: 'sweet_berries{18002}'

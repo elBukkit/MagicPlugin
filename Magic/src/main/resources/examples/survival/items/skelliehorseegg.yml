@@ -1,11 +1,17 @@
 skelliehorseegg:
+  inherit: false
   worth: 1000.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4325
-    id: minecraft:skeleton_horse_spawn_egg
-    count: 1
-    components:
-      minecraft:custom_data: '{EntityTag:{Age:0,CustomName:''{"text":"Skellie Horse"}'',ForcedAge:0,SaddleItem:{Count:1b,Damage:0,id:"minecraft:saddle"},Tame:1b},display:{Name:''{"text":"Spawn
-        Skellie Horse"}''}}'
-    schema_version: 1
+  item: SKELETON_HORSE_SPAWN_EGG
+  name: Tamed Skellie Horse Spawn Egg
+  entity:
+    SaddleItem:
+      id: minecraft:saddle
+      count: 1
+    Attributes:
+      - Base: 0.2
+        Name: minecraft:generic.movement_speed
+      - Base: 15.0
+        Name: minecraft:generic.max_health
+    Tame: true
+    id: minecraft:skeleton_horse
+    Health: 15.0

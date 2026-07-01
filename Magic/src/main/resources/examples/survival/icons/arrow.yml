@@ -7,4 +7,5 @@ arrow:
   type: spell
   glyph: "\uE907"
   vanilla_item: 'arrow{18001}'
+  vanilla_item_enabled: 'arrow{19001}'
   vanilla_item_disabled: 'arrow{18002}'

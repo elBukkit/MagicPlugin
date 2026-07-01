@@ -1,0 +1,336 @@
+package com.elmakers.mine.bukkit.utility;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
+import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
+import com.google.common.primitives.Bytes;
+
+public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.platform.SchematicUtils {
+    private static final int STRUCTURE_DATA_VERSION = 3465; // Set for 1.20 compatibility (4903 is current)
+    protected final Platform platform;
+
+    public SchematicUtilsBase(final Platform platform) {
+        this.platform = platform;
+    }
+
+    @Override
+    public boolean saveStructure(OutputStream output, String[][][] blockData) {
+        if (output == null || blockData == null || blockData.length == 0 || blockData[0].length == 0 || blockData[0][0].length == 0) {
+            return false;
+        }
+
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        Object nbtData = nbtUtils.newCompoundTag();
+        nbtUtils.setInt(nbtData, "DataVersion", STRUCTURE_DATA_VERSION);
+        int width = blockData.length;
+        int height = blockData[0].length;
+        int length = blockData[0][0].length;
+        Object sizeList = nbtUtils.setEmptyList(nbtData, "size");
+        nbtUtils.addToList(sizeList, width);
+        nbtUtils.addToList(sizeList, height);
+        nbtUtils.addToList(sizeList, length);
+
+        // Iterate through blocks and build varint data list and block palette
+        Map<String, Integer> paletteLookup = new HashMap<>();
+        List<Integer> blockList = new ArrayList<>();
+        Object blocks = nbtUtils.setEmptyList(nbtData, "blocks");
+        Object palette = nbtUtils.setEmptyList(nbtData, "palette");
+        int currentId = 0;
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < length; z++) {
+                for (int x = 0; x < width; x++) {
+                    String block = blockData[x][y][z];
+                    Integer paletteIndex = paletteLookup.get(block);
+                    if (paletteIndex == null) {
+                        paletteIndex = currentId++;
+                        paletteLookup.put(block, paletteIndex);
+
+                        // Add new Palette entry
+                        Object paletteEntry = nbtUtils.newCompoundTag();
+                        nbtUtils.setString(paletteEntry, "Name", block);
+                        nbtUtils.addToList(palette, paletteEntry);
+                    }
+                    blockList.add(paletteIndex);
+
+                    // Add new Block entry
+                    Object blockEntry = nbtUtils.newCompoundTag();
+                    nbtUtils.setInt(blockEntry, "state", paletteIndex);
+                    Object posList = nbtUtils.setEmptyList(blockEntry, "pos");
+                    nbtUtils.addToList(posList, x);
+                    nbtUtils.addToList(posList, y);
+                    nbtUtils.addToList(posList, z);
+                    nbtUtils.addToList(blocks, blockEntry);
+                }
+            }
+        }
+
+        // Add empty lists so they exist
+        nbtUtils.setEmptyList(nbtData, "entities");
+        return nbtUtils.writeTagToStream(nbtData, output);
+    }
+
+    @Override
+    public boolean saveSchematic(OutputStream output, String[][][] blockData) {
+        if (output == null || blockData == null || blockData.length == 0 || blockData[0].length == 0 || blockData[0][0].length == 0) {
+            return false;
+        }
+
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        Object nbtData = nbtUtils.newCompoundTag();
+        int width = blockData.length;
+        int height = blockData[0].length;
+        int length = blockData[0][0].length;
+        nbtUtils.setMetaShort(nbtData, "Width", (short)width);
+        nbtUtils.setMetaShort(nbtData, "Height", (short)height);
+        nbtUtils.setMetaShort(nbtData, "Length", (short)length);
+
+        // Iterate through blocks and build varint data list and block palette
+        Map<String, Integer> paletteLookup = new HashMap<>();
+        List<Byte> blockList = new ArrayList<>();
+        int currentId = 0;
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < length; z++) {
+                for (int x = 0; x < width; x++) {
+                    String block = blockData[x][y][z];
+                    Integer paletteIndex = paletteLookup.get(block);
+                    if (paletteIndex == null) {
+                        paletteIndex = currentId++;
+                        paletteLookup.put(block, paletteIndex);
+                    }
+                    while (paletteIndex > 128) {
+                        // This is probably wrong ...
+                        // TODO: test with a variety of blocks in a schematic!
+                        blockList.add((byte)((paletteIndex & 127) | 128));
+                        paletteIndex >>= 7;
+                    }
+                    blockList.add((byte)(int)paletteIndex);
+                }
+            }
+        }
+
+        // Save palette to NBT
+        Object palette = nbtUtils.newCompoundTag();
+        for (Map.Entry<String, Integer> entry : paletteLookup.entrySet()) {
+            nbtUtils.setInt(palette, entry.getKey(), entry.getValue());
+        }
+        nbtUtils.setTag(nbtData, "Palette", palette);
+
+        // Save block list to NBT
+        byte[] blockArray = Bytes.toArray(blockList);
+        nbtUtils.setByteArray(nbtData, "BlockData", blockArray);
+
+        // Add empty lists so they exist
+        nbtUtils.setEmptyList(nbtData, "Entities");
+        nbtUtils.setEmptyList(nbtData, "BlockEntities");
+        int[] offset = {0, 0, 0};
+        nbtUtils.setIntArray(nbtData, "Offset", offset);
+        return nbtUtils.writeTagToStream(nbtData, output);
+    }
+
+    protected boolean loadStructure(Object nbtData, LoadableSchematic schematic, Logger log) {
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        List<Integer> sizeList = nbtUtils.getIntList(nbtData, "size");
+        if (sizeList.size() != 3) {
+            return false;
+        }
+
+        int width = sizeList.get(0);
+        int height = sizeList.get(1);
+        int length = sizeList.get(2);
+
+        List<Object> blocks = nbtUtils.getTagList(nbtData, "blocks");
+        List<Object> palette = nbtUtils.getTagList(nbtData, "palette");
+
+        int[] blockMap = null;
+        Map<Integer, String> paletteMap = null;
+        if (palette != null && blocks != null) {
+            // Load blocks
+            blockMap = new int[width * height * length];
+            for (Object blockEntry : blocks) {
+                List<Integer> pos = nbtUtils.getIntList(blockEntry, "pos");
+                if (pos.size() != 3) continue;
+                int x = pos.get(0);
+                int y = pos.get(1);
+                int z = pos.get(2);
+                int blockIndex = x + (y * length + z) * width;
+                if (blockIndex < 0 || blockIndex >= blockMap.length) continue;
+                int state = nbtUtils.getInt(blockEntry, "state", 0);
+                blockMap[blockIndex] = state;
+            }
+
+            // Map Palette
+            paletteMap = new HashMap<>();
+            for (int i = 0; i < palette.size(); i++) {
+                paletteMap.put(i, nbtUtils.getString(palette.get(i), "Name"));
+            }
+        }
+
+        Collection<Object> entityData = nbtUtils.getTagList(nbtData, "Entities");
+        Vector origin = new Vector(0, 0, 0);
+        schematic.load(width, height, length, blockMap, null, paletteMap, null, entityData, origin);
+        return true;
+    }
+
+    @Override
+    public boolean loadSchematic(InputStream input, LoadableSchematic schematic, Logger log) {
+        if (input == null || schematic == null) return false;
+
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        try {
+            Object nbtData = nbtUtils.readTagFromStream(input);
+            if (nbtData == null) {
+                return false;
+            }
+
+            // We're going to branch completely for structures for simplicity
+            if (nbtUtils.contains(nbtData, "DataVersion") && nbtUtils.contains(nbtData, "size")) {
+                return loadStructure(nbtData, schematic, log);
+            }
+
+            // FAWE does this, I guess, for some reason?
+            if (nbtUtils.contains(nbtData, "Schematic")) {
+                nbtData = nbtUtils.getTag(nbtData, "Schematic");
+            }
+            Object blockRoot = nbtUtils.getTag(nbtData, "Blocks");
+            int width = nbtUtils.getShort(nbtData, "Width", (short)0);
+            int height = nbtUtils.getShort(nbtData, "Height", (short)0);
+            int length = nbtUtils.getShort(nbtData, "Length", (short)0);
+
+            Object palette = nbtUtils.getTag(nbtData,"Palette");
+            if (palette == null && blockRoot != null) {
+                palette = nbtUtils.getTag(blockRoot, "Palette");
+            }
+            byte[] blockData = nbtUtils.getByteArray(nbtData, "BlockData");
+            if (blockData == null && blockRoot != null) {
+                blockData = nbtUtils.getByteArray(blockRoot, "Data");
+            }
+            int[] blockMap = null;
+            Map<Integer, String> paletteMap = null;
+
+            if (palette != null) {
+                // Map the palette
+                paletteMap = new HashMap<>();
+                Set<String> keys = nbtUtils.getAllKeys(palette);
+                for (String key : keys) {
+                    int index = nbtUtils.getInt(palette, key, 0);
+                    paletteMap.put(index, key);
+                }
+            }
+            if (blockData != null) {
+                int varInt = 0;
+                int varIntLength = 0;
+                int index = 0;
+                blockMap = new int[width * height * length];
+
+                for (int i = 0; i < blockData.length; i++) {
+                    varInt |= (blockData[i] & 127) << (varIntLength++ * 7);
+
+                    if ((blockData[i] & 128) == 128) {
+                        continue;
+                    }
+
+                    blockMap[index++] = varInt;
+                    varIntLength = 0;
+                    varInt = 0;
+                }
+                if (index != blockMap.length) {
+                    log.warning("Block data array length does not match dimensions in schematic");
+                }
+            }
+
+            // Load entities
+            Collection<Object> entityData = nbtUtils.getTagList(nbtData, "Entities");
+            Collection<Object> tileEntityData;
+            if (nbtUtils.contains(nbtData, "BlockEntities")) {
+                tileEntityData = nbtUtils.getTagList(nbtData, "BlockEntities");
+            } else {
+                tileEntityData = nbtUtils.getTagList(nbtData, "TileEntities");
+            }
+
+            Vector origin = new Vector(0, 0, 0);
+            int[] offset = nbtUtils.getIntArray(nbtData, "Offset");
+            if (offset != null && offset.length == 3) {
+                origin.setX(offset[0]);
+                origin.setY(offset[1]);
+                origin.setZ(offset[2]);
+            }
+            schematic.load(width, height, length, blockMap, null, paletteMap, tileEntityData, entityData, origin);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean loadLegacySchematic(InputStream input, LoadableSchematic schematic) {
+        if (input == null || schematic == null) return false;
+
+        com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils = platform.getNBTUtils();
+        try {
+            Object nbtData = nbtUtils.readTagFromStream(input);
+            if (nbtData == null) {
+                return false;
+            }
+
+            // Version check
+            String materials = nbtUtils.getString(nbtData, "Materials");
+            if (!materials.equals("Alpha")) {
+                Bukkit.getLogger().warning("Schematic is not in Alpha format");
+                return false;
+            }
+
+            short width = nbtUtils.getShort(nbtData, "Width", (short)0);
+            short height = nbtUtils.getShort(nbtData, "Height", (short)0);
+            short length = nbtUtils.getShort(nbtData, "Length", (short)0);
+
+            byte[] blockIds = nbtUtils.getByteArray(nbtData, "Blocks");
+
+            // Have to combine block ids to get 12 bits of ids
+            // Thanks to the WorldEdit team for showing me how to do this.
+            int[] blocks = new int[blockIds.length];
+            byte[] addBlocks = new byte[0];
+            if (nbtUtils.contains(nbtData, "AddBlocks")) {
+                addBlocks = nbtUtils.getByteArray(nbtData,"AddBlocks");
+            }
+            for (int index = 0; index < blocks.length; index++) {
+                if ((index >> 1) >= addBlocks.length) {
+                    blocks[index] = (short) (blockIds[index] & 0xFF);
+                } else {
+                    if ((index & 1) == 0) {
+                        blocks[index] = (short) (((addBlocks[index >> 1] & 0x0F) << 8) + (blockIds[index] & 0xFF));
+                    } else {
+                        blocks[index] = (short) (((addBlocks[index >> 1] & 0xF0) << 4) + (blockIds[index] & 0xFF));
+                    }
+                }
+            }
+
+            byte[] data = nbtUtils.getByteArray(nbtData, "Data");
+
+            Collection<Object> entityData = nbtUtils.getTagList(nbtData, "Entities");
+            Collection<Object> tileEntityData = nbtUtils.getTagList(nbtData, "TileEntities");
+
+            int originX = nbtUtils.getInt(nbtData, "WEOriginX", 0);
+            int originY = nbtUtils.getInt(nbtData, "WEWEOriginYOriginX", 0);
+            int originZ = nbtUtils.getInt(nbtData, "WEOriginZ", 0);
+
+            schematic.load(width, height, length, blocks, data, null, tileEntityData, entityData, new Vector(originX, originY, originZ));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}

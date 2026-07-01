@@ -7,4 +7,5 @@ emp:
   type: spell
   glyph: "\uE93B"
   vanilla_item: 'redstone_torch{18001}'
+  vanilla_item_enabled: 'redstone_torch{19001}'
   vanilla_item_disabled: 'redstone_torch{18002}'

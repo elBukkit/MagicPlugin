@@ -7,4 +7,5 @@ pollinate:
   type: spell
   glyph: "\uE985"
   vanilla_item: 'allium{18001}'
+  vanilla_item_enabled: 'allium{19001}'
   vanilla_item_disabled: 'allium{18002}'

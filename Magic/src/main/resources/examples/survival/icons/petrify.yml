@@ -7,4 +7,5 @@ petrify:
   type: spell
   glyph: "\uE97D"
   vanilla_item: 'light_gray_dye{18001}'
+  vanilla_item_enabled: 'light_gray_dye{19001}'
   vanilla_item_disabled: 'light_gray_dye{18002}'

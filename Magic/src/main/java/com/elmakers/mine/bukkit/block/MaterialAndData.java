@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.io.StringReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +21,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -33,9 +33,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
@@ -44,6 +44,9 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.PlayerProfile;
+import com.elmakers.mine.bukkit.utility.ProfileCallback;
+import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
@@ -97,6 +100,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected MaterialExtraData extraData;
     protected GenericExtraData genericExtraData;
     protected String blockData;
+    protected BlockData cachedBlockData;
+    protected String itemData;
     protected boolean isValid = true;
     protected boolean isTargetValid = true;
 
@@ -115,7 +120,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public MaterialAndData(final Material material, String blockData) {
         this.material = material;
-        this.blockData = blockData;
+        this.itemData = blockData;
+        setBlockData(blockData);
     }
 
     public MaterialAndData(final Material material, final short data) {
@@ -135,7 +141,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = item.getItemMeta();
             if (meta instanceof SkullMeta) {
                 SkullMeta skullMeta = (SkullMeta)meta;
-                PlayerProfile profile = skullMeta.getOwnerProfile();
+                PlayerProfile profile = CompatibilityLib.getSkinUtils().getPlayerProfile(skullMeta);
                 if (profile != null) {
                     extraData = new BlockSkull(profile);
                 }
@@ -185,7 +191,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
         }
 
-        if (item.hasItemMeta()) {
+        // this empty server check is here for MagicMeta
+        if (Bukkit.getServer() != null && item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
             customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
             itemModel = CompatibilityLib.getItemUtils().getItemModel(item);
@@ -211,6 +218,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         update(materialKey);
     }
 
+    private void setBlockData(String blockData) {
+        this.blockData = blockData;
+        this.cachedBlockData = null;
+    }
+
     public void copyTo(MaterialAndData other) {
         other.material = material;
         other.data = data;
@@ -218,7 +230,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         other.customModelData = customModelData;
         other.itemModel = itemModel;
         other.extraData = extraData;
-        other.blockData = blockData;
+        other.setBlockData(blockData);
+        other.itemData = itemData;
         other.isValid = isValid;
         other.isTargetValid = isTargetValid;
     }
@@ -239,10 +252,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         // Check for block data
         String originalKey = materialKey;
         String blockData = null;
+        String itemData = null;
         String[] blockPieces = StringUtils.split(materialKey, "?");
         if (blockPieces.length > 1) {
             materialKey = blockPieces[0];
             blockData = blockPieces[1];
+        }
+        String[] itemPieces = StringUtils.split(materialKey, "[", 2);
+        if (itemPieces.length > 1) {
+            materialKey = itemPieces[0];
+            itemData = "[" + itemPieces[1];
+            blockData = itemData;
         }
 
         MaterialExtraData extraData = null;
@@ -283,8 +303,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                 break;
                             case "custom_model_data":
                             case "CustomModelData":
-                                if (value instanceof Integer) {
-                                    customModelData = (int)(Integer)value;
+                                if (value instanceof Number) {
+                                    customModelData = ((Number)value).intValue();
                                 } else {
                                     Bukkit.getLogger().info("[Magic] [" + originalKey + "] Unsupported CustomModelData value: " + value);
                                 }
@@ -322,7 +342,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             MaterialAndData skullData = DefaultMaterials.getPlayerSkullItem();
             if (skullData != null) {
                 material = skullData.material;
-                data = skullData.data;
+                if (skullData.data != 0) {
+                    data = skullData.data;
+                }
             }
         }
 
@@ -352,26 +374,38 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 } else if (DefaultMaterials.isMobSpawner(material)) {
                     extraData = new BlockMobSpawner(dataString);
                 } else if (DefaultMaterials.isSkull(material)) {
-                    if (dataString.contains(":")) {
-                        data = 3;
+                    boolean isURL = dataString.contains(":");
+                    // Max player name length is 16
+                    if (isURL || dataString.length() <= 16) {
                         this.material = material;
-                        this.data = data;
                         ItemStack item = getItemStack(1);
-                        item = CompatibilityLib.getInventoryUtils().setSkullURL(item, dataString);
+                        if (isURL) {
+                            item = CompatibilityLib.getInventoryUtils().setSkullURL(item, dataString);
+                        }
                         ItemMeta itemMeta = item.getItemMeta();
                         if (itemMeta instanceof SkullMeta) {
-                            SkullMeta skullMeta = (SkullMeta)itemMeta;
-                            PlayerProfile playerProfile = skullMeta.getOwnerProfile();
-                            if (playerProfile != null) {
-                                extraData = new BlockSkull(playerProfile);
+                            final SkullMeta skullMeta = (SkullMeta)itemMeta;
+                            if (isURL) {
+                                PlayerProfile playerProfile = CompatibilityLib.getSkinUtils().getPlayerProfile(skullMeta);
+                                if (playerProfile != null) {
+                                    extraData = new BlockSkull(playerProfile);
+                                }
+                            } else {
+                                extraData = new BlockSkull(dataString);
+                                final MaterialAndData updateMaterial = this;
+                                CompatibilityLib.getSkinUtils().fetchProfile(dataString, new ProfileCallback() {
+                                    @Override
+                                    public void result(ProfileResponse response) {
+                                        if (response != null) {
+                                            response.getPlayerProfile().update(skullMeta);
+                                            PlayerProfile playerProfile = CompatibilityLib.getSkinUtils().getPlayerProfile(skullMeta);
+                                            if (playerProfile != null) {
+                                                updateMaterial.extraData = new BlockSkull(playerProfile);
+                                            }
+                                        }
+                                    }
+                                });
                             }
-                        }
-                    } else {
-                        try {
-                            data = Short.parseShort(dataString);
-                        } catch (Exception ex) {
-                            data = 3;
-                            extraData = new BlockSkull(dataString);
                         }
                     }
                 } else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
@@ -473,7 +507,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         if (isValid) {
             this.extraData = extraData;
-            this.blockData = blockData;
+            this.setBlockData(blockData);
+            this.itemData = itemData;
         }
     }
 
@@ -508,7 +543,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else {
                 extraData = null;
             }
-            blockData = o.blockData;
+            setBlockData(o.blockData);
+            itemData = o.itemData;
             isValid = o.isValid;
             isTargetValid = o.isTargetValid;
             customModelData = o.customModelData;
@@ -529,7 +565,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.material = material;
         this.data = data;
         extraData = null;
-        blockData = null;
+        setBlockData(null);
+        itemData = null;
         isValid = material != null;
         isTargetValid = true;
     }
@@ -573,8 +610,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 extraData = new BlockCommand(command.getCommand(), command.getName());
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                data = CompatibilityLib.getDeprecatedUtils().getSkullType(skull);
-                PlayerProfile playerProfile = skull.getOwnerProfile();
+                PlayerProfile playerProfile = CompatibilityLib.getSkinUtils().getPlayerProfile(skull);
                 extraData = new BlockSkull(playerProfile, skull.getRotation());
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
@@ -588,7 +624,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        blockData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
+        setBlockData(CompatibilityLib.getCompatibilityUtils().getBlockData(block));
         if (blockData != null) {
             // If we have block data, the data byte is no longer relevant
             data = 0;
@@ -664,7 +700,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (material != null) {
                 Material currentMaterial = block.getType();
 
-                String extendedBlockData = this.blockData;
+                String extendedBlockData = this.getBlockDataString();
                 if (data == null && extendedBlockData == null) {
                     extendedBlockData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
                 }
@@ -719,9 +755,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState != null && blockState instanceof Skull && extraData != null && extraData instanceof BlockSkull) {
                 Skull skull = (Skull)blockState;
                 BlockSkull skullData = (BlockSkull)extraData;
-                if (data != null && data != 0) {
-                    CompatibilityLib.getDeprecatedUtils().setSkullType(skull, data);
-                }
                 org.bukkit.block.BlockFace rotation = skullData.getRotation();
                 if (rotation != null && rotation != org.bukkit.block.BlockFace.SELF) {
                     skull.setRotation(rotation);
@@ -729,7 +762,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 PlayerProfile profile = skullData.getProfile();
                 String playerName = skullData.getPlayerName();
                 if (profile != null) {
-                    skull.setOwnerProfile(profile);
+                    profile.update(skull);
                     skull.update(true, false);
                 } else if (playerName != null) {
                     CompatibilityLib.getDeprecatedUtils().setOwner(skull, playerName);
@@ -760,10 +793,42 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return data == null ? null : (byte)(short)data;
     }
 
+    private String getBlockDataString() {
+        if (blockData != null && !blockData.contains("?") && material != null) {
+            return material.name().toLowerCase() + blockData;
+        }
+        return blockData;
+    }
+
     @Nullable
     @Override
     public String getModernBlockData() {
-        return blockData;
+        String blockDataString = getBlockDataString();
+        if (blockDataString == null) {
+            BlockData blockData = createBlockData();
+            return blockData == null ? null : blockData.getAsString();
+        }
+        return blockDataString;
+    }
+
+    @Override
+    public BlockData createBlockData() {
+        if (cachedBlockData == null) {
+            final Plugin plugin = CompatibilityLib.getPlatform().getPlugin();
+            try {
+                String blockData = getBlockDataString();
+                if (blockData != null) {
+                    cachedBlockData = plugin.getServer().createBlockData(blockData);
+                }
+                if (cachedBlockData == null && material != null) {
+                    cachedBlockData = plugin.getServer().createBlockData(material);
+                }
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Error creating block for: " + getKey() + ": " + ex.getMessage());
+            }
+        }
+
+        return cachedBlockData;
     }
 
     @Override
@@ -789,9 +854,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     materialKey += ":" + playerName;
                 } else {
                     PlayerProfile profile = skullData.getProfile();
-                    URL skinURL = profile == null ? null : profile.getTextures().getSkin();
+                    String skinURL = profile == null ? null : profile.getSkinURL();
                     if (skinURL != null) {
-                        materialKey += ":" + skinURL.toString();
+                        materialKey += ":" + skinURL;
                     }
                 }
             }
@@ -840,6 +905,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         if (blockData != null) {
             materialKey += "?" + blockData;
+        } else if (itemData != null) {
+            materialKey += itemData;
         }
         if (itemModel != null && !itemModel.isEmpty()) {
             materialKey += "{item_model:" + itemModel + "}";
@@ -854,11 +921,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return getKey(null);
     }
 
-    // TODO: Should this just be !isDifferent .. ? It's fast right now.
     @Override
-    @SuppressWarnings("deprecation")
     public boolean is(Block block) {
-        return material == block.getType();
+        Material blockMaterial = block.getType();
+        if (material != null && blockMaterial != material) {
+            return false;
+        }
+        if (blockData != null) {
+            String currentData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
+            if (currentData == null || !blockData.equals(currentData)) {
+                return false;
+            }
+        }
+        // We are not checking extra data, it should be covered now by blockData
+        return true;
     }
 
     @Override
@@ -867,29 +943,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isDifferent(Block block) {
-        Material blockMaterial = block.getType();
-        if (material != null && blockMaterial != material) {
-            return true;
-        }
-        // Special cases
-        if (DefaultMaterials.isBanner(material)) {
-            // Can't compare patterns for now
-            return true;
-        }
-        if (blockData != null) {
-            String currentData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
-            if (currentData == null || !blockData.equals(currentData)) {
-                return true;
-            }
-        }
-        // Error on the side of caution if we stored some extra data
-        if (extraData != null) {
-            return true;
-        }
-
-        return false;
+        return !is(block);
     }
 
     @Override
@@ -899,6 +954,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         int itemModelData = CompatibilityLib.getItemUtils().getCustomModelData(itemStack);
         if (customModelData != itemModelData) return true;
         return false;
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getItemStack() {
+        return getItemStack(1, null);
     }
 
     @Nullable
@@ -915,6 +976,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 callback.updated(null);
             }
             return null;
+        }
+        if (itemData != null) {
+            ItemStack itemStack = CompatibilityLib.getCompatibilityUtils().createItemStack(material, itemData);
+            if (itemStack != null) {
+                itemStack.setAmount(amount);
+                this.applyToItem(itemStack, callback);
+                return itemStack;
+            }
         }
 
         Material material = convertToItemStackMaterial();
@@ -941,6 +1010,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public ItemStack applyToItem(ItemStack stack, ItemUpdatedCallback callback)
     {
+        if (stack == null) {
+            return stack;
+        }
         boolean asynchronous = false;
         stack.setType(material);
         if (data != null) {
@@ -965,7 +1037,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 String playerName = skullData.getPlayerName();
                 if (profile != null) {
                     SkullMeta skullMeta = (SkullMeta)meta;
-                    skullMeta.setOwnerProfile(profile);
+                    profile.update(skullMeta);
                     stack.setItemMeta(meta);
                 } else if (playerName != null) {
                     asynchronous = true;
@@ -1168,7 +1240,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
         if (data == null) {
             this.extraData = null;
-            this.blockData = null;
+            setBlockData(null);
+            this.itemData = null;
         }
     }
 

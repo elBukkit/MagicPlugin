@@ -1,9 +1,7 @@
 package com.elmakers.mine.bukkit.block.magic;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -30,9 +28,9 @@ public class Spawner {
     @Nonnull
     private final MageController controller;
     @Nonnull
-    private final Deque<WeightedPair<EntityData>> entityTypeProbability;
+    private final List<WeightedPair<EntityData>> entityTypeProbability;
     @Nonnull
-    private final Deque<WeightedPair<Integer>> countProbability;
+    private final List<WeightedPair<Integer>> countProbability;
     private final Set<String> entityNames = new HashSet<>();
     private final Set<EntityType> entityTypes = new HashSet<>();
     private boolean randomizeYaw = false;
@@ -58,8 +56,8 @@ public class Spawner {
     public Spawner(@Nonnull MageController controller, @Nonnull MagicBlockTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
         ConfigurationSection entityParameters = configuration.getConfigurationSection("parameters");
-        entityTypeProbability = new ArrayDeque<>();
-        Deque<WeightedPair<String>> keyProbability = new ArrayDeque<>();
+        entityTypeProbability = new ArrayList<>();
+        List<WeightedPair<String>> keyProbability = new ArrayList<>();
         RandomUtils.populateStringProbabilityMap(keyProbability, configuration, "mobs");
         if (keyProbability.isEmpty()) {
             controller.getLogger().warning("Automaton template " + automaton.getKey() + " has a spawner with no mobs defined");
@@ -84,7 +82,7 @@ public class Spawner {
                 entityTypeProbability.add(new WeightedPair<>(keyPair, entityData));
             }
         }
-        countProbability = new ArrayDeque<>();
+        countProbability = new ArrayList<>();
         RandomUtils.populateIntegerProbabilityMap(countProbability, configuration, "count", 0, 0, 0);
         if (countProbability.isEmpty()) {
             countProbability.add(new WeightedPair<>(1.0f, 1));

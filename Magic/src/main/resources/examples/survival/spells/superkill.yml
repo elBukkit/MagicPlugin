@@ -35,7 +35,7 @@ superkill:
              class: ConeEffect
              iterations: 16
              particle: spell_mob
-             color: 00FF00
+             color: 8800FF00
              lengthGrow: 0.4
         - class: EffectSingle
           location: targets

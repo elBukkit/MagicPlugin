@@ -1,0 +1,33 @@
+megaspideregg:
+  inherit: false
+  worth: 200.0
+  item: SPIDER_SPAWN_EGG
+  name: Mega Spider Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: mega_spider
+    active_effects:
+      - duration: 42949659
+        show_icon: false
+        ambient: true
+        id: minecraft:strength
+        show_particles: false
+    Attributes:
+      - Base: 25.0
+        Name: minecraft:generic.max_health
+      - Base: 0.30000001192092896
+        Name: minecraft:generic.movement_speed
+      - Modifiers:
+          - Amount: 3.0
+            Operation: 0
+            UUID:
+              - 1686990948
+              - 1784696665
+              - -1967209790
+              - 980277161
+            Name: effect.minecraft.strength 0
+        Base: 2.0
+        Name: minecraft:generic.attack_damage
+    CustomName: '{"text":"","extra":["Mega Spider"]}'
+    id: minecraft:spider
+    Health: 25.0

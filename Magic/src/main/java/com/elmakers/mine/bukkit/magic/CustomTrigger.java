@@ -1,9 +1,8 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -38,7 +37,7 @@ public class CustomTrigger extends Trigger {
         }
     }
 
-    protected Deque<WeightedPair<SpellCast>> spells;
+    protected List<WeightedPair<SpellCast>> spells;
     protected Collection<EffectPlayer> effects;
     protected List<String> commands;
 
@@ -48,7 +47,7 @@ public class CustomTrigger extends Trigger {
         if (configuration.isString("cast")) {
             String castCommand = configuration.getString("cast");
             if (!castCommand.isEmpty()) {
-                spells = new ArrayDeque<>();
+                spells = new ArrayList<>();
                 String[] pieces = StringUtils.split(castCommand, " ");
                 String spellKey = pieces[0];
                 ConfigurationSection parameters = null;
@@ -61,8 +60,8 @@ public class CustomTrigger extends Trigger {
                 spells.add(new WeightedPair<>(new SpellCast(spellKey, parameters)));
             }
         } else if (configuration.isConfigurationSection("cast")) {
-            ArrayDeque<WeightedPair<String>> spellKeys = new ArrayDeque<>();
-            spells = new ArrayDeque<>();
+            ArrayList<WeightedPair<String>> spellKeys = new ArrayList<>();
+            spells = new ArrayList<>();
             RandomUtils.populateStringProbabilityMap(spellKeys, configuration, "cast");
             for (WeightedPair<String> spellKey : spellKeys) {
                 spells.add(new WeightedPair<>(spellKey, new SpellCast(spellKey.getValue())));
@@ -75,15 +74,15 @@ public class CustomTrigger extends Trigger {
                     // How to really make this cast?
                     @SuppressWarnings("unchecked")
                     List<String> stringList = (List<String>)checkList;
-                    spells = new ArrayDeque<>();
-                    ArrayDeque<WeightedPair<String>> spellKeys = new ArrayDeque<>();
+                    spells = new ArrayList<>();
+                    ArrayList<WeightedPair<String>> spellKeys = new ArrayList<>();
                     RandomUtils.populateStringProbabilityList(spellKeys, stringList);
                     for (WeightedPair<String> spellKey : spellKeys) {
                         spells.add(new WeightedPair<>(spellKey, new SpellCast(spellKey.getValue())));
                     }
                 } else if (first instanceof ConfigurationSection || first instanceof Map) {
                     float currentThreshold = 0;
-                    spells = new ArrayDeque<>();
+                    spells = new ArrayList<>();
                     for (Object configGeneric : checkList) {
                         ConfigurationSection config = null;
                         if (configGeneric instanceof ConfigurationSection) {

@@ -7,4 +7,5 @@ workbench:
   type: spell
   glyph: "\uE9E9"
   vanilla_item: 'crafting_table{18001}'
+  vanilla_item_enabled: 'crafting_table{19001}'
   vanilla_item_disabled: 'crafting_table{18002}'

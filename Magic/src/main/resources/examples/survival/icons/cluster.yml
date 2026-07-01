@@ -7,4 +7,5 @@ cluster:
   type: spell
   glyph: "\uE92C"
   vanilla_item: 'pumpkin_seeds{18001}'
+  vanilla_item_enabled: 'pumpkin_seeds{19001}'
   vanilla_item_disabled: 'pumpkin_seeds{18002}'

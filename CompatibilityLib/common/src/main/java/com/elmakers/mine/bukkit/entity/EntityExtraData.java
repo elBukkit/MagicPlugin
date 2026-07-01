@@ -1,12 +1,10 @@
 package com.elmakers.mine.bukkit.entity;
 
-import java.util.Iterator;
 import javax.annotation.Nullable;
 
-import org.bukkit.Keyed;
 import org.bukkit.Location;
-import org.bukkit.Registry;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -52,22 +50,7 @@ public abstract class EntityExtraData {
     }
 
     // This is only used for specific entity types that require special spawning
-    public SpawnedEntityExtraData spawn(Location location) {
+    public Entity spawn(EntityType entityType, Location location) {
         return null;
-    }
-
-    protected <T extends Keyed> T cycleRegistryValue(T value, Registry<T> registry) {
-        Iterator<T> it = registry.iterator();
-        while (it.hasNext()) {
-            T testValue = it.next();
-            if (value == testValue) {
-                if (it.hasNext()) {
-                    return it.next();
-                } else {
-                    return registry.iterator().next();
-                }
-            }
-        }
-        return value;
     }
 }

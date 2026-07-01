@@ -7,4 +7,5 @@ sandblast:
   type: spell
   glyph: "\uE99F"
   vanilla_item: 'sand{18001}'
+  vanilla_item_enabled: 'sand{19001}'
   vanilla_item_disabled: 'sand{18002}'

@@ -31,6 +31,8 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
+import de.slikey.effectlib.util.ColorUtils;
+
 public class ProjectileAction  extends BaseProjectileAction
 {
     private int defaultSize = 1;
@@ -151,11 +153,8 @@ public class ProjectileAction  extends BaseProjectileAction
                 }
                 if (projectile instanceof ThrownPotion && color != null && !color.isEmpty()) {
                     ThrownPotion potion = (ThrownPotion)projectile;
-                    if (color.startsWith("#")) {
-                        color = color.substring(1);
-                    }
                     try {
-                        Color potionColor = Color.fromRGB(Integer.parseInt(color, 16));
+                        Color potionColor = ColorUtils.parse(color);
                         ItemStack itemStack = new ItemStack(Material.SPLASH_POTION);
                         ItemMeta meta = itemStack.getItemMeta();
                         if (meta != null && meta instanceof PotionMeta) {

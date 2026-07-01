@@ -137,6 +137,9 @@ enable_automatic_spell_upgrades: true
 # Automatically upgrade wand paths when a spell upgrades or progresses
 enable_automatic_path_upgrades: true
 
+# Enable magic arenas
+enable_arenas: true
+
 # Set this to 1 to just turn costs off, or you can use it to scale costs down.
 cost_reduction: 0.0
 
@@ -492,6 +495,12 @@ mage_update_frequency: 1
 # Decreasing this value may introduce some lag (though probably not)
 magic_block_update_frequency: 10
 
+# How often to "tick" a magic mob
+# This is used for non-mage related tasks, such as aligning passengers
+# This also triggers clean up of removed mobs from the active mobs list
+# Increase this value if you think mobs are lagging the server
+magic_mob_update_frequency: 1
+
 # How long to exempt players from flight checks for each tick that
 # they have a jump potion effect
 # Set to 0 to disable exemption
@@ -551,7 +560,8 @@ max_mana: 1000
 max_mana_regeneration: 100
 
 # Debug EffectLib issues
-debug_effects: false
+# turn this off if you're getting a lot of spam from invalid effects
+debug_effects: true
 
 # use this to make all hitboxes larger or smaller
 # for targeting purposes.

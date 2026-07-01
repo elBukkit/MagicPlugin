@@ -27,23 +27,21 @@ import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 
 public class ValhallaManager implements AttributeProvider, Listener {
     private final MagicController controller;
     private boolean enabled = false;
+    private boolean registeredSkill = false;
     private MagicSkill magicSkill;
+    private MagicProfile magicProfile;
     private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
 
     public ValhallaManager(MagicController controller) {
         this.controller = controller;
-        Plugin plugin = controller.getPlugin();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-
-    protected void buildData() {
     }
 
     public void load(ConfigurationSection config) {
@@ -55,6 +53,9 @@ public class ValhallaManager implements AttributeProvider, Listener {
         }
 
         controller.getLogger().info("Integrated with ValhallaMMO:");
+        if (!controller.getLoadedExamples().contains("valhalla")) {
+            controller.getLogger().info("  Use \"/mexample add valhalla\" to enable the magic skill in Valhalla");
+        }
 
         for (Skill skill : SkillRegistry.getAllSkills().values()) {
             String skillId = skill.getType().toLowerCase(Locale.ROOT);
@@ -67,8 +68,8 @@ public class ValhallaManager implements AttributeProvider, Listener {
             String skillId = skillConfig == null ? null : skillConfig.getString("id");
             String profileId = profileConfig.getString("id");
             if (skillId != null && profileId != null && !skillId.isEmpty() && !profileId.isEmpty()) {
-                ProfileRegistry.registerProfileType(new MagicProfile(profileId));
-                magicSkill = new MagicSkill(controller, skillId, profileConfig.getString("class"), skillConfig.getInt("priority"));
+                magicProfile = new MagicProfile(profileId);
+                magicSkill = new MagicSkill(controller, skillId, profileConfig.getString("class"), skillConfig);
                 registeredSkills.put(skillId, magicSkill);
                 controller.getLogger().info("  Added " + profileId + " profile using " + skillId + " skill ");
             }
@@ -86,12 +87,22 @@ public class ValhallaManager implements AttributeProvider, Listener {
     }
 
     public void registerSkill() {
-        if (enabled && magicSkill != null) {
+        if (enabled && magicSkill != null && !registeredSkill) {
+            ProfileRegistry.registerProfileType(magicProfile);
+            PerkRewardRegistry.register(new SpellPerkReward(controller, magicSkill.getMageClass(),"learn_spell"));
+            PerkRewardRegistry.register(new RecipePerkReward(controller, "discover_recipe"));
+            PerkRewardRegistry.register(new PathPerkReward(controller, magicSkill.getMageClass(), "path_upgrade"));
             SkillRegistry.registerSkill(magicSkill);
+
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            registeredSkill = true;
         }
     }
 
     public void registerCurrencies(ConfigurationSection currencyConfiguration) {
+        if (!enabled) return;
+
         List<String> names = new ArrayList<>();
         for (Map.Entry<String, Skill> entry : registeredSkills.entrySet()) {
             String skillId = entry.getKey();
@@ -152,5 +163,9 @@ public class ValhallaManager implements AttributeProvider, Listener {
             // Force lore update in case mana or other properties are based on level
             wand.updated();
         }
+    }
+
+    public void disable() {
+        this.enabled = false;
     }
 }

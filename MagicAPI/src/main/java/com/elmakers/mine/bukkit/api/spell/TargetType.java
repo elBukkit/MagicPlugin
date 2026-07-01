@@ -16,6 +16,7 @@ public enum TargetType {
     SELF(false),
     SELECT(false),
     SELECT_ENTITY(false),
+    DAMAGER(false),
     LAST_DAMAGER(false),
     TOP_DAMAGER(false),
     DAMAGE_TARGET(false),

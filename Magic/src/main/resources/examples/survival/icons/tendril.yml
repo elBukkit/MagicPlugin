@@ -7,4 +7,5 @@ tendril:
   type: spell
   glyph: "\uE9CE"
   vanilla_item: 'cooked_mutton{18001}'
+  vanilla_item_enabled: 'cooked_mutton{19001}'
   vanilla_item_disabled: 'cooked_mutton{18002}'

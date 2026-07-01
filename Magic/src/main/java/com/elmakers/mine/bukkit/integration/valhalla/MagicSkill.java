@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -17,6 +21,8 @@ import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
@@ -26,12 +32,16 @@ public class MagicSkill extends Skill {
     private final MageController controller;
     private final String id;
     private final int priority;
+    private final int levelsPerPath;
     private final String mageClass;
+    private final List<String> recipes;
 
-    public MagicSkill(MageController controller, String skillId, String mageClass, int priority) {
+    public MagicSkill(MageController controller, String skillId, String mageClass, ConfigurationSection config) {
         super(skillId.toUpperCase());
         this.controller = controller;
-        this.priority = priority;
+        this.priority = config.getInt("priority");
+        this.levelsPerPath = config.getInt("levels_per_path");
+        this.recipes = ConfigurationUtils.getStringList(config, "recipes");
         this.mageClass = mageClass;
         id = skillId;
     }
@@ -49,7 +59,7 @@ public class MagicSkill extends Skill {
             InputStream input = plugin.getResource(defaultsFileName);
             if (input != null)  {
                 try {
-                    config.load(new InputStreamReader(input, StandardCharsets.UTF_8.name()));
+                    config.load(new InputStreamReader(input, StandardCharsets.UTF_8));
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.SEVERE, "Error loading: " + defaultsFileName + " from builtin resources", ex);
                 }
@@ -81,6 +91,17 @@ public class MagicSkill extends Skill {
             controller.getLogger().log(Level.WARNING, "Invalid mage class in Valhalla profile configs: " + this.mageClass);
             return;
         }
+        List<String> defaultPerks = new ArrayList<>();
+        Collection<String> defaultSpells = mageClass.getStringList("spells");
+        defaultPerks.addAll(defaultSpells);
+        if (recipes.isEmpty()) {
+            // Maybe a weird distinction, but if there are rewards on the starting path
+            // We'll want the player to unlock it.
+            defaultPerks.add(mageClass.getString("path"));
+        }
+        ConfigurationSection startingPerks = config.createSection("starting_perks");
+        startingPerks.set("perks_unlocked_add", defaultPerks);
+
         String defaultPathId = mageClass.getString("path");
         ProgressionPath path = controller.getPath(defaultPathId);
         if (path == null) {
@@ -88,26 +109,105 @@ public class MagicSkill extends Skill {
             return;
         }
 
+        int yLocation = 1;
+        int levelUnlock = 0;
+        Set<String> previousSpells = new HashSet<>();
         ConfigurationSection perks = config.createSection("perks");
+        ProgressionPath previousPath = null;
+        while (path != null) {
+            addRankPerk(perks, yLocation, path, previousPath, levelUnlock);
+            yLocation--;
+            previousPath = path;
+            addPathPerks(perks, yLocation, path, previousSpells);
+            path = path.getNextPath();
+            levelUnlock += levelsPerPath;
+            yLocation--;
+        }
+    }
+
+    protected void addRankPerk(ConfigurationSection perks, int yLocation, ProgressionPath path, ProgressionPath previousPath, int level) {
+        int xLocation = 2;
+        ConfigurationSection pathConfig = perks.createSection(path.getKey());
+        MaterialAndData spellIcon = path.getIcon();
+        Material material = spellIcon.getMaterial();
+        int customModelData = spellIcon.getCustomModelData();
+        MaterialAndData lockedIcon = path.getDisabledIcon();
+        int disabledData = lockedIcon.getCustomModelData();
+        if (disabledData == 0) {
+            disabledData = customModelData;
+        }
+        MaterialAndData enabledIcon = path.getEnabledIcon();
+        int enabledData = enabledIcon.getCustomModelData();
+        if (enabledData == 0) {
+            enabledData = customModelData;
+        }
+        if (customModelData > 0) {
+            pathConfig.set("custom_model_data_unlockable", customModelData);
+            pathConfig.set("custom_model_data_unlocked", enabledData);
+            // Visible kind of means locked, since "unlockable" means not locked
+            pathConfig.set("custom_model_data_visible", disabledData);
+        }
+        pathConfig.set("icon", material.name());
+        pathConfig.set("name", path.getName());
+        pathConfig.set("description", path.getDescription());
+        pathConfig.set("cost", 0);
+        pathConfig.set("coords", xLocation + "," + yLocation);
+        pathConfig.set("required_lv", level);
+        ConfigurationSection rewards = pathConfig.createSection("perk_rewards");
+        rewards.set("p:path_upgrade", path.getKey());
+        if (previousPath != null) {
+            List<String> required = new ArrayList<>();
+            required.add(previousPath.getKey());
+            pathConfig.set("requireperk_all", required);
+        } else if (recipes != null && !recipes.isEmpty()) {
+            rewards.set("p:discover_recipe", StringUtils.join(recipes, ","));
+        }
+    }
+
+    protected void addPathPerks(ConfigurationSection perks, int yLocation, ProgressionPath path, Set<String> previousSpells) {
         Collection<String> spells = path.getSpells();
-        int xLocation = 1;
-        int yLocation = 2;
+        Collection<String> newSpells = new HashSet<>();
         for (String spellKey : spells) {
+            if (previousSpells.contains(spellKey)) continue;
+            newSpells.add(spellKey);
+        }
+
+        int xLocation = -newSpells.size() / 2 + 2;
+        for (String spellKey : newSpells) {
+            if (previousSpells.contains(spellKey)) continue;
+            previousSpells.add(spellKey);
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
             if (spell == null) continue;
             ConfigurationSection spellConfig = perks.createSection(spellKey);
             MaterialAndData spellIcon = spell.getIcon();
             Material material = spellIcon.getMaterial();
             int customModelData = spellIcon.getCustomModelData();
-            String icon = material.name();
-            if (customModelData > 0) {
-                icon += ":" + customModelData;
+            MaterialAndData lockedIcon = spell.getDisabledIcon();
+            int disabledData = lockedIcon.getCustomModelData();
+            if (disabledData == 0) {
+                disabledData = customModelData;
             }
-            spellConfig.set("icon", icon);
+            MaterialAndData enabledIcon = spell.getEnabledIcon();
+            int enabledData = enabledIcon.getCustomModelData();
+            if (enabledData == 0) {
+                enabledData = customModelData;
+            }
+            if (customModelData > 0) {
+                spellConfig.set("custom_model_data_unlockable", customModelData);
+                spellConfig.set("custom_model_data_unlocked", enabledData);
+                // Visible kind of means locked, since "unlockable" means not locked
+                spellConfig.set("custom_model_data_visible", disabledData);
+            }
+            spellConfig.set("icon", material.name());
             spellConfig.set("name", spell.getName());
             spellConfig.set("description", spell.getDescription());
             spellConfig.set("cost", 1);
             spellConfig.set("coords", xLocation + "," + yLocation);
+            ConfigurationSection rewards = spellConfig.createSection("perk_rewards");
+            rewards.set("p:learn_spell", spellKey);
+            List<String> required = new ArrayList<>();
+            required.add(path.getKey());
+            spellConfig.set("requireperk_all", required);
             xLocation++;
         }
     }
@@ -132,5 +232,9 @@ public class MagicSkill extends Skill {
     @Override
     public int getSkillTreeMenuOrderPriority() {
         return priority;
+    }
+
+    public String getMageClass() {
+        return mageClass;
     }
 }

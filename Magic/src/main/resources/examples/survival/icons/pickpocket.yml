@@ -7,4 +7,5 @@ pickpocket:
   type: spell
   glyph: "\uE980"
   vanilla_item: 'rabbit_stew{18001}'
+  vanilla_item_enabled: 'rabbit_stew{19001}'
   vanilla_item_disabled: 'rabbit_stew{18002}'

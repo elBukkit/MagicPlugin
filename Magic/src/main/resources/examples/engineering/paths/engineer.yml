@@ -37,7 +37,7 @@ engineer:
       - stone
       - dirt
       - sand
-      - grass
+      - grass_block
       - gravel
       - glass
       - glowstone

@@ -8,5 +8,5 @@ itemshop:
         items:
         - item: carrot_item@64
           cost: 100
-        - item: bed
+        - item: red_bed
           cost: 200

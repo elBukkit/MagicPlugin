@@ -39,13 +39,13 @@ controlsmenu:
             icon_disabled: icon:gui_actionbar
             requirements:
               - resource_pack: true
-                server_version: ">=16"
+                server_version: ">=1.16"
                 message_section: server_version
           - item: gui_bossbar
             icon_disabled: icon:gui_bossbar
             requirements:
               - resource_pack: true
-                server_version: ">=16"
+                server_version: ">=1.16"
                 message_section: server_version
           - item: none
           - item: none

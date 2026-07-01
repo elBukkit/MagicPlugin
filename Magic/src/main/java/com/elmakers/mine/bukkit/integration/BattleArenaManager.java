@@ -1,23 +1,22 @@
 package com.elmakers.mine.bukkit.integration;
 
+import org.battleplugins.arena.ArenaPlayer;
+import org.battleplugins.arena.team.ArenaTeam;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 
-import mc.alk.arena.BattleArena;
-import mc.alk.arena.objects.ArenaPlayer;
-import mc.alk.arena.objects.teams.ArenaTeam;
-
 public class BattleArenaManager implements TeamProvider {
     @Override
     public boolean isFriendly(Entity attacker, Entity entity) {
         if (!(attacker instanceof Player) || ! (entity instanceof Player)) return false;
-        ArenaPlayer attackerPlayer = BattleArena.toArenaPlayer((Player)attacker);
-        ArenaPlayer targetPlayer = BattleArena.toArenaPlayer((Player)entity);
+        ArenaPlayer attackerPlayer = ArenaPlayer.getArenaPlayer((Player)attacker);
+        ArenaPlayer targetPlayer = ArenaPlayer.getArenaPlayer((Player)entity);
         if (attackerPlayer == null || targetPlayer == null) return false;
         ArenaTeam attackerTeam = attackerPlayer.getTeam();
-        if (attackerTeam == null) return false;
-        return attackerTeam.hasMember(targetPlayer);
+        ArenaTeam targetTeam = targetPlayer.getTeam();
+        if (attackerTeam == null || targetPlayer == null) return false;
+        return !attackerTeam.isHostileTo(targetTeam);
     }
 }

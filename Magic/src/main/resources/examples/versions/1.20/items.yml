@@ -1,0 +1,222 @@
+hylian_shield:
+  inherit: false
+  worth: 200
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    type: SHIELD
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: "&aHylian Shield"
+      lore:
+      - Link's Shield
+      internal: H4sIAAAAAAAAAHXOTQ5AMBQE4KFoVeJQxN7CBUrqJxpN9G3cnojFI7GcfDPJaECjrJwf1majhY7OTDlUa4jsvgUNIFOQT4YYei+Q1t75/SIJbqPjFnGL55lR8iIiRsWbwu/q80MgqUywdw0n1U4Sy9UAAAA=
+      blockMaterial: SHIELD
+
+invisible_item_frame:
+  inherit: false
+  worth: 100.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: ITEM_FRAME
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: ENTITY_TAG
+      internal: H4sIAAAAAAAA/+NiYOBi4HTNK8ksqQxJTOdgYMpMYRDJzcxLTS5KTCuxyixJzY1PK0rMTWVk4PTMK8sszkzKAbIZALOEud45AAAA
+
+nether_compass:
+  inherit: false
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
+  worth: 100.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: COMPASS
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: COMPASS
+      LodestonePosWorld: minecraft:the_nether
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
+  name: Magnetic Compass (Nether)
+
+overworld_compass:
+  inherit: false
+  worth: 100.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: COMPASS
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: COMPASS
+      LodestonePosWorld: minecraft:overworld
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
+  name: Magnetic Compass
+
+end_compass:
+  inherit: false
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
+  worth: 100.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: COMPASS
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: COMPASS
+      LodestonePosWorld: minecraft:the_end
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
+  name: Magnetic Compass (The End)
+
+# Mob spawners
+warlockspawner:
+  inherit: false
+  worth: 50000.0
+  name: Warlock Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOSwvCMBCEx/hAA74Q7/4Ojz6Oiqh32dZVgm2iacTWX+jPMmkQ57KwO/PNSkBisMhMeltrp1x1pKtE73Cnl16RI4kO1/suhDpjlCvNqaWLm79NnigGBMYbKrdMNqlqhOICHYH+RumI4YwqfJpoVPCKoOkflJvkVAQj2x6GdWRnXGilrAgJ+GgZpoCsz3vSV0YrdFD572jOBCZ7fjyV5fPOL9hG5+gXXJqndmh53jvy2vE5ry9ilcOcCQEAAA==
+      blockMaterial: SPAWNER
+
+darkspiderspawner:
+  inherit: false
+  worth: 20000.0
+  name: Dark Spider Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/2WOzQ6CMBCEx4JGm/gX493n8OjPUWPUu1lgNY1QsFQFn9DHskCMB+eyye7MNysBicEiTsPrWltlyyNdJHqHjJ56RZYkOlzvuxAqwjRRmkNDZzsP6cGnPFMRG0BgvKFiy2SCsuYoztER6G+UblgcU4m3h1YJpz9akgYO5oxsehjWkV1qq2qK8yoBFy2qKSDr8570heFXHVT8OryZwGTPt7syHO3cgk3jHH2Dy/SuLXzHezW8dvOc0wcjcFI/DgEAAA==
+      blockMaterial: SPAWNER
+
+megaspiderspawner:
+  inherit: false
+  worth: 20000.0
+  name: Mega Spider Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOSwvCMBCEx/hAA74Q7/4Ojz6OlVK9y2pXCdZU0xRbf6E/y6RBnMvC7sw3KwGJ0SrLz7ettsrWB7pKDPYPeukNWZLocbPvQ6gUk7vSfDZ0scvioVI2gMA0omrHZE51g1BcoCcwjJQOGM6oxqeNVg2nAJr/Qff8dCy8kc0A4yYS59a3Ulb4BFy08lNANueE9JXR8R1U/TvaC4FZws9SGU5jt2ATnJNfcJ2X2qLjeO/A64bnnL7K9QWDCQEAAA==
+      blockMaterial: SPAWNER
+
+cavespiderspawner:
+  inherit: false
+  worth: 5000.0
+  name: Cave Spider Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/2WOzQ6CMBCEx4JGm/gX493n8OjPUWPUu1lgNY1QsFQFn9DHskCMB+eyye7MNysBicEiTsPrWltlyyNdJHqHjJ56RZYkOlzvuxAqwjRRmkNDZzsP6cGnPFMRG0BgvKFiy2SCsuYoztER6G+UblgcU4m3h1YJpz9akgYO5oxsehjWkV1qq2qK8yoBFy2qKSDr8570heFXHVT8OryZwGTPt7syHO3cgk3jHH2Dy/SuLXzHezW8dvOc0wcjcFI/DgEAAA==
+      blockMaterial: SPAWNER
+
+spiderspawner:
+  inherit: false
+  worth: 5000.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOSwvCMBCEx/hAA74Q7/4Ojz6OlVK9y2pXCdZU0xRbf6E/y6RBnMvC7sw3KwGJ0SrLz7ettsrWB7pKDPYPeukNWZLocbPvQ6gUk7vSfDZ0scvioVI2gMA0omrHZE51g1BcoCcwjJQOGM6oxqeNVg2nAJr/Qff8dCy8kc0A4yYS59a3Ulb4BFy08lNANueE9JXR8R1U/TvaC4FZws9SGU5jt2ATnJNfcJ2X2qLjeO/A64bnnL7K9QWDCQEAAA==
+      blockMaterial: SPAWNER
+
+zombiespawner:
+  inherit: false
+  name: Zombie Spawner
+  worth: 20000.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOSwvCMBCEx/hAA74Q7/4Ojz6Oiqh32dZVgm2iacTWX+jPMmkQ57KwO/PNSkBisMhMeltrp1x1pKtE73Cnl16RI4kO1/suhDpjlCvNqaWLm79NnigGBMYbKrdMNqlqhOICHYH+RumI4YwqfJpoVPCKoOkflJvkVAQj2x6GdWRnXGilrAgJ+GgZpoCsz3vSV0YrdFD572jOBCZ7fjyV5fPOL9hG5+gXXJqndmh53jvy2vE5ry9ilcOcCQEAAA==
+      blockMaterial: SPAWNER
+
+skeletonspawner:
+  inherit: false
+  name: Skeleton Spawner
+  worth: 20000.0
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOyQoCMRBEy7jgBNzx7nd4dDkqot6l1XYIjolmIs74hX6WyQSxLg3dVa9aAhLdWWZO16V2ypV7SiWS3Z1eekGOJFpc7dsQ6ozhTWk+Wbq4aX7ljJ3RgMBgRcWayR7LCqI4R0ugs1I6gjijEp86aiW8Imr8R93M8ZAHI9sEvSqyMS70UpaHBHy0CFNAVuct6ZTRCB1U/DvqE4HRlh9PZfm88Qu20dn/BefmqR0anveOvGZ8zusL0KPORwsBAAA=
+      blockMaterial: SPAWNER
+
+witherarcherspawner:
+  worth: 20000.0
+  name: Wither Archer Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOSw8BQRCEy3iESbwiDm5+h6PHkQju0ktjYs0wO2LXL/SzzOxE1KWT7qqvWgISnWlqDteFdsoVOzpLtLZ3euk5OZJocLlvQqgjRjel+WDp5CYv5S5s99mVU3ZGAwL9JeUrJpsUJUtxhoZAe6l05HFKBT5VVAp4ReLwT7yZZJ8FI9sWumVkbVyopzQLCfhoHqaALM8b0mdGLXRQ/u+ojgUGG348leXj2i/YRmfvF5yZp3aoed478urxOa8vWDGlnRIBAAA=
+      blockMaterial: SPAWNER
+
+mutantspawner:
+  worth: 20000.0
+  name: Mutant Spawner
+  item:
+    bukkit_class: org.bukkit.inventory.ItemStack
+    v: 3700
+    type: SPAWNER
+    meta:
+      bukkit_class: ItemMeta
+      meta-type: TILE_ENTITY
+      internal: H4sIAAAAAAAA/0WOzW7CMBCEB/MjsFQoqnrhxHP0WMqRClHuaEOWaEVig2NEwhP2sWrHqpjLSrsz36wGNKafpT2e18aLb/dUaEx+LnQ3X+RJY8TdfgwlORaVGD46OvmPh60yOQnnh4sUpRhAYb6h5pvJZW0HE64xUnjZiElALqnFbx+9FkEJ+f5EVjY71NHIboJZF9laH/uprGMCIdrEqaC7845MwRjEDmqeHf2lwtuOrzdxnG/Dgl1yvv4HV/ZmPAaB90i8YXou6A9ZBRITEwEAAA==
+      blockMaterial: SPAWNER
+
+# Miscellaneous items
+iron_chain:
+  item: chain
+
+emerald_sword:
+  attributes:
+    - attribute: generic_attack_damage
+      amount: 5.0
+      slot: hand
+      operation: ADD_NUMBER
+      name: modifier
+    - attribute: generic_attack_speed
+      amount: 2.0
+      slot: hand
+      operation: ADD_NUMBER
+      name: modifier

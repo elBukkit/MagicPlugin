@@ -468,6 +468,16 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Override
+    public void registerFrozen(Entity entity)
+    {
+        addWork(5);
+        if (undoList != null)
+        {
+            undoList.freeze(entity);
+        }
+    }
+
+    @Override
     public void clearAttachables(Block block)
     {
         addWork(50);
@@ -1617,12 +1627,16 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             SpellResult actionResult = handler.perform();
             if (actionResult != SpellResult.PENDING) {
                 result = result.min(actionResult);
+                // If this spell kills its own caster, it may have been cancelled while processing
+                if (finished) {
+                    break;
+                }
                 finishedHandlers.add(handler);
                 iterator.remove();
             }
         }
 
-        if (handlers.isEmpty()) {
+        if (handlers == null || handlers.isEmpty()) {
             handlers = null;
             return result;
         }

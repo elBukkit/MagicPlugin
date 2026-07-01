@@ -45,6 +45,9 @@ Please see README.md in the resource packs for artist credits!
 
 https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/resource-pack/default/README.md
 
+### Powered by
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSource)
+
 ## Notes on Spell Icons
 
 Some of the spell icons contained in this plugin are used with permission from eleazzaar's Painterly Spell Icons pack:

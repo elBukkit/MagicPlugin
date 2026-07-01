@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.Collection;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -72,8 +74,9 @@ public class SpellUtils {
         }
     }
 
-    public static Double modifyProperty(double original, String equation, String originalVariable, EquationVariableProvider variableProvider) {
-        EquationTransform transform = new EquationTransform(equation, originalVariable);
+    public static Double modifyProperty(double original, String equation, String originalVariable, EquationVariableProvider variableProvider, Collection<String> parameters) {
+        parameters.add(originalVariable);
+        EquationTransform transform = new EquationTransform(equation, parameters);
         transform.setVariableProvider(variableProvider);
         if (transform.isValid()) {
             transform.setVariable(originalVariable, original);

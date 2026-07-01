@@ -7,4 +7,5 @@ arrow9:
   type: spell
   glyph: "\uE910"
   vanilla_item: 'spectral_arrow{CustomModelData:18024}'
+  vanilla_item_enabled: 'spectral_arrow{1000}'
   vanilla_item_disabled: 'spectral_arrow{CustomModelData:18025}'

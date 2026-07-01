@@ -1,0 +1,31 @@
+darkspideregg:
+  inherit: false
+  worth: 200.0
+  item: CAVE_SPIDER_SPAWN_EGG
+  name: Dark Spider Spawn Egg
+  entity:
+    BukkitValues:
+      magic:magicmob: dark_spider
+    active_effects:
+      - duration: 42949637
+        show_icon: false
+        ambient: true
+        id: minecraft:speed
+        show_particles: false
+    Attributes:
+      - Modifiers:
+          - Amount: 0.20000000298023224
+            Operation: 2
+            UUID:
+              - -1850824106
+              - 929776792
+              - -1822740609
+              - 1745290805
+            Name: effect.minecraft.speed 0
+        Base: 0.30000001192092896
+        Name: minecraft:generic.movement_speed
+      - Base: 20.0
+        Name: minecraft:generic.max_health
+    CustomName: '{"text":"","extra":["Dark Spider"]}'
+    id: minecraft:cave_spider
+    Health: 20.0

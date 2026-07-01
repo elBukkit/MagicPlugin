@@ -7,4 +7,5 @@ night:
   type: spell
   glyph: "\uE977"
   vanilla_item: 'gray_dye{18001}'
+  vanilla_item_enabled: 'gray_dye{19001}'
   vanilla_item_disabled: 'gray_dye{18002}'

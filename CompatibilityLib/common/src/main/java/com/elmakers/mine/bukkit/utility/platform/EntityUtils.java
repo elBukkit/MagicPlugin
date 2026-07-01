@@ -16,7 +16,11 @@ public interface EntityUtils {
 
     EntityExtraData getExtraData(MageController controller, EntityType entityType, ConfigurationSection configuration);
 
+    EntityExtraData getNMSData(MageController controller, Object tag);
+
     EntityExtraData getPaintingData(Art art, BlockFace direction);
 
     EntityExtraData getItemFrameData(ItemStack item, BlockFace direction, Rotation rotation);
+
+    EntityType getEntityType(VersionedEntityType entityType);
 }

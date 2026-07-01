@@ -7,4 +7,5 @@ bomb:
   type: spell
   glyph: "\uE919"
   vanilla_item: 'black_carpet{18001}'
+  vanilla_item_enabled: 'black_carpet{19001}'
   vanilla_item_disabled: 'black_carpet{18002}'

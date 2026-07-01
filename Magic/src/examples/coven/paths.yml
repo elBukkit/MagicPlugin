@@ -1,0 +1,52 @@
+neophyte:
+  icon: stick{CustomModelData:18001}
+  upgrade: adept
+  upgrade_item: student_upgrade
+  inherit: default
+  override_properties:
+    mana_max: 50
+    mana_regeneration: 5
+    hotbar_count: 1
+  spells:
+    - missile
+    - arrow
+    - push
+    - pull
+
+# Once the player reaches this path, they must choose their next one via the choose_coven spell
+adept:
+  icon: stick{CustomModelData:18002}
+  
+coven_light:
+  icon: heal
+  upgrade_wand_icon: false
+  override_properties:
+    mana_max: 100
+    mana_regeneration: 10
+    hotbar_count: 2
+  spells:
+    - boon
+    - cure
+    - bubble
+    - torch
+    - peek
+    - recall
+    - reflect
+
+coven_dark:
+  icon: kill
+  upgrade_wand_icon: false
+  override_properties:
+    mana_max: 120
+    mana_regeneration: 10
+    hotbar_count: 2
+  spells:
+    - blast
+    - collapse
+    - cure
+    - fireball
+    - torch
+    - blind
+    - poison
+    - fire
+    - frost

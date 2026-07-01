@@ -53,4 +53,8 @@ public class MageParameters extends ParameterizedConfiguration {
     protected Set<String> getParameters() {
         return attributes;
     }
+
+    protected Set<String> getWorkingParameters() {
+        return attributes;
+    }
 }

@@ -7,4 +7,5 @@ volley:
   type: spell
   glyph: "\uE9DE"
   vanilla_item: 'wheat_seeds{18001}'
+  vanilla_item_enabled: 'wheat_seeds{19001}'
   vanilla_item_disabled: 'wheat_seeds{18002}'

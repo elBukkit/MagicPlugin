@@ -7,4 +7,5 @@ boomstown:
   type: spell
   glyph: "\uE91B"
   vanilla_item: 'firework_rocket{18003}'
+  vanilla_item_enabled: 'firework_rocket{19003}'
   vanilla_item_disabled: 'firework_rocket{18004}'

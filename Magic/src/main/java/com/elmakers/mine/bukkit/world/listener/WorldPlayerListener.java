@@ -1,13 +1,18 @@
 package com.elmakers.mine.bukkit.world.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import com.elmakers.mine.bukkit.magic.Mage;
@@ -61,6 +66,33 @@ public class WorldPlayerListener implements Listener {
         BlockResult result = magicWorld.processBlockPlace(block, event.getPlayer());
         if (result == BlockResult.CANCEL) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        MagicWorld magicWorld = controller.getWorld(player.getWorld().getName());
+        if (magicWorld == null) return;
+        String respawnWorld = magicWorld.getRespawnWorld();
+        if (respawnWorld == null || respawnWorld.isEmpty()) return;
+        World world = Bukkit.getWorld(respawnWorld);
+        if (world != null) {
+            player.setRespawnLocation(world.getSpawnLocation(), true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPortal(EntityPortalEnterEvent event) {
+        Entity entity = event.getEntity();
+        MagicWorld magicWorld = controller.getWorld(entity.getWorld().getName());
+        if (magicWorld == null) return;
+        String nextWorldName = magicWorld.getPortalTargetWorld(entity.getLocation());
+        if (nextWorldName != null && !nextWorldName.isEmpty()) {
+            World nextWorld = Bukkit.getWorld(nextWorldName);
+            if (nextWorld != null) {
+                entity.teleport(nextWorld.getSpawnLocation());
+            }
         }
     }
 }

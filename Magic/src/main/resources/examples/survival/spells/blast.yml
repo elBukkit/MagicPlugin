@@ -32,7 +32,7 @@ blast:
              class: ConeEffect
              iterations: 10
              particle: spell_mob
-             color: FACC2E
+             color: 88FACC2E
              lengthGrow: 0.4
         tick:
         - particle: fireworks_spark

@@ -1,6 +1,6 @@
 model3_white:
   name: Model 3
-  icon: diamond_pickaxe{18013}
+  icon: model3_white_item
   active_spell: spawn_car
   right_click: cast
   indestructible: true

@@ -7,4 +7,5 @@ lift:
   type: spell
   glyph: "\uE969"
   vanilla_item: 'green_dye{18001}'
+  vanilla_item_enabled: 'green_dye{19001}'
   vanilla_item_disabled: 'green_dye{18002}'

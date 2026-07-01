@@ -7,4 +7,5 @@ torture:
   type: spell
   glyph: "\uE9D5"
   vanilla_item: 'beetroot{18001}'
+  vanilla_item_enabled: 'beetroot{19001}'
   vanilla_item_disabled: 'beetroot{18002}'

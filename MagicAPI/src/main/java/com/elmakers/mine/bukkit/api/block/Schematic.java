@@ -12,6 +12,7 @@ public interface Schematic {
     boolean contains(Vector v);
     @Nullable
     MaterialAndData getBlock(Vector v);
+    MaterialAndData getBlock(int x, int y, int z);
     Collection<EntityData> getEntities(Location center);
     Vector getSize();
     boolean isLoaded();

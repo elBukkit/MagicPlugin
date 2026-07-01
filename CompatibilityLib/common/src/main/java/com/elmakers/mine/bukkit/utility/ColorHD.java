@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.concurrent.Immutable;
 
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
+
+import de.slikey.effectlib.util.ColorUtils;
 
 @Immutable
 public final class ColorHD {
@@ -15,15 +15,19 @@ public final class ColorHD {
     private static long BIT_MASK = (1L << BITS_PER_COMPONENT) - 1;
     private static final int[] components = new int[3];
 
-    private static Map<String, Color> colorMap;
-
     private final long red;
     private final long green;
     private final long blue;
+    private final long alpha;
 
     private final Color color;
 
     public ColorHD(long r, long g, long b) {
+        this(255, r, g, b);
+    }
+
+    public ColorHD(long a, long r, long g, long b) {
+        alpha = a & BIT_MASK;
         red = r & BIT_MASK;
         blue = b & BIT_MASK;
         green = g & BIT_MASK;
@@ -31,7 +35,8 @@ public final class ColorHD {
     }
 
     public ColorHD(Color color) {
-        this(color.getRed() << COMPONENT_SHIFT,
+        this(ColorUtils.getAlpha(color),
+                color.getRed() << COMPONENT_SHIFT,
                 color.getGreen() << COMPONENT_SHIFT,
                 color.getBlue() << COMPONENT_SHIFT);
     }
@@ -41,6 +46,7 @@ public final class ColorHD {
             red = (long)configuration.getInt("r") << COMPONENT_SHIFT;
             green = (long)configuration.getInt("g") << COMPONENT_SHIFT;
             blue = (long)configuration.getInt("b") << COMPONENT_SHIFT;
+            alpha = (long)configuration.getInt("a", 255) << COMPONENT_SHIFT;
         } else if (configuration.contains("h")) {
             float h = (float)configuration.getDouble("h");
             float s = (float)configuration.getDouble("s");
@@ -49,36 +55,32 @@ public final class ColorHD {
             red = (long)(colors[0] & 0xFF) << COMPONENT_SHIFT;
             green = (long)(colors[1] & 0xFF) << COMPONENT_SHIFT;
             blue = (long)(colors[2] & 0xFF) << COMPONENT_SHIFT;
+            alpha = (long)(0xFF) << COMPONENT_SHIFT;
         } else {
             red = 0;
             green = 0;
             blue = 0;
+            alpha = 255;
         }
         color = createColor();
     }
 
     public ColorHD(String hexColor) {
-        if (hexColor != null && !hexColor.isEmpty() && hexColor.charAt(0) == '#') {
-            hexColor = hexColor.substring(1, hexColor.length());
-        }
-        if (hexColor == null || hexColor.length() == 0) {
-            red = 0;
-            green = 0;
-            blue = 0;
-        } else if (hexColor.equals("random")) {
-            red =  (long)(Math.random() * BIT_MASK);
-            green =  (long)(Math.random() * BIT_MASK);
-            blue =  (long)(Math.random() * BIT_MASK);
-        } else if (hexColor.length() > 6 && hexColor.contains(",")) {
+        if (hexColor != null && hexColor.length() > 6 && hexColor.contains(",")) {
+            // This is a special format used to serialized the full range color
             String[] pieces = StringUtils.split(hexColor, ',');
             long r = 0;
             long g = 0;
             long b = 0;
-            if (pieces.length == 3) {
+            long a = 255;
+            if (pieces.length >= 3) {
                 try {
                     r = Long.parseLong(pieces[0], 16);
                     g = Long.parseLong(pieces[1], 16);
                     b = Long.parseLong(pieces[2], 16);
+                    if (pieces.length == 4) {
+                        a = Long.parseLong(pieces[3], 16);
+                    }
                 } catch (Exception ignored) {
                 }
             }
@@ -86,22 +88,19 @@ public final class ColorHD {
             red = r;
             green = g;
             blue = b;
+            alpha = a;
         } else {
-            Color namedColor = getColorByName(hexColor);
-            if (namedColor != null) {
-                red = (long)namedColor.getRed() << COMPONENT_SHIFT;
-                blue = (long)namedColor.getBlue() << COMPONENT_SHIFT;
-                green = (long)namedColor.getGreen() << COMPONENT_SHIFT;
+            Color color = ColorUtils.parse(hexColor);
+            if (color == null) {
+                red = 0;
+                green = 0;
+                blue = 0;
+                alpha = (long)255 << COMPONENT_SHIFT;
             } else {
-                long effectColor = 0;
-                try {
-                    effectColor = Integer.parseInt(hexColor, 16);
-                } catch (Exception ignored) {
-                }
-
-                red = ((effectColor >> 16) & 0xFF) << COMPONENT_SHIFT;
-                green = ((effectColor >> 8) & 0xFF) << COMPONENT_SHIFT;
-                blue = (effectColor & 0xFF) << COMPONENT_SHIFT;
+                red = (long)color.getRed() << COMPONENT_SHIFT;
+                green = (long)color.getGreen() << COMPONENT_SHIFT;
+                blue = (long)color.getBlue() << COMPONENT_SHIFT;
+                alpha = (long)color.getAlpha() << COMPONENT_SHIFT;
             }
         }
         color = createColor();
@@ -165,7 +164,7 @@ public final class ColorHD {
 
     @Override
     public String toString() {
-        return Long.toHexString(red) + "," + Long.toHexString(green) + "," + Long.toHexString(blue);
+        return Long.toHexString(red) + "," + Long.toHexString(green) + "," + Long.toHexString(blue) + "," + Long.toHexString(alpha);
     }
 
     public ColorHD mixColor(long r, long g, long b, double weight) {
@@ -203,41 +202,7 @@ public final class ColorHD {
         return weightR * r * r + weightG * g * g + weightB * b * b;
     }
 
-    private static Color getColorByName(String name) {
-        if (colorMap == null) {
-            colorMap = new HashMap<>();
-            colorMap.put("WHITE", Color.fromRGB(16777215));
-            colorMap.put("SILVER", Color.fromRGB(12632256));
-            colorMap.put("GRAY", Color.fromRGB(8421504));
-            colorMap.put("BLACK", Color.fromRGB(0));
-            colorMap.put("RED", Color.fromRGB(16711680));
-            colorMap.put("MAROON", Color.fromRGB(8388608));
-            colorMap.put("YELLOW", Color.fromRGB(16776960));
-            colorMap.put("OLIVE", Color.fromRGB(8421376));
-            colorMap.put("LIME", Color.fromRGB(65280));
-            colorMap.put("GREEN", Color.fromRGB(32768));
-            colorMap.put("AQUA", Color.fromRGB(65535));
-            colorMap.put("TEAL", Color.fromRGB(32896));
-            colorMap.put("BLUE", Color.fromRGB(255));
-            colorMap.put("NAVY", Color.fromRGB(128));
-            colorMap.put("FUCHSIA", Color.fromRGB(16711935));
-            colorMap.put("PURPLE", Color.fromRGB(8388736));
-            colorMap.put("ORANGE", Color.fromRGB(16753920));
-        }
-
-        return colorMap.get(name.toUpperCase());
-    }
-
     private Color createColor() {
-        Color testCreate = null;
-        try {
-            testCreate = Color.fromRGB((int)(red >> COMPONENT_SHIFT), (int)(green >> COMPONENT_SHIFT), (int)(blue >> COMPONENT_SHIFT));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        if (testCreate == null) {
-            testCreate = Color.BLACK;
-        }
-        return testCreate;
+        return ColorUtils.fromARGB((int)(alpha >> COMPONENT_SHIFT), (int)(red >> COMPONENT_SHIFT), (int)(green >> COMPONENT_SHIFT), (int)(blue >> COMPONENT_SHIFT), Color.BLACK);
     }
 }

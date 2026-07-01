@@ -36,6 +36,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private static Random random = new Random();
 
     public static DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
+    public static DecimalFormat DAMAGE_FORMATTER = new DecimalFormat("0.#");
     public static DecimalFormat HOURS_FORMATTER = new DecimalFormat("0");
     public static DecimalFormat MINUTES_FORMATTER = new DecimalFormat("0");
     public static DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0");
@@ -606,7 +607,13 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     @Override
     @Nonnull
     public String getRangeDescription(double range, @Nonnull String messagesKey) {
-        return get(messagesKey).replace("$range", RANGE_FORMATTER.format(range));
+        return get(messagesKey).replace("$range", RANGE_FORMATTER.format(range)).replace("@range", Integer.toString((int)Math.round(range)));
+    }
+
+    @Override
+    @Nonnull
+    public String getDamageDescription(double damage, @Nonnull String messagesKey) {
+        return get(messagesKey).replace("$damage", DAMAGE_FORMATTER.format(damage)).replace("@damage", Integer.toString((int)Math.round(damage)));
     }
 
     /**

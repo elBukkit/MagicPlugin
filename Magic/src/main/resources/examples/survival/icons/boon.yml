@@ -7,4 +7,5 @@ boon:
   type: spell
   glyph: "\uE91C"
   vanilla_item: 'chorus_fruit{18001}'
+  vanilla_item_enabled: 'chorus_fruit{19001}'
   vanilla_item_disabled: 'chorus_fruit{18002}'

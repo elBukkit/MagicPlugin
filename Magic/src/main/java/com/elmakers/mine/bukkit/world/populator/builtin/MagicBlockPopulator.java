@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -14,18 +14,18 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.SimpleBlockPopulator;
 
-public class MagicBlockPopulator extends BaseBlockPopulator {
+public class MagicBlockPopulator extends SimpleBlockPopulator {
     protected MaterialSet replace;
-    protected Deque<WeightedPair<String>> templateProbability = new ArrayDeque<>();
+    protected List<WeightedPair<String>> templateProbability = new ArrayList<>();
     protected ConfigurationSection parameters;
 
     @Override
     public boolean onLoad(ConfigurationSection parameters) {
         RandomUtils.populateStringProbabilityMap(templateProbability, parameters, "template");
         this.parameters = parameters.getConfigurationSection("block_parameters");
-        replace = controller.getMaterialSetManager().fromConfig(parameters.getString("replace"));
+        replace = getController().getMaterialSetManager().fromConfig(parameters.getString("replace"));
         String message = "Creating magic block " + StringUtils.join(RandomUtils.getValues(templateProbability), ",");
         if (replace != null) {
             message += " on generation of " + StringUtils.join(replace.getMaterials(), ",");
@@ -50,14 +50,14 @@ public class MagicBlockPopulator extends BaseBlockPopulator {
         } catch (Exception ignore) {
         }
         Location location = block.getLocation();
-        MagicBlock automaton = controller.addMagicBlock(location, templateKey, null, null, parameters);
+        MagicBlock automaton = getController().addMagicBlock(location, templateKey, null, null, parameters);
         String message = " magic block: " + templateKey + " at " + location.getWorld().getName() + "," + location.toVector();
         if (automaton == null) {
             message = "Failed to create" + message;
         } else {
             message = "Created" + message;
         }
-        controller.info(message);
+        getController().info(message);
         return automaton == null ? BlockResult.SKIP : BlockResult.REMOVE_DROPS;
     }
 }

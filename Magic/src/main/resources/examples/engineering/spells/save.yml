@@ -46,6 +46,8 @@ save:
         ignore_region_overrides: true
         ignore: bedrock,barrier
         loud: true
+        # Save as a minecraft structure
+        type: nbt
     costs:
         mana: 100
 
