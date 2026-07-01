@@ -178,7 +178,7 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         if (searchType != SearchType.CONFORM_UP) {
             return y;
         }
-        return searchArea(SearchType.BASE_UP, worldInfo, region, x, startY, z, x, z);
+        return searchArea(SearchType.BASE_UP, worldInfo, region, x, startY, z, x + 1, z + 1);
     }
 
     protected int searchArea(final SearchType searchType, final WorldInfo worldInfo, final LimitedRegion region, int startX, int startY, int startZ, int endX, int endZ) {
