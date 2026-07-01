@@ -2,18 +2,14 @@ package com.elmakers.mine.bukkit.world.generator.builtin;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.OptionalGenerator;
 
-public class GridGenerator extends BaseChunkGenerator {
+public class GridGenerator extends OptionalGenerator {
     private BaseChunkGenerator fallbackGenerator;
     private final Map<Integer, Map<Integer, BaseChunkGenerator>> generatorMap = new HashMap<>();
 
@@ -39,86 +35,13 @@ public class GridGenerator extends BaseChunkGenerator {
         return fallbackGenerator != null || !generatorMap.isEmpty();
     }
 
-    protected BaseChunkGenerator getGenerator(int chunkX, int chunkZ) {
+    @Override
+    protected BaseChunkGenerator getGenerator(long worldSeed, int chunkX, int chunkZ) {
         Map<Integer, BaseChunkGenerator> map = generatorMap.get(chunkX);
         if (map == null) {
             return fallbackGenerator;
         }
         BaseChunkGenerator generator = map.get(chunkZ);
         return generator != null ? generator : fallbackGenerator;
-    }
-
-    @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        if (generator != null) {
-            generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
-        }
-    }
-
-    @Override
-    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        if (generator != null) {
-            generator.generateCaves(worldInfo, random, chunkX, chunkZ, chunk);
-        }
-    }
-
-    @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        super.populate(worldInfo, random, chunkX, chunkZ, region);
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        if (generator != null) {
-            generator.populate(worldInfo, random, chunkX, chunkZ, region);
-        }
-    }
-
-    @Override
-    public boolean shouldGenerateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean shouldGenerateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateSurface(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean shouldGenerateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateCaves(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateDecorations(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean shouldGenerateMobs(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateMobs(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean shouldGenerateStructures(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateStructures(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public String getPortalTargetWorld(Location location) {
-        String baseTargetWorld = super.getPortalTargetWorld(location);
-        if (baseTargetWorld != null) {
-            return baseTargetWorld;
-        }
-        BaseChunkGenerator generator = getGenerator(location.getChunk().getX(), location.getChunk().getZ());
-        if (generator == null) {
-            return null;
-        }
-        return generator.getPortalTargetWorld(location);
     }
 }

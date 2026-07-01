@@ -10,8 +10,9 @@ import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.CompoundPopulator;
 
-public class GridPopulator extends BaseBlockPopulator {
+public class GridPopulator extends CompoundPopulator {
     private record GridEntry(BaseBlockPopulator populator, int x, int z) {}
     private final List<GridEntry> entries = new ArrayList<>();
 
@@ -42,6 +43,11 @@ public class GridPopulator extends BaseBlockPopulator {
             }
         }
         return !entries.isEmpty();
+    }
+
+    @Override
+    protected List<BaseBlockPopulator> getPopulators(long worldSeed, int chunkX, int chunkZ) {
+        return entries.stream().map(entry -> entry.populator).toList();
     }
 
     @Override

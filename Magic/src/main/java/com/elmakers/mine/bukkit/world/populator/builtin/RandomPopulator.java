@@ -2,18 +2,15 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.OptionalPopulator;
 
-public class RandomPopulator extends BaseBlockPopulator {
+public class RandomPopulator extends OptionalPopulator {
     private List<DistanceWeightedValue<BaseBlockPopulator>> populators = new ArrayList<>();
 
     @Override
@@ -48,24 +45,8 @@ public class RandomPopulator extends BaseBlockPopulator {
         return !populators.isEmpty();
     }
 
+    @Override
     protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
         return RandomUtils.getDistanceWeighted(populators, worldSeed, chunkX, chunkZ);
-    }
-
-    @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        BaseBlockPopulator populator = getPopulator(worldInfo.getSeed(), chunkX, chunkZ);
-        if (populator != null) {
-            populator.populate(worldInfo, random, chunkX, chunkZ, region);
-        }
-    }
-
-    @Override
-    public String getPortalTargetWorld(Location location) {
-        BaseBlockPopulator populator = getPopulator(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ());
-        if (populator == null) {
-            return null;
-        }
-        return populator.getPortalTargetWorld(location);
     }
 }

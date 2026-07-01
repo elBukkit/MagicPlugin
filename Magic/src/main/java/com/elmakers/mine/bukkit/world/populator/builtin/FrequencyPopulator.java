@@ -1,15 +1,11 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.Random;
-
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.OptionalPopulator;
 
-public class FrequencyPopulator extends BaseBlockPopulator {
+public class FrequencyPopulator extends OptionalPopulator {
     private BaseBlockPopulator populator;
     private int frequency = 2;
 
@@ -19,22 +15,12 @@ public class FrequencyPopulator extends BaseBlockPopulator {
         return populator != null;
     }
 
+    @Override
+    protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
+        return isValid(chunkX, chunkZ) ? populator : null;
+    }
+
     protected boolean isValid(int chunkX, int chunkZ) {
         return chunkX % frequency == 0 && chunkZ % frequency == 0;
-    }
-
-    @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        if (isValid(chunkX, chunkZ)) {
-            populator.populate(worldInfo, random, chunkX, chunkZ, region);
-        }
-    }
-
-    @Override
-    public String getPortalTargetWorld(Location location) {
-        if (isValid(location.getChunk().getX(), location.getChunk().getZ())) {
-            return populator.getPortalTargetWorld(location);
-        }
-        return null;
     }
 }
