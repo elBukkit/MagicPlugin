@@ -96,6 +96,10 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
 
     @Override
     public String getPortalTargetWorld(Location location) {
+        String baseTargetWorld = super.getPortalTargetWorld(location);
+        if (baseTargetWorld != null) {
+            return baseTargetWorld;
+        }
         for (BaseChunkGenerator generator : getGenerators(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ())) {
             String targetWorld = generator.getPortalTargetWorld(location);
             if (targetWorld != null) {
