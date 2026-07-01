@@ -1,6 +1,5 @@
 concrete_ground:
   class: Perlin
-  biome: basalt_deltas
   noise: 0.05
   blocks: concrete_ground
   top_blocks: concrete_top
@@ -34,6 +33,7 @@ concrete_surface:
 
 concrete:
   class: Sequence
+  biome: basalt_deltas
   generators:
     - bedrock
     - concrete_ground
