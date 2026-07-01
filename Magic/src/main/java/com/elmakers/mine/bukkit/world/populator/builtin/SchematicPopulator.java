@@ -12,7 +12,9 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
+import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class SchematicPopulator extends BaseBlockPopulator {
@@ -20,8 +22,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
     private Schematic schematic;
     private IntegerRange position;
     private IntegerRange yOffset;
-    private boolean searchUp = true;
-    private boolean conform = false;
+    private SearchType searchType = SearchType.AREA_UP_MIN;
     private boolean fillAir = false;
 
     @Override
@@ -34,8 +35,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
         }
         position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 0);
         yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
-        searchUp = config.getBoolean("search_up", searchUp);
-        conform = config.getBoolean("conform", conform);
+        searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.AREA_UP_MIN, getLogger());
         fillAir = config.getBoolean("fill_air", fillAir);
         return true;
     }
@@ -61,23 +61,17 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int startZ = position.getRandom(random);
         final int sizeX = Math.min(maxSize, size.getBlockX());
         final int sizeZ = Math.min(maxSize, size.getBlockZ());
-        final int groundY = world.getGroundLevel();
+        final int groundLevel = world.getGroundLevel();
         final int startOffsetY = yOffset.getRandom(random);
-        final int startY = (searchUp ? getTopBlock(worldInfo, region, startX + chunkBaseX, groundY, startZ + chunkBaseZ) : groundY) + startOffsetY;
+        final int startY = startOffsetY + searchArea(searchType, worldInfo, region, startX + chunkBaseX, groundLevel, startZ + chunkBaseZ, startX + chunkBaseX + sizeX, startZ + chunkBaseZ + sizeZ);
         final int maxHeight = worldInfo.getMaxHeight();
         for (int dx = 0; dx < sizeX; dx++) {
             for (int dz = 0; dz < sizeZ; dz++) {
                 final int x = dx + startX + chunkBaseX;
                 final int z = dz + startZ + chunkBaseZ;
-                int yOffset = 0;
-                if (conform) {
-                    int conformY = getTopBlock(worldInfo, region, x, startY, z);
-                    conformY = getBottomBlock(worldInfo, region, x, conformY, z);
-                    yOffset = conformY - startY;
-                }
-
+                int yOffset = continueSearchArea(searchType, worldInfo, region, x, startY, z, groundLevel);
                 for (int dy = 0; dy < sizeY; dy++) {
-                    final int y = dy + startY + yOffset;
+                    final int y = dy + yOffset;
                     if (y >= maxHeight) break;
 
                     final MaterialAndData block = schematic.getBlock(dx, dy, dz);

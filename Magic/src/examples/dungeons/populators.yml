@@ -14,7 +14,7 @@ dungeon_random_1x1:
 dungeon_1x1_a:
   class: Schematic
   schematic: dungeon_1x1_a
-  search_up: false
+  search: NONE
 
 dungeon_random_2x1:
   class: Random
@@ -24,7 +24,7 @@ dungeon_random_2x1:
 dungeon_2x1_a:
   class: Schematic
   schematic: dungeon_2x1_a
-  search_up: false
+  search: NONE
 
 dungeon_random_1x2:
   class: Random
@@ -34,7 +34,7 @@ dungeon_random_1x2:
 dungeon_1x2_a:
   class: Schematic
   schematic: dungeon_1x2_a
-  search_up: false
+  search: NONE
 
 dungeon_random_2x2:
   class: Random
@@ -44,7 +44,7 @@ dungeon_random_2x2:
 dungeon_2x2_a:
   class: Schematic
   schematic: dungeon_2x2_a
-  search_up: false
+  search: NONE
 
 dungeon_random_2x3:
   class: Random
@@ -54,7 +54,7 @@ dungeon_random_2x3:
 dungeon_2x3_a:
   class: Schematic
   schematic: dungeon_2x3_a
-  search_up: false
+  search: NONE
 
 
 dungeon_random_3x2:
@@ -65,7 +65,7 @@ dungeon_random_3x2:
 dungeon_3x2_a:
   class: Schematic
   schematic: dungeon_3x2_a
-  search_up: false
+  search: NONE
 
 dungeon_random_3x1:
   class: Random
@@ -75,7 +75,7 @@ dungeon_random_3x1:
 dungeon_3x1_a:
   class: Schematic
   schematic: dungeon_3x1_a
-  search_up: false
+  search: NONE
 
 dungeon_random_1x3:
   class: Random
@@ -85,13 +85,13 @@ dungeon_random_1x3:
 dungeon_1x3_a:
   class: Schematic
   schematic: dungeon_1x3_a
-  search_up: false
+  search: NONE
 
 dungeon_3x3_a:
   class: Schematic
   schematic: dungeon_3x3_a
   position: -16
-  search_up: false
+  search: NONE
 
 # Set up sub-grids to fill in 1x3, 3x1, 3x2, 2x3, 2x2, 2x1 and 1x2 spaces
 # These will all be placed inside of other grids, and so should start at 0

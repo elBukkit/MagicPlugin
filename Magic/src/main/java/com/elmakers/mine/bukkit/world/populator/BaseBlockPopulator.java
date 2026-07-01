@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.MagicWorld;
+import com.elmakers.mine.bukkit.world.SearchType;
 
 public abstract class BaseBlockPopulator extends BlockPopulator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
@@ -167,6 +168,34 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         }
         region.setBlockData(x, y, z, blockData);
         return true;
+    }
+
+    protected int continueSearchArea(final SearchType searchType, final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int startY) {
+        if (searchType != SearchType.CONFORM_UP) {
+            return y;
+        }
+        return searchArea(SearchType.BASE_UP, worldInfo, region, x, startY, z, x, z);
+    }
+
+    protected int searchArea(final SearchType searchType, final WorldInfo worldInfo, final LimitedRegion region, int startX, int startY, int startZ, int endX, int endZ) {
+        if (searchType == SearchType.CONFORM_UP || searchType == SearchType.NONE) {
+            return startY;
+        }
+
+        Integer currentSearch = null;
+        for (int x = startX; x < endX; x++) {
+            for (int z = startZ; z < endZ; z++) {
+                final int searchY = getTopBlock(worldInfo, region, x, startY, z);
+                if (currentSearch == null || (searchType != SearchType.AREA_UP_MAX && searchType != SearchType.AREA_UP_MIN)) {
+                    currentSearch = searchY;
+                } else {
+                    currentSearch = searchType == SearchType.AREA_UP_MAX ? Math.max(searchY, currentSearch) : Math.min(searchY, currentSearch);
+                }
+                if (searchType == SearchType.BASE_UP) break;
+            }
+            if (searchType == SearchType.BASE_UP) break;
+        }
+        return currentSearch != null ? currentSearch : startY;
     }
 
 

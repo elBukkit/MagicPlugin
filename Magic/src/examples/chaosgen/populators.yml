@@ -34,7 +34,7 @@ chaos_build5:
 chaos_build6:
   class: Schematic
   position: -16 | 31
-  conform: true
+  search: conform_up
   schematic: creeper_rug
 
 chaos_build7:
@@ -55,7 +55,7 @@ chaos_build9:
 chaos_build10:
   class: Schematic
   position: -16 | 31
-  conform: true
+  search: conform_up
   schematic: rainbow
 
 chaos_build11:

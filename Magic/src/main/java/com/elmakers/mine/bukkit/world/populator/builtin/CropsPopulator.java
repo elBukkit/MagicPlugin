@@ -12,17 +12,19 @@ import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.DoubleRange;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class CropsPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
-    private boolean searchUp = true;
     private DoubleRange age;
     private IntegerRange position;
     private IntegerRange width;
+    private SearchType searchType = SearchType.CONFORM_UP;
 
     private List<MaterialAndData> foodBlocks = Collections.emptyList();
     private List<MaterialAndData> borderBlocks = Collections.emptyList();
@@ -39,7 +41,7 @@ public class CropsPopulator extends BaseBlockPopulator {
         soilBlocks = parseBlocks(config, "soil", "farmland");
         borderBlocks = parseBlocks(config, "border");
         supportBlocks = parseBlocks(config, "support");
-        searchUp = config.getBoolean("search_up", searchUp);
+        searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.CONFORM_UP, getLogger());
         return true;
     }
 
@@ -58,6 +60,7 @@ public class CropsPopulator extends BaseBlockPopulator {
         final int endZ = startZ + width + borderWidth;
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
+        final int startY = searchArea(searchType, worldInfo, region, startX + chunkGlobalX, groundLevel, startZ + chunkGlobalZ, endX + chunkGlobalX, endZ + chunkGlobalZ);
 
         BlockData cropData = null;
 
@@ -65,7 +68,7 @@ public class CropsPopulator extends BaseBlockPopulator {
             for (int dz = startZ; dz < endZ; dz++) {
                 final int x = chunkGlobalX + dx;
                 final int z = chunkGlobalZ + dz;
-                int groundY = searchUp ? getTopBlock(worldInfo, region, x, groundLevel, z) : groundLevel;
+                final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, groundLevel);
                 final boolean isBorder = dx == startX || dx == endX - 1 || dz == startZ || dz == endZ - 1;
                 if (hasBorder && isBorder) {
                     region.setBlockData(x, groundY + 1, z, borderBlock.createBlockData());

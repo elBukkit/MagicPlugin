@@ -1,0 +1,39 @@
+bliss_houses:
+  class: Random
+  populators:
+    house_1:
+      weight: 1
+      populator:
+        class: Schematic
+        schematic: blacksmith
+    house_2:
+      weight: 1
+      populator:
+        class: Schematic
+        schematic: church
+    house_3:
+      weight: 1
+      populator:
+        class: Schematic
+        schematic: compact_house
+    house_4:
+      weight: 1
+      populator:
+        class: Schematic
+        schematic: garden_house
+    house_5:
+      weight: 1
+      populator:
+        class: Schematic
+        schematic: small_house
+    house_6:
+      weight: 0.5
+      populator:
+        class: Schematic
+        schematic: tech_tower
+    house_7:
+      weight: 0.2
+      populator:
+        class: Schematic
+        schematic: warped_house
+    none: 200
