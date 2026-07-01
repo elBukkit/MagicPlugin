@@ -15,7 +15,7 @@ public class GridGenerator extends OptionalGenerator {
 
     public boolean onLoad(ConfigurationSection config) {
         WorldController controller = world.getController().getWorlds();
-        fallbackGenerator = config.contains("fallback") ? controller.parseGenerator(world, config, "fallback") : null;
+        fallbackGenerator = config.contains("fallback") ? controller.parseGenerator(world, config, null, "fallback") : null;
         ConfigurationSection gridConfig = config.getConfigurationSection("generators");
         for (String entryKey : gridConfig.getKeys(false)) {
             ConfigurationSection entry = gridConfig.getConfigurationSection(entryKey);
