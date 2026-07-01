@@ -864,7 +864,7 @@ public class ConfigUtils {
             return defaultValue;
         }
         try {
-            return Enum.valueOf(defaultValue.getDeclaringClass(), value);
+            return Enum.valueOf(defaultValue.getDeclaringClass(), value.toUpperCase());
         } catch (Exception ex) {
             if (logger != null) {
                 logger.warning("Invalid value for " + key + " of type " + defaultValue.getDeclaringClass().getSimpleName() + ": " + value);
