@@ -2,7 +2,7 @@ office:
   inherit: liminal_base
   world: world_office
   generator: office
-  time: 6000
+  time: 18000
   spawn: 8,-28,8
   bedrock_level: -30
   ground_level: -29

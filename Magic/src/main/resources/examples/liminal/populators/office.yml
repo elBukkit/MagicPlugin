@@ -7,3 +7,9 @@ office_lights:
     position: 2 | 14
     light_blocks:
       - pearlescent_froglight
+
+office_portal:
+  class: EndGateway
+  target_world: world_bliss
+  height: 10
+  width: 8

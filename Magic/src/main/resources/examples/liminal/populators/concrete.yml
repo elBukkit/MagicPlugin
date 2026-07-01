@@ -20,7 +20,8 @@ concrete_food:
 
 concrete_portal:
   class: EndGateway
-  target_world: world_pools
+  target_world: world_office
+  search: none
   height: 10
   width: 8
 

@@ -3,13 +3,14 @@ bliss_hills:
   biome: plains
   noise: 0.02
   blocks: moss_block
-  elevation: 0 | 24
+  elevation: 0 | 30
   clip_elevation: 0
-  populators:
-    - bliss_houses
 
 bliss:
   class: Sequence
+  populators:
+    - bliss_houses
+    - bliss_features
   generators:
     - bedrock
     - bliss_hills

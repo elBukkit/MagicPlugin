@@ -37,3 +37,17 @@ bliss_houses:
         class: Schematic
         schematic: warped_house
     none: 200
+
+bliss_portal:
+  class: EndGateway
+  target_world: world_pools
+  height: 10
+  width: 8
+
+bliss_features:
+  class: Random
+  populators:
+    bliss_portal:
+      distance: 512 | 2048
+      weight: 0.2
+    none: 100

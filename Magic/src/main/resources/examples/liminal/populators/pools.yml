@@ -5,10 +5,19 @@ pools_vines:
     - cave_vines[age=0,berries=true]
     - cave_vines
 
+pools_portal:
+  class: EndGateway
+  target_world: world_abyss
+  height: 10
+  width: 8
+
 pools_features:
   class: Random
   populators:
     pools_vines: 0.02
+    pools_portal:
+      distance: 512 | 2048
+      weight: 0.2
     none: 1
 
 pools_mobs:
