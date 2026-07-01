@@ -4,3 +4,5 @@ concrete:
   generator: concrete
   time: 13000
   ambient_sound_time: 90 | 900
+  bedrock_level: 0
+  ground_level: 1

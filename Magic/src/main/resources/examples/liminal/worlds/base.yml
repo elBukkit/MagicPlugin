@@ -3,9 +3,6 @@ liminal_base:
   # It does not itself generate a world
   world: ""
   autoload: true
-  bedrock_level: 0
-  ground_level: 1
-  spawn: 0,2,0
   game_mode: adventure
   leave_game_mode: survival
   title_delay: 2000
