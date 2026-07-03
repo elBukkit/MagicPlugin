@@ -25,6 +25,11 @@ public class LongRange {
     }
 
     public double getFactor(long value) {
+        if (min > max) {
+            if (value < max) return 1;
+            if (value >= min) return 0;
+            return 1 - (double)(value - max) / (double)(min - max);
+        }
         if (value < min) return 0;
         if (value >= max) return 1;
         return (double)(value - min) / (double)(max - min);
