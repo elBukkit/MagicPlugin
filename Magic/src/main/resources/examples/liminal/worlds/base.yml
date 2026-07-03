@@ -2,6 +2,7 @@ liminal_base:
   # This is a base config inherited by other liminal world configs
   # It does not itself generate a world
   world: ""
+  respawn_world: this
   autoload: true
   game_mode: adventure
   leave_game_mode: survival

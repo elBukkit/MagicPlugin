@@ -36,18 +36,49 @@ bliss_houses:
       populator:
         class: Schematic
         schematic: warped_house
-    none: 200
+
+bliss_exit_shaft:
+  class: Shaft
+  floor_probability: 1
+  y_offset: 2
+  rim_width: 1
+  height: 400
+  width: 3
+  blocks:
+    - blue_terracotta
 
 bliss_portal:
-  class: EndGateway
+  class: EndPortal
   target_world: world_pools
-  height: 10
-  width: 8
+  y_offset: -100
+  width: 3
+
+bliss_exit:
+  class: Sequence
+  populators:
+    - bliss_exit_shaft
+    - bliss_portal
+
+bliss_tree:
+  class: Tree
+  types:
+    - tree
+    - big_tree
+    - redwood
+    - tall_redwood
+    - birch
+    - tall_birch
+    - mega_redwood
+    - cherry
 
 bliss_features:
   class: Random
   populators:
-    bliss_portal:
+    bliss_exit:
       distance: 512 | 2048
       weight: 0.2
+    bliss_houses:
+      weight: 10
+    bliss_tree:
+      weight: 20
     none: 100

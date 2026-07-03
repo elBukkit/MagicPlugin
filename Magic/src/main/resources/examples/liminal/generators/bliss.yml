@@ -9,7 +9,6 @@ bliss_hills:
 bliss:
   class: Sequence
   populators:
-    - bliss_houses
     - bliss_features
   generators:
     - bedrock

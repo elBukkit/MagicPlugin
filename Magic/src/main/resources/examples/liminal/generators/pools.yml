@@ -25,6 +25,19 @@ pools_entrance:
     - quartz_block
 
 pools_room:
+  class: Random
+  generators:
+    pools_room_light:
+      distance: 512 | 0
+      weight: 1
+    pools_room_dark:
+      distance: 256 | 1024
+      weight: 1
+    pools_room_exit:
+      distance: 256 | 1024
+      weight: 0.01
+
+pools_room_light:
   class: Room
   roof_height: 6 | 16
   doorway_height: 3 | 6
@@ -34,10 +47,53 @@ pools_room:
   double_door_probability: 0.5
   sunroof_probability: 0.8
   populators:
-    - pools_pools
+    - pools_light_pools
     - pools_light
-    - pools_mobs
-    - pools_features
+    - pools_light_mobs
+    - pools_light_features
+  wall_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+  ceiling_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+
+pools_room_dark:
+  class: Room
+  roof_height: 3 | 6
+  roof_max_height: 16
+  doorway_height: 2 | 4
+  doorway_width: 1 | 6
+  wall_probability: 0.8
+  window_probability: 0.1
+  double_door_probability: 0.1
+  sunroof_probability: 0.25
+  hallway_width: 0 | 6
+  populators:
+    - pools_dark_pools
+    - pools_dark_mobs
+    - pools_dark_features
+    - pools_flooding
+  wall_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+  ceiling_blocks:
+    - polished_diorite
+    - diorite
+    - quartz_block
+
+pools_room_exit:
+  class: Room
+  roof_height: 16
+  wall_probability: 0
+  window_probability: 0
+  sunroof_probability: 0
+  hallway_width: 0
+  populators:
+    - pools_exit
   wall_blocks:
     - polished_diorite
     - diorite

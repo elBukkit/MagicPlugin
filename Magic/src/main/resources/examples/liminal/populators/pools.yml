@@ -5,28 +5,96 @@ pools_vines:
     - cave_vines[age=0,berries=true]
     - cave_vines
 
-pools_portal:
-  class: EndGateway
-  target_world: world_abyss
-  height: 10
-  width: 8
+pools_kelp:
+  class: Vines
+  height: 8 | 32
+  vines:
+    - minecraft:kelp_plant
 
-pools_features:
+pools_portal:
+  class: EndPortal
+  target_world: world_abyss
+  y_offset: 100
+  width: 3
+
+pools_exit_shaft:
+  class: Shaft
+  floor_probability: 0
+  y_offset: -5
+  rim_width: 1
+  height: 400
+  width: 3
+  blocks:
+    - blue_terracotta
+  fill:
+    - water
+
+pools_exit_water:
+  class: Fill
+  blocks: water
+  width: 3
+  y_offset: 0
+  position: 7
+  height: 10
+
+pools_exit_ground:
+  class: Fill
+  blocks: soul_sand
+  position: 7
+  y_offset: -1
+  width: 3
+  height: 1
+
+pools_exit_lights:
+  class: Fill
+  blocks: sea_lantern
+  position: 6
+  y_offset: -1
+  width: 5
+  height: 1
+
+pools_exit:
+  class: Sequence
+  populators:
+    - pools_exit_shaft
+    - pools_exit_lights
+    - pools_exit_ground
+    - pools_exit_water
+    - pools_portal
+
+pools_light_features:
   class: Random
   populators:
     pools_vines: 0.02
-    pools_portal:
-      distance: 512 | 2048
-      weight: 0.2
     none: 1
 
-pools_mobs:
+pools_dark_features:
+  class: Random
+  populators:
+    pools_kelp: 0.02
+    none: 1
+
+pools_light_mobs:
   class: Spawn
   types:
     hopper: 0.05
     pink_floaty: 0.02
     yellow_floaty: 0.02
     none: 1
+
+pools_dark_mobs:
+  class: Spawn
+  types:
+    hopper: 0.01
+    none: 1
+
+pools_flooding:
+  class: Probability
+  probability: 0.2
+  populator:
+    class: Flooding
+    level: 1 | 4
+    depth: 1 | 3
 
 pools_entrance_pool:
   class: Pools
@@ -41,14 +109,14 @@ pools_entrance_pool:
 pools_entrance_shaft:
   class: Shaft
   floor_probability: 0
+  y_offset: -5
+  rim_width: 1
   height: 400
   width: 3
   blocks:
-    - polished_diorite
-    - diorite
-    - quartz_block
+    - blue_terracotta
 
-pools_pools:
+pools_light_pools:
   class: Probability
   probability: 0.9
   populator:
@@ -57,6 +125,18 @@ pools_pools:
     depth: 1 | 2
     walkway_width: 1 | 12
     light_probability: 0.9
+    light_blocks:
+      - sea_lantern
+
+pools_dark_pools:
+  class: Probability
+  probability: 0.75
+  populator:
+    class: Pools
+    island_probability: 0.75
+    depth: 1 | 2
+    walkway_width: 1 | 6
+    light_probability: 0.1
     light_blocks:
       - sea_lantern
 
