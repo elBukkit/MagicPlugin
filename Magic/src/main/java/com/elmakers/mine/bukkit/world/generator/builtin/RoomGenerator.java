@@ -22,6 +22,7 @@ public class RoomGenerator extends BaseChunkGenerator {
     private IntegerRange doorwayHeight;
     private IntegerRange doorwayWidth;
     private IntegerRange hallwayWidth;
+    private int roofMaxHeight;
     private int yOffset;
     private double wallProbability = 0.75;
     private double windowProbability = 0;
@@ -46,6 +47,7 @@ public class RoomGenerator extends BaseChunkGenerator {
         poolProbability = config.getDouble("pool_probability", poolProbability);
         doubleDoorProbability = config.getDouble("double_door_probability", doubleDoorProbability);
         sunroofProbability = config.getDouble("sunroof_probability", sunroofProbability);
+        roofMaxHeight = config.getInt("roof_max_height", 0);
 
         wallBlocks = parseBlocks(config, "wall_blocks", "stones");
         ceilingBlocks = parseBlocks(config, "ceiling_blocks", "stones");
@@ -67,7 +69,7 @@ public class RoomGenerator extends BaseChunkGenerator {
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkGenerator.ChunkData chunk) {
         final int floorLevel = world.getGroundLevel() + yOffset;
         final int roofLevel = floorLevel + roofHeight.getRandom(random);
-        final int roofMaxLevel = floorLevel + roofHeight.getMax();
+        final int roofMaxLevel = floorLevel + Math.max(roofHeight.getMax(), roofMaxHeight);
         final int doorwayLevel = Math.min(roofLevel, floorLevel + doorwayHeight.getRandom(random));
         final int doorwayWidthHalf = (int)Math.ceil((double)doorwayWidth.getRandom(random) / 2);
         final int hallwayWidthHalf = (int)Math.ceil((double)hallwayWidth.getRandom(random) / 2);
@@ -129,7 +131,7 @@ public class RoomGenerator extends BaseChunkGenerator {
                 if (hallwayWidthHalf > 0) {
                     int hallwayLeft = 8 - hallwayWidthHalf;
                     int hallwayRight = 8 + hallwayWidthHalf;
-                    if (x < hallwayLeft || x > hallwayRight || z < hallwayLeft || z > hallwayRight) {
+                    if ((x < hallwayLeft || x > hallwayRight) && (z < hallwayLeft || z > hallwayRight)) {
                         for (int y = floorLevel; y <= roofLevel; y++) {
                             chunk.setBlock(x, y, z, wallBlock);
                         }
