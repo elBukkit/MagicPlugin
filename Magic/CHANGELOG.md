@@ -36,6 +36,7 @@
      - Shaft: A shaft going up or down through the ceiling or floor
      - Spawn: Spawn some mobs from a distance-weighted probability map
      - Tower: Build a randomized tower
+     - Tree: Grow a random tree
      - Tunnel: Make tunnels/doorways through the center of a region
      - Vines: Grow some vines
  - Use generators in world configs for completely custom world gen
