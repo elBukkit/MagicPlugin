@@ -20,9 +20,11 @@
    - Vanilla: Use vanilla world generation
  - Create block populators via `populators` configuration in a generator
    - These can use pre-existing populator classes, such as Replace, MagicChest, MagicBlock and Chest
+   - Use the `target_world` parameter to send a player to a specific world when they enter any kind of portal
    - Added new populators: 
-     - EndGateway: Build some configurations of end gateway blocks, use `target_world` to send to a specific world
-     - EndPortal: Build some configurations of an end portal, use `target_world` to send to a specific world
+     - EndGateway: Build some configurations of end gateway blocks
+     - EndPortal: Build some configurations of an end portal
+     - Fill: Fill a cubiod, can be based on ground level or at a fixed position
      - Flooding: Flood the floor with partial water blocks
      - Frequency: Only fill every N chunks
      - Grid: Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
