@@ -12,13 +12,12 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
 public class EndPortalPopulator extends BaseBlockPopulator {
     private IntegerRange portalWidth;
-    private IntegerRange portalDepth;
-    private Material borderMaterial = Material.BEDROCK;
+    private IntegerRange yOffset;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
         portalWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
-        portalDepth = IntegerRange.fromConfig(getLogger(), config, "depth", 0, 0);
+        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         return true;
     }
 
@@ -28,28 +27,18 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
         final int portalWidth = this.portalWidth.getRandom(random);
-        final int portalDepth = this.portalDepth.getRandom(random);
+        final int yOffset = this.yOffset.getRandom(random);
         final int portalLeft = 8 - (int)Math.ceil((double)portalWidth / 2);
         final int portalRight = 8 + (int)Math.floor((double)portalWidth / 2);
 
-        final int minExitX = chunkGlobalX + portalLeft;
-        final int maxExitX = chunkGlobalX + portalRight;
-        final int minExitZ = chunkGlobalZ + portalLeft;
-        final int maxExitZ = chunkGlobalZ + portalRight;
+        final int minPortalX = chunkGlobalX + portalLeft;
+        final int maxPortalX = chunkGlobalX + portalRight;
+        final int minPortalZ = chunkGlobalZ + portalLeft;
+        final int maxPortalZ = chunkGlobalZ + portalRight;
 
-        for (int x = minExitX - 1; x <= maxExitX; x++) {
-            for (int z = minExitZ - 1; z <= maxExitZ; z++) {
-                if (z == minExitZ - 1 || z == maxExitZ || x == minExitX - 1 || x == maxExitX) {
-                    for (int y = floorLevel - portalDepth + 1; y < floorLevel; y++) {
-                        region.setType(x, y, z, borderMaterial);
-                    }
-                    continue;
-                }
-                for (int y = floorLevel - portalDepth + 1; y <= floorLevel; y++) {
-                    region.setType(x, y, z, Material.AIR);
-                }
-                region.setType(x, floorLevel - portalDepth, z, Material.END_PORTAL);
-                region.setType(x, floorLevel - portalDepth - 1, z, borderMaterial);
+        for (int x = minPortalX; x < maxPortalX; x++) {
+            for (int z = minPortalZ; z < maxPortalZ; z++) {
+                region.setType(x, floorLevel + yOffset, z, Material.END_PORTAL);
             }
         }
     }

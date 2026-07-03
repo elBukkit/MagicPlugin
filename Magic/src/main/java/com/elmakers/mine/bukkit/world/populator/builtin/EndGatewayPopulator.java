@@ -49,12 +49,12 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
         final int minExitZ = chunkGlobalZ + portalLeft;
         final int maxExitZ = chunkGlobalZ + portalRight;
         final BlockData gatewayBlock = getGatewayBlock();
-        final int startY = searchArea(searchType, worldInfo, region, minExitX - 1, floorLevel, minExitZ - 1, maxExitX + 1, maxExitZ + 1);
+        final int startY = searchArea(searchType, worldInfo, region, minExitX, floorLevel, minExitZ, maxExitX, maxExitZ);
 
-        for (int x = minExitX - 1; x <= maxExitX; x++) {
-            for (int z = minExitZ - 1; z <= maxExitZ; z++) {
+        for (int x = minExitX; x < maxExitX; x++) {
+            for (int z = minExitZ; z < maxExitZ; z++) {
                 final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, floorLevel);
-                final int maxExitY = startY + gatewayHeight;
+                final int maxExitY = groundY + gatewayHeight;
                 for (int y = groundY + 1; y <= maxExitY; y++) {
                     region.setBlockData(x, y, z, gatewayBlock);
                 }
