@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.world.populator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -253,10 +254,14 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     }
 
     protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key) {
-        return parseBlocks(config, key, null);
+        return parseBlocks(config, key, Collections.emptyList());
     }
 
     protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key, String defaultSet) {
+        return world.getController().getWorlds().parseBlocks(world.getName(), config, key, defaultSet);
+    }
+
+    protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key, List<MaterialAndData> defaultSet) {
         return world.getController().getWorlds().parseBlocks(world.getName(), config, key, defaultSet);
     }
 

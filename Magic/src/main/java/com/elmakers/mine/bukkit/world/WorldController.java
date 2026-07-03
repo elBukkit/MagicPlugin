@@ -242,16 +242,32 @@ public class WorldController implements Listener {
     }
 
     public List<MaterialAndData> parseBlocks(String worldKey, ConfigurationSection config, String key, String defaultSet) {
-        MaterialSet materialSet = controller.getMaterialSetManager().fromConfig(config, key);
-        if (materialSet == null) {
-            if (defaultSet == null) {
-                return Collections.emptyList();
-            }
-            controller.info("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
+        MaterialSet materialSet = null;
+        if (!config.contains(key)) {
             materialSet = controller.getMaterialSetManager().fromConfig(defaultSet);
         }
         if (materialSet == null) {
+            materialSet = controller.getMaterialSetManager().fromConfig(config, key);
+            if (materialSet == null) {
+                if (defaultSet == null) {
+                    return Collections.emptyList();
+                }
+                controller.info("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
+                materialSet = controller.getMaterialSetManager().fromConfig(defaultSet);
+            }
+        }
+        if (materialSet == null) {
             return Collections.emptyList();
+        }
+        return new ArrayList<>(materialSet.getMaterialsWithData());
+    }
+
+    public List<MaterialAndData> parseBlocks(String worldKey, ConfigurationSection config, String key, List<MaterialAndData> defaultSet) {
+        if (!config.contains(key)) return defaultSet;
+        MaterialSet materialSet = controller.getMaterialSetManager().fromConfig(config, key);
+        if (materialSet == null) {
+            controller.info("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
+            return defaultSet;
         }
         return new ArrayList<>(materialSet.getMaterialsWithData());
     }
