@@ -27,9 +27,11 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
     protected MagicWorld world;
+    private String targetWorld;
 
     public boolean load(MagicWorld world, ConfigurationSection config) {
         this.world = world;
+        targetWorld = config.getString("target_world", targetWorld);
         return onLoad(config);
     }
 
@@ -259,6 +261,6 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     }
 
     public String getPortalTargetWorld(Location location) {
-        return null;
+        return targetWorld;
     }
 }

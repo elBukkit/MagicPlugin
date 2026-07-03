@@ -29,6 +29,10 @@ public abstract class OptionalPopulator extends BaseBlockPopulator {
 
     @Override
     public String getPortalTargetWorld(Location location) {
+        String targetWorld = super.getPortalTargetWorld(location);
+        if (targetWorld != null) {
+            return targetWorld;
+        }
         BaseBlockPopulator populator = getPopulator(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ());
         if (populator == null) {
             return null;

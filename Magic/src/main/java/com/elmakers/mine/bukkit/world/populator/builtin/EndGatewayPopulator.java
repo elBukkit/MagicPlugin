@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.Random;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
@@ -17,14 +16,12 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 public class EndGatewayPopulator extends BaseBlockPopulator {
     private IntegerRange gatewayWidth;
     private IntegerRange gatewayHeight;
-    private String targetWorld;
     private SearchType searchType = SearchType.AREA_UP_MIN;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
         gatewayWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
         gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
-        targetWorld = config.getString("target_world", targetWorld);
         return gatewayWidth.getMax() > 0;
     }
 
@@ -63,10 +60,5 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
                 }
             }
         }
-    }
-
-    @Override
-    public String getPortalTargetWorld(Location location) {
-        return targetWorld;
     }
 }

@@ -20,8 +20,12 @@ public abstract class CompoundPopulator extends BaseBlockPopulator {
 
     @Override
     public String getPortalTargetWorld(Location location) {
+        String targetWorld = super.getPortalTargetWorld(location);
+        if (targetWorld != null) {
+            return targetWorld;
+        }
         for (BaseBlockPopulator populator : getPopulators(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ())) {
-            String targetWorld = populator.getPortalTargetWorld(location);
+            targetWorld = populator.getPortalTargetWorld(location);
             if (targetWorld != null) {
                 return targetWorld;
             }
