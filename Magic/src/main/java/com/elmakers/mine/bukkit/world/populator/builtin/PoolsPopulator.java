@@ -22,6 +22,7 @@ public class PoolsPopulator extends BaseBlockPopulator {
     private IntegerRange walkwayWidth;
     private double islandProbability = 0.75;
     private double lightProbability = 1;
+    private IntegerRange position;
     private List<MaterialAndData> lightBlocks = Collections.emptyList();
 
     @Override
@@ -32,7 +33,7 @@ public class PoolsPopulator extends BaseBlockPopulator {
         islandProbability = config.getDouble("island_probability", islandProbability);
         lightProbability = config.getDouble("light_probability", lightProbability);
         lightBlocks = parseBlocks(config, "light_blocks", "all_lights");
-
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         return true;
     }
 
@@ -42,17 +43,19 @@ public class PoolsPopulator extends BaseBlockPopulator {
         final int floorLevel = world.getGroundLevel();
         final int waterMinY = floorLevel - depth.getRandom(random);
         final int walkwayWidthHalf = isStartingChunk ? 0 : walkwayWidth.getRandom(random);
-        final int walkwayLeft = 8 - walkwayWidthHalf;
-        final int walkWayRight = 8 + walkwayWidthHalf;
+        final int center = position.getRandom(random);
+        final int walkwayLeft = center - walkwayWidthHalf;
+        final int walkWayRight = center + walkwayWidthHalf;
         final boolean hasIsland = !isStartingChunk && random.nextDouble() < islandProbability;
         final int lightsFirst = walkwayLeft / 2 + 1;
+        // TODO: Does this work with custo positions?
         final int lightsSecond = 16 - lightsFirst;
         final BlockData lightBlock = RandomUtils.getRandom(lightBlocks, random).createBlockData();
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
         final int width = poolsWidth.getRandom(random);
-        final int start = 8 - (int)Math.floor((double)width / 2);
-        final int stop = 8 + (int)Math.ceil((double)width / 2);
+        final int start = center - (width / 2);
+        final int stop = start + width;
 
         for (int dx = start; dx < stop; dx++) {
             for (int dz = start; dz < stop; dz++) {

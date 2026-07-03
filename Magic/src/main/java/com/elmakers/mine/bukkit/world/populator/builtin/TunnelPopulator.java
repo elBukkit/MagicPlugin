@@ -13,11 +13,13 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 public class TunnelPopulator extends BaseBlockPopulator {
     private IntegerRange tunnelWidth;
     private IntegerRange tunnelHeight;
+    private IntegerRange position;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
         tunnelWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
         tunnelHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 7);
         return true;
     }
 
@@ -28,8 +30,9 @@ public class TunnelPopulator extends BaseBlockPopulator {
         final int floorLevel = world.getGroundLevel();
         final int tunnelWidth = this.tunnelWidth.getRandom(random);
         final int tunnelHeight = this.tunnelHeight.getRandom(random);
-        final int tunnelLeft = 8 - (int)Math.ceil((double)tunnelWidth / 2);
-        final int tunnelRight = 8 + (int)Math.floor((double)tunnelWidth / 2);
+        final int center = position.getRandom(random);
+        final int tunnelLeft = center - (tunnelWidth / 2);
+        final int tunnelRight = tunnelLeft + tunnelWidth;
 
         final int buffer = region.getBuffer();
         final int minX = chunkGlobalX - buffer;

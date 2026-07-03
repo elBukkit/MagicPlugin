@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 public class TowerPopulator extends BaseBlockPopulator {
     private PerlinNoiseGenerator perlin;
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
+    private IntegerRange position;
     private IntegerRange height;
     private IntegerRange width;
     private DoubleRange taper;
@@ -35,6 +36,7 @@ public class TowerPopulator extends BaseBlockPopulator {
         taperStart = DoubleRange.fromConfig(getLogger(), config, "taper_start", 0, 1);
         noise = DoubleRange.fromConfig(getLogger(), config, "noise", 0, 0);
         solidAmount = DoubleRange.fromConfig(getLogger(), config, "solid_amount", 0.25, 0.5);
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         return true;
     }
 
@@ -58,6 +60,7 @@ public class TowerPopulator extends BaseBlockPopulator {
         final int towerWidth = Math.min(maxWidth, this.width.getRandom(random));
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
+        final int center = position.getRandom(random);
         final int minY = floorLevel + 1;
         final int maxY = minY + towerHeight;
         final double taperStartFactor = this.taperStart.getRandom(random);
@@ -67,10 +70,10 @@ public class TowerPopulator extends BaseBlockPopulator {
             final double taperedWidth = (towerWidth - taperFactor * towerWidth) / 2;
             final int towerWidthLeft = (int)Math.floor(taperedWidth);
             final int towerWidthRight = (int)Math.ceil(taperedWidth);
-            final int minX = 8 - towerWidthLeft;
-            final int maxX = 8 + towerWidthRight;
-            final int minZ = 8 - towerWidthLeft;
-            final int maxZ =  8 + towerWidthRight;
+            final int minX = center - towerWidthLeft;
+            final int maxX = center + towerWidthRight;
+            final int minZ = center - towerWidthLeft;
+            final int maxZ =  center + towerWidthRight;
             final int midX = (minX + maxX) / 2;
             final int midZ = (minZ + maxZ) / 2;
             final int sizeXHalf = Math.abs(maxX - minX) / 2;

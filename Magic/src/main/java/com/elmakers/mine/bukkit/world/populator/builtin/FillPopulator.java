@@ -71,8 +71,8 @@ public class FillPopulator extends BaseBlockPopulator {
         final BlockData block = RandomUtils.getRandom(blocks, random).createBlockData();
         final int startY = searchArea(searchType, worldInfo, region, minX, positionY, minZ, maxX, maxZ);
 
-        for (int x = minX; x <= maxX; x++) {
-            for (int z = minZ; z <= maxZ; z++) {
+        for (int x = minX; x < maxX; x++) {
+            for (int z = minZ; z < maxZ; z++) {
                 final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, positionY) + yOffset;
                 final int maxY = Math.min(groundY + height, worldInfo.getMaxHeight() - 1);
                 for (int y = groundY + 1; y <= maxY; y++) {
