@@ -248,7 +248,7 @@ public class WorldController implements Listener {
                 return Collections.emptyList();
             }
             controller.info("Invalid block set in world " + worldKey + ": " + key + ", defaulting to " + defaultSet);
-            materialSet = controller.getMaterialSetManager().getMaterialSet(defaultSet);
+            materialSet = controller.getMaterialSetManager().fromConfig(defaultSet);
         }
         if (materialSet == null) {
             return Collections.emptyList();
