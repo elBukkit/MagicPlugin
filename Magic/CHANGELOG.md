@@ -23,6 +23,7 @@
    - Added new populators: 
      - EndGateway: Build some configurations of end gateway blocks, use `target_world` to send to a specific world
      - EndPortal: Build some configurations of an end portal, use `target_world` to send to a specific world
+     - Flooding: Flood the floor with partial water blocks
      - Frequency: Only fill every N chunks
      - Grid: Place a grid of populators, useful for jigsaw-like layouts (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/dungeons)
      - Light: Add a light to the floor or ceiling
