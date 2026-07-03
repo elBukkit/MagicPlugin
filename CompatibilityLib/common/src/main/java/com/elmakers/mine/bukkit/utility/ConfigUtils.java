@@ -858,8 +858,21 @@ public class ConfigUtils {
         return map;
     }
 
+    public static <E extends Enum<E>> List<E> parseEnumList(ConfigurationSection config, String key, E defaultValue, Logger logger) {
+        final List<E> list = new ArrayList<>();
+        final List<String> values = config.getStringList(key);
+        for (final String value : values) {
+            list.add(parseEnum(value, defaultValue, logger));
+        }
+        return list;
+
+    }
+
     public static <E extends Enum<E>> E parseEnum(ConfigurationSection config, String key, E defaultValue, Logger logger) {
-        String value = config.getString(key);
+       return parseEnum(config.getString(key), defaultValue, logger);
+    }
+
+    public static <E extends Enum<E>> E parseEnum(String value, E defaultValue, Logger logger) {
         if (value == null || value.isEmpty()) {
             return defaultValue;
         }
@@ -867,7 +880,7 @@ public class ConfigUtils {
             return Enum.valueOf(defaultValue.getDeclaringClass(), value.toUpperCase());
         } catch (Exception ex) {
             if (logger != null) {
-                logger.warning("Invalid value for " + key + " of type " + defaultValue.getDeclaringClass().getSimpleName() + ": " + value);
+                logger.warning("Invalid value for of type " + defaultValue.getDeclaringClass().getSimpleName() + ": " + value);
             }
             return defaultValue;
         }
