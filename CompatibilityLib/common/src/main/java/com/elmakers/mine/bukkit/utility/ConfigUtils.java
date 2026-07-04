@@ -368,6 +368,32 @@ public class ConfigUtils {
         return null;
     }
 
+    @Nullable
+    public static BlockVector getBlockVector(ConfigurationSection node, String path) {
+        ConfigurationSection config = node.getConfigurationSection(path);
+        if (config != null) {
+            final double x = config.getDouble("x", 0);
+            final double y = config.getDouble("y", 0);
+            final double z = config.getDouble("z", 0);
+            return new BlockVector(x, y, z);
+        }
+        String s = config.getString(path);
+        if (s == null || s.isEmpty()) {
+            return null;
+        }
+        try {
+            s = s.replace(" ", ",");
+            s = s.replace(",,", ",");
+            String[] pieces = StringUtils.split(s, ',');
+            final double x = Double.parseDouble(pieces[0]);
+            final double y = pieces.length > 1 ? Double.parseDouble(pieces[1]) : 0;
+            final double z = pieces.length > 2 ? Double.parseDouble(pieces[2]) : 0;
+            return new BlockVector(x, y, z);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     protected static double parseDouble(String s) throws NumberFormatException
     {
         if (s == null || s.isEmpty()) return 0;
