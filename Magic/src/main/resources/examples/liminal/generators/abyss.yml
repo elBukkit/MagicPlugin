@@ -6,8 +6,15 @@ abyss_floor:
   blocks:
     - sand
 
+abyss_water:
+  class: Flat
+  biome: deep_ocean
+  height: 200
+  blocks: water
+
 abyss:
   class: Sequence
   generators:
     - bedrock
+    - abyss_water
     - abyss_floor
