@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.generator.OptionalGenerator;
 
-public class GridGenerator extends OptionalGenerator {
+public class SwitchGenerator extends OptionalGenerator {
     private BaseChunkGenerator fallbackGenerator;
     private final Map<Integer, Map<Integer, BaseChunkGenerator>> generatorMap = new HashMap<>();
 

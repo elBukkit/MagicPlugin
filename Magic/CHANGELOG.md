@@ -11,7 +11,7 @@
    - Crops: Generate simple crop farms
    - Flat: A flat layer
    - Frequency: Only fill every N chunks
-   - Grid: Run specific generators depending on chunk x/z coordinates
+   - Switch: Run specific generators depending on chunk x/z coordinates
    - Perlin: Perlin noise for elevation and/or block patterns
    - Probability: A distance-weighted chance for a populator to run
    - Random: Randomly choose one generator from a distance-weighted probability map

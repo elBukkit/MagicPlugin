@@ -104,7 +104,7 @@ pools_room_exit:
     - quartz_block
 
 pools_rooms:
-  class: Grid
+  class: Switch
   generators:
     pools_entrance:
       x: 0
