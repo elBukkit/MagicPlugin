@@ -42,17 +42,20 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
-        final int center = position.getRandom(random);
+        final int positionX = position.getRandom(random);
+        final int positionZ = position.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);
         final int floorLevel = world.getGroundLevel();
         final int gatewayWidth = this.gatewayWidth.getRandom(random);
         final int gatewayHeight = this.gatewayHeight.getRandom(random);
-        final int portalLeft = center - (gatewayWidth / 2);
-        final int portalRight = portalLeft + gatewayWidth;
-        final int minExitX = chunkGlobalX + portalLeft;
-        final int maxExitX = chunkGlobalX + portalRight;
-        final int minExitZ = chunkGlobalZ + portalLeft;
-        final int maxExitZ = chunkGlobalZ + portalRight;
+        final int portalLeftX = positionX - (gatewayWidth / 2);
+        final int portalRightX = portalLeftX + gatewayWidth;
+        final int portalLeftZ = positionZ - (gatewayWidth / 2);
+        final int portalRightZ = portalLeftZ + gatewayWidth;
+        final int minExitX = chunkGlobalX + portalLeftX;
+        final int maxExitX = chunkGlobalX + portalRightX;
+        final int minExitZ = chunkGlobalZ + portalLeftZ;
+        final int maxExitZ = chunkGlobalZ + portalRightZ;
         final BlockData gatewayBlock = getGatewayBlock();
         final int startY = searchArea(searchType, worldInfo, region, minExitX, floorLevel, minExitZ, maxExitX, maxExitZ);
 

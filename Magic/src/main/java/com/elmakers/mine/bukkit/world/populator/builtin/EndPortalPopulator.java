@@ -27,16 +27,19 @@ public class EndPortalPopulator extends BaseBlockPopulator {
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
-        final int center = position.getRandom(random);
+        final int positionX = position.getRandom(random);
+        final int positionZ = position.getRandom(random);
         final int floorLevel = world.getGroundLevel();
         final int portalWidth = this.portalWidth.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);
-        final int portalLeft = center - (portalWidth / 2);
-        final int portalRight = portalLeft + portalWidth;
-        final int minPortalX = chunkGlobalX + portalLeft;
-        final int maxPortalX = chunkGlobalX + portalRight;
-        final int minPortalZ = chunkGlobalZ + portalLeft;
-        final int maxPortalZ = chunkGlobalZ + portalRight;
+        final int portalLeftX = positionX - (portalWidth / 2);
+        final int portalRightX = portalLeftX + portalWidth;
+        final int portalLeftZ = positionZ - (portalWidth / 2);
+        final int portalRightZ = portalLeftZ + portalWidth;
+        final int minPortalX = chunkGlobalX + portalLeftX;
+        final int maxPortalX = chunkGlobalX + portalRightX;
+        final int minPortalZ = chunkGlobalZ + portalLeftZ;
+        final int maxPortalZ = chunkGlobalZ + portalRightZ;
 
         for (int x = minPortalX; x < maxPortalX; x++) {
             for (int z = minPortalZ; z < maxPortalZ; z++) {

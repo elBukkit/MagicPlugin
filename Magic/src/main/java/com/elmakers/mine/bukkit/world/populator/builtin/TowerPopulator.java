@@ -60,7 +60,8 @@ public class TowerPopulator extends BaseBlockPopulator {
         final int towerWidth = Math.min(maxWidth, this.width.getRandom(random));
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
-        final int center = position.getRandom(random);
+        final int positionX = position.getRandom(random);
+        final int positionZ = position.getRandom(random);
         final int minY = floorLevel + 1;
         final int maxY = minY + towerHeight;
         final double taperStartFactor = this.taperStart.getRandom(random);
@@ -70,10 +71,10 @@ public class TowerPopulator extends BaseBlockPopulator {
             final double taperedWidth = (towerWidth - taperFactor * towerWidth) / 2;
             final int towerWidthLeft = (int)Math.floor(taperedWidth);
             final int towerWidthRight = (int)Math.ceil(taperedWidth);
-            final int minX = center - towerWidthLeft;
-            final int maxX = center + towerWidthRight;
-            final int minZ = center - towerWidthLeft;
-            final int maxZ =  center + towerWidthRight;
+            final int minX = positionX - towerWidthLeft;
+            final int maxX = positionX + towerWidthRight;
+            final int minZ = positionZ - towerWidthLeft;
+            final int maxZ =  positionZ + towerWidthRight;
             final int midX = (minX + maxX) / 2;
             final int midZ = (minZ + maxZ) / 2;
             final int sizeXHalf = Math.abs(maxX - minX) / 2;

@@ -79,9 +79,10 @@ public class SpawnPopulator extends BaseBlockPopulator {
         if (entityData == null) return;
 
         boolean spawned = false;
-        final int position = this.position.getRandom(random);
-        final int baseX = chunkBaseX + position;
-        final int baseZ = chunkBaseZ + position;
+        final int positionX = this.position.getRandom(random);
+        final int positionZ = this.position.getRandom(random);
+        final int baseX = chunkBaseX + positionX;
+        final int baseZ = chunkBaseZ + positionZ;
         for (int x = baseX - searchX; x < baseX + searchX && !spawned; x++) {
             for (int z = baseZ - searchZ; z < baseZ + searchZ && !spawned; z++) {
                 for (int y = baseY - searchY; y < baseY + searchY && !spawned; y++) {

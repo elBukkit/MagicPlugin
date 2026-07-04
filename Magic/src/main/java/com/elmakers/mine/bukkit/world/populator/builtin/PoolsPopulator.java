@@ -43,32 +43,38 @@ public class PoolsPopulator extends BaseBlockPopulator {
         final int floorLevel = world.getGroundLevel();
         final int waterMinY = floorLevel - depth.getRandom(random);
         final int walkwayWidthHalf = isStartingChunk ? 0 : walkwayWidth.getRandom(random);
-        final int center = position.getRandom(random);
-        final int walkwayLeft = center - walkwayWidthHalf;
-        final int walkWayRight = center + walkwayWidthHalf;
+        final int centerX = position.getRandom(random);
+        final int centerZ = position.getRandom(random);
+        final int walkwayLeftX = centerX - walkwayWidthHalf;
+        final int walkWayRightX = centerX + walkwayWidthHalf;
+        final int walkwayLeftZ = centerZ - walkwayWidthHalf;
+        final int walkWayRightZ = centerZ + walkwayWidthHalf;
         final boolean hasIsland = !isStartingChunk && random.nextDouble() < islandProbability;
-        final int lightsFirst = walkwayLeft / 2 + 1;
-        // TODO: Does this work with custo positions?
-        final int lightsSecond = 16 - lightsFirst;
+        final int width = poolsWidth.getRandom(random);
+        final int lightsFirstX = walkwayLeftX / 2 + 1;
+        final int lightsFirstZ = walkwayLeftZ / 2 + 1;
+        final int lightsSecondX = width - lightsFirstX;
+        final int lightsSecondZ = width - lightsFirstZ;
         final BlockData lightBlock = RandomUtils.getRandom(lightBlocks, random).createBlockData();
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
-        final int width = poolsWidth.getRandom(random);
-        final int start = center - (width / 2);
-        final int stop = start + width;
+        final int startX = centerX - (width / 2);
+        final int stopX = startX + width;
+        final int startZ = centerZ - (width / 2);
+        final int stopZ = startZ + width;
 
-        for (int dx = start; dx < stop; dx++) {
-            for (int dz = start; dz < stop; dz++) {
+        for (int dx = startX; dx < stopX; dx++) {
+            for (int dz = startZ; dz < stopZ; dz++) {
                 final int x = chunkGlobalX + dx;
                 final int z = chunkGlobalZ + dz;
                 if (!region.getType(x, floorLevel + 1, z).isAir()) continue;
 
                 final BlockData waterBlock = Material.WATER.createBlockData();
-                final boolean isWalkway = (dx > walkwayLeft && dx < walkWayRight) || (dz > walkwayLeft && dz < walkWayRight);
+                final boolean isWalkway = (dx > walkwayLeftX && dx < walkWayRightX) || (dz > walkwayLeftZ && dz < walkWayRightZ);
                 final boolean isIsland = hasIsland && dx >= 7 && dz >= 7 && dx <= 9 && dz <= 9;
 
                 if (!isWalkway && !isIsland) {
-                    final boolean isCenterLight = (dx == lightsFirst || dx == lightsSecond) && (dz == lightsFirst || dz == lightsSecond);
+                    final boolean isCenterLight = (dx == lightsFirstX || dx == lightsSecondX) && (dz == lightsFirstZ || dz == lightsSecondZ);
                     if (isCenterLight && random.nextDouble() < lightProbability) {
                         region.setBlockData(x, waterMinY, z, lightBlock);
                     }
