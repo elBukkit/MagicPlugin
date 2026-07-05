@@ -354,7 +354,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void damage(Damageable target, double amount, Entity source) {
-        if (target == null || target.isDead()) return;
+        if (target == null || target.isDead() || amount <= 0) return;
         while (target instanceof ComplexEntityPart) {
             target = ((ComplexEntityPart) target).getParent();
         }
@@ -368,7 +368,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
-                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, DamageSource.builder(DamageType.MAGIC).withCausingEntity(source).build(), new ArrayList<>());
+                    DamageSource damageSource = source == null ? DamageSource.builder(DamageType.GENERIC).build() : DamageSource.builder(DamageType.MAGIC).withCausingEntity(source).build();
+                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, damageSource, new ArrayList<>());
                     Bukkit.getPluginManager().callEvent(deathEvent);
                     target.remove();
                 } else {
