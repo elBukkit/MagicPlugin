@@ -24,7 +24,8 @@ public class SchematicPopulator extends BaseBlockPopulator {
     private IntegerRange yOffset;
     private SearchType searchType = SearchType.AREA_UP_MIN;
     private boolean fillAir = false;
-    private boolean shiftToFit = true;
+    // TODO: Make this on by default once the offset context is working better
+    private boolean shiftToFit = false;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -61,14 +62,10 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int sizeY = size.getBlockY();
         final int startXBase = position.getRandom(random);
         final int startZBase = position.getRandom(random);
-        final int schematicSizeX = size.getBlockX();
-        final int schematicSizeZ = size.getBlockZ();
-        final int startX = shiftToFit ? startXBase - Math.max(-16, Math.min(startXBase, maxSize - schematicSizeX)) : startXBase;
-        final int startZ = shiftToFit ? startZBase - Math.max(-16, Math.min(startZBase, maxSize - schematicSizeZ)) : startZBase;
-        final int maxSizeX = maxSize - (startX + 16);
-        final int maxSizeZ = maxSize - (startZ + 16);
-        final int sizeX = Math.min(maxSizeX, schematicSizeX);
-        final int sizeZ = Math.min(maxSizeZ, schematicSizeZ);
+        final int sizeX = Math.min(size.getBlockX(), maxSize);
+        final int sizeZ = Math.min(size.getBlockZ(), maxSize);
+        final int startX = shiftToFit ? Math.min(startXBase, maxSize - sizeX - 16) : startXBase;
+        final int startZ = shiftToFit ? Math.min(startZBase, maxSize - sizeZ - 16) : startZBase;
         final int groundLevel = world.getGroundLevel();
         final int startOffsetY = yOffset.getRandom(random);
         final int startY = 1 + startOffsetY + searchArea(searchType, worldInfo, region, startX + chunkBaseX, groundLevel, startZ + chunkBaseZ, startX + chunkBaseX + sizeX, startZ + chunkBaseZ + sizeZ);
