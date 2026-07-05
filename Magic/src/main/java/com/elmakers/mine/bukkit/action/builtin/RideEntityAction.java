@@ -664,14 +664,15 @@ public class RideEntityAction extends BaseSpellAction
         context.sendMessageKey("crash");
         context.playEffects("crash");
         Entity mountedEntity = context.getEntity();
+        final double absSpeed = Math.abs(speed);
         if (crashDamage > 0) {
-            double damage = maxSpeed > 0 ? crashDamage * speed / maxSpeed : crashDamage;
+            double damage = maxSpeed > 0 ? crashDamage * absSpeed / maxSpeed : crashDamage;
             if (mountedEntity.isValid() && mountedEntity instanceof Damageable) {
                 CompatibilityLib.getCompatibilityUtils().damage((Damageable)mountedEntity, damage, mount);
             }
         }
         if (crashVehicleDamage > 0) {
-            double damage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
+            double damage = maxSpeed > 0 ? crashVehicleDamage * absSpeed / maxSpeed : crashVehicleDamage;
             if (mount != null && mount.isValid() && mount instanceof Damageable) {
                 CompatibilityLib.getCompatibilityUtils().damage((Damageable)mount, damage, mountedEntity);
                 if (mount.isDead()) {
