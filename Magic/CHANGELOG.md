@@ -3,7 +3,8 @@
 
 # 11.2.4
 
-- Fix invalid bed icon references in Recall and Locator spells
+ - Fix invalid bed icon references in Recall and Locator spells
+ - Fix some errors from vehicle crash damage 
 
 # 11.2.3
 
