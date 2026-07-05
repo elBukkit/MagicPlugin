@@ -24,6 +24,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
     private IntegerRange yOffset;
     private SearchType searchType = SearchType.AREA_UP_MIN;
     private boolean fillAir = false;
+    private boolean shiftToFit = true;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -37,6 +38,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
         yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.AREA_UP_MIN, getLogger());
         fillAir = config.getBoolean("fill_air", fillAir);
+        shiftToFit = config.getBoolean("shift_to_fit", shiftToFit);
         return true;
     }
 
@@ -57,12 +59,16 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int chunkBaseZ = (chunkZ << 4);
         final int maxSize = 16 + buffer * 2;
         final int sizeY = size.getBlockY();
-        final int startX = position.getRandom(random);
-        final int startZ = position.getRandom(random);
+        final int startXBase = position.getRandom(random);
+        final int startZBase = position.getRandom(random);
+        final int schematicSizeX = size.getBlockX();
+        final int schematicSizeZ = size.getBlockZ();
+        final int startX = shiftToFit ? startXBase - Math.max(-16, Math.min(startXBase, maxSize - schematicSizeX)) : startXBase;
+        final int startZ = shiftToFit ? startZBase - Math.max(-16, Math.min(startZBase, maxSize - schematicSizeZ)) : startZBase;
         final int maxSizeX = maxSize - (startX + 16);
         final int maxSizeZ = maxSize - (startZ + 16);
-        final int sizeX = Math.min(maxSizeX, size.getBlockX());
-        final int sizeZ = Math.min(maxSizeZ, size.getBlockZ());
+        final int sizeX = Math.min(maxSizeX, schematicSizeX);
+        final int sizeZ = Math.min(maxSizeZ, schematicSizeZ);
         final int groundLevel = world.getGroundLevel();
         final int startOffsetY = yOffset.getRandom(random);
         final int startY = 1 + startOffsetY + searchArea(searchType, worldInfo, region, startX + chunkBaseX, groundLevel, startZ + chunkBaseZ, startX + chunkBaseX + sizeX, startZ + chunkBaseZ + sizeZ);
