@@ -64,7 +64,6 @@
  - Fixed `hover_message_key` parameter in `CheckChatClick` action
  - Fix `commit` spell, it should commit all pending spells which it was not doing
  - Fix saved schematics being upside down or backwards depending on the click order
- - Fix invalid bed icon references in Recall and Locator spells
  - Fix EntityProjectile not removing passengers from the projectile entity
 
 ## Changes
@@ -100,6 +99,15 @@
    - This is mainly for the mob_effect particles
  - Add `upgrade_path` Selector option for path selection GUIs (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/coven)
  - Add `pitch` and `yaw` proeprties to entity data, to allow for mobs spawning with specific rotations
+
+# 11.2.4
+
+- Fix invalid bed icon references in Recall and Locator spells
+- Fix some errors from vehicle crash damage
+
+# 11.2.3
+
+- Fix spawning projectiles in 26.2
 
 # 11.2.2
 
