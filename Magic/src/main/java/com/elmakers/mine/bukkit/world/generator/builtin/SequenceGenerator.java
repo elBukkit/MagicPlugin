@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.generator.CompoundGenerator;
@@ -30,7 +31,7 @@ public class SequenceGenerator extends CompoundGenerator {
     }
 
     @Override
-    protected List<BaseChunkGenerator> getGenerators(long worldSeed, int chunkX, int chunkZ) {
+    protected List<BaseChunkGenerator> getGenerators(WorldContext context) {
         return generators;
     }
 }

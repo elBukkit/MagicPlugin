@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.generator.OptionalGenerator;
@@ -48,7 +49,7 @@ public class RandomGenerator extends OptionalGenerator {
     }
 
     @Override
-    protected BaseChunkGenerator getGenerator(long worldSeed, int chunkX, int chunkZ) {
-        return RandomUtils.getDistanceWeighted(generators, worldSeed, chunkX, chunkZ);
+    protected BaseChunkGenerator getGenerator(WorldContext context) {
+        return RandomUtils.getDistanceWeighted(generators, context.getSeed(), context.getChunkX(), context.getChunkZ());
     }
 }

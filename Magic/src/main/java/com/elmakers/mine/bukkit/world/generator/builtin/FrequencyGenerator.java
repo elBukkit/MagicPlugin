@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.world.generator.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.generator.OptionalGenerator;
@@ -22,7 +23,7 @@ public class FrequencyGenerator extends OptionalGenerator {
     }
 
     @Override
-    protected BaseChunkGenerator getGenerator(long worldSeed, int chunkX, int chunkZ) {
-        return isValid(chunkX, chunkZ) ? generator : null;
+    protected BaseChunkGenerator getGenerator(WorldContext context) {
+        return isValid(context.getChunkX(), context.getChunkZ()) ? generator : null;
     }
 }

@@ -1,75 +1,69 @@
 package com.elmakers.mine.bukkit.world.generator;
 
-import java.util.Random;
-
 import org.bukkit.Location;
 import org.bukkit.generator.BiomeProvider;
-import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.world.LocationContext;
+import com.elmakers.mine.bukkit.world.WorldContext;
+import com.elmakers.mine.bukkit.world.WorldInfoContext;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
+
 public abstract class OptionalGenerator extends BaseChunkGenerator {
-    protected abstract BaseChunkGenerator getGenerator(long worldSeed, int chunkX, int chunkZ);
+    protected abstract BaseChunkGenerator getGenerator(WorldContext context);
 
     @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
+    public void generate(GeneratorContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
         if (generator != null) {
-            generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
+            generator.generate(context);
         }
     }
 
     @Override
-    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
+    public void populate(PopulatorContext context) {
+        super.populate(context);
+        BaseChunkGenerator generator = getGenerator(context);
         if (generator != null) {
-            generator.generateCaves(worldInfo, random, chunkX, chunkZ, chunk);
+            generator.populate(context);
         }
     }
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        super.populate(worldInfo, random, chunkX, chunkZ, region);
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        if (generator != null) {
-            generator.populate(worldInfo, random, chunkX, chunkZ, region);
-        }
+    public boolean shouldGenerateNoise(@NotNull WorldContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
+        return generator != null && generator.shouldGenerateNoise(context);
     }
 
     @Override
-    public boolean shouldGenerateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ);
+    public boolean shouldGenerateSurface(@NotNull WorldContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
+        return generator != null && generator.shouldGenerateSurface(context);
     }
 
     @Override
-    public boolean shouldGenerateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateSurface(worldInfo, random, chunkX, chunkZ);
+    public boolean shouldGenerateCaves(@NotNull WorldContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
+        return generator != null && generator.shouldGenerateCaves(context);
     }
 
     @Override
-    public boolean shouldGenerateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateCaves(worldInfo, random, chunkX, chunkZ);
+    public boolean shouldGenerateDecorations(@NotNull WorldContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
+        return generator != null && generator.shouldGenerateDecorations(context);
     }
 
     @Override
-    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateDecorations(worldInfo, random, chunkX, chunkZ);
+    public boolean shouldGenerateMobs(@NotNull WorldContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
+        return generator != null && generator.shouldGenerateMobs(context);
     }
 
     @Override
-    public boolean shouldGenerateMobs(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateMobs(worldInfo, random, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean shouldGenerateStructures(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), chunkX, chunkZ);
-        return generator != null && generator.shouldGenerateStructures(worldInfo, random, chunkX, chunkZ);
+    public boolean shouldGenerateStructures(@NotNull WorldContext context) {
+        BaseChunkGenerator generator = getGenerator(context);
+        return generator != null && generator.shouldGenerateStructures(context);
     }
 
     @Override
@@ -78,7 +72,8 @@ public abstract class OptionalGenerator extends BaseChunkGenerator {
         if (baseTargetWorld != null) {
             return baseTargetWorld;
         }
-        BaseChunkGenerator generator = getGenerator(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ());
+        final LocationContext context = new LocationContext(location);
+        BaseChunkGenerator generator = getGenerator(context);
         if (generator == null) {
             return null;
         }
@@ -91,7 +86,8 @@ public abstract class OptionalGenerator extends BaseChunkGenerator {
         if (biomeProvider != null) {
             return biomeProvider;
         }
-        BaseChunkGenerator generator = getGenerator(worldInfo.getSeed(), 0, 0);
+        final WorldInfoContext context = new WorldInfoContext(worldInfo);
+        BaseChunkGenerator generator = getGenerator(context);
         return generator != null ? generator.getDefaultBiomeProvider(worldInfo) : null;
     }
 }

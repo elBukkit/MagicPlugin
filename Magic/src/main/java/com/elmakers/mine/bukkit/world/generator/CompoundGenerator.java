@@ -1,43 +1,39 @@
 package com.elmakers.mine.bukkit.world.generator;
 
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.generator.BiomeProvider;
-import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.world.LocationContext;
+import com.elmakers.mine.bukkit.world.WorldContext;
+import com.elmakers.mine.bukkit.world.WorldInfoContext;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
+
 public abstract class CompoundGenerator extends BaseChunkGenerator {
-    protected abstract List<BaseChunkGenerator> getGenerators(long worldSeed, int chunkX, int chunkZ);
+    protected abstract List<BaseChunkGenerator> getGenerators(WorldContext context);
 
     @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            generator.generateSurface(worldInfo, random, chunkX, chunkZ, chunk);
+    public void generate(GeneratorContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            generator.generate(context);
         }
     }
 
     @Override
-    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            generator.generateCaves(worldInfo, random, chunkX, chunkZ, chunk);
+    public void populate(PopulatorContext context) {
+        super.populate(context);
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            generator.populate(context);
         }
     }
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        super.populate(worldInfo, random, chunkX, chunkZ, region);
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            generator.populate(worldInfo, random, chunkX, chunkZ, region);
-        }
-    }
-
-    @Override
-    public boolean shouldGenerateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            if (generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ)) {
+    public boolean shouldGenerateNoise(@NotNull WorldContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            if (generator.shouldGenerateNoise(context)) {
                 return true;
             }
         }
@@ -45,9 +41,9 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public boolean shouldGenerateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            if (generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ)) {
+    public boolean shouldGenerateSurface(@NotNull WorldContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            if (generator.shouldGenerateNoise(context)) {
                 return true;
             }
         }
@@ -55,9 +51,9 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public boolean shouldGenerateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            if (generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ)) {
+    public boolean shouldGenerateCaves(@NotNull WorldContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            if (generator.shouldGenerateNoise(context)) {
                 return true;
             }
         }
@@ -65,9 +61,9 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            if (generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ)) {
+    public boolean shouldGenerateDecorations(@NotNull WorldContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            if (generator.shouldGenerateNoise(context)) {
                 return true;
             }
         }
@@ -75,9 +71,9 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public boolean shouldGenerateMobs(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            if (generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ)) {
+    public boolean shouldGenerateMobs(@NotNull WorldContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            if (generator.shouldGenerateNoise(context)) {
                 return true;
             }
         }
@@ -85,9 +81,9 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public boolean shouldGenerateStructures(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), chunkX, chunkZ)) {
-            if (generator.shouldGenerateNoise(worldInfo, random, chunkX, chunkZ)) {
+    public boolean shouldGenerateStructures(@NotNull WorldContext context) {
+        for (BaseChunkGenerator generator : getGenerators(context)) {
+            if (generator.shouldGenerateNoise(context)) {
                 return true;
             }
         }
@@ -100,7 +96,8 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
         if (baseTargetWorld != null) {
             return baseTargetWorld;
         }
-        for (BaseChunkGenerator generator : getGenerators(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ())) {
+        final LocationContext context = new LocationContext(location);
+        for (BaseChunkGenerator generator : getGenerators(context)) {
             String targetWorld = generator.getPortalTargetWorld(location);
             if (targetWorld != null) {
                 return targetWorld;
@@ -115,7 +112,8 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
         if (biomeProvider != null) {
             return biomeProvider;
         }
-        for (BaseChunkGenerator generator : getGenerators(worldInfo.getSeed(), 0, 0)) {
+        final WorldInfoContext context = new WorldInfoContext(worldInfo);
+        for (BaseChunkGenerator generator : getGenerators(context)) {
             biomeProvider = generator.getDefaultBiomeProvider(worldInfo);
             if (biomeProvider != null) {
                 return biomeProvider;

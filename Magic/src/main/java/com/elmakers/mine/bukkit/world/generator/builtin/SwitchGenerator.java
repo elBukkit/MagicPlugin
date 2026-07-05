@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
 import com.elmakers.mine.bukkit.world.generator.OptionalGenerator;
@@ -36,12 +37,12 @@ public class SwitchGenerator extends OptionalGenerator {
     }
 
     @Override
-    protected BaseChunkGenerator getGenerator(long worldSeed, int chunkX, int chunkZ) {
-        Map<Integer, BaseChunkGenerator> map = generatorMap.get(chunkX);
+    protected BaseChunkGenerator getGenerator(WorldContext context) {
+        Map<Integer, BaseChunkGenerator> map = generatorMap.get(context.getChunkX());
         if (map == null) {
             return fallbackGenerator;
         }
-        BaseChunkGenerator generator = map.get(chunkZ);
+        BaseChunkGenerator generator = map.get(context.getChunkZ());
         return generator != null ? generator : fallbackGenerator;
     }
 }

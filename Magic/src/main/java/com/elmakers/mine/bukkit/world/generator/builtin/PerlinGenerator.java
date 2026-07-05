@@ -6,15 +6,14 @@ import java.util.Random;
 
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.noise.PerlinNoiseGenerator;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.DoubleRange;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.GeneratorContext;
 
 public class PerlinGenerator extends BaseChunkGenerator {
     private PerlinNoiseGenerator noise;
@@ -36,21 +35,20 @@ public class PerlinGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
+    public void generate(GeneratorContext context) {
         synchronized (this) {
             if (noise == null) {
-                noise = new PerlinNoiseGenerator(worldInfo.getSeed());
+                noise = new PerlinNoiseGenerator(context.getSeed());
             }
         }
+        final Random random = context.getRandom();
         final int groundLevel = world.getGroundLevel();
         final int bedrockLevel = world.getBedrockLevel();
         final double noiseScale = this.noiseScale.getRandom(random);
-        final int chunkBaseX = (chunkX << 4);
-        final int chunkBaseZ = (chunkZ << 4);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                final int worldX = chunkBaseX + x;
-                final int worldZ = chunkBaseZ + z;
+                final int worldX = context.getWorldX(x);
+                final int worldZ = context.getWorldZ(z);
                 final double blockValue = (noise.noise(worldX * noiseScale, worldZ * noiseScale) + 1) / 2;
                 int elevation = this.elevation.lerp(blockValue);
                 elevation = clipElevation.clip(elevation, 0);
@@ -63,7 +61,7 @@ public class PerlinGenerator extends BaseChunkGenerator {
                 }
                 for (int y = bedrockLevel + 1; y <= groundLevel + elevation; y++) {
                     BlockData blockData = (y == groundLevel + elevation) ? topBlock.createBlockData() : floorBlock.createBlockData();
-                    chunk.setBlock(x, y, z, blockData);
+                    context.setBlock(x, y, z, blockData);
                 }
             }
         }

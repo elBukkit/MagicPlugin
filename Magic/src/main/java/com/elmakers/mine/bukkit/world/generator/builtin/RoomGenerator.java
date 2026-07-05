@@ -8,14 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.GeneratorContext;
 
 public class RoomGenerator extends BaseChunkGenerator {
     private IntegerRange roofHeight;
@@ -66,7 +64,8 @@ public class RoomGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkGenerator.ChunkData chunk) {
+    public void generate(GeneratorContext context) {
+        final Random random = context.getRandom();
         final int floorLevel = world.getGroundLevel() + yOffset;
         final int roofLevel = floorLevel + roofHeight.getRandom(random);
         final int roofMaxLevel = floorLevel + Math.max(roofHeight.getMax(), roofMaxHeight);
@@ -108,7 +107,7 @@ public class RoomGenerator extends BaseChunkGenerator {
                     else if (!hasZDoor && x == 0) isDoorway = false;
                     for (int y = floorLevel + 1; y <= roofMaxLevel; y++) {
                         if (isDoorway && y <= doorwayLevel) continue;
-                        chunk.setBlock(x, y, z, wallBlock);
+                        context.setBlock(x, y, z, wallBlock);
                     }
                 }
 
@@ -116,15 +115,15 @@ public class RoomGenerator extends BaseChunkGenerator {
                 if (!isSunRoof) {
                     for (int y = roofLevel; y <= roofMaxLevel + 1; y++) {
                         if (isSunRoofBorder && y == roofLevel) continue;
-                        chunk.setBlock(x, y, z, ceilingBlock);
+                        context.setBlock(x, y, z, ceilingBlock);
                     }
                 }
 
                 // Fill in windows after
                 if (hasXWall && hasXWindow && x == xWindowLocation && z == 0) {
-                    chunk.setBlock(x, floorLevel + 2, z, getWindowBlock());
+                    context.setBlock(x, floorLevel + 2, z, getWindowBlock());
                 } else if (hasZWall && hasZWindow && z == zWindowLocation && x == 0) {
-                    chunk.setBlock(x, floorLevel + 2, z, getWindowBlock());
+                    context.setBlock(x, floorLevel + 2, z, getWindowBlock());
                 }
 
                 // Fill in hallways after
@@ -133,7 +132,7 @@ public class RoomGenerator extends BaseChunkGenerator {
                     int hallwayRight = 8 + hallwayWidthHalf;
                     if ((x < hallwayLeft || x > hallwayRight) && (z < hallwayLeft || z > hallwayRight)) {
                         for (int y = floorLevel; y <= roofLevel; y++) {
-                            chunk.setBlock(x, y, z, wallBlock);
+                            context.setBlock(x, y, z, wallBlock);
                         }
                     }
                 }

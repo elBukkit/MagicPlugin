@@ -1,12 +1,11 @@
 package com.elmakers.mine.bukkit.world.generator.builtin;
 
-import java.util.Random;
-
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.generator.BaseChunkGenerator;
+import com.elmakers.mine.bukkit.world.generator.GeneratorContext;
 
 public class VanillaGenerator extends BaseChunkGenerator {
     private boolean generateNoise = true;
@@ -28,32 +27,37 @@ public class VanillaGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public boolean shouldGenerateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+    public void generate(GeneratorContext context) {
+
+    }
+
+    @Override
+    public boolean shouldGenerateNoise(@NotNull WorldContext context) {
         return generateNoise;
     }
 
     @Override
-    public boolean shouldGenerateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+    public boolean shouldGenerateSurface(@NotNull WorldContext context) {
         return generateSurface;
     }
 
     @Override
-    public boolean shouldGenerateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+    public boolean shouldGenerateCaves(@NotNull WorldContext context) {
         return generateCaves;
     }
 
     @Override
-    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+    public boolean shouldGenerateDecorations(@NotNull WorldContext context) {
         return generateDecorations;
     }
 
     @Override
-    public boolean shouldGenerateMobs(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+    public boolean shouldGenerateMobs(@NotNull WorldContext context) {
         return generateMobs;
     }
 
     @Override
-    public boolean shouldGenerateStructures(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ) {
+    public boolean shouldGenerateStructures(@NotNull WorldContext context) {
         return generateStructures;
     }
 }
