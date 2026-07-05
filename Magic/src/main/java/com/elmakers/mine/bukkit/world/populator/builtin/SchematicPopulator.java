@@ -65,7 +65,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int sizeZ = Math.min(maxSizeZ, size.getBlockZ());
         final int groundLevel = world.getGroundLevel();
         final int startOffsetY = yOffset.getRandom(random);
-        final int startY = startOffsetY + searchArea(searchType, worldInfo, region, startX + chunkBaseX, groundLevel, startZ + chunkBaseZ, startX + chunkBaseX + sizeX, startZ + chunkBaseZ + sizeZ);
+        final int startY = 1 + startOffsetY + searchArea(searchType, worldInfo, region, startX + chunkBaseX, groundLevel, startZ + chunkBaseZ, startX + chunkBaseX + sizeX, startZ + chunkBaseZ + sizeZ);
         final int maxHeight = worldInfo.getMaxHeight();
         for (int dx = 0; dx < sizeX; dx++) {
             for (int dz = 0; dz < sizeZ; dz++) {
