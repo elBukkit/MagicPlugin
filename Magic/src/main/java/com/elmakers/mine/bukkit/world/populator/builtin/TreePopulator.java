@@ -31,7 +31,7 @@ public class TreePopulator extends BaseBlockPopulator {
         treeTypes = ConfigUtils.parseEnumList(config, "types", TreeType.BIRCH, getLogger());
         position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 14);
         width = IntegerRange.fromConfig(getLogger(), config, "width", 1, 3);
-        baseBlocks = parseBlocks(config, "base", "dirt");
+        baseBlocks = parseBlocks(config, "base");
         searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.AREA_UP_MAX, getLogger());
         return !treeTypes.isEmpty();
     }
@@ -42,8 +42,10 @@ public class TreePopulator extends BaseBlockPopulator {
         final MaterialAndData baseBlock = RandomUtils.getRandom(baseBlocks, random);
         final TreeType treeType = RandomUtils.getRandom(treeTypes, random);
         final int width = this.width.getRandom(random);
-        final int startX = position.getRandom(random);
-        final int startZ = position.getRandom(random);
+        final int centerX = position.getRandom(random);
+        final int centerZ = position.getRandom(random);
+        final int startX = centerX - width / 2;
+        final int startZ = centerZ - width / 2;
         final int endX = startX + width;
         final int endZ = startZ + width;
         final int chunkGlobalX = chunkX << 4;
@@ -59,8 +61,9 @@ public class TreePopulator extends BaseBlockPopulator {
                 }
             }
         }
-        final int x = chunkGlobalX + startX;
-        final int z = chunkGlobalZ + startZ;
-        region.generateTree(new Location(world.getWorld(), x, startY, z), random, treeType);
+        final int x = chunkGlobalX + centerX;
+        final int z = chunkGlobalZ + centerZ;
+        final int y = 1 + getTopBlock(worldInfo, region, x, groundLevel, z);
+        region.generateTree(new Location(world.getWorld(), x, y, z), random, treeType);
     }
 }
