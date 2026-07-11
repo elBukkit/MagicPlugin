@@ -2841,11 +2841,11 @@ wand:
   active_costs_description: Koszt $description Na Sekundę
   range_description: '&9Zasięg: &6$range &9Bloków'
   owner_description: Różdżka $name
-  bound_description: Słucha $name
+  bound_description: przepisane $name
   unmodifiable: Ta różdżka nie może być modyfikowana
   player_unmodifiable: Różdżka $name nie może być modyfikowana
   bound_to_other: Ta Różdżka Nie Należy Do Ciebie
-  bound: Ta Różdżka Słucha $name
+  bound: Ta Różdżka jest związana z graczem $name
   spell_added: 'Nauczyłeś się Zaklęcia: &r&6$name'
   brush_added: 'Pędzel &r&7$name &d&ozostał dodany do twojej $wand'
   player_spell_upgraded: Zaklęcie &r&6$name &d&ogracza $players zostało ulepszone do &3$level
@@ -2886,7 +2886,7 @@ wand:
   player_setbound: Różdżka $name została związana
   unbound: Twoja różdżka została odwiązana
   player_unbound: Różdżka $name została odwiązana
-  unboundall: Wszystkie twoje związane różdżki zostały zapomniane
+  unboundall: Wszystkie twoje związane różdżki zostały odwiązane
   player_unboundall: Wszystkie związane różdżki $name zostały zapomniane. Jego ekwipunek nie został wyczyszczony!
   notunbound: Nie masz związanej różdżki $wand
   player_notunbound: Gracz $name nie ma związanej różdżki $wand
