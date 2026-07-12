@@ -2886,7 +2886,7 @@ wand:
   player_setbound: Różdżka $name została związana
   unbound: Twoja różdżka została odwiązana
   player_unbound: Różdżka $name została odwiązana
-  unboundall: Wszystkie twoje związane różdżki zostały odwiązane
+  unboundall: Wszystkie twoje związane różdżki zostały zapomniane
   player_unboundall: Wszystkie związane różdżki $name zostały zapomniane. Jego ekwipunek nie został wyczyszczony!
   notunbound: Nie masz związanej różdżki $wand
   player_notunbound: Gracz $name nie ma związanej różdżki $wand
