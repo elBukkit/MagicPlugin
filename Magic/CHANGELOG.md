@@ -65,6 +65,7 @@
  - Fix `commit` spell, it should commit all pending spells which it was not doing
  - Fix saved schematics being upside down or backwards depending on the click order
  - Fix EntityProjectile not removing passengers from the projectile entity
+ - Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
 
 ## Changes
 
