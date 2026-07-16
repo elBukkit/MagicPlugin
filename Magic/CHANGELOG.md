@@ -104,6 +104,8 @@
  - Add `upgrade_path` Selector option for path selection GUIs (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/coven)
  - Add `pitch` and `yaw` proeprties to entity data, to allow for mobs spawning with specific rotations
 
+- Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
+
 # 11.2.4
 
 - Fix invalid bed icon references in Recall and Locator spells
