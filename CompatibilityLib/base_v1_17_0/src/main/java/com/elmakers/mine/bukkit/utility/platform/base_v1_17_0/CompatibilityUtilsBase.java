@@ -1418,7 +1418,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     @SuppressWarnings("deprecation")
     public void sendBlockChange(Player player, Block block) {
-        player.sendBlockChange(block.getLocation(), block.getType(), block.getData());
+        player.sendBlockChange(block.getLocation(), block.getBlockData());
     }
 
     @Override

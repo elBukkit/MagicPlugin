@@ -3,6 +3,8 @@
 
 # 11.2.5
 
+- Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
+
 # 11.2.4
 
  - Fix invalid bed icon references in Recall and Locator spells
