@@ -1,8 +1,14 @@
 superphase:
     inherit: phase
+    actions:
+      cast:
+      - class: PlayEffects
+        effects: phase
+      - class: ChangeWorld
     parameters:
-      target: other
+      cancel_on_damage: 0
+      target: any
       target_type: LivingEntity
       cooldown: 500
+      warmup: 0
       delay: 0
-
