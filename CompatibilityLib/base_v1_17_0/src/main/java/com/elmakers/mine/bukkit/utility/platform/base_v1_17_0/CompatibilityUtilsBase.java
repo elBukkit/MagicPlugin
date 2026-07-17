@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1702,6 +1703,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Collection<BoundingBox> getBoundingBoxes(Block block) {
+        if (!block.getChunk().isLoaded()) return Collections.emptyList();
         VoxelShape voxelShape = block.getCollisionShape();
         Collection<org.bukkit.util.BoundingBox> boxes = voxelShape.getBoundingBoxes();
         if (boxes.isEmpty()) {
