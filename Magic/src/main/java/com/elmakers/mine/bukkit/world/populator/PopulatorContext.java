@@ -31,24 +31,28 @@ public class PopulatorContext extends WorldInfoContext {
         this.yOffset = yOffset;
     }
 
+    public int getWorldY(int y) {
+        return y + yOffset;
+    }
+
     public void setBlock(int x, int y, int z, @NotNull Material material) {
-        region.setType(x, y + yOffset, z, material);
+        region.setType(getWorldX(x), getWorldY(y), getWorldZ(z), material);
     }
 
     public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        region.setBlockData(x, y + yOffset, z, blockData);
+        region.setBlockData(getWorldX(x), getWorldY(y), getWorldZ(z), blockData);
     }
 
     public BlockData getBlockData(int x, int y, int z) {
-        return region.getBlockData(x, y + yOffset, z);
+        return region.getBlockData(getWorldX(x), getWorldY(y), getWorldZ(z));
     }
 
     public BlockState getBlockState(int x, int y, int z) {
-        return region.getBlockState(x, y + yOffset, z);
+        return region.getBlockState(getWorldX(x), getWorldY(y), getWorldZ(z));
     }
 
     public Biome getBiome(int x, int y, int z) {
-        return region.getBiome(x, y + yOffset, z);
+        return region.getBiome(getWorldX(x), getWorldY(y), getWorldZ(z));
     }
 
     public List<BlockState> getTileEntities() {

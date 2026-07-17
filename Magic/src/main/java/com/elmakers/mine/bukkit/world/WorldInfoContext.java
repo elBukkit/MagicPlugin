@@ -28,7 +28,8 @@ public class WorldInfoContext extends WorldContext {
     }
 
     public int getMaxHeight() {
-        return worldInfo.getMaxHeight();
+        // Min is the lowest block you can set, but max is one above the highest, for whatever reason
+        return worldInfo.getMaxHeight() - 1;
     }
 
     public int getMinHeight() {
