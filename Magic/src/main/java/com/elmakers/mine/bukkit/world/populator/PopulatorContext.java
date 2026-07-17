@@ -6,6 +6,7 @@ import java.util.Random;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
@@ -60,7 +61,20 @@ public class PopulatorContext extends WorldInfoContext {
     }
 
     public boolean isCenterChunk(Chunk chunk) {
+        // Note: Be careful when using this to not cause circular chunk loading during world gen
         return chunk.getX() == chunkX && chunk.getZ() == chunkZ;
+    }
+
+    public boolean isInCenterChunk(BlockState block) {
+        return isInCenterChunk(block.getX(), block.getZ());
+    }
+
+    public boolean isInCenterChunk(Block block) {
+        return isInCenterChunk(block.getX(), block.getZ());
+    }
+
+    public boolean isInCenterChunk(int x, int z) {
+        return x >> 4 == chunkX && z >> 4 == chunkZ;
     }
 
     public PopulatorContext addYOffset(int yOffset) {

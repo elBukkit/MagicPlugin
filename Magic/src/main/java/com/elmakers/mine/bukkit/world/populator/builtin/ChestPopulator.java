@@ -113,7 +113,7 @@ public class ChestPopulator extends BaseBlockPopulator {
         for (BlockState block : tiles) {
             if (block.getType() != Material.CHEST || !(block instanceof Chest)) continue;
             // Avoid setting outside of the center chunk, otherwise these get processed multiple times
-            if (context.isCenterChunk(block.getChunk())) continue;
+            if (!context.isInCenterChunk(block)) continue;
             if (block.getY() < minY || block.getY() > maxY) continue;
 
             Chest chest = (Chest)block;
