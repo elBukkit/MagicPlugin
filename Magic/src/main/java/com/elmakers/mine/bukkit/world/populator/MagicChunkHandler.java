@@ -19,7 +19,7 @@ public class MagicChunkHandler {
     }
 
     public void load(MagicWorld world, ConfigurationSection config) {
-        chunkPopulators = BaseBlockPopulator.loadPopulators(world, config);
+        chunkPopulators.addAll(BaseBlockPopulator.loadPopulators(world, config));
     }
 
     public Collection<BaseBlockPopulator> getPopulators() {

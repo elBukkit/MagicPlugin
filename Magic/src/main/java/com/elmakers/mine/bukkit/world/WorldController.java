@@ -105,16 +105,16 @@ public class WorldController implements Listener {
         }
 
         Set<String> worldKeys = configuration.getKeys(false);
-        for (String worldName : worldKeys) {
-            controller.getLogger().setContext("worlds." + worldName);
-            ConfigurationSection worldConfiguration = configuration.getConfigurationSection(worldName);
+        for (String worldKey : worldKeys) {
+            controller.getLogger().setContext("worlds." + worldKey);
+            ConfigurationSection worldConfiguration = configuration.getConfigurationSection(worldKey);
             if (worldConfiguration == null) {
-                controller.getLogger().warning("Was expecting a properties section in world config for key '" + worldName + "', but got: " + configuration.get(worldName));
+                controller.getLogger().warning("Was expecting a properties section in world config for key '" + worldKey + "', but got: " + configuration.get(worldKey));
                 continue;
             }
             if (!worldConfiguration.getBoolean("enabled", true)) continue;
 
-            worldName = worldConfiguration.getString("world", worldName);
+            String worldName = worldConfiguration.getString("world", worldKey);
             // used for base classes
             if (worldName.isEmpty()) continue;
 
