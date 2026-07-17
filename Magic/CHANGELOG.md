@@ -66,6 +66,7 @@
  - Fix saved schematics being upside down or backwards depending on the click order
  - Fix EntityProjectile not removing passengers from the projectile entity
  - Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
+ - Fix player disguise skins breaking when they include commas (thank you, mvanhorn!)
 
 ## Changes
 
@@ -83,6 +84,7 @@
 
 ## New Features
 
+ - Add PL (Polish) language (thank you, vajuvung!)
  - Add support for vanilla-style item definitions
    - For example: `shears[minecraft:can_break={blocks:["minecraft:kelp_plant","minecraft:kelp"]}]`
    - Won't work for wand icons, but should work anywhere else
