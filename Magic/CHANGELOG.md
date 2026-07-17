@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 11.2.5
+
 # 11.2.4
 
  - Fix invalid bed icon references in Recall and Locator spells
