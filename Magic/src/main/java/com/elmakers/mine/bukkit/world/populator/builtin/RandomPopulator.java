@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.OptionalPopulator;
 
@@ -46,7 +47,7 @@ public class RandomPopulator extends OptionalPopulator {
     }
 
     @Override
-    protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
-        return RandomUtils.getDistanceWeighted(populators, worldSeed, chunkX, chunkZ);
+    protected BaseBlockPopulator getPopulator(WorldContext context) {
+        return RandomUtils.getDistanceWeighted(populators, context.getSeed(), context.getChunkX(), context.getChunkZ());
     }
 }

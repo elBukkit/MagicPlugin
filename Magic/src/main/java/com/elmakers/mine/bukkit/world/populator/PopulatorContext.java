@@ -1,8 +1,12 @@
 package com.elmakers.mine.bukkit.world.populator;
 
+import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -33,6 +37,31 @@ public class PopulatorContext extends WorldInfoContext {
 
     public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
         region.setBlockData(x, y + yOffset, z, blockData);
+    }
+
+    public BlockData getBlockData(int x, int y, int z) {
+        return region.getBlockData(x, y + yOffset, z);
+    }
+
+    public BlockState getBlockState(int x, int y, int z) {
+        return region.getBlockState(x, y + yOffset, z);
+    }
+
+    public Biome getBiome(int x, int y, int z) {
+        return region.getBiome(x, y + yOffset, z);
+    }
+
+    public List<BlockState> getTileEntities() {
+        return region.getTileEntities();
+    }
+
+    public boolean isCenterChunk(Chunk chunk) {
+        return chunk.getX() == chunkX && chunk.getZ() == chunkZ;
+    }
+
+    public PopulatorContext addYOffset(int yOffset) {
+        if (yOffset == 0) return this;
+        return new PopulatorContext(worldInfo, random, chunkX, chunkZ, region, this.yOffset + yOffset);
     }
 
     // TODO: Remove these, probably

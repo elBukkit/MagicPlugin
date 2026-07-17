@@ -1,14 +1,12 @@
 package com.elmakers.mine.bukkit.world.populator.builtin;
 
-import java.util.Random;
-
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.OptionalPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class RepeatPopulator extends OptionalPopulator {
     private BaseBlockPopulator populator;
@@ -21,15 +19,15 @@ public class RepeatPopulator extends OptionalPopulator {
     }
 
     @Override
-    protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
+    protected BaseBlockPopulator getPopulator(WorldContext context) {
         return populator;
     }
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        final int repeat = this.repeat.getRandom(random);
+    public void populate(PopulatorContext context) {
+        final int repeat = this.repeat.getRandom(context.getRandom());
         for (int i = 0; i < repeat; i++) {
-            populator.populate(worldInfo, random, chunkX, chunkZ, region);
+            populator.populate(context);
         }
     }
 }

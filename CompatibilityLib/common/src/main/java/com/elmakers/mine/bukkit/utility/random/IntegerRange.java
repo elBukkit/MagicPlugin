@@ -93,4 +93,8 @@ public class IntegerRange {
         }
         return value != null ? value : new IntegerRange(defaultMin, defaultMax);
     }
+
+    public static IntegerRange fromConfig(Logger logger, ConfigurationSection config, String key, int defaultValue) {
+        return fromConfig(logger, config, key, defaultValue, defaultValue);
+    }
 }

@@ -9,7 +9,6 @@ import org.bukkit.TreeType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
@@ -17,6 +16,7 @@ import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class TreePopulator extends BaseBlockPopulator {
     private IntegerRange position;
@@ -37,7 +37,14 @@ public class TreePopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
+    public void populate(PopulatorContext context) {
+        // TODO: Use context
+        final Random random = context.getRandom();
+        final int chunkX = context.getChunkX();
+        final int chunkZ = context.getChunkZ();
+        final WorldInfo worldInfo = context.getWorldInfo();
+        final LimitedRegion region = context.getRegion();
+
         final int groundLevel = world.getGroundLevel();
         final MaterialAndData baseBlock = RandomUtils.getRandom(baseBlocks, random);
         final TreeType treeType = RandomUtils.getRandom(treeTypes, random);

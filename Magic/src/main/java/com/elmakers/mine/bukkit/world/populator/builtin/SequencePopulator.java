@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.CompoundPopulator;
 
@@ -18,7 +19,7 @@ public class SequencePopulator extends CompoundPopulator {
     }
 
     @Override
-    protected List<BaseBlockPopulator> getPopulators(long worldSeed, int chunkX, int chunkZ) {
+    protected List<BaseBlockPopulator> getPopulators(WorldContext context) {
         return populators;
     }
 }

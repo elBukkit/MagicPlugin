@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.OptionalPopulator;
 
@@ -16,8 +17,8 @@ public class FrequencyPopulator extends OptionalPopulator {
     }
 
     @Override
-    protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
-        return isValid(chunkX, chunkZ) ? populator : null;
+    protected BaseBlockPopulator getPopulator(WorldContext context) {
+        return isValid(context.getChunkX(), context.getChunkZ()) ? populator : null;
     }
 
     protected boolean isValid(int chunkX, int chunkZ) {

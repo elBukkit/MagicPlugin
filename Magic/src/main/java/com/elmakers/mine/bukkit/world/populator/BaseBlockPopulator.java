@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.world.populator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.SearchType;
 
@@ -29,10 +31,12 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
 
     protected MagicWorld world;
     private String targetWorld;
+    private IntegerRange yOffset;
 
     public boolean load(MagicWorld world, ConfigurationSection config) {
         this.world = world;
         targetWorld = config.getString("target_world", targetWorld);
+        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         return onLoad(config);
     }
 
@@ -165,7 +169,7 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
             return null;
         }
 
-        return (BaseBlockPopulator)newObject;
+        return (BaseBlockPopulator) newObject;
     }
 
     protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {
@@ -268,4 +272,14 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     public String getPortalTargetWorld(Location location) {
         return targetWorld;
     }
+
+
+    @Override
+    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
+        // yOffset and other parameters will be applied in populate()
+        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region, 0);
+        populate(context);
+    }
+
+    public abstract void populate(PopulatorContext context);
 }

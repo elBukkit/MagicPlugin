@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class SchematicPopulator extends BaseBlockPopulator {
     private String schematicName;
@@ -44,7 +45,14 @@ public class SchematicPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+    public void populate(PopulatorContext context) {
+        // TODO: Use context
+        final Random random = context.getRandom();
+        final int chunkX = context.getChunkX();
+        final int chunkZ = context.getChunkZ();
+        final WorldInfo worldInfo = context.getWorldInfo();
+        final LimitedRegion region = context.getRegion();
+
         MagicController controller = getController();
         if (schematic == null) {
             schematic = controller.loadSchematic(this.schematicName, true);

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -56,7 +57,9 @@ public class ReplacePopulator extends SimpleBlockPopulator {
 
     @Override
     @Nullable
-    public BlockResult populate(Block block, Random random) {
+    public BlockResult populate(BlockState blockState, Random random) {
+        // TODO: Feels like this should be using LimitedRegion's methods
+        Block block = blockState.getBlock();
         if (replaceBiomes != null) {
             Biome newBiome = replaceBiomes.get(block.getBiome());
             if (newBiome != null) {

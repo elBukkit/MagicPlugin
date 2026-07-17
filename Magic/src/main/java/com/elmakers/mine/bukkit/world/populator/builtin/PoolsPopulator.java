@@ -9,12 +9,12 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class PoolsPopulator extends BaseBlockPopulator {
     private IntegerRange poolsWidth;
@@ -38,7 +38,14 @@ public class PoolsPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
+    public void populate(PopulatorContext context) {
+        // TODO: Use context
+        final Random random = context.getRandom();
+        final int chunkX = context.getChunkX();
+        final int chunkZ = context.getChunkZ();
+        final WorldInfo worldInfo = context.getWorldInfo();
+        final LimitedRegion region = context.getRegion();
+
         final boolean isStartingChunk = chunkX == 0 && chunkZ == 0;
         final int floorLevel = world.getGroundLevel();
         final int waterMinY = floorLevel - depth.getRandom(random);

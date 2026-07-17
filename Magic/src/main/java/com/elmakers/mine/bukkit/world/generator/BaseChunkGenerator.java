@@ -90,7 +90,6 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         biomeProvider = createDefaultBiomeProvider(configuration);
         populators = BaseBlockPopulator.loadPopulators(world, configuration);
         yOffset = configuration.getInt("y_offset", 0);
-        passthroughPopulator.setYOffset(yOffset);
         return onLoad(configuration);
     }
 
@@ -142,9 +141,9 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
     public void populate(PopulatorContext context) {
+        context = context.addYOffset(yOffset);
         for (BaseBlockPopulator populator : populators) {
-            // TODO: Pass in context
-            populator.populate(context.getWorldInfo(), context.getRandom(), context.getChunkX(), context.getChunkZ(), context.getRegion());
+            populator.populate(context);
         }
     }
 

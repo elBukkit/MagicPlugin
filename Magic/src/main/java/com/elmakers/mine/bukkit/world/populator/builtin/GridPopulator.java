@@ -2,15 +2,14 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.CompoundPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class GridPopulator extends CompoundPopulator {
     private record GridEntry(BaseBlockPopulator populator, int x, int z) {}
@@ -46,14 +45,14 @@ public class GridPopulator extends CompoundPopulator {
     }
 
     @Override
-    protected List<BaseBlockPopulator> getPopulators(long worldSeed, int chunkX, int chunkZ) {
+    protected List<BaseBlockPopulator> getPopulators(WorldContext context) {
         return entries.stream().map(entry -> entry.populator).toList();
     }
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+    public void populate(PopulatorContext context) {
         for (GridEntry entry : entries) {
-            entry.populator.populate(worldInfo, random, chunkX + entry.x, chunkZ + entry.z, region);
+            entry.populator.populate(context);
         }
     }
 }

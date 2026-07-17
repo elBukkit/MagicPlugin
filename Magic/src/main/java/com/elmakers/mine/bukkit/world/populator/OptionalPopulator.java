@@ -1,11 +1,10 @@
 package com.elmakers.mine.bukkit.world.populator;
 
-import java.util.Random;
-
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
+
+import com.elmakers.mine.bukkit.world.LocationContext;
+import com.elmakers.mine.bukkit.world.WorldContext;
 
 public abstract class OptionalPopulator extends BaseBlockPopulator {
     private BaseBlockPopulator populator;
@@ -17,13 +16,13 @@ public abstract class OptionalPopulator extends BaseBlockPopulator {
         return populator != null;
     }
 
-    protected abstract BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ);
+    protected abstract BaseBlockPopulator getPopulator(WorldContext context);
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        BaseBlockPopulator populator = getPopulator(worldInfo.getSeed(), chunkX, chunkZ);
+    public void populate(PopulatorContext context) {
+        BaseBlockPopulator populator = getPopulator(context);
         if (populator != null) {
-            populator.populate(worldInfo, random, chunkX, chunkZ, region);
+            populator.populate(context);
         }
     }
 
@@ -33,7 +32,8 @@ public abstract class OptionalPopulator extends BaseBlockPopulator {
         if (targetWorld != null) {
             return targetWorld;
         }
-        BaseBlockPopulator populator = getPopulator(location.getWorld().getSeed(), location.getChunk().getX(), location.getChunk().getZ());
+        LocationContext context = new LocationContext(location);
+        BaseBlockPopulator populator = getPopulator(context);
         if (populator == null) {
             return null;
         }

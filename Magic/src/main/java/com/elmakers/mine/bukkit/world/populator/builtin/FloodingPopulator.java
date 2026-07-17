@@ -7,11 +7,11 @@ import org.bukkit.block.data.Levelled;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class FloodingPopulator extends BaseBlockPopulator {
     private IntegerRange floodingLevel;
@@ -23,7 +23,14 @@ public class FloodingPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
+    public void populate(PopulatorContext context) {
+        // TODO: Use context
+        final Random random = context.getRandom();
+        final int chunkX = context.getChunkX();
+        final int chunkZ = context.getChunkZ();
+        final WorldInfo worldInfo = context.getWorldInfo();
+        final LimitedRegion region = context.getRegion();
+
         final MagicController controller = getController();
         final int floorLevel = world.getGroundLevel();
         int floodLevel = floodingLevel.getRandom(random);

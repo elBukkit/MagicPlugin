@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.random.DistanceWeighted;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.OptionalPopulator;
 
@@ -20,8 +21,8 @@ public class ProbabilityPopulator extends OptionalPopulator {
     }
 
     @Override
-    protected BaseBlockPopulator getPopulator(long worldSeed, int chunkX, int chunkZ) {
-        return isValid(worldSeed, chunkX, chunkZ) ? populator : null;
+    protected BaseBlockPopulator getPopulator(WorldContext context) {
+        return isValid(context.getSeed(), context.getChunkX(), context.getChunkZ()) ? populator : null;
     }
 
     protected boolean isValid(long worldSeed, int chunkX, int chunkZ) {

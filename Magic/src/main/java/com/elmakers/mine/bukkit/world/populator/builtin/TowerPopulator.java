@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.utility.random.DoubleRange;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class TowerPopulator extends BaseBlockPopulator {
     private PerlinNoiseGenerator perlin;
@@ -41,7 +42,14 @@ public class TowerPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
+    public void populate(PopulatorContext context) {
+        // TODO: Use context
+        final Random random = context.getRandom();
+        final int chunkX = context.getChunkX();
+        final int chunkZ = context.getChunkZ();
+        final WorldInfo worldInfo = context.getWorldInfo();
+        final LimitedRegion region = context.getRegion();
+
         final int worldHeight = worldInfo.getMaxHeight();
         final int towerHeight = Math.min(worldHeight - 1, height.getRandom(random));
         final double taper = this.taper.getRandom(random);

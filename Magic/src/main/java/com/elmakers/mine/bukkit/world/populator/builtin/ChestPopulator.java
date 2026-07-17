@@ -3,14 +3,11 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,6 +19,7 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class ChestPopulator extends BaseBlockPopulator {
     private final List<WeightedPair<Integer>> baseProbability = new ArrayList<>();
@@ -110,10 +108,12 @@ public class ChestPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(World world, Random random, Chunk chunk) {
-        BlockState[] tiles = chunk.getTileEntities();
+    public void populate(PopulatorContext context) {
+        List<BlockState> tiles = context.getTileEntities();
         for (BlockState block : tiles) {
             if (block.getType() != Material.CHEST || !(block instanceof Chest)) continue;
+            // Avoid setting outside of the center chunk, otherwise these get processed multiple times
+            if (context.isCenterChunk(block.getChunk())) continue;
             if (block.getY() < minY || block.getY() > maxY) continue;
 
             Chest chest = (Chest)block;

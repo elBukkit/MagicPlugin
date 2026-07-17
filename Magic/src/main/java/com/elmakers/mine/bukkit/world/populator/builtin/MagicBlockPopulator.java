@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
@@ -35,8 +35,8 @@ public class MagicBlockPopulator extends SimpleBlockPopulator {
     }
 
     @Override
-    public BlockResult populate(Block block, Random random) {
-        if (replace != null && !replace.testBlock(block)) {
+    public BlockResult populate(BlockState block, Random random) {
+        if (replace != null && !replace.testBlock(block.getBlock())) {
             return BlockResult.SKIP;
         }
         String templateKey = RandomUtils.weightedRandom(templateProbability);

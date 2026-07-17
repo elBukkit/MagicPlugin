@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class PassthroughBlockPopulator extends BlockPopulator {
     private final BaseChunkGenerator generator;
-    private int yOffset = 0;
 
     public PassthroughBlockPopulator(BaseChunkGenerator generator) {
         this.generator = generator;
@@ -18,11 +17,7 @@ public class PassthroughBlockPopulator extends BlockPopulator {
 
     @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region, yOffset);
+        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region, 0);
         generator.populate(context);
-    }
-
-    public void setYOffset(int yOffset) {
-        this.yOffset = yOffset;
     }
 }
