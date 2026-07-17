@@ -2,7 +2,7 @@ office_lights:
   class: Repeat
   repeat: 0 | 20
   populator:
-    class: Lights
+    class: Light
     floor_probability: 0
     position: 2 | 14
     light_blocks:
