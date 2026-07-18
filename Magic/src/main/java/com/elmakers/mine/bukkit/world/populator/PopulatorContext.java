@@ -20,6 +20,16 @@ public class PopulatorContext extends WorldInfoContext {
     private final int yOffset;
 
     public PopulatorContext(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            @NotNull LimitedRegion region
+    ) {
+        this(worldInfo, random, chunkX, chunkZ, region, 0);
+    }
+
+    public PopulatorContext(
         @NotNull WorldInfo worldInfo,
         @NotNull Random random,
         int chunkX,
@@ -30,6 +40,17 @@ public class PopulatorContext extends WorldInfoContext {
         super(worldInfo, random, chunkX, chunkZ);
         this.region = region;
         this.yOffset = yOffset;
+    }
+
+    protected PopulatorContext(PopulatorContext base, int yOffset) {
+        this(base.worldInfo, base.random, base.chunkX, base.chunkZ, base.region, base.yOffset + yOffset);
+    }
+
+    public static PopulatorContext update(PopulatorContext context, int yOffset) {
+        if (yOffset == 0) {
+            return context;
+        }
+        return new PopulatorContext(context, yOffset);
     }
 
     public int getWorldY(int y) {

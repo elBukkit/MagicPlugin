@@ -140,23 +140,6 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         return world.getController().getWorlds().parseBlocks(world.getName(), config, key, defaultSet);
     }
 
-    public void populate(PopulatorContext context) {
-        context = context.addYOffset(yOffset);
-        for (BaseBlockPopulator populator : populators) {
-            populator.populate(context);
-        }
-    }
-
-    public String getPortalTargetWorld(Location location) {
-        for (BaseBlockPopulator populator : populators) {
-            String populatorTarget = populator.getPortalTargetWorld(location);
-            if (populatorTarget != null) {
-                return populatorTarget;
-            }
-        }
-        return null;
-    }
-
     public void reload() {
         if (key != null) {
             world.getController().getWorlds().reloadGenerator(world, this, key);
@@ -225,9 +208,35 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         return false;
     }
 
+    public String getPortalTargetWorld(Location location) {
+        for (BaseBlockPopulator populator : populators) {
+            String populatorTarget = populator.getPortalTargetWorld(location);
+            if (populatorTarget != null) {
+                return populatorTarget;
+            }
+        }
+        return null;
+    }
+
+    public void populate(PopulatorContext context) {
+        context = context.addYOffset(yOffset);
+        for (BaseBlockPopulator populator : populators) {
+            populator.populate(context);
+        }
+    }
+
+    public void updateAndPopulate(PopulatorContext context) {
+        populate(PopulatorContext.update(context, yOffset));
+    }
+
     @Override
     public final void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
         final GeneratorContext context = new GeneratorContext(worldInfo, random, chunkX, chunkZ, chunk, yOffset);
+        updateAndGenerate(context);
+    }
+
+    protected void updateAndGenerate(GeneratorContext context) {
+        context = GeneratorContext.update(context, yOffset);
         generate(context);
     }
 

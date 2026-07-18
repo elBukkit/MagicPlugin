@@ -21,7 +21,6 @@ public class RoomGenerator extends BaseChunkGenerator {
     private IntegerRange doorwayWidth;
     private IntegerRange hallwayWidth;
     private int roofMaxHeight;
-    private int yOffset;
     private double wallProbability = 0.75;
     private double windowProbability = 0;
     private double islandProbability = 0.75;
@@ -49,7 +48,6 @@ public class RoomGenerator extends BaseChunkGenerator {
 
         wallBlocks = parseBlocks(config, "wall_blocks", "stones");
         ceilingBlocks = parseBlocks(config, "ceiling_blocks", "stones");
-        yOffset = config.getInt("y_offset", 0);
 
         return true;
     }
@@ -66,7 +64,7 @@ public class RoomGenerator extends BaseChunkGenerator {
     @Override
     public void generate(GeneratorContext context) {
         final Random random = context.getRandom();
-        final int floorLevel = world.getGroundLevel() + yOffset;
+        final int floorLevel = world.getGroundLevel();
         final int roofLevel = floorLevel + roofHeight.getRandom(random);
         final int roofMaxLevel = floorLevel + Math.max(roofHeight.getMax(), roofMaxHeight);
         final int doorwayLevel = Math.min(roofLevel, floorLevel + doorwayHeight.getRandom(random));

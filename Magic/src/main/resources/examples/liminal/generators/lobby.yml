@@ -20,9 +20,22 @@ lobby_room:
   ceiling_blocks:
     - polished_sulfur
 
+lobby_floor1:
+  class: Sequence
+  generators:
+    - lobby_surface
+    - lobby_room
+
+lobby_floor2:
+  y_offset: 7
+  class: Sequence
+  generators:
+    - lobby_surface
+    - lobby_room
+
 lobby:
   class: Sequence
   generators:
     - bedrock
-    - lobby_surface
-    - lobby_room
+    - lobby_floor1
+    - lobby_floor2

@@ -19,28 +19,44 @@ public class GeneratorContext extends WorldInfoContext {
         @NotNull Random random,
         int chunkX,
         int chunkZ,
-        @NotNull ChunkData chunk,
-        int yOffset
+        @NotNull ChunkData chunk
+    ) {
+        this(worldInfo, random, chunkX, chunkZ, chunk, 0);
+    }
+
+    protected GeneratorContext(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            @NotNull ChunkData chunk,
+            int yOffset
     ) {
         super(worldInfo, random, chunkX, chunkZ);
         this.yOffset = yOffset;
         this.chunk = chunk;
     }
 
-    protected int getTopBlock(int x, int y, int z) {
-        Material material = chunk.getType(x, y, z);
-        while (y < chunk.getMaxHeight() && !material.isAir()) {
-            y++;
-            material = chunk.getType(x, y, z);
+    protected GeneratorContext(GeneratorContext context, int yOffset) {
+        this(context.worldInfo, context.random, context.chunkX, context.chunkZ, context.chunk, context.yOffset + yOffset);
+    }
+
+    public static GeneratorContext update(GeneratorContext context, int yOffset) {
+        if (yOffset == 0) {
+            return context;
         }
-        return y - 1;
+        return new GeneratorContext(context, yOffset);
     }
 
     public void setBlock(int x, int y, int z, @NotNull Material material) {
-        chunk.setBlock(x, y + yOffset, z, material);
+        y += yOffset;
+        if (y < chunk.getMinHeight() || y >= chunk.getMaxHeight()) return;
+        chunk.setBlock(x, y, z, material);
     }
 
     public void setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        chunk.setBlock(x, y + yOffset, z, blockData);
+        y += yOffset;
+        if (y < chunk.getMinHeight() || y >= chunk.getMaxHeight()) return;
+        chunk.setBlock(x, y, z, blockData);
     }
 }

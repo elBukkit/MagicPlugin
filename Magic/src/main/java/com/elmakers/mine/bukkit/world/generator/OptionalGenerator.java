@@ -17,7 +17,7 @@ public abstract class OptionalGenerator extends BaseChunkGenerator {
     public void generate(GeneratorContext context) {
         BaseChunkGenerator generator = getGenerator(context);
         if (generator != null) {
-            generator.generate(context);
+            generator.updateAndGenerate(context);
         }
     }
 
@@ -26,7 +26,7 @@ public abstract class OptionalGenerator extends BaseChunkGenerator {
         super.populate(context);
         BaseChunkGenerator generator = getGenerator(context);
         if (generator != null) {
-            generator.populate(context);
+            generator.updateAndPopulate(context);
         }
     }
 

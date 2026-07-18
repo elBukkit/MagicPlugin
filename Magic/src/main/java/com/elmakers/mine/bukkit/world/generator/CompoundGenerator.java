@@ -18,7 +18,7 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     @Override
     public void generate(GeneratorContext context) {
         for (BaseChunkGenerator generator : getGenerators(context)) {
-            generator.generate(context);
+            generator.updateAndGenerate(context);
         }
     }
 
@@ -26,7 +26,7 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     public void populate(PopulatorContext context) {
         super.populate(context);
         for (BaseChunkGenerator generator : getGenerators(context)) {
-            generator.populate(context);
+            generator.updateAndPopulate(context);
         }
     }
 
