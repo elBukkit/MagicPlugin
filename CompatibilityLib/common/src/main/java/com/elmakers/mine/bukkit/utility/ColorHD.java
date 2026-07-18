@@ -100,7 +100,7 @@ public final class ColorHD {
                 red = (long)color.getRed() << COMPONENT_SHIFT;
                 green = (long)color.getGreen() << COMPONENT_SHIFT;
                 blue = (long)color.getBlue() << COMPONENT_SHIFT;
-                alpha = (long)color.getAlpha() << COMPONENT_SHIFT;
+                alpha = (long)ColorUtils.getAlpha(color) << COMPONENT_SHIFT;
             }
         }
         color = createColor();
