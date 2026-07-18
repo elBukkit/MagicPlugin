@@ -155,6 +155,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int CURRENCY_MESSAGE_DELAY = 1000;
     public static int ACTION_BAR_QUEUE_INTERVAL = 3000;
     public static int ACTION_BAR_QUEUE_MAX_DEPTH = 20;
+    private static final int OFFHAND_SLOT = 40;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     public static boolean DEACTIVATE_WAND_ON_GAME_MODE_CHANGE = false;
     public static boolean REOPEN_WAND_ON_JOIN = true;
@@ -2844,14 +2845,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public ItemStack getItem(int slotIndex) {
         InventorySlot slot = InventorySlot.getSlot(slotIndex);
+        Player player = getPlayer();
+        LivingEntity living = getLivingEntity();
         if (slot.isArmorSlot()) {
-            Player player = getPlayer();
             if (player != null) {
                 return player.getInventory().getItem(slotIndex);
             }
-            LivingEntity living = getLivingEntity();
             if (living != null) {
                 return slot.getItem(living.getEquipment());
+            }
+            return null;
+        }
+        if (slotIndex == OFFHAND_SLOT) {
+            if (player != null) {
+                return player.getInventory().getItemInOffHand();
+            }
+            if (living != null) {
+                return living.getEquipment().getItemInOffHand();
             }
             return null;
         }
@@ -2866,6 +2876,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean setItem(int slotIndex, ItemStack item) {
         Player player = getPlayer();
+        LivingEntity living = getLivingEntity();
         if (player != null && player.isDead() && !CompatibilityLib.getItemUtils().isEmpty(item)) {
             controller.info("** Giving item while dead (slot " + slotIndex + "): " + TextUtils.nameItem(item));
             addToRespawnInventory(slotIndex, item);
@@ -2878,9 +2889,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 player.getInventory().setItem(slotIndex, item);
                 return true;
             }
-            LivingEntity living = getLivingEntity();
             if (living != null) {
                 return slot.setItem(living.getEquipment(), item);
+            }
+            return false;
+        }
+        if (slotIndex == OFFHAND_SLOT) {
+            if (player != null) {
+                player.getInventory().setItemInOffHand(item);
+                return true;
+            }
+            if (living != null) {
+                living.getEquipment().setItemInOffHand(item);
+                return true;
             }
             return false;
         }

@@ -67,6 +67,7 @@
  - Fix EntityProjectile not removing passengers from the projectile entity
  - Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
  - Fix player disguise skins breaking when they include commas (thank you, mvanhorn!)
+ - Fix Equip action using offhand slot while wand inventory is action
 
 ## Changes
 
