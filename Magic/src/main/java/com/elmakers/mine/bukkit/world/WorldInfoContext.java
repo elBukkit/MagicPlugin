@@ -5,6 +5,8 @@ import java.util.Random;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.utility.IntVector;
+
 public class WorldInfoContext extends WorldContext {
     protected final @NotNull WorldInfo worldInfo;
 
@@ -15,6 +17,17 @@ public class WorldInfoContext extends WorldContext {
             int chunkZ
     ) {
         super(random, chunkX, chunkZ);
+        this.worldInfo = worldInfo;
+    }
+
+    public WorldInfoContext(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            IntVector offset
+    ) {
+        super(random, chunkX, chunkZ, offset);
         this.worldInfo = worldInfo;
     }
 

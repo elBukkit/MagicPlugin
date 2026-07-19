@@ -29,7 +29,7 @@ public class LightPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         // TODO: Use context
         final Random random = context.getRandom();
         final int chunkX = context.getChunkX();

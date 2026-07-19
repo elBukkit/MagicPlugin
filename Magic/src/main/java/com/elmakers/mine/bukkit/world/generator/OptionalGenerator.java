@@ -14,7 +14,7 @@ public abstract class OptionalGenerator extends BaseChunkGenerator {
     protected abstract BaseChunkGenerator getGenerator(WorldContext context);
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
         BaseChunkGenerator generator = getGenerator(context);
         if (generator != null) {
             generator.updateAndGenerate(context);

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.utility.IntVector;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
 public abstract class WorldContext {
@@ -12,13 +13,19 @@ public abstract class WorldContext {
     protected final int chunkZ;
     protected final int worldX;
     protected final int worldZ;
+    protected final IntVector offset;
 
-    public WorldContext(@NotNull Random random, int chunkX, int chunkZ) {
+    public WorldContext(@NotNull Random random, int chunkX, int chunkZ, IntVector offset) {
         this.random = random;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
-        this.worldX = (chunkX << 4);
-        this.worldZ = (chunkZ << 4);
+        this.offset = offset;
+        this.worldX = (chunkX << 4) + offset.x();
+        this.worldZ = (chunkZ << 4) + offset.z();
+    }
+
+    public WorldContext(@NotNull Random random, int chunkX, int chunkZ) {
+        this(random, chunkX, chunkZ, IntVector.ZERO);
     }
 
     public WorldContext(int chunkX, int chunkZ) {
@@ -31,6 +38,10 @@ public abstract class WorldContext {
 
     public int getWorldX(int dx) {
         return worldX + dx;
+    }
+
+    public int getWorldY(int y) {
+        return y + offset.y();
     }
 
     public int getWorldZ(int dz) {

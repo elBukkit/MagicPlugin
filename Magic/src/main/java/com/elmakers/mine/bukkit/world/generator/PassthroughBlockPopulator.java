@@ -17,7 +17,7 @@ public class PassthroughBlockPopulator extends BlockPopulator {
 
     @Override
     public void populate(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region, 0);
+        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region);
         generator.updateAndPopulate(context);
     }
 }

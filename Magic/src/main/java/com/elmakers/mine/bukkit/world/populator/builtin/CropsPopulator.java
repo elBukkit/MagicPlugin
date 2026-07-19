@@ -7,8 +7,6 @@ import java.util.Random;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
@@ -22,7 +20,6 @@ import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 public class CropsPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
     private DoubleRange age;
-    private IntegerRange position;
     private IntegerRange width;
     private SearchType searchType = SearchType.CONFORM_UP;
 
@@ -35,7 +32,6 @@ public class CropsPopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection config) {
         consistent = config.getBoolean("consistent", consistent);
         age = DoubleRange.fromConfig(getLogger(), config, "age", 0, 1);
-        position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 14);
         width = IntegerRange.fromConfig(getLogger(), config, "width", 1, 3);
         foodBlocks = parseBlocks(config, "crops", "all_crops");
         soilBlocks = parseBlocks(config, "soil", "farmland");
@@ -46,41 +42,33 @@ public class CropsPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(PopulatorContext context) {
-        // TODO: Use context
+    protected void populate(PopulatorContext context) {
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
         final int groundLevel = world.getGroundLevel();
         final MaterialAndData borderBlock = RandomUtils.getRandom(borderBlocks, random);
         final MaterialAndData supportBlock = RandomUtils.getRandom(supportBlocks, random);
         final MaterialAndData soilBlock = RandomUtils.getRandom(soilBlocks, random);
-        final int width = this.width.getRandom(random);
         final boolean hasBorder = borderBlock != null;
         final int borderWidth = hasBorder ? 2 : 0;
-        final int startX = Math.min(16 - width - borderWidth, position.getRandom(random));
-        final int startZ = Math.min(16 - width - borderWidth, position.getRandom(random));
-        final int endX = startX + width + borderWidth;
-        final int endZ = startZ + width + borderWidth;
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
-        final int startY = searchArea(searchType, worldInfo, region, startX + chunkGlobalX, groundLevel, startZ + chunkGlobalZ, endX + chunkGlobalX, endZ + chunkGlobalZ);
+        final int width = this.width.getRandom(random);
+        context = context.fit(width + borderWidth, width + borderWidth);
+        final int startX = 0;
+        final int startZ = 0;
+        final int endX = width + borderWidth;
+        final int endZ = width + borderWidth;
+        final int startY = context.searchArea(searchType, startX, groundLevel, startZ, endX, endZ);
 
         BlockData cropData = null;
 
         for (int dx = startX; dx < endX; dx++) {
             for (int dz = startZ; dz < endZ; dz++) {
-                final int x = chunkGlobalX + dx;
-                final int z = chunkGlobalZ + dz;
-                final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, groundLevel);
+                final int groundY = context.continueSearchArea(searchType, dx, startY, dz, groundLevel);
                 final boolean isBorder = dx == startX || dx == endX - 1 || dz == startZ || dz == endZ - 1;
                 if (hasBorder && isBorder) {
-                    region.setBlockData(x, groundY + 1, z, borderBlock.createBlockData());
+                    context.setBlockData(dx, groundY + 1, dz, borderBlock.createBlockData());
                     if (supportBlock != null) {
-                        region.setBlockData(x, groundY, z, supportBlock.createBlockData());
+                        context.setBlockData(dx, groundY, dz, supportBlock.createBlockData());
                     }
                 } else {
                     if (cropData == null) {
@@ -94,9 +82,9 @@ public class CropsPopulator extends BaseBlockPopulator {
                             crops.setAge(age);
                         }
                     }
-                    region.setBlockData(x, groundY + 1, z, cropData);
+                    context.setBlockData(dx, groundY + 1, dz, cropData);
                     if (soilBlock != null) {
-                        region.setBlockData(x, groundY, z, soilBlock.createBlockData());
+                        context.setBlockData(dx, groundY, dz, soilBlock.createBlockData());
                     }
                     if (!consistent) {
                         cropData = null;

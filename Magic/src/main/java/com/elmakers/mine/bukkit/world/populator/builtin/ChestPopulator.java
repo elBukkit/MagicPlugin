@@ -108,7 +108,7 @@ public class ChestPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         List<BlockState> tiles = context.getTileEntities();
         for (BlockState block : tiles) {
             if (block.getType() != Material.CHEST || !(block instanceof Chest)) continue;

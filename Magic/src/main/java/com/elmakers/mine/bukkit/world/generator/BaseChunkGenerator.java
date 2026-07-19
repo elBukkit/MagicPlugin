@@ -219,27 +219,26 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
     public void populate(PopulatorContext context) {
-        context = context.addYOffset(yOffset);
         for (BaseBlockPopulator populator : populators) {
-            populator.populate(context);
+            populator.updateAndPopulate(context);
         }
     }
 
     public void updateAndPopulate(PopulatorContext context) {
-        populate(PopulatorContext.update(context, yOffset));
+        populate(context.update(yOffset));
     }
 
     @Override
     public final void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunk) {
-        final GeneratorContext context = new GeneratorContext(worldInfo, random, chunkX, chunkZ, chunk, yOffset);
+        final GeneratorContext context = new GeneratorContext(worldInfo, random, chunkX, chunkZ, chunk);
         updateAndGenerate(context);
     }
 
     protected void updateAndGenerate(GeneratorContext context) {
-        context = GeneratorContext.update(context, yOffset);
+        context = context.update(yOffset);
         generate(context);
     }
 
     public abstract boolean onLoad(ConfigurationSection configuration);
-    public abstract void generate(final GeneratorContext context);
+    protected abstract void generate(final GeneratorContext context);
 }

@@ -12,6 +12,6 @@ public class VoidGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
     }
 }

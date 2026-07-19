@@ -35,7 +35,7 @@ public abstract class SimpleBlockPopulator extends BaseBlockPopulator {
     }
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         int minY = this.minY != null ? this.minY : context.getMinHeight();
         int maxY = this.maxY != null ? this.maxY : context.getMaxHeight();
         for (int x = 0; x <= 15; x++) {

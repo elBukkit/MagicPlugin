@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.random.IntegerRange;
+import com.elmakers.mine.bukkit.utility.random.IntVectorRange;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.SearchType;
 
@@ -31,12 +31,12 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
 
     protected MagicWorld world;
     private String targetWorld;
-    private IntegerRange yOffset;
+    private IntVectorRange position;
 
     public boolean load(MagicWorld world, ConfigurationSection config) {
         this.world = world;
         targetWorld = config.getString("target_world", targetWorld);
-        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
+        position = IntVectorRange.fromConfig(getLogger(), config, 0, 15);
         return onLoad(config);
     }
 
@@ -172,6 +172,14 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return (BaseBlockPopulator) newObject;
     }
 
+    protected boolean setBlockData(final PopulatorContext context, int x, int y, int z, @NotNull BlockData blockData) {
+        if (!context.setBlockData(x, y, z, blockData)) {
+            getController().info("Trying to set out-of-range block in world " + world.getName() + ": " + x + "," + y + "," + z);
+            return false;
+        }
+        return true;
+    }
+
     protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {
         if (!region.isInRegion(x, y, z)) {
             getController().info("Trying to set out-of-range block in world " + world.getName() + ": " + x + "," + y + "," + z);
@@ -208,7 +216,6 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         }
         return currentSearch != null ? currentSearch : startY;
     }
-
 
     protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
         return searchBlock(worldInfo, region, x, y, z, maxSearch, direction, throughAir, returnAir, material -> material.isAir());
@@ -273,13 +280,15 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         return targetWorld;
     }
 
+    public void updateAndPopulate(PopulatorContext context) {
+        populate(context.update(position.getRandom(context.getRandom())));
+    }
 
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, LimitedRegion region) {
-        // yOffset and other parameters will be applied in populate()
-        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region, 0);
-        populate(context);
+        final PopulatorContext context = new PopulatorContext(worldInfo, random, chunkX, chunkZ, region);
+        updateAndPopulate(context);
     }
 
-    public abstract void populate(PopulatorContext context);
+    protected abstract void populate(PopulatorContext context);
 }

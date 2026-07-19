@@ -16,7 +16,7 @@ public abstract class CompoundGenerator extends BaseChunkGenerator {
     protected abstract List<BaseChunkGenerator> getGenerators(WorldContext context);
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
         for (BaseChunkGenerator generator : getGenerators(context)) {
             generator.updateAndGenerate(context);
         }

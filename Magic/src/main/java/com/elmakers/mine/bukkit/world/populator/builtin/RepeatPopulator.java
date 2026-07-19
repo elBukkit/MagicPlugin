@@ -24,10 +24,10 @@ public class RepeatPopulator extends OptionalPopulator {
     }
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         final int repeat = this.repeat.getRandom(context.getRandom());
         for (int i = 0; i < repeat; i++) {
-            populator.populate(context);
+            populator.updateAndPopulate(context);
         }
     }
 }

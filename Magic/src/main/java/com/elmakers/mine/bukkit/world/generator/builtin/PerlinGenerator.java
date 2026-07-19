@@ -35,7 +35,7 @@ public class PerlinGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
         synchronized (this) {
             if (noise == null) {
                 noise = new PerlinNoiseGenerator(context.getSeed());

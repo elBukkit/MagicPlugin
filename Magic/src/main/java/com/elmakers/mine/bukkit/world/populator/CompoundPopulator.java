@@ -12,9 +12,9 @@ public abstract class CompoundPopulator extends BaseBlockPopulator {
     protected abstract List<BaseBlockPopulator> getPopulators(WorldContext context);
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         for (BaseBlockPopulator populator : getPopulators(context)) {
-            populator.populate(context);
+            populator.updateAndPopulate(context);
         }
     }
 

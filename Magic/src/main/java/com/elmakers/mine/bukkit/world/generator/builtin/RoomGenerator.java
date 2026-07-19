@@ -62,7 +62,7 @@ public class RoomGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
         final Random random = context.getRandom();
         final int floorLevel = world.getGroundLevel();
         final int roofLevel = floorLevel + roofHeight.getRandom(random);

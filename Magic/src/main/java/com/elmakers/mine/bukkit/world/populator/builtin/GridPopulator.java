@@ -50,9 +50,9 @@ public class GridPopulator extends CompoundPopulator {
     }
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         for (GridEntry entry : entries) {
-            entry.populator.populate(context);
+            entry.populator.updateAndPopulate(context);
         }
     }
 }

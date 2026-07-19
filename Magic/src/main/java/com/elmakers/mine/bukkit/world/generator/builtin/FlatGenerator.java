@@ -25,7 +25,7 @@ public class FlatGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
         final Random random = context.getRandom();
         final BlockData block = RandomUtils.getRandom(groundBlocks, random).createBlockData();
         final int bedrockLevel = world.getBedrockLevel();

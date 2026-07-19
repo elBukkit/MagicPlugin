@@ -13,7 +13,7 @@ public class BedrockGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void generate(GeneratorContext context) {
+    protected void generate(GeneratorContext context) {
         final int bedrockLevel = world.getBedrockLevel();
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {

@@ -19,10 +19,10 @@ public abstract class OptionalPopulator extends BaseBlockPopulator {
     protected abstract BaseBlockPopulator getPopulator(WorldContext context);
 
     @Override
-    public void populate(PopulatorContext context) {
+    protected void populate(PopulatorContext context) {
         BaseBlockPopulator populator = getPopulator(context);
         if (populator != null) {
-            populator.populate(context);
+            populator.updateAndPopulate(context);
         }
     }
 
