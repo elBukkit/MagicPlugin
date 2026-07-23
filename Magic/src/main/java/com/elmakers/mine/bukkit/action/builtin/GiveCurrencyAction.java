@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -32,12 +31,8 @@ public class GiveCurrencyAction extends BaseSpellAction {
         if (targetEntity == null) {
             return SpellResult.NO_TARGET;
         }
-        if (!(targetEntity instanceof Player)) {
-            return SpellResult.PLAYER_REQUIRED;
-        }
         MageController controller = context.getController();
-        Mage mage = controller.getMage((Player)targetEntity);
-
+        Mage mage = controller.getMage(targetEntity);
         mage.addCurrency(currencyKey, currencyAmount);
         return SpellResult.CAST;
     }

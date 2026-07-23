@@ -105,6 +105,7 @@
  - Add `pitch` and `yaw` proeprties to entity data, to allow for mobs spawning with specific rotations
 
 - Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
+- Allow GiveCurrency and ModifyCurrency actions to work on mobs
 
 # 11.2.4
 

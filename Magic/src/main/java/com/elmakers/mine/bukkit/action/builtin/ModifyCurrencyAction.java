@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -36,10 +35,6 @@ public class ModifyCurrencyAction extends BaseSpellAction {
         Mage mage = controller.getRegisteredMage(target);
         if (mage == null) {
             return SpellResult.NO_TARGET;
-        }
-        Player player = mage.getPlayer();
-        if (player == null) {
-            return SpellResult.PLAYER_REQUIRED;
         }
         if (value > 0) {
             mage.addCurrency(currencyKey, value);
