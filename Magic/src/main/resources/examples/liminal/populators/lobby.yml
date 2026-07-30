@@ -1,9 +1,81 @@
-lobby_lights:
-  class: Repeat
-  repeat: 0 | 10
-  populator:
-    class: Light
-    floor_probability: 0
-    position: 2 | 14
-    light_blocks:
-      - ochre_froglight
+lobby_random:
+  class: Random
+  populators:
+    - lobby_room1
+    - lobby_room2
+    - lobby_room3
+    - lobby_room4
+    - lobby_room5
+    - lobby_room6
+    - lobby_room7
+    - lobby_room8
+    - lobby_room9
+    - lobby_room10
+    - lobby_room11
+    - lobby_room12
+    - lobby_room13
+
+lobby_room1:
+  class: Schematic
+  schematic: liminal/lobby_room1
+  search: NONE
+
+lobby_room2:
+  class: Schematic
+  schematic: liminal/lobby_room2
+  search: NONE
+
+lobby_room3:
+  class: Schematic
+  schematic: liminal/lobby_room3
+  search: NONE
+
+lobby_room4:
+  class: Schematic
+  schematic: liminal/lobby_room4
+  search: NONE
+
+lobby_room5:
+  class: Schematic
+  schematic: liminal/lobby_room5
+  search: NONE
+
+lobby_room6:
+  class: Schematic
+  schematic: liminal/lobby_room6
+  search: NONE
+
+lobby_room7:
+  class: Schematic
+  schematic: liminal/lobby_room7
+  search: NONE
+
+lobby_room8:
+  class: Schematic
+  schematic: liminal/lobby_room8
+  search: NONE
+
+lobby_room9:
+  class: Schematic
+  schematic: liminal/lobby_room9
+  search: NONE
+
+lobby_room10:
+  class: Schematic
+  schematic: liminal/lobby_room10
+  search: NONE
+
+lobby_room11:
+  class: Schematic
+  schematic: liminal/lobby_room11
+  search: NONE
+
+lobby_room12:
+  class: Schematic
+  schematic: liminal/lobby_room12
+  search: NONE
+
+lobby_room13:
+  class: Schematic
+  schematic: liminal/lobby_room13
+  search: NONE
