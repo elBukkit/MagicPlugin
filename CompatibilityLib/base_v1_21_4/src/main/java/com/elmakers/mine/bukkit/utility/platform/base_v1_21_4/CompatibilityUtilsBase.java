@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.Lootable;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -74,10 +75,42 @@ public abstract class CompatibilityUtilsBase extends com.elmakers.mine.bukkit.ut
         return 0.0f;
     }
 
-    @Override
-    protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "modifier");
+    protected AttributeModifier createAttributeModifier(String key, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
         return new AttributeModifier(namespacedKey, value, operation, equipmentSlotGroup);
+    }
+
+    @Override
+    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, String attributeOperation, UUID attributeUUID, String attributeKey) {
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+        try {
+            AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
+            if (attributeOperation != null && !attributeOperation.isEmpty()) {
+                try {
+                    int operationIndex = Integer.parseInt(attributeOperation);
+                    operation = AttributeModifier.Operation.values()[operationIndex];
+                } catch (Throwable ignore) {
+                    try {
+                        operation = AttributeModifier.Operation.valueOf(attributeOperation.toUpperCase());
+                    } catch (Throwable ex) {
+                        platform.getLogger().warning("Invalid operation " + attributeOperation);
+                    }
+                }
+            }
+            EquipmentSlotGroup equipmentSlotGroup = parseEquipmentSlotGroup(slot);
+            if (attributeKey == null || attributeKey.isEmpty()) {
+                attributeKey = "modifier_" + attribute.name() + "_" + slot;
+            }
+            AttributeModifier modifier = createAttributeModifier(attributeKey, value, operation, equipmentSlotGroup);
+            meta.addAttributeModifier(attribute, modifier);
+            item.setItemMeta(meta);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
