@@ -17,8 +17,8 @@ public class BoundingBox
 
     public BoundingBox(Vector single)
     {
-        this.min = new Vector(Math.min(single.getX(), single.getX()), Math.min(single.getY(), single.getY()), Math.min(single.getZ(), single.getZ()));
-        this.max = new Vector(Math.max(single.getX(), single.getX()), Math.max(single.getY(), single.getY()), Math.max(single.getZ(), single.getZ()));
+        this.min = new Vector(single.getX(), single.getY(), single.getZ());
+        this.max = new Vector(single.getX(), single.getY(), single.getZ());
     }
 
     public BoundingBox(double dMinX, double dMaxX, double dMinY, double dMaxY, double dMinZ, double dMaxZ)
@@ -209,6 +209,13 @@ public class BoundingBox
         return currentHit;
     }
 
+    public Vector getMin() {
+        return min;
+    }
+
+    public Vector getMax() {
+        return max;
+    }
 
     protected boolean inBox(Vector hit, int axis) {
         if (axis == 1 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
