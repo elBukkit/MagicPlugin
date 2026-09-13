@@ -1,6 +1,5 @@
 abyss_floor:
   class: Perlin
-  biome: deep_ocean
   elevation: 1 | 6
   noise: 0.1
   blocks:
@@ -8,13 +7,27 @@ abyss_floor:
 
 abyss_water:
   class: Flat
-  biome: deep_ocean
-  height: 200
+  height: 260
   blocks: water
+
+abyss_ceiling:
+  class: Flat
+  height: 1
+  y_offset: 220
+  blocks: black_concrete
+
+abyss_barrier:
+  class: Flat
+  height: 1
+  y_offset: 200
+  blocks: barrier[waterlogged=true]
 
 abyss:
   class: Sequence
+  biome: deep_ocean
   generators:
     - bedrock
     - abyss_water
+    - abyss_ceiling
+    - abyss_barrier
     - abyss_floor
