@@ -49,7 +49,7 @@ public class CompatibilityLib extends PlatformInterpreter {
             boolean foundExact = true;
             int[] layerVersion = {majorVersion, minorVersion, 0};
             Exception lastException = null;
-            while (layerVersion[0] >= 26) {
+            while (layerVersion[0] >= 26 && lastException == null) {
                 try {
                     String versionPackage = StringUtils.join(ArrayUtils.toObject(layerVersion), "_");
                     Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");

@@ -3,6 +3,7 @@
 
 # 11.2.5
 
+- Add support for 26.3
 - Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
 - Allow GiveCurrency and ModifyCurrency actions to work on mobs
 
