@@ -1800,7 +1800,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         sittable.setSitting(flag);
     }
 
-    private void addProjectileClass(String key, Class<? extends net.minecraft.world.entity.projectile.Projectile> projectileClass, net.minecraft.world.entity.EntityType<?> entityType) {
+    protected void addProjectileClass(String key, Class<? extends net.minecraft.world.entity.projectile.Projectile> projectileClass, net.minecraft.world.entity.EntityType<?> entityType) {
         projectileClasses.put(key, projectileClass);
         projectileEntityTypes.put(projectileClass.getSimpleName(), entityType);
     }
