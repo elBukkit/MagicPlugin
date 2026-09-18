@@ -104,6 +104,7 @@
  - Add `upgrade_path` Selector option for path selection GUIs (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/coven)
  - Add `pitch` and `yaw` proeprties to entity data, to allow for mobs spawning with specific rotations
 
+- Add support for 26.3
 - Fix fake block creation forcing legacy material loads in 1.20.4 and earlier
 - Allow GiveCurrency and ModifyCurrency actions to work on mobs
 

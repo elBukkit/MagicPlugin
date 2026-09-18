@@ -77,6 +77,8 @@
         <module>v26_1_0</module>
         <module>base_v26_2</module>
         <module>v26_2_0</module>
+        <module>base_v26_3</module>
+        <module>v26_3_0</module>
         <module>main</module>
     </modules>
 </project>

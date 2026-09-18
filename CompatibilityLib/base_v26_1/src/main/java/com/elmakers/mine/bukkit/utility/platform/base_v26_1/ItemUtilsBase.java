@@ -205,11 +205,15 @@ public class ItemUtilsBase implements ItemUtils {
         return nms;
     }
 
+    protected ItemStack asCraftMirror(net.minecraft.world.item.ItemStack original) {
+        return CraftItemStack.asCraftMirror(original);
+    }
+
     @Override
     public ItemStack getCopy(ItemStack stack) {
         if (stack == null) return null;
         net.minecraft.world.item.ItemStack craft = getNMSCopy(stack);
-        return CraftItemStack.asCraftMirror(craft);
+        return asCraftMirror(craft);
     }
 
     @Override
@@ -279,7 +283,7 @@ public class ItemUtilsBase implements ItemUtils {
             ValueInput.TypedInputList<ItemStackWithSlot> list = valueInput.listOrEmpty(tagName, ItemStackWithSlot.CODEC);
             List<ItemStack> itemList = new ArrayList<>();
             for (ItemStackWithSlot stackWithSlot : list) {
-                ItemStack item = CraftItemStack.asCraftMirror(stackWithSlot.stack());
+                ItemStack item = asCraftMirror(stackWithSlot.stack());
                 itemList.add(item);
             }
             return itemList.toArray(new ItemStack[itemList.size()]);
