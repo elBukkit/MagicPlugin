@@ -1798,7 +1798,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         sittable.setSitting(flag);
     }
 
-    private void addProjectileClass(String key, Class<? extends net.minecraft.world.entity.projectile.Projectile> projectileClass, net.minecraft.world.entity.EntityType<?> entityType) {
+    protected void addProjectileClass(String key, Class<? extends net.minecraft.world.entity.projectile.Projectile> projectileClass, net.minecraft.world.entity.EntityType<?> entityType) {
         projectileClasses.put(key, projectileClass);
         projectileEntityTypes.put(projectileClass.getSimpleName(), entityType);
     }
@@ -2878,6 +2878,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator) {
         if (block == null || facing == null || target == null) return false;
+        // Note: This is broken on Paper, the method there is just getBlockState
+        // Not sure what to do about this other than stop using the method
         net.minecraft.world.level.block.state.BlockState blockState = ((CraftBlock)block).getNMS();
         if (blockState == null) return false;
         net.minecraft.world.level.block.Block nmsBlock = blockState.getBlock();
@@ -2909,6 +2911,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean forceUpdate(Block block, boolean physics) {
         if (block == null) return false;
+        // Note: This is broken on Paper, the method there is just getBlockState
+        // Not sure what to do about this other than stop using the method
         net.minecraft.world.level.block.state.BlockState blockState = ((CraftBlock)block).getNMS();
         if (blockState == null) return false;
         net.minecraft.world.level.block.Block nmsBlock = blockState.getBlock();
