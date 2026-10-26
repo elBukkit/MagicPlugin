@@ -460,7 +460,7 @@ settings:
   disable-worldedit-hook: true
   max-size-translocation: 100000
   max-size-translocation-for-redstone: 1000
-  version: 13
+  version: 15
   prevent-place-everywhere:
   - world_other
   prevent-destroy-everywhere:
@@ -492,6 +492,7 @@ settings:
   disable-field-break-while-creative: false
   prevent-breaking-hidden: false
   use-permission-based-limits: false
+  allow-custom-spawn: true
 cuboid:
   defining-blocktype: obsidian
   visualization-blocktype: glass
