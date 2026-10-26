@@ -872,6 +872,10 @@ commands:
         /mnpc move                        Moves the selected NPC to your location
         /mnpc clean                       Remove any orphaned NPC entities in the world
         /mnpc update                      Force-update an NPC in case some config changes haven't taken
+        /mnpc world list                  List NPCs by world
+        /mnpc world remove                Remove all NPCs in a specific world
+        /mnpc template list               List NPCs by template
+        /mnpc template remove             Remove all NPCs using a specific template
   mmap:
     description: Create and manage Magic image maps
     permission: magic.commands.mmap

@@ -511,4 +511,16 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public boolean isStatic() {
         return entityData.isStatic();
     }
+
+    @Override
+    @Nullable
+    public String getWorldName() {
+        return worldName;
+    }
+
+    @Override
+    @Nullable
+    public String getTemplateKey() {
+        return templateKey;
+    }
 }

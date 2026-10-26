@@ -7640,6 +7640,11 @@ public class MagicController implements MageController, ChunkLoadListener {
         return new ArrayList<>(npcs.values());
     }
 
+    @Override
+    public Collection<ConfigurationSection> getInvalidNPCs() {
+        return new ArrayList<>(invalidNPCs);
+    }
+
     public void unregisterNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
         String chunkId = getChunkKey(npc.getLocation());
         if (chunkId == null) return;
@@ -7694,6 +7699,18 @@ public class MagicController implements MageController, ChunkLoadListener {
         unregisterNPC(npc);
         npc.remove();
         npcs.remove(npc.getId());
+    }
+
+    @Override
+    public void removeInvalidNPC(String id) {
+        Iterator<ConfigurationSection> it = invalidNPCs.iterator();
+        while (it.hasNext()) {
+            ConfigurationSection section = it.next();
+            if (section.getString("id").equals(id)) {
+                it.remove();
+                return;
+            }
+        }
     }
 
     @Override

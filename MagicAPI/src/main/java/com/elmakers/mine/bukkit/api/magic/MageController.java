@@ -781,6 +781,9 @@ public interface MageController {
 
     @Nonnull
     Collection<MagicNPC> getNPCs();
+    @Nonnull
+    Collection<ConfigurationSection> getInvalidNPCs();
+    void removeInvalidNPC(String id);
     void removeNPC(MagicNPC npc);
     @Nullable
     MagicNPC addNPC(Mage creator, String name);

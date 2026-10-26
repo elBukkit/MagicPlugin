@@ -3,7 +3,10 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -65,6 +68,52 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         String[] parameters = Arrays.copyOfRange(args, 1, args.length);
         if (subCommand.equalsIgnoreCase("list")) {
             onListNPCs(sender, parameters);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("world")) {
+            if (parameters.length == 0) {
+                sender.sendMessage(ChatColor.RED + "Usage: mnpc world <list|remove>");
+                return true;
+            }
+            final String worldCommand = parameters[0];
+            if (worldCommand.equalsIgnoreCase("list")) {
+                onWorldList(sender);
+                return true;
+            }
+            if (worldCommand.equalsIgnoreCase("remove")) {
+                if (parameters.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "Usage: mnpc world remove <world>");
+                    return true;
+                }
+                final String worldName = parameters[1];
+                onWorldRemove(sender, worldName);
+                return true;
+            }
+            sender.sendMessage(ChatColor.RED + "Usage: mnpc world <list|remove>");
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("template")) {
+            if (parameters.length == 0) {
+                sender.sendMessage(ChatColor.RED + "Usage: mnpc template <list|remove>");
+                return true;
+            }
+            final String worldCommand = parameters[0];
+            if (worldCommand.equalsIgnoreCase("list")) {
+                onTemplateList(sender);
+                return true;
+            }
+            if (worldCommand.equalsIgnoreCase("remove")) {
+                if (parameters.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "Usage: mnpc template remove <world>");
+                    return true;
+                }
+                final String worldName = parameters[1];
+                onTemplateRemove(sender, worldName);
+                return true;
+            }
+            sender.sendMessage(ChatColor.RED + "Usage: mnpc template <list|remove>");
             return true;
         }
 
@@ -213,6 +262,113 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
         List<MagicNPC> list = new ArrayList<>(npcs);
         return list;
+    }
+
+    protected void onWorldList(CommandSender sender) {
+        final Collection<MagicNPC> npcs = controller.getNPCs();
+        final Map<String, Integer> worlds = new HashMap<>();
+        for (MagicNPC npc : npcs) {
+            final String worldName = npc.getWorldName() == null ? "(unknown)" : npc.getWorldName();
+            Integer count = worlds.get(worldName);
+            if (count == null) {
+                count = 0;
+            }
+            count++;
+            worlds.put(worldName, count);
+        }
+        final Collection<ConfigurationSection> invalidNPCs = controller.getInvalidNPCs();
+        for (ConfigurationSection invalid : invalidNPCs) {
+            final String worldName = invalid.getString("location.world") == null ? "(unknown)" : invalid.getString("location.world");
+            Integer count = worlds.get(worldName);
+            if (count == null) {
+                count = 0;
+            }
+            count++;
+            worlds.put(worldName, count);
+        }
+        final List<String> worldNames = new ArrayList<>(worlds.keySet());
+        Collections.sort(worldNames);
+        sender.sendMessage(ChatColor.DARK_AQUA + "NPCs in worlds:");
+        for (String worldName : worldNames) {
+            final int count = worlds.get(worldName);
+            sender.sendMessage(ChatColor.DARK_AQUA + "  " + ChatColor.WHITE + worldName + ChatColor.GRAY + " (" + ChatColor.WHITE + count + ChatColor.GRAY + ")");
+        }
+    }
+
+    protected void onWorldRemove(CommandSender sender, String worldName) {
+        int removedCount = 0;
+        final Collection<MagicNPC> npcs = controller.getNPCs();
+        for (MagicNPC npc : npcs) {
+            final String npcWorld = npc.getWorldName();
+            if (npcWorld == null) {
+                continue;
+            }
+            if (npcWorld.equalsIgnoreCase(worldName)) {
+                npc.remove();
+                removedCount++;
+            }
+        }
+        final Collection<ConfigurationSection> invalidNPCs = controller.getInvalidNPCs();
+        for (ConfigurationSection invalid : invalidNPCs) {
+            final String npcWorld = invalid.getString("location.world");
+            if (npcWorld != null && npcWorld.equalsIgnoreCase(worldName)) {
+                controller.removeInvalidNPC(invalid.getString("id"));
+                removedCount++;
+            }
+        }
+        sender.sendMessage(ChatColor.GREEN + "Removed " + ChatColor.RED + removedCount + ChatColor.GREEN + " NPCs from " + ChatColor.GOLD + worldName);
+    }
+
+    protected void onTemplateList(CommandSender sender) {
+        final Map<String, Integer> templates = new HashMap<>();
+        final Collection<MagicNPC> npcs = controller.getNPCs();
+        for (MagicNPC npc : npcs) {
+            final String templateName = npc.getTemplateKey() == null ? "(unknown)" : npc.getTemplateKey();
+            Integer count = templates.get(templateName);
+            if (count == null) {
+                count = 0;
+            }
+            count++;
+            templates.put(templateName, count);
+        }
+        final Collection<ConfigurationSection> invalidNPCs = controller.getInvalidNPCs();
+        for (ConfigurationSection invalid : invalidNPCs) {
+            final String templateName = invalid.getString("template") == null ? "(unknown)" : invalid.getString("template");
+            Integer count = templates.get(templateName);
+            if (count == null) {
+                count = 0;
+            }
+            count++;
+            templates.put(templateName, count);
+        }
+        final List<String> worldNames = new ArrayList<>(templates.keySet());
+        Collections.sort(worldNames);
+        sender.sendMessage(ChatColor.DARK_AQUA + "NPCs using templates:");
+        for (String worldName : worldNames) {
+            final int count = templates.get(worldName);
+            sender.sendMessage(ChatColor.DARK_AQUA + "  " + ChatColor.WHITE + worldName + ChatColor.GRAY + " (" + ChatColor.WHITE + count + ChatColor.GRAY + ")");
+        }
+    }
+
+    protected void onTemplateRemove(CommandSender sender, String templateName) {
+        int removedCount = 0;
+        final Collection<MagicNPC> npcs = controller.getNPCs();
+        for (MagicNPC npc : npcs) {
+            final String npcTemplate = npc.getTemplateKey();
+            if (npcTemplate != null && npcTemplate.equalsIgnoreCase(templateName)) {
+                controller.removeNPC(npc);
+                removedCount++;
+            }
+        }
+        final Collection<ConfigurationSection> invalidNPCs = controller.getInvalidNPCs();
+        for (ConfigurationSection invalid : invalidNPCs) {
+            final String npcTemplate = invalid.getString("template");
+            if (npcTemplate != null && npcTemplate.equalsIgnoreCase(templateName)) {
+                controller.removeInvalidNPC(invalid.getString("id"));
+                removedCount++;
+            }
+        }
+        sender.sendMessage(ChatColor.GREEN + "Removed " + ChatColor.RED + removedCount + ChatColor.GREEN + " NPCs using " + ChatColor.GOLD + templateName);
     }
 
     protected void onListNPCs(CommandSender sender, String[] args) {

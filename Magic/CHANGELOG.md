@@ -103,7 +103,8 @@
    - This is mainly for the mob_effect particles
  - Add `upgrade_path` Selector option for path selection GUIs (see: https://github.com/elBukkit/MagicPlugin/tree/main/Magic/src/examples/coven)
  - Add `pitch` and `yaw` proeprties to entity data, to allow for mobs spawning with specific rotations
-
+ - Add `/mnpc world` command for listing NPCs in worlds and removing all NPCs in specfic worlds
+ - Add `/mnpc template` command for listing and removing NPCs with specific templates
 
 # 11.2.5
 
