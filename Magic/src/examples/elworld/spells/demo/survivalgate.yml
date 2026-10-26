@@ -25,6 +25,8 @@ survivalgate:
     chain:
       - sound: block_chain_place
   parameters:
+    bypass_break: true
+    bypass_build: true
     target: self
     brush: air
     undo: 5000
