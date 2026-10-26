@@ -673,6 +673,11 @@ public class SimulateBatch extends SpellBatch {
         if (mode == TargetMode.DIRECTED) {
             targetType = TargetType.PLAYER;
         }
+        // Make sure we don't continue to target something that changed worlds
+        if (target != null && !target.getLocation().getWorld().equals(center.getWorld())) {
+            target = null;
+        }
+
         switch (mode)
         {
         case FLEE:
@@ -683,6 +688,7 @@ public class SimulateBatch extends SpellBatch {
                 this.target.update();
             }
             Target bestTarget = this.target;
+
             reverseTargetDistanceScore = true;
             if (bestTarget == null || !keepTarget) {
                 if (targetType == TargetType.ANY || targetType == TargetType.MOB)
