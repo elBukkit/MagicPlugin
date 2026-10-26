@@ -245,7 +245,7 @@ public class MobUtilsBase implements MobUtils {
         if (mob == null) {
             return false;
         }
-        return removeGoal(mob.goalSelector, mob, entity, goalType);
+        return removeGoal(mob.getGoalSelector(), mob, entity, goalType);
     }
 
     public String getGoalParentDescriptions(Goal goal) {
@@ -292,7 +292,7 @@ public class MobUtilsBase implements MobUtils {
         if (mob == null) {
             return null;
         }
-        return getGoalDescriptions(mob.goalSelector);
+        return getGoalDescriptions(mob.getGoalSelector());
     }
 
     protected boolean addGoal(GoalSelector selector, Mob mob, Entity entity, GoalType goalType, int priority,
@@ -316,7 +316,7 @@ public class MobUtilsBase implements MobUtils {
         if (mob == null) {
             return false;
         }
-        return addGoal(mob.goalSelector, mob, entity, goalType, priority, config);
+        return addGoal(mob.getGoalSelector(), mob, entity, goalType, priority, config);
     }
 
     @Override
@@ -330,7 +330,7 @@ public class MobUtilsBase implements MobUtils {
         if (mob == null) {
             return false;
         }
-        mob.goalSelector.getAvailableGoals().clear();
+        mob.getGoalSelector().getAvailableGoals().clear();
         return true;
     }
 
