@@ -7,7 +7,6 @@ import org.bukkit.event.Event;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 
-import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -32,7 +31,7 @@ public class ExprTargets extends SimpleExpression<Entity> {
 
     @Override
     public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
-        if (!ScriptLoader.isCurrentEvent(CastEvent.class)) {
+        if (!getParser().isCurrentEvent(CastEvent.class)) {
             Skript.error("Cannot use 'targets' outside of a cast event", ErrorQuality.SEMANTIC_ERROR);
             return false;
         }

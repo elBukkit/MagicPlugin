@@ -1,10 +1,9 @@
 package com.elmakers.mine.bukkit.integration;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.skriptlang.skript.lang.converter.Converter;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.EarnEvent;
@@ -26,7 +25,6 @@ import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
 
 import ch.njol.skript.registrations.EventValues;
-import ch.njol.skript.util.Getter;
 
 public class SkriptManager {
     public static MageController controller;
@@ -49,68 +47,19 @@ public class SkriptManager {
         ExprTargets.register();
         ExprActiveSpell.register();
 
-        EventValues.registerEventValue(CastEvent.class, Player.class, new Getter<Player, CastEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Player get(final CastEvent e) {
-                return e.getMage().getPlayer();
-            }
-        }, 0);
+        EventValues.registerEventValue(CastEvent.class, Player.class, (Converter<CastEvent, Player>) e -> e.getMage().getPlayer(), 0);
 
-        EventValues.registerEventValue(CastEvent.class, Entity.class, new Getter<Entity, CastEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Entity get(final CastEvent e) {
-                return e.getMage().getEntity();
-            }
-        }, 0);
+        EventValues.registerEventValue(CastEvent.class, Entity.class, (Converter<CastEvent, Entity>) e -> e.getMage().getEntity(), 0);
 
-        EventValues.registerEventValue(PreCastEvent.class, Player.class, new Getter<Player, PreCastEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Player get(final PreCastEvent e) {
-                return e.getMage().getPlayer();
-            }
-        }, 0);
+        EventValues.registerEventValue(PreCastEvent.class, Player.class, (Converter<PreCastEvent, Player>) e -> e.getMage().getPlayer(), 0);
 
-        EventValues.registerEventValue(PreCastEvent.class, Entity.class, new Getter<Entity, PreCastEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Entity get(final PreCastEvent e) {
-                return e.getMage().getEntity();
-            }
-        }, 0);
+        EventValues.registerEventValue(PreCastEvent.class, Entity.class, (Converter<PreCastEvent, Entity>) e -> e.getMage().getEntity(), 0);
 
-        EventValues.registerEventValue(StartCastEvent.class, Entity.class, new Getter<Entity, StartCastEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Entity get(final StartCastEvent e) {
-                return e.getMage().getEntity();
-            }
-        }, 0);
+        EventValues.registerEventValue(StartCastEvent.class, Entity.class, (Converter<StartCastEvent, Entity>) e -> e.getMage().getEntity(), 0);
 
-        EventValues.registerEventValue(EarnEvent.class, Player.class, new Getter<Player, EarnEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Player get(final EarnEvent e) {
-                return e.getMage().getPlayer();
-            }
-        }, 0);
+        EventValues.registerEventValue(EarnEvent.class, Player.class, (Converter<EarnEvent, Player>) e -> e.getMage().getPlayer(), 0);
 
-        EventValues.registerEventValue(EarnEvent.class, Entity.class, new Getter<Entity, EarnEvent>() {
-            @SuppressWarnings("null") // Eclipse bug
-            @Nullable
-            @Override
-            public Entity get(final EarnEvent e) {
-                return e.getMage().getEntity();
-            }
-        }, 0);
+        EventValues.registerEventValue(EarnEvent.class, Entity.class, (Converter<EarnEvent, Entity>) e -> e.getMage().getEntity(), 0);
 
         plugin.getLogger().info("Skript found:");
         plugin.getLogger().info("  Added events: cast, casting, casted, earn");
