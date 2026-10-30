@@ -366,10 +366,17 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>ch.njol</groupId>
-            <artifactId>skript</artifactId>
-            <version>2.2-SNAPSHOT</version>
+            <!-- 2.10+ registers event values with a Converter; the old Getter overload is gone -->
+            <groupId>com.github.SkriptLang</groupId>
+            <artifactId>Skript</artifactId>
+            <version>2.10.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>vg.civcraft.mc.civmodcore</groupId>
@@ -509,6 +516,10 @@
         <repository>
             <id>elMakers</id>
             <url>https://maven.elmakers.com/repository/</url>
+        </repository>
+        <repository>
+            <id>skript-releases</id>
+            <url>https://repo.skriptlang.org/releases</url>
         </repository>
         <repository>
             <id>enginehub-repo</id>

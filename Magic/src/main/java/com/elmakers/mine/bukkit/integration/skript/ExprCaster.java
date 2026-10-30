@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
 
-import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -37,7 +36,7 @@ public class ExprCaster extends SimpleExpression<Entity> {
 
     @Override
     public boolean init(final Expression<?>[] vars, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
-        if (!ScriptLoader.isCurrentEvent(CastEvent.class) && !ScriptLoader.isCurrentEvent(PreCastEvent.class)) {
+        if (!getParser().isCurrentEvent(CastEvent.class) && !getParser().isCurrentEvent(PreCastEvent.class)) {
             Skript.error("Cannot use 'caster' outside of a cast event", ErrorQuality.SEMANTIC_ERROR);
             return false;
         }
