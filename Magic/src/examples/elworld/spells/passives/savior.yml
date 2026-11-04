@@ -8,6 +8,8 @@ savior:
   # It can be right-clicked to toggle it on and off
   # If you don't want to let players toggle it on and off, set:
   # toggleable: false
+  # If you want it to start toggled off until the player turns it on, set:
+  # default_enabled: false
   passive: true
   triggers:
     # This triggers when the player is damaged

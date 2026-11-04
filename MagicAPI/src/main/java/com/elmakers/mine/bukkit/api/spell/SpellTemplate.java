@@ -167,6 +167,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getCreator();
 
     boolean isToggleable();
+    boolean isDefaultEnabled();
     boolean isPassive();
     boolean isQuiet();
 
