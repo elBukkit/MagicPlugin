@@ -271,6 +271,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean passive                     = false;
     private boolean aura                        = false;
     private boolean toggleable                  = true;
+    private boolean defaultEnabled              = true;
     private boolean reactivate                  = false;
     private boolean isActive                    = false;
     private boolean cancelled                   = false;
@@ -1148,6 +1149,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         passive = node.getBoolean("passive", false);
         reactivate = node.getBoolean("reactivate", false);
         toggleable = node.getBoolean("toggleable", true);
+        defaultEnabled = node.getBoolean("default_enabled", true);
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
         creativeRestricted = node.getBoolean("creative_restricted", false);
         glideRestricted = node.getBoolean("glide_restricted", false);
@@ -3689,6 +3691,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isToggleable() {
         return toggleable;
+    }
+
+    @Override
+    public boolean isDefaultEnabled() {
+        return defaultEnabled;
     }
 
     @Override
