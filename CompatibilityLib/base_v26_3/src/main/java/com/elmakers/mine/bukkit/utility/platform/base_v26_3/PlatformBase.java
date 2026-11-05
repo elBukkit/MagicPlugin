@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
+import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 
 public abstract class PlatformBase extends com.elmakers.mine.bukkit.utility.platform.base_v26_2.PlatformBase {
 
@@ -30,5 +31,10 @@ public abstract class PlatformBase extends com.elmakers.mine.bukkit.utility.plat
     @Override
     protected MobUtils createMobUtils() {
         return new MobUtilsBase(this);
+    }
+
+    @Override
+    protected SchematicUtils createSchematicUtils() {
+        return new com.elmakers.mine.bukkit.utility.platform.base_v26_3.SchematicUtils(this);
     }
 }

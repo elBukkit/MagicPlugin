@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BossBar;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,6 +13,7 @@ public class ReflectionUtils {
     private static Field itemStackHandleField;
     private static Field bossBarHandleField;
     private static Method nbtListGetMethod;
+    private static Method wrapBlockDataMethod;
 
     public static Object getPrivate(Logger logger, Object o, Class<?> c, String field) {
         try {
@@ -68,6 +70,24 @@ public class ReflectionUtils {
             return nbtListGetMethod.invoke(listTag, index);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error getting list item from " + listTag.getClass().getName(), ex);
+        }
+        return null;
+    }
+
+    public static BlockData wrapBlockData(Logger logger, Class<?> craftBlockDataClass, Object blockState) {
+        try {
+            if (wrapBlockDataMethod == null) {
+                Class<?> blockDataClass = Class.forName("net.minecraft.world.level.block.state.BlockState");
+                try {
+                    wrapBlockDataMethod = craftBlockDataClass.getMethod("createData", blockDataClass);
+                } catch (NoSuchMethodException ex) {
+                    // For Paper
+                    wrapBlockDataMethod = craftBlockDataClass.getMethod("createData", blockDataClass);
+                }
+            }
+            return (BlockData)wrapBlockDataMethod.invoke(null, blockState);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error converting NMS block state for " + blockState, ex);
         }
         return null;
     }

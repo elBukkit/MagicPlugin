@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -136,4 +137,6 @@ public interface NBTUtils {
     Object parseTag(String data);
 
     Object copyTag(Object tag);
+
+    BlockData getBlockData(Object tag);
 }

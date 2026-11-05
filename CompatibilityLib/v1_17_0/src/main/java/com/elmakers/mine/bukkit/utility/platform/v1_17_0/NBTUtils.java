@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
- import org.bukkit.entity.EntityType;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.v1_17_R1.block.data.CraftBlockData;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
+import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base_v1_17_0.NBTUtilsBase;
 
@@ -20,11 +23,13 @@ import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class NBTUtils extends NBTUtilsBase {
     public NBTUtils(Platform platform) {
@@ -343,5 +348,14 @@ public class NBTUtils extends NBTUtilsBase {
             platform.getLogger().warning("Error parsing NBT: " + data);
         }
         return null;
+    }
+
+    @Override
+    public BlockData getBlockData(Object tag) {
+        if (tag == null || !(tag instanceof CompoundTag)) return null;
+        CompoundTag compoundTag = (CompoundTag)tag;
+        BlockState blockState = NbtUtils.readBlockState(compoundTag);
+        if (blockState == null) return null;
+        return ReflectionUtils.wrapBlockData(platform.getLogger(), CraftBlockData.class, blockState);
     }
 }

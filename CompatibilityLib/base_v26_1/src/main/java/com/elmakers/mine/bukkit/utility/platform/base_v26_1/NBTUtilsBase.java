@@ -13,7 +13,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.mojang.brigadier.StringReader;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
@@ -36,6 +39,7 @@ import net.minecraft.nbt.LongArrayTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -45,6 +49,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.TypedEntityData;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class NBTUtilsBase implements NBTUtils {
     protected final Platform platform;
@@ -880,5 +885,14 @@ public class NBTUtilsBase implements NBTUtils {
             platform.getLogger().warning("Error parsing NBT: " + data);
         }
         return null;
+    }
+
+    @Override
+    public BlockData getBlockData(Object tag) {
+        if (tag == null || !(tag instanceof CompoundTag)) return null;
+        CompoundTag compoundTag = (CompoundTag)tag;
+        BlockState blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK, compoundTag);
+        if (blockState == null) return null;
+        return ReflectionUtils.wrapBlockData(platform.getLogger(), CraftBlockData.class, blockState);
     }
 }

@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -173,7 +174,7 @@ public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.plat
             // Map Palette
             paletteMap = new HashMap<>();
             for (int i = 0; i < palette.size(); i++) {
-                paletteMap.put(i, nbtUtils.getString(palette.get(i), "Name"));
+                paletteMap.put(i, getBlock(nbtUtils, palette.get(i)));
             }
         }
 
@@ -181,6 +182,25 @@ public class SchematicUtilsBase implements com.elmakers.mine.bukkit.utility.plat
         Vector origin = new Vector(0, 0, 0);
         schematic.load(width, height, length, blockMap, null, paletteMap, null, entityData, origin);
         return true;
+    }
+
+    protected String getBlock(com.elmakers.mine.bukkit.utility.platform.NBTUtils nbtUtils, Object nbtCompound) {
+        String id = nbtUtils.getString(nbtCompound, "Name");
+        if (id == null) {
+            id = nbtUtils.getString(nbtCompound, "id");
+            if (id == null) {
+                return "air";
+            }
+        }
+        if (nbtUtils.getAllKeys(nbtCompound).size() == 1) {
+            return id;
+        }
+        BlockData blockData = nbtUtils.getBlockData(nbtCompound);
+        if (blockData == null) {
+            return id;
+        }
+
+        return blockData.getAsString();
     }
 
     @Override
