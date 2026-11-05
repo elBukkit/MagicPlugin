@@ -191,6 +191,10 @@ age_dropped_items: 0
 # it may or may not cause server crashes.
 disable_armor_stand_portal: true
 
+# This prevents portal loops, set to 0 if this is causing issues
+# The default is 500ms (0.5 seconds)
+portal_cooldown: 500
+
 #
 # Wand configuration
 #
