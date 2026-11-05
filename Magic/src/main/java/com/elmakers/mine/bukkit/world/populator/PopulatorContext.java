@@ -245,8 +245,11 @@ public class PopulatorContext extends WorldInfoContext {
     }
 
     public BoundingBox getBounds() {
-        // TODO: Adjusted via Grid offset
         final int buffer = region.getBuffer();
-        return new BoundingBox(-buffer, getMinHeight(), -buffer, buffer * 2, getMaxHeight(), buffer * 2);
+        final int minX = -buffer - offset.x();
+        final int maxX = buffer * 2 - offset.x();
+        final int minZ = -buffer - offset.z();
+        final int maxZ = buffer * 2 - offset.z();
+        return new BoundingBox(minX, maxX, getMinHeight(), getMaxHeight(), minZ, maxZ);
     }
 }
