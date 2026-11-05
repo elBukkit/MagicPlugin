@@ -41,6 +41,7 @@ import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -251,6 +252,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         // Check for block data
         String originalKey = materialKey;
+        materialKey = ItemData.cleanMinecraftItemName(materialKey);
         String blockData = null;
         String itemData = null;
         String[] blockPieces = StringUtils.split(materialKey, "?");
