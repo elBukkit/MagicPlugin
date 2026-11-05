@@ -66,7 +66,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int sizeX = shiftToFit ? sizeXBase : Math.min(sizeXBase, bounds.getMax().getBlockX() - startX);
         final int sizeZ = shiftToFit ? sizeZBase : Math.min(sizeZBase, bounds.getMax().getBlockZ() - startZ);
         final int groundLevel = world.getGroundLevel();
-        final int startY = 1 + context.searchArea(searchType, startX, groundLevel, startZ, startX + sizeX, startZ + sizeZ);
+        final int startY = context.searchArea(searchType, startX, groundLevel, startZ, startX + sizeX, startZ + sizeZ);
         final int maxHeight = context.getMaxHeight();
         for (int dx = 0; dx < sizeX; dx++) {
             for (int dz = 0; dz < sizeZ; dz++) {
