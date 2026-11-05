@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
 
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
@@ -25,14 +24,8 @@ public class EndPortalPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final LimitedRegion region = context.getRegion();
 
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
         final int positionX = position.getRandom(random);
         final int positionZ = position.getRandom(random);
         final int floorLevel = world.getGroundLevel();
@@ -42,14 +35,14 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         final int portalRightX = portalLeftX + portalWidth;
         final int portalLeftZ = positionZ - (portalWidth / 2);
         final int portalRightZ = portalLeftZ + portalWidth;
-        final int minPortalX = chunkGlobalX + portalLeftX;
-        final int maxPortalX = chunkGlobalX + portalRightX;
-        final int minPortalZ = chunkGlobalZ + portalLeftZ;
-        final int maxPortalZ = chunkGlobalZ + portalRightZ;
+        final int minPortalX = portalLeftX;
+        final int maxPortalX = portalRightX;
+        final int minPortalZ = portalLeftZ;
+        final int maxPortalZ = portalRightZ;
 
         for (int x = minPortalX; x < maxPortalX; x++) {
             for (int z = minPortalZ; z < maxPortalZ; z++) {
-                region.setType(x, floorLevel + yOffset, z, Material.END_PORTAL);
+                context.setType(x, floorLevel + yOffset, z, Material.END_PORTAL);
             }
         }
     }

@@ -4,16 +4,23 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeType;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.IntVector;
 import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.WorldInfoContext;
@@ -62,18 +69,26 @@ public class PopulatorContext extends WorldInfoContext {
         this(base.worldInfo, base.random, base.chunkX, base.chunkZ, base.region,  base.offset.add(offset));
     }
 
-    public PopulatorContext update(int yOffset) {
+    public PopulatorContext offsetY(int yOffset) {
         if (yOffset == 0) {
             return this;
         }
         return new PopulatorContext(this, yOffset);
     }
 
-    public PopulatorContext update(IntVector offset) {
+    public PopulatorContext offset(IntVector offset) {
         if (offset.isZero()) {
             return this;
         }
         return new PopulatorContext(this, offset);
+    }
+
+    public Material getType(int x, int y, int z) {
+        return region.getType(getWorldX(x), getWorldY(y), getWorldZ(z));
+    }
+
+    public boolean setType(int x, int y, int z, @NotNull Material material) {
+        return setBlockData(x, y, z, material.createBlockData());
     }
 
     public boolean setBlockData(int x, int y, int z, @NotNull BlockData blockData) {
@@ -95,7 +110,7 @@ public class PopulatorContext extends WorldInfoContext {
         return region.getBlockState(getWorldX(x), getWorldY(y), getWorldZ(z));
     }
 
-    protected int searchBlock(int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
+    public int searchBlock(int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
         return searchBlock(x, y, z, maxSearch, direction, throughAir, returnAir, material -> material.isAir());
     }
 
@@ -118,7 +133,7 @@ public class PopulatorContext extends WorldInfoContext {
         return throughBlocks == returnBlocks ? y - direction : y;
     }
 
-    protected int getTopBlock(int x, int y, int z) {
+    public int getTopBlock(int x, int y, int z) {
         return searchBlock(x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, false, false);
     }
 
@@ -184,12 +199,54 @@ public class PopulatorContext extends WorldInfoContext {
         return x >> 4 == chunkX && z >> 4 == chunkZ;
     }
 
-    // TODO: Remove these, probably
-    public WorldInfo getWorldInfo() {
-        return worldInfo;
+    public int getSolidFloorOrCeiling(boolean isFloor, int x, int y, int z) {
+        final int topY = getTopSolidBlock(x, y, z);
+        final int solidY;
+        if (isFloor) {
+            solidY = topY;
+        } else {
+            solidY = getSolidBlockAbove(x, topY, z);
+        }
+        return solidY;
     }
 
-    public LimitedRegion getRegion() {
-        return region;
+    protected int getTopSolidBlock(int x, int y, int z) {
+        return searchBlock(x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, true, material -> material.isSolid());
+    }
+
+    protected int getSolidBlockAbove(int x, int y, int z) {
+        return searchBlock(x, y + 1, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, false, material -> !material.isSolid());
+    }
+
+    public boolean isInRegion(int x, int y, int z) {
+        return region.isInRegion(getWorldX(x), getWorldY(y), getWorldZ(z));
+    }
+
+    public World getWorld() {
+        return Bukkit.getWorld(worldInfo.getName());
+    }
+
+    public Entity spawn(EntityData entityData, int x, int y, int z) {
+        final World world = getWorld();
+        if (world == null) return null;
+
+        Entity entity = entityData.create(new Location(world, getWorldX(x), getWorldY(y), getWorldZ(z)));
+        if (entity != null) {
+            region.addEntity(entity);
+        }
+        return entity;
+    }
+
+    public boolean generateTree(int x, int y, int z, @NotNull Random random, @NotNull TreeType treeType) {
+        final World world = getWorld();
+        if (world == null) return false;
+        region.generateTree(new Location(world, getWorldX(x), getWorldY(y), getWorldZ(z)), random, treeType);
+        return true;
+    }
+
+    public BoundingBox getBounds() {
+        // TODO: Adjusted via Grid offset
+        final int buffer = region.getBuffer();
+        return new BoundingBox(-buffer, getMinHeight(), -buffer, buffer * 2, getMaxHeight(), buffer * 2);
     }
 }

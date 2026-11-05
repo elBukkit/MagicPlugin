@@ -4,9 +4,8 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
@@ -26,15 +25,8 @@ public class TunnelPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
         final int tunnelWidth = this.tunnelSize.getRandom(random);
         final int tunnelHeight = this.tunnelHeight.getRandom(random);
@@ -42,22 +34,22 @@ public class TunnelPopulator extends BaseBlockPopulator {
         final int tunnelLeft = center - (tunnelWidth / 2);
         final int tunnelRight = tunnelLeft + tunnelWidth;
 
-        final int buffer = region.getBuffer();
-        final int minX = chunkGlobalX - buffer;
-        final int maxX = chunkGlobalX + 16 + buffer;
-        final int minZ = chunkGlobalZ - buffer;
-        final int maxZ = chunkGlobalZ + 16 + buffer;
-        final int minExitX = chunkGlobalX + tunnelLeft;
-        final int maxExitX = chunkGlobalX + tunnelRight;
-        final int minExitZ = chunkGlobalZ + tunnelLeft;
-        final int maxExitZ = chunkGlobalZ + tunnelRight;
+        final BoundingBox bounds = context.getBounds();
+        final int minX = bounds.getMin().getBlockX();
+        final int maxX = bounds.getMax().getBlockX();
+        final int minZ = bounds.getMin().getBlockZ();
+        final int maxZ = bounds.getMax().getBlockZ();
+        final int minExitX = tunnelLeft;
+        final int maxExitX = tunnelRight;
+        final int minExitZ = tunnelLeft;
+        final int maxExitZ = tunnelRight;
         final int maxExitY = floorLevel + tunnelHeight;
 
         for (int x = minX; x < maxX; x++) {
             for (int z = minZ; z < maxZ; z++) {
                 for (int y = floorLevel + 1; y <= maxExitY; y++) {
                     if ((x >= minExitX && x <= maxExitX) || (z >= minExitZ && z <= maxExitZ)) {
-                        region.setType(x, y, z, Material.AIR);
+                        context.setType(x, y, z, Material.AIR);
                     }
                 }
             }

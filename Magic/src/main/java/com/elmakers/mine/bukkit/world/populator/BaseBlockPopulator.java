@@ -281,7 +281,7 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     }
 
     public void updateAndPopulate(PopulatorContext context) {
-        populate(context.update(position.getRandom(context.getRandom())));
+        populate(context.offset(position.getRandom(context.getRandom())));
     }
 
     @Override

@@ -6,8 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.SearchType;
@@ -41,15 +39,8 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
         final int positionX = position.getRandom(random);
         final int positionZ = position.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);
@@ -60,19 +51,19 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
         final int portalRightX = portalLeftX + gatewayWidth;
         final int portalLeftZ = positionZ - (gatewayWidth / 2);
         final int portalRightZ = portalLeftZ + gatewayWidth;
-        final int minExitX = chunkGlobalX + portalLeftX;
-        final int maxExitX = chunkGlobalX + portalRightX;
-        final int minExitZ = chunkGlobalZ + portalLeftZ;
-        final int maxExitZ = chunkGlobalZ + portalRightZ;
+        final int minExitX = portalLeftX;
+        final int maxExitX = portalRightX;
+        final int minExitZ = portalLeftZ;
+        final int maxExitZ = portalRightZ;
         final BlockData gatewayBlock = getGatewayBlock();
-        final int startY = searchArea(searchType, worldInfo, region, minExitX, floorLevel, minExitZ, maxExitX, maxExitZ);
+        final int startY = context.searchArea(searchType, minExitX, floorLevel, minExitZ, maxExitX, maxExitZ);
 
         for (int x = minExitX; x < maxExitX; x++) {
             for (int z = minExitZ; z < maxExitZ; z++) {
-                final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, floorLevel) + yOffset;
-                final int maxExitY = Math.min(worldInfo.getMaxHeight() - 1, groundY + gatewayHeight);
+                final int groundY = context.continueSearchArea(searchType, x, startY, z, floorLevel) + yOffset;
+                final int maxExitY = Math.min(context.getMaxHeight() - 1, groundY + gatewayHeight);
                 for (int y = groundY + 1; y <= maxExitY; y++) {
-                    region.setBlockData(x, y, z, gatewayBlock);
+                    context.setBlockData(x, y, z, gatewayBlock);
                 }
             }
         }

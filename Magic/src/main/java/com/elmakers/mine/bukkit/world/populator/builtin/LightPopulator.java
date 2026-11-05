@@ -6,8 +6,6 @@ import java.util.Random;
 
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
@@ -30,20 +28,13 @@ public class LightPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
         final BlockData lightBlock = RandomUtils.getRandom(lightBlocks, random).createBlockData();
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
-        final int x = chunkGlobalX + position.getRandom(random);
-        final int z = chunkGlobalZ + position.getRandom(random);
+        final int x = position.getRandom(random);
+        final int z = position.getRandom(random);
         final boolean isFloor = random.nextDouble() < floorProbability;
-        final int y = getSolidFloorOrCeiling(isFloor, worldInfo, region, x, world.getBedrockLevel(), z);
-        region.setBlockData(x, y, z, lightBlock);
+        final int y = context.getSolidFloorOrCeiling(isFloor, x, world.getBedrockLevel(), z);
+        context.setBlockData(x, y, z, lightBlock);
     }
 }

@@ -225,7 +225,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
     public void updateAndPopulate(PopulatorContext context) {
-        populate(context.update(yOffset));
+        populate(context.offsetY(yOffset));
     }
 
     @Override

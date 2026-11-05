@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.utility.IntVector;
 import com.elmakers.mine.bukkit.world.WorldContext;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
@@ -12,7 +13,7 @@ import com.elmakers.mine.bukkit.world.populator.CompoundPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class GridPopulator extends CompoundPopulator {
-    private record GridEntry(BaseBlockPopulator populator, int x, int z) {}
+    private record GridEntry(BaseBlockPopulator populator, IntVector offset) {}
     private final List<GridEntry> entries = new ArrayList<>();
 
     @Override
@@ -27,6 +28,7 @@ public class GridPopulator extends CompoundPopulator {
         for (String entryKey : gridConfig.getKeys(false)) {
             ConfigurationSection entry = gridConfig.getConfigurationSection(entryKey);
             final int x = entry.getInt("x", 0);
+            final int y = entry.getInt("y", 0);
             final int z = entry.getInt("z", 0);
             BaseBlockPopulator populator;
             if (entry.contains("populator") || entry.contains("class")) {
@@ -37,7 +39,7 @@ public class GridPopulator extends CompoundPopulator {
 
             if (populator != null) {
                 entries.add(new GridEntry(
-                    populator, x, z
+                    populator, new IntVector(x * 16, y, z * 16)
                 ));
             }
         }
@@ -52,7 +54,7 @@ public class GridPopulator extends CompoundPopulator {
     @Override
     protected void populate(PopulatorContext context) {
         for (GridEntry entry : entries) {
-            entry.populator.updateAndPopulate(context);
+            entry.populator.updateAndPopulate(context.offset(entry.offset));
         }
     }
 }

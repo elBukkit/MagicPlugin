@@ -6,11 +6,10 @@ import java.util.Random;
 
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.noise.PerlinNoiseGenerator;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.random.DoubleRange;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
@@ -43,29 +42,25 @@ public class TowerPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
-        final int worldHeight = worldInfo.getMaxHeight();
+        final int worldHeight = context.getMaxHeight();
         final int towerHeight = Math.min(worldHeight - 1, height.getRandom(random));
         final double taper = this.taper.getRandom(random);
         final double noise = this.noise.getRandom(random);
         final double solidAmount = this.solidAmount.getRandom(random);
         synchronized (this) {
             if (perlin == null) {
-                perlin = new PerlinNoiseGenerator(worldInfo.getSeed());
+                perlin = new PerlinNoiseGenerator(context.getSeed());
             }
         }
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
-        final int buffer = region.getBuffer();
-        final int maxWidth = 16 + buffer * 2;
-        final int towerWidth = Math.min(maxWidth, this.size.getRandom(random));
+        final BoundingBox bounds = context.getBounds();
+        final int maxWidthX = bounds.size().getBlockZ();
+        final int maxWidthZ = bounds.size().getBlockZ();
+        final int randomSize = this.size.getRandom(random);
+        final int towerWidthX = Math.min(maxWidthX, randomSize);
+        final int towerWidthZ = Math.min(maxWidthZ, randomSize);
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
         final int positionX = position.getRandom(random);
@@ -76,33 +71,34 @@ public class TowerPopulator extends BaseBlockPopulator {
         final int taperStart = (int)(taperStartFactor * towerHeight);
         for (int y = minY; y < maxY; y++) {
             final double taperFactor = y < taperStart ? 0 : RandomUtils.lerp(0, taper, (double)(y - taperStart) / (maxY - taperStart));
-            final double taperedWidth = (towerWidth - taperFactor * towerWidth) / 2;
-            final int towerWidthLeft = (int)Math.floor(taperedWidth);
-            final int towerWidthRight = (int)Math.ceil(taperedWidth);
-            final int minX = positionX - towerWidthLeft;
-            final int maxX = positionX + towerWidthRight;
-            final int minZ = positionZ - towerWidthLeft;
-            final int maxZ =  positionZ + towerWidthRight;
+            final double taperedWidthX = (towerWidthX - taperFactor * towerWidthX) / 2;
+            final double taperedWidthZ = (towerWidthZ - taperFactor * towerWidthZ) / 2;
+            final int towerWidthLeftX = (int)Math.floor(taperedWidthX);
+            final int towerWidthRightX = (int)Math.ceil(taperedWidthX);
+            final int towerWidthLeftZ = (int)Math.floor(taperedWidthZ);
+            final int towerWidthRightZ = (int)Math.ceil(taperedWidthZ);
+            final int minX = positionX - towerWidthLeftX;
+            final int maxX = positionX + towerWidthRightX;
+            final int minZ = positionZ - towerWidthLeftZ;
+            final int maxZ =  positionZ + towerWidthRightZ;
             final int midX = (minX + maxX) / 2;
             final int midZ = (minZ + maxZ) / 2;
             final int sizeXHalf = Math.abs(maxX - minX) / 2;
             final int sizeZHalf = Math.abs(maxZ - minZ) / 2;
             final int solidX = (int)(solidAmount * sizeXHalf);
             final int solidZ = (int)(solidAmount * sizeZHalf);
-            for (int dx = minX; dx < maxX; dx++) {
-                final int x = chunkGlobalX + dx;
+            for (int x = minX; x < maxX; x++) {
                 final double noiseXValue = (perlin.noise(x * noise, y * noise) + 1) / 2;
                 final int maxDZ = RandomUtils.lerp(solidX, sizeXHalf, noiseXValue);
-                for (int dz = minZ; dz < maxZ; dz++) {
-                    final int z = chunkGlobalZ + dz;
+                for (int z = minZ; z < maxZ; z++) {
                     final double noiseZValue = (perlin.noise(z * noise, y * noise) + 1) / 2;
                     final int maxDX = RandomUtils.lerp(solidZ, sizeZHalf, noiseZValue);
-                    if (x < chunkGlobalX + midX + maxDX
-                        && x > chunkGlobalX + midX - maxDX
-                        && z < chunkGlobalZ + midZ + maxDZ
-                        && z > chunkGlobalZ + midZ - maxDZ
+                    if (x < midX + maxDX
+                        && x > midX - maxDX
+                        && z < midZ + maxDZ
+                        && z > midZ - maxDZ
                     ) {
-                        setBlockData(region, x, y, z, wallBlockData);
+                        context.setBlockData(x, y, z, wallBlockData);
                     }
                 }
             }

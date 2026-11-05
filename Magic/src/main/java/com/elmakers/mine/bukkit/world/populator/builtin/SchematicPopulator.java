@@ -5,13 +5,12 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.SearchType;
@@ -46,12 +45,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
         MagicController controller = getController();
         if (schematic == null) {
@@ -63,26 +57,26 @@ public class SchematicPopulator extends BaseBlockPopulator {
         }
 
         Vector size = schematic.getSize();
-        final int buffer = region.getBuffer();
-        final int chunkBaseX = (chunkX << 4);
-        final int chunkBaseZ = (chunkZ << 4);
-        final int maxSize = 16 + buffer * 2;
+        final BoundingBox bounds = context.getBounds();
+        final Vector maxSize = bounds.size();
         final int sizeY = size.getBlockY();
         final int startXBase = position.getRandom(random);
         final int startZBase = position.getRandom(random);
-        final int sizeX = Math.min(size.getBlockX(), maxSize);
-        final int sizeZ = Math.min(size.getBlockZ(), maxSize);
-        final int startX = shiftToFit ? Math.min(startXBase, maxSize - sizeX - 16) : startXBase;
-        final int startZ = shiftToFit ? Math.min(startZBase, maxSize - sizeZ - 16) : startZBase;
+        final int sizeXBase = Math.min(size.getBlockX(), maxSize.getBlockZ());
+        final int sizeZBase = Math.min(size.getBlockZ(), maxSize.getBlockX());
+        final int startX = shiftToFit ? Math.min(startXBase, bounds.getMax().getBlockX() - sizeXBase) : startXBase;
+        final int startZ = shiftToFit ? Math.min(startZBase,  bounds.getMax().getBlockZ() - sizeZBase) : startZBase;
+        final int sizeX = shiftToFit ? sizeXBase : Math.min(sizeXBase, bounds.getMax().getBlockX() - startX);
+        final int sizeZ = shiftToFit ? sizeZBase : Math.min(sizeZBase, bounds.getMax().getBlockZ() - startZ);
         final int groundLevel = world.getGroundLevel();
         final int startOffsetY = yOffset.getRandom(random);
-        final int startY = 1 + startOffsetY + searchArea(searchType, worldInfo, region, startX + chunkBaseX, groundLevel, startZ + chunkBaseZ, startX + chunkBaseX + sizeX, startZ + chunkBaseZ + sizeZ);
-        final int maxHeight = worldInfo.getMaxHeight();
+        final int startY = 1 + startOffsetY + context.searchArea(searchType, startX, groundLevel, startZ, startX + sizeX, startZ + sizeZ);
+        final int maxHeight = context.getMaxHeight();
         for (int dx = 0; dx < sizeX; dx++) {
             for (int dz = 0; dz < sizeZ; dz++) {
-                final int x = dx + startX + chunkBaseX;
-                final int z = dz + startZ + chunkBaseZ;
-                int yOffset = continueSearchArea(searchType, worldInfo, region, x, startY, z, groundLevel);
+                final int x = dx + startX;
+                final int z = dz + startZ;
+                int yOffset = context.continueSearchArea(searchType, x, startY, z, groundLevel);
                 for (int dy = 0; dy < sizeY; dy++) {
                     final int y = dy + yOffset;
                     if (y >= maxHeight) break;
@@ -96,7 +90,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
                             // world.getLogger().warning("Failed to create block data for " + material + " from schematic " + schematicName);
                             continue;
                         }
-                        setBlockData(region, x, y, z, blockData);
+                        context.setBlockData(x, y, z, blockData);
                     }
                 }
             }

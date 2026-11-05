@@ -6,8 +6,6 @@ import java.util.Random;
 
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
@@ -35,27 +33,20 @@ public class VinesPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
         final int groundLevel = world.getGroundLevel();
         final int height = this.height.getRandom(random);
         final int startX = this.position.getRandom(random);
         final int startZ = this.position.getRandom(random);
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
 
         BlockData vineData = null;
 
-        final int x = chunkGlobalX + startX;
-        final int z = chunkGlobalZ + startZ;
-        final int groundY = getTopBlock(worldInfo, region, x, groundLevel, z);
-        final int ceilingY = searchBlock(worldInfo, region, x, groundY + 1, z, searchY, 1, true, true);
-        if (!region.isInRegion(x, ceilingY + 1, z) || !region.getType(x, ceilingY + 1, z).isSolid()) {
+        final int x = startX;
+        final int z = startZ;
+        final int groundY = context.getTopBlock(x, groundLevel, z);
+        final int ceilingY = context.searchBlock(x, groundY + 1, z, searchY, 1, true, true);
+        if (!context.isInRegion(x, ceilingY + 1, z) || !context.getType(x, ceilingY + 1, z).isSolid()) {
             return;
         }
 
@@ -69,7 +60,7 @@ public class VinesPopulator extends BaseBlockPopulator {
             }
             if (vineData == null) continue;
 
-            region.setBlockData(x, y, z, vineData);
+            context.setBlockData(x, y, z, vineData);
             if (!consistent) {
                 vineData = null;
             }

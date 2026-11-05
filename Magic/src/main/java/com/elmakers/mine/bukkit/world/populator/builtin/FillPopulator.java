@@ -6,8 +6,6 @@ import java.util.Random;
 
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
@@ -54,15 +52,8 @@ public class FillPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
         final int widthX = this.sizeX.getRandom(random);
         final int widthZ = this.sizeZ.getRandom(random);
@@ -72,19 +63,19 @@ public class FillPopulator extends BaseBlockPopulator {
         final int positionY = fixedPosition ? this.positionY.getRandom(random) : floorLevel;
         final int positionZ = this.positionZ.getRandom(random);
         final int height = this.height.getRandom(random);
-        final int minX = chunkGlobalX + positionX;
-        final int maxX = chunkGlobalX + positionX + widthX;
-        final int minZ = chunkGlobalZ + positionZ;
-        final int maxZ = chunkGlobalZ + positionZ + widthZ;
+        final int minX = positionX;
+        final int maxX = positionX + widthX;
+        final int minZ = positionZ;
+        final int maxZ = positionZ + widthZ;
         final BlockData block = RandomUtils.getRandom(blocks, random).createBlockData();
-        final int startY = searchArea(searchType, worldInfo, region, minX, positionY, minZ, maxX, maxZ);
+        final int startY = context.searchArea(searchType, minX, positionY, minZ, maxX, maxZ);
 
         for (int x = minX; x < maxX; x++) {
             for (int z = minZ; z < maxZ; z++) {
-                final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, positionY) + yOffset;
-                final int maxY = Math.min(groundY + height, worldInfo.getMaxHeight() - 1);
+                final int groundY = context.continueSearchArea(searchType, x, startY, z, positionY) + yOffset;
+                final int maxY = Math.min(groundY + height, context.getMaxHeight() - 1);
                 for (int y = groundY + 1; y <= maxY; y++) {
-                    region.setBlockData(x, y, z, block);
+                    context.setBlockData(x, y, z, block);
                 }
             }
         }

@@ -7,8 +7,6 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
@@ -39,55 +37,45 @@ public class PoolsPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
-        final boolean isStartingChunk = chunkX == 0 && chunkZ == 0;
         final int floorLevel = world.getGroundLevel();
         final int waterMinY = floorLevel - depth.getRandom(random);
-        final int walkwayWidthHalf = isStartingChunk ? 0 : walkwayWidth.getRandom(random);
+        final int walkwayWidthHalf = walkwayWidth.getRandom(random);
         final int centerX = position.getRandom(random);
         final int centerZ = position.getRandom(random);
         final int walkwayLeftX = centerX - walkwayWidthHalf;
         final int walkWayRightX = centerX + walkwayWidthHalf;
         final int walkwayLeftZ = centerZ - walkwayWidthHalf;
         final int walkWayRightZ = centerZ + walkwayWidthHalf;
-        final boolean hasIsland = !isStartingChunk && random.nextDouble() < islandProbability;
+        final boolean hasIsland = random.nextDouble() < islandProbability;
         final int width = poolsSize.getRandom(random);
         final int lightsFirstX = walkwayLeftX / 2 + 1;
         final int lightsFirstZ = walkwayLeftZ / 2 + 1;
         final int lightsSecondX = width - lightsFirstX;
         final int lightsSecondZ = width - lightsFirstZ;
         final BlockData lightBlock = RandomUtils.getRandom(lightBlocks, random).createBlockData();
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
         final int startX = centerX - (width / 2);
         final int stopX = startX + width;
         final int startZ = centerZ - (width / 2);
         final int stopZ = startZ + width;
 
-        for (int dx = startX; dx < stopX; dx++) {
-            for (int dz = startZ; dz < stopZ; dz++) {
-                final int x = chunkGlobalX + dx;
-                final int z = chunkGlobalZ + dz;
-                if (!region.getType(x, floorLevel + 1, z).isAir()) continue;
+        for (int x = startX; x < stopX; x++) {
+            for (int z = startZ; z < stopZ; z++) {
+                if (!context.getType(x, floorLevel + 1, z).isAir()) continue;
 
                 final BlockData waterBlock = Material.WATER.createBlockData();
-                final boolean isWalkway = (dx > walkwayLeftX && dx < walkWayRightX) || (dz > walkwayLeftZ && dz < walkWayRightZ);
-                final boolean isIsland = hasIsland && dx >= 7 && dz >= 7 && dx <= 9 && dz <= 9;
+                final boolean isWalkway = (x > walkwayLeftX && x < walkWayRightX) || (z > walkwayLeftZ && z < walkWayRightZ);
+                final boolean isIsland = hasIsland && x >= 7 && z >= 7 && x <= 9 && z <= 9;
 
                 if (!isWalkway && !isIsland) {
-                    final boolean isCenterLight = (dx == lightsFirstX || dx == lightsSecondX) && (dz == lightsFirstZ || dz == lightsSecondZ);
+                    final boolean isCenterLight = (x == lightsFirstX || x == lightsSecondX) && (z == lightsFirstZ || z == lightsSecondZ);
                     if (isCenterLight && random.nextDouble() < lightProbability) {
-                        region.setBlockData(x, waterMinY, z, lightBlock);
+                        context.setBlockData(x, waterMinY, z, lightBlock);
                     }
 
                     for (int y = floorLevel; y > waterMinY; y--) {
-                        region.setBlockData(x, y, z, waterBlock);
+                        context.setBlockData(x, y, z, waterBlock);
                     }
                 }
             }

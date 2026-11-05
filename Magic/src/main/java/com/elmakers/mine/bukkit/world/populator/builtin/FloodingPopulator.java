@@ -5,8 +5,6 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
@@ -24,29 +22,19 @@ public class FloodingPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
         final MagicController controller = getController();
         final int floorLevel = world.getGroundLevel();
         int floodLevel = floodingLevel.getRandom(random);
         Levelled floodWater = (Levelled)controller.getPlugin().getServer().createBlockData(Material.WATER);
         floodWater.setLevel(floodLevel);
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
 
-        for (int dx = 0; dx < 16; dx++) {
-            for (int dz = 0; dz < 16; dz++) {
-                final int x = chunkGlobalX + dx;
-                final int z = chunkGlobalZ + dz;
-
-                if (!region.getType(x, floorLevel, z).isSolid()) continue;
-                if (!region.getType(x, floorLevel + 1, z).isAir()) continue;
-                region.setBlockData(x, floorLevel + 1, z, floodWater);
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                if (!context.getType(x, floorLevel, z).isSolid()) continue;
+                if (!context.getType(x, floorLevel + 1, z).isAir()) continue;
+                context.setBlockData(x, floorLevel + 1, z, floodWater);
             }
         }
     }

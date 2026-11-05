@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -71,35 +65,21 @@ public class SpawnPopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
-        final World targetWorld = Bukkit.getWorld(world.getName());
-        if (targetWorld == null) return;
-        final int chunkBaseX = (chunkX << 4);
-        final int chunkBaseZ = (chunkZ << 4);
         final int baseY = world.getGroundLevel();
-        EntityData entityData = RandomUtils.getDistanceWeighted(spawns, worldInfo.getSeed(), chunkX, chunkZ);
+        EntityData entityData = RandomUtils.getDistanceWeighted(spawns, context.getSeed(), context.getChunkX(), context.getChunkZ());
         if (entityData == null) return;
 
         boolean spawned = false;
         final int positionX = this.position.getRandom(random);
         final int positionZ = this.position.getRandom(random);
-        final int baseX = chunkBaseX + positionX;
-        final int baseZ = chunkBaseZ + positionZ;
-        for (int x = baseX - searchX; x < baseX + searchX && !spawned; x++) {
-            for (int z = baseZ - searchZ; z < baseZ + searchZ && !spawned; z++) {
+        for (int x = positionX - searchX; x < positionX + searchX && !spawned; x++) {
+            for (int z = positionZ - searchZ; z < positionZ + searchZ && !spawned; z++) {
                 for (int y = baseY - searchY; y < baseY + searchY && !spawned; y++) {
-                    if (!region.isInRegion(x, y, z) || !region.isInRegion(x, y + 1, z) || !region.isInRegion(x, y - 1, z)) continue;
-                    if (region.getType(x, y, z).isAir() && region.getType(x, y + 1, z).isAir() && !region.getType(x, y - 1, z).isAir()) {
-                        Entity entity = entityData.create(new Location(targetWorld, x, y, z));
-                        if (entity != null) {
-                            region.addEntity(entity);
-                        }
+                    if (!context.isInRegion(x, y, z) || !context.isInRegion(x, y + 1, z) || !context.isInRegion(x, y - 1, z)) continue;
+                    if (context.getType(x, y, z).isAir() && context.getType(x, y + 1, z).isAir() && !context.getType(x, y - 1, z).isAir()) {
+                        context.spawn(entityData, x, y, z);
                         spawned = true;
                     }
                 }

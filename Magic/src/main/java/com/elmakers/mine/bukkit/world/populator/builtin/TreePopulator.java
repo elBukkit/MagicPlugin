@@ -4,11 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Location;
 import org.bukkit.TreeType;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
@@ -38,12 +35,7 @@ public class TreePopulator extends BaseBlockPopulator {
 
     @Override
     protected void populate(PopulatorContext context) {
-        // TODO: Use context
         final Random random = context.getRandom();
-        final int chunkX = context.getChunkX();
-        final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
-        final LimitedRegion region = context.getRegion();
 
         final int groundLevel = world.getGroundLevel();
         final MaterialAndData baseBlock = RandomUtils.getRandom(baseBlocks, random);
@@ -55,22 +47,18 @@ public class TreePopulator extends BaseBlockPopulator {
         final int startZ = centerZ - width / 2;
         final int endX = startX + width;
         final int endZ = startZ + width;
-        final int chunkGlobalX = chunkX << 4;
-        final int chunkGlobalZ = chunkZ << 4;
-        final int startY = searchArea(searchType, worldInfo, region, startX + chunkGlobalX, groundLevel, startZ + chunkGlobalZ, endX + chunkGlobalX, endZ + chunkGlobalZ);
+        final int startY = context.searchArea(searchType, startX, groundLevel, startZ, endX, endZ);
         if (baseBlock != null) {
-            for (int dx = startX; dx < endX; dx++) {
-                for (int dz = startZ; dz < endZ; dz++) {
-                    final int x = chunkGlobalX + dx;
-                    final int z = chunkGlobalZ + dz;
-                    final int groundY = continueSearchArea(searchType, worldInfo, region, x, startY, z, groundLevel);
-                    region.setBlockData(x, groundY, z, baseBlock.createBlockData());
+            for (int x = startX; x < endX; x++) {
+                for (int z = startZ; z < endZ; z++) {
+                    final int groundY = context.continueSearchArea(searchType, x, startY, z, groundLevel);
+                    context.setBlockData(x, groundY, z, baseBlock.createBlockData());
                 }
             }
         }
-        final int x = chunkGlobalX + centerX;
-        final int z = chunkGlobalZ + centerZ;
-        final int y = 1 + getTopBlock(worldInfo, region, x, groundLevel, z);
-        region.generateTree(new Location(world.getWorld(), x, y, z), random, treeType);
+        final int x = centerX;
+        final int z = centerZ;
+        final int y = 1 + context.getTopBlock(x, groundLevel, z);
+        context.generateTree(x, y, z, random, treeType);
     }
 }
