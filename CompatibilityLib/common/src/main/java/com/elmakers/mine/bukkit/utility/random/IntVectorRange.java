@@ -18,21 +18,22 @@ public class IntVectorRange {
         this.z = z;
     }
 
-    public static IntVectorRange fromConfig(Logger logger, ConfigurationSection config, int defaultMinX, int defaultMinZ) {
+    public static IntVectorRange fromConfig(Logger logger, ConfigurationSection config, int defaultMin, int defaultMax, String key) {
         IntegerRange x;
         IntegerRange y;
         IntegerRange z;
-        if (config.contains("position")) {
-            x = IntegerRange.fromConfig(logger, config, "position", defaultMinX, defaultMinZ);
+        if (config.contains(key)) {
+            x = IntegerRange.fromConfig(logger, config, key, defaultMin, defaultMax);
             z = x;
         } else {
-            x = IntegerRange.fromConfig(logger, config, "position_x", defaultMinX, defaultMinZ);
-            z = IntegerRange.fromConfig(logger, config, "position_z", defaultMinX, defaultMinZ);
+            x = IntegerRange.fromConfig(logger, config, key + "_x", defaultMin, defaultMax);
+            z = IntegerRange.fromConfig(logger, config, key + "_z", defaultMin, defaultMax);
         }
-        if (config.contains("position_y")) {
-            y = IntegerRange.fromConfig(logger, config, "position_y", 0, 0);
+        // Special-case for consistency with other uses of y_offset
+        if (config.contains(key + "_y")) {
+            y = IntegerRange.fromConfig(logger, config, key + "_y", 0, 0);
         } else {
-            y = IntegerRange.fromConfig(logger, config, "y_offset", 0, 0);
+            y = IntegerRange.fromConfig(logger, config, "y_" + key, 0, 0);
         }
 
         return new IntVectorRange(x, y, z);

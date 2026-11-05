@@ -31,12 +31,12 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
 
     protected MagicWorld world;
     private String targetWorld;
-    private IntVectorRange position;
+    private IntVectorRange offset;
 
     public boolean load(MagicWorld world, ConfigurationSection config) {
         this.world = world;
         targetWorld = config.getString("target_world", targetWorld);
-        position = IntVectorRange.fromConfig(getLogger(), config, 0, 15);
+        offset = IntVectorRange.fromConfig(getLogger(), config, 0, 0, "offset");
         return onLoad(config);
     }
 
@@ -281,7 +281,7 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
     }
 
     public void updateAndPopulate(PopulatorContext context) {
-        populate(context.offset(position.getRandom(context.getRandom())));
+        populate(context.offset(offset.getRandom(context.getRandom())));
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.DoubleRange;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
@@ -20,6 +21,7 @@ import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 public class CropsPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
     private DoubleRange age;
+    private IntegerRange position;
     private IntegerRange size;
     private SearchType searchType = SearchType.CONFORM_UP;
 
@@ -32,6 +34,7 @@ public class CropsPopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection config) {
         consistent = config.getBoolean("consistent", consistent);
         age = DoubleRange.fromConfig(getLogger(), config, "age", 0, 1);
+        position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 14);
         size = IntegerRange.fromConfig(getLogger(), config, "size", 1, 3);
         foodBlocks = parseBlocks(config, "crops", "all_crops");
         soilBlocks = parseBlocks(config, "soil", "farmland");
@@ -53,8 +56,9 @@ public class CropsPopulator extends BaseBlockPopulator {
         final int borderWidth = hasBorder ? 2 : 0;
         final int width = this.size.getRandom(random);
         context = context.fit(width + borderWidth, width + borderWidth);
-        final int startX = 0;
-        final int startZ = 0;
+        final BoundingBox bounds = context.getBounds();
+        final int startX = Math.min(bounds.getMax().getBlockX() - width - borderWidth, position.getRandom(random));
+        final int startZ = Math.min(bounds.getMax().getBlockZ() - width - borderWidth, position.getRandom(random));
         final int endX = width + borderWidth;
         final int endZ = width + borderWidth;
         final int startY = context.searchArea(searchType, startX, groundLevel, startZ, endX, endZ);
