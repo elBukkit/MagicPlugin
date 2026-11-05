@@ -262,6 +262,12 @@
             <artifactId>valhallammo-dist</artifactId>
             <version>premium_1.11.1</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.sachin</groupId>
+                    <artifactId>lootin</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
