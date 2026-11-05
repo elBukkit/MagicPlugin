@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
@@ -24,7 +21,6 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.IntVectorRange;
 import com.elmakers.mine.bukkit.world.MagicWorld;
-import com.elmakers.mine.bukkit.world.SearchType;
 
 public abstract class BaseBlockPopulator extends BlockPopulator {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
@@ -170,98 +166,6 @@ public abstract class BaseBlockPopulator extends BlockPopulator {
         }
 
         return (BaseBlockPopulator) newObject;
-    }
-
-    protected boolean setBlockData(final PopulatorContext context, int x, int y, int z, @NotNull BlockData blockData) {
-        if (!context.setBlockData(x, y, z, blockData)) {
-            getController().info("Trying to set out-of-range block in world " + world.getName() + ": " + x + "," + y + "," + z);
-            return false;
-        }
-        return true;
-    }
-
-    protected boolean setBlockData(final LimitedRegion region, int x, int y, int z, @NotNull BlockData blockData) {
-        if (!region.isInRegion(x, y, z)) {
-            getController().info("Trying to set out-of-range block in world " + world.getName() + ": " + x + "," + y + "," + z);
-            return false;
-        }
-        region.setBlockData(x, y, z, blockData);
-        return true;
-    }
-
-    protected int continueSearchArea(final SearchType searchType, final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int startY) {
-        if (searchType != SearchType.CONFORM_UP) {
-            return y;
-        }
-        return searchArea(SearchType.BASE_UP, worldInfo, region, x, startY, z, x + 1, z + 1);
-    }
-
-    protected int searchArea(final SearchType searchType, final WorldInfo worldInfo, final LimitedRegion region, int startX, int startY, int startZ, int endX, int endZ) {
-        if (searchType == SearchType.CONFORM_UP || searchType == SearchType.NONE) {
-            return startY;
-        }
-
-        Integer currentSearch = null;
-        for (int x = startX; x < endX; x++) {
-            for (int z = startZ; z < endZ; z++) {
-                final int searchY = getTopBlock(worldInfo, region, x, startY, z);
-                if (currentSearch == null || (searchType != SearchType.AREA_UP_MAX && searchType != SearchType.AREA_UP_MIN)) {
-                    currentSearch = searchY;
-                } else {
-                    currentSearch = searchType == SearchType.AREA_UP_MAX ? Math.max(searchY, currentSearch) : Math.min(searchY, currentSearch);
-                }
-                if (searchType == SearchType.BASE_UP) break;
-            }
-            if (searchType == SearchType.BASE_UP) break;
-        }
-        return currentSearch != null ? currentSearch : startY;
-    }
-
-    protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughAir, boolean returnAir) {
-        return searchBlock(worldInfo, region, x, y, z, maxSearch, direction, throughAir, returnAir, material -> material.isAir());
-    }
-
-    protected int searchBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z, int maxSearch, int direction, boolean throughBlocks, boolean returnBlocks, Predicate<Material> materialPredicate) {
-        if (!region.isInRegion(x, y, z)) {
-            return y;
-        }
-        int blockCount = 0;
-        Material material = region.getType(x, y, z);
-        while (((direction > 0 && y < worldInfo.getMaxHeight() - 1) || (direction < 0 && y > worldInfo.getMinHeight() + 1))
-                && materialPredicate.test(material) == throughBlocks
-                && blockCount < maxSearch) {
-            y += direction;
-            blockCount++;
-            material = region.getType(x, y, z);
-        }
-        return throughBlocks == returnBlocks ? y - direction : y;
-    }
-
-    protected int getSolidFloorOrCeiling(boolean isFloor, final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
-        final int topY = getTopSolidBlock(worldInfo, region, x, y, z);
-        final int solidY;
-        if (isFloor) {
-            solidY = topY;
-        } else {
-            solidY = getSolidBlockAbove(worldInfo, region, x, topY, z);
-        }
-        return solidY;
-    }
-
-    protected int getTopSolidBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
-        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, true, material -> material.isSolid());
-    }
-
-    protected int getSolidBlockAbove(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
-        return searchBlock(worldInfo, region, x, y + 1, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, true, false, material -> !material.isSolid());
-    }
-
-    protected int getTopBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
-        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), 1, false, false);
-    }
-
-    protected int getBottomBlock(final WorldInfo worldInfo, final LimitedRegion region, int x, int y, int z) {
-        return searchBlock(worldInfo, region, x, y, z, worldInfo.getMaxHeight() - worldInfo.getMinHeight(), -1, true, false);
     }
 
     protected List<MaterialAndData> parseBlocks(ConfigurationSection config, String key) {
