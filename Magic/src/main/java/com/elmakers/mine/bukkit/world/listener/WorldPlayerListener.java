@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.world.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -14,6 +15,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.world.BlockResult;
@@ -83,7 +85,13 @@ public class WorldPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPortal(EntityPortalEnterEvent event) {
+    public void onEntityPortal(EntityPortalEnterEvent event) {
+        // This only handles end gateways, other portal types are handled by PlayerPortalEvent
+        // Otherwise there will be a race condition in some versions
+        if (event.getLocation().getBlock().getType() != Material.END_GATEWAY) {
+            return;
+        }
+
         Entity entity = event.getEntity();
         MagicWorld magicWorld = controller.getWorld(entity.getWorld().getName());
         if (magicWorld == null) return;
@@ -92,6 +100,20 @@ public class WorldPlayerListener implements Listener {
             World nextWorld = Bukkit.getWorld(nextWorldName);
             if (nextWorld != null) {
                 entity.teleport(nextWorld.getSpawnLocation());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        Location location = event.getFrom();
+        MagicWorld magicWorld = controller.getWorld(location.getWorld().getName());
+        if (magicWorld == null) return;
+        String nextWorldName = magicWorld.getPortalTargetWorld(location);
+        if (nextWorldName != null && !nextWorldName.isEmpty()) {
+            World nextWorld = Bukkit.getWorld(nextWorldName);
+            if (nextWorld != null) {
+                event.setTo(nextWorld.getSpawnLocation());
             }
         }
     }
