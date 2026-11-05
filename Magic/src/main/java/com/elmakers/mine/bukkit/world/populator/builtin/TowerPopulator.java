@@ -22,7 +22,7 @@ public class TowerPopulator extends BaseBlockPopulator {
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
     private IntegerRange position;
     private IntegerRange height;
-    private IntegerRange width;
+    private IntegerRange size;
     private DoubleRange taper;
     private DoubleRange taperStart;
     private DoubleRange noise;
@@ -32,7 +32,7 @@ public class TowerPopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection config) {
         wallBlocks = parseBlocks(config, "blocks", "stones");
         height = IntegerRange.fromConfig(getLogger(), config, "height", 32, 128);
-        width = IntegerRange.fromConfig(getLogger(), config, "width", 24, 48);
+        size = IntegerRange.fromConfig(getLogger(), config, "size", 24, 48);
         taper = DoubleRange.fromConfig(getLogger(), config, "taper", 0, 0);
         taperStart = DoubleRange.fromConfig(getLogger(), config, "taper_start", 0, 1);
         noise = DoubleRange.fromConfig(getLogger(), config, "noise", 0, 0);
@@ -65,7 +65,7 @@ public class TowerPopulator extends BaseBlockPopulator {
         final int floorLevel = world.getGroundLevel();
         final int buffer = region.getBuffer();
         final int maxWidth = 16 + buffer * 2;
-        final int towerWidth = Math.min(maxWidth, this.width.getRandom(random));
+        final int towerWidth = Math.min(maxWidth, this.size.getRandom(random));
         final MaterialAndData wallBlock = RandomUtils.getRandom(wallBlocks, random);
         final BlockData wallBlockData = wallBlock.createBlockData();
         final int positionX = position.getRandom(random);

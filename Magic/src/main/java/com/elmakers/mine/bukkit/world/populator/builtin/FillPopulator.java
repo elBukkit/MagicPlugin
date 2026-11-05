@@ -17,8 +17,8 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class FillPopulator extends BaseBlockPopulator {
-    private IntegerRange widthX;
-    private IntegerRange widthZ;
+    private IntegerRange sizeX;
+    private IntegerRange sizeZ;
     private IntegerRange height;
     private IntegerRange positionX;
     private IntegerRange yOffset;
@@ -36,12 +36,12 @@ public class FillPopulator extends BaseBlockPopulator {
             positionX = IntegerRange.fromConfig(getLogger(), config, "position_x", 8, 8);
             positionZ = IntegerRange.fromConfig(getLogger(), config, "position_z", 8, 8);
         }
-        if (config.contains("width")) {
-            widthX = IntegerRange.fromConfig(getLogger(), config, "width", 0, 0);
-            widthZ = widthX;
+        if (config.contains("size")) {
+            sizeX = IntegerRange.fromConfig(getLogger(), config, "size", 0, 0);
+            sizeZ = sizeX;
         } else {
-            widthX = IntegerRange.fromConfig(getLogger(), config, "width_x", 0, 0);
-            widthZ = IntegerRange.fromConfig(getLogger(), config, "width_z", 0, 0);
+            sizeX = IntegerRange.fromConfig(getLogger(), config, "size_x", 0, 0);
+            sizeZ = IntegerRange.fromConfig(getLogger(), config, "size_z", 0, 0);
         }
         yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         if (config.contains("position_y")) {
@@ -49,7 +49,7 @@ public class FillPopulator extends BaseBlockPopulator {
         }
         height = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         blocks = parseBlocks(config, "blocks", "stone");
-        return widthX.getMax() > 0 && height.getMax() > 0 && !blocks.isEmpty();
+        return sizeX.getMax() > 0 && height.getMax() > 0 && !blocks.isEmpty();
     }
 
     @Override
@@ -64,8 +64,8 @@ public class FillPopulator extends BaseBlockPopulator {
         final int chunkGlobalX = chunkX << 4;
         final int chunkGlobalZ = chunkZ << 4;
         final int floorLevel = world.getGroundLevel();
-        final int widthX = this.widthX.getRandom(random);
-        final int widthZ = this.widthZ.getRandom(random);
+        final int widthX = this.sizeX.getRandom(random);
+        final int widthZ = this.sizeZ.getRandom(random);
         final int positionX = this.positionX.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);
         final boolean fixedPosition = this.positionY != null;

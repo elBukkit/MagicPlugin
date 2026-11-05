@@ -38,7 +38,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
         }
         position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 0);
         yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
-        searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.AREA_UP_MIN, getLogger());
+        searchType = ConfigUtils.parseEnum(config, "search", SearchType.AREA_UP_MIN, getLogger());
         fillAir = config.getBoolean("fill_air", fillAir);
         shiftToFit = config.getBoolean("shift_to_fit", shiftToFit);
         return true;

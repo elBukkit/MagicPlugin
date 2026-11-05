@@ -5,20 +5,19 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class EndPortalPopulator extends BaseBlockPopulator {
-    private IntegerRange portalWidth;
+    private IntegerRange portalSize;
     private IntegerRange yOffset;
     private IntegerRange position;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        portalWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
+        portalSize = IntegerRange.fromConfig(getLogger(), config, "size", 3, 3);
         yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         return true;
@@ -30,7 +29,6 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         final Random random = context.getRandom();
         final int chunkX = context.getChunkX();
         final int chunkZ = context.getChunkZ();
-        final WorldInfo worldInfo = context.getWorldInfo();
         final LimitedRegion region = context.getRegion();
 
         final int chunkGlobalX = chunkX << 4;
@@ -38,7 +36,7 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         final int positionX = position.getRandom(random);
         final int positionZ = position.getRandom(random);
         final int floorLevel = world.getGroundLevel();
-        final int portalWidth = this.portalWidth.getRandom(random);
+        final int portalWidth = this.portalSize.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);
         final int portalLeftX = positionX - (portalWidth / 2);
         final int portalRightX = portalLeftX + portalWidth;

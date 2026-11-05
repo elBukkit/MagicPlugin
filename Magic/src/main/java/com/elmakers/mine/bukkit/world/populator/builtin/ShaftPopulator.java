@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class ShaftPopulator extends BaseBlockPopulator {
-    private IntegerRange shaftWidth;
+    private IntegerRange shaftSize;
     private IntegerRange shaftHeight;
     private IntegerRange position;
     private IntegerRange rimWidth;
@@ -28,7 +28,7 @@ public class ShaftPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        shaftWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
+        shaftSize = IntegerRange.fromConfig(getLogger(), config, "size", 3, 3);
         shaftHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         rimWidth = IntegerRange.fromConfig(getLogger(), config, "rim_width", 0, 0);
@@ -37,7 +37,7 @@ public class ShaftPopulator extends BaseBlockPopulator {
         wallBlocks = parseBlocks(config, "blocks", "stones");
         fillBlocks = parseBlocks(config, "fill", "air");
         rimBlocks = parseBlocks(config, "rim", wallBlocks);
-        return shaftWidth.getMax() > 0;
+        return shaftSize.getMax() > 0;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ShaftPopulator extends BaseBlockPopulator {
         final int chunkGlobalZ = chunkZ << 4;
         final int centerX = position.getRandom(random);
         final int centerZ = position.getRandom(random);
-        final int shaftWidth = this.shaftWidth.getRandom(random);
+        final int shaftWidth = this.shaftSize.getRandom(random);
         final int shaftHeight = this.shaftHeight.getRandom(random);
         final int rimSize = this.rimWidth.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);

@@ -12,4 +12,5 @@ office_portal:
   class: EndGateway
   target_world: world_bliss
   height: 10
-  width: 8
+  size: 8
+  position: 8

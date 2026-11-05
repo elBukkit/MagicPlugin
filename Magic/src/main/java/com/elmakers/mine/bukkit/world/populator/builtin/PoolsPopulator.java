@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class PoolsPopulator extends BaseBlockPopulator {
-    private IntegerRange poolsWidth;
+    private IntegerRange poolsSize;
     private IntegerRange depth;
     private IntegerRange walkwayWidth;
     private double islandProbability = 0.75;
@@ -27,7 +27,7 @@ public class PoolsPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        poolsWidth = IntegerRange.fromConfig(getLogger(), config, "width", 14, 14);
+        poolsSize = IntegerRange.fromConfig(getLogger(), config, "size", 14, 14);
         depth = IntegerRange.fromConfig(getLogger(), config, "depth", 1, 1);
         walkwayWidth = IntegerRange.fromConfig(getLogger(), config, "walkway_width", 0, 10);
         islandProbability = config.getDouble("island_probability", islandProbability);
@@ -57,7 +57,7 @@ public class PoolsPopulator extends BaseBlockPopulator {
         final int walkwayLeftZ = centerZ - walkwayWidthHalf;
         final int walkWayRightZ = centerZ + walkwayWidthHalf;
         final boolean hasIsland = !isStartingChunk && random.nextDouble() < islandProbability;
-        final int width = poolsWidth.getRandom(random);
+        final int width = poolsSize.getRandom(random);
         final int lightsFirstX = walkwayLeftX / 2 + 1;
         final int lightsFirstZ = walkwayLeftZ / 2 + 1;
         final int lightsSecondX = width - lightsFirstX;

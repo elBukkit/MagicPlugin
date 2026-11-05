@@ -51,7 +51,7 @@ bliss_portal:
   class: EndPortal
   target_world: world_pools
   y_offset: -100
-  width: 3
+  size: 3
 
 bliss_exit:
   class: Sequence

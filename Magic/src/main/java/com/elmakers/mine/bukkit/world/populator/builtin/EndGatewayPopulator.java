@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class EndGatewayPopulator extends BaseBlockPopulator {
-    private IntegerRange gatewayWidth;
+    private IntegerRange gatewaySize;
     private IntegerRange gatewayHeight;
     private IntegerRange position;
     private IntegerRange yOffset;
@@ -23,11 +23,11 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
-        gatewayWidth = IntegerRange.fromConfig(getLogger(), config, "width", 3, 3);
+        gatewaySize = IntegerRange.fromConfig(getLogger(), config, "size", 3, 3);
         gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
-        return gatewayWidth.getMax() > 0;
+        return gatewaySize.getMax() > 0;
     }
 
     private BlockData getGatewayBlock() {
@@ -54,7 +54,7 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
         final int positionZ = position.getRandom(random);
         final int yOffset = this.yOffset.getRandom(random);
         final int floorLevel = world.getGroundLevel();
-        final int gatewayWidth = this.gatewayWidth.getRandom(random);
+        final int gatewayWidth = this.gatewaySize.getRandom(random);
         final int gatewayHeight = this.gatewayHeight.getRandom(random);
         final int portalLeftX = positionX - (gatewayWidth / 2);
         final int portalRightX = portalLeftX + gatewayWidth;

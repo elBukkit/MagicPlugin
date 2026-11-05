@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 public class CropsPopulator extends BaseBlockPopulator {
     private boolean consistent = false;
     private DoubleRange age;
-    private IntegerRange width;
+    private IntegerRange size;
     private SearchType searchType = SearchType.CONFORM_UP;
 
     private List<MaterialAndData> foodBlocks = Collections.emptyList();
@@ -32,12 +32,12 @@ public class CropsPopulator extends BaseBlockPopulator {
     public boolean onLoad(ConfigurationSection config) {
         consistent = config.getBoolean("consistent", consistent);
         age = DoubleRange.fromConfig(getLogger(), config, "age", 0, 1);
-        width = IntegerRange.fromConfig(getLogger(), config, "width", 1, 3);
+        size = IntegerRange.fromConfig(getLogger(), config, "size", 1, 3);
         foodBlocks = parseBlocks(config, "crops", "all_crops");
         soilBlocks = parseBlocks(config, "soil", "farmland");
         borderBlocks = parseBlocks(config, "border");
         supportBlocks = parseBlocks(config, "support");
-        searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.CONFORM_UP, getLogger());
+        searchType = ConfigUtils.parseEnum(config, "search", SearchType.CONFORM_UP, getLogger());
         return true;
     }
 
@@ -51,7 +51,7 @@ public class CropsPopulator extends BaseBlockPopulator {
         final MaterialAndData soilBlock = RandomUtils.getRandom(soilBlocks, random);
         final boolean hasBorder = borderBlock != null;
         final int borderWidth = hasBorder ? 2 : 0;
-        final int width = this.width.getRandom(random);
+        final int width = this.size.getRandom(random);
         context = context.fit(width + borderWidth, width + borderWidth);
         final int startX = 0;
         final int startZ = 0;

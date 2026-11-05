@@ -32,7 +32,7 @@ public class TreePopulator extends BaseBlockPopulator {
         position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 14);
         width = IntegerRange.fromConfig(getLogger(), config, "width", 1, 3);
         baseBlocks = parseBlocks(config, "base");
-        searchType = ConfigUtils.parseEnum(config, "search_type", SearchType.AREA_UP_MAX, getLogger());
+        searchType = ConfigUtils.parseEnum(config, "search", SearchType.AREA_UP_MAX, getLogger());
         return !treeTypes.isEmpty();
     }
 

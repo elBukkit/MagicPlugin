@@ -15,7 +15,7 @@ pools_portal:
   class: EndPortal
   target_world: world_abyss
   y_offset: 100
-  width: 3
+  size: 3
 
 pools_exit_shaft:
   class: Shaft
@@ -23,7 +23,7 @@ pools_exit_shaft:
   y_offset: -5
   rim_width: 1
   height: 400
-  width: 3
+  size: 3
   blocks:
     - blue_terracotta
   fill:
@@ -32,7 +32,7 @@ pools_exit_shaft:
 pools_exit_water:
   class: Fill
   blocks: water
-  width: 3
+  size: 3
   y_offset: 0
   position: 7
   height: 10
@@ -42,7 +42,7 @@ pools_exit_ground:
   blocks: soul_sand
   position: 7
   y_offset: -1
-  width: 3
+  size: 3
   height: 1
 
 pools_exit_lights:
@@ -50,7 +50,7 @@ pools_exit_lights:
   blocks: sea_lantern
   position: 6
   y_offset: -1
-  width: 5
+  size: 5
   height: 1
 
 pools_exit:
@@ -100,7 +100,7 @@ pools_entrance_pool:
   class: Pools
   island_probability: 0
   depth: 1
-  width: 8
+  size: 8
   walkway_width: 0
   light_probability: 1
   light_blocks:
@@ -112,7 +112,7 @@ pools_entrance_shaft:
   y_offset: -5
   rim_width: 1
   height: 400
-  width: 3
+  size: 3
   blocks:
     - blue_terracotta
 

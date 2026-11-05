@@ -18,64 +18,64 @@ lobby_random:
 lobby_room1:
   class: Schematic
   schematic: liminal/lobby_room1
-  search: NONE
+  search: none
 
 lobby_room2:
   class: Schematic
   schematic: liminal/lobby_room2
-  search: NONE
+  search: none
 
 lobby_room3:
   class: Schematic
   schematic: liminal/lobby_room3
-  search: NONE
+  search: none
 
 lobby_room4:
   class: Schematic
   schematic: liminal/lobby_room4
-  search: NONE
+  search: none
 
 lobby_room5:
   class: Schematic
   schematic: liminal/lobby_room5
-  search: NONE
+  search: none
 
 lobby_room6:
   class: Schematic
   schematic: liminal/lobby_room6
-  search: NONE
+  search: none
 
 lobby_room7:
   class: Schematic
   schematic: liminal/lobby_room7
-  search: NONE
+  search: none
 
 lobby_room8:
   class: Schematic
   schematic: liminal/lobby_room8
-  search: NONE
+  search: none
 
 lobby_room9:
   class: Schematic
   schematic: liminal/lobby_room9
-  search: NONE
+  search: none
 
 lobby_room10:
   class: Schematic
   schematic: liminal/lobby_room10
-  search: NONE
+  search: none
 
 lobby_room11:
   class: Schematic
   schematic: liminal/lobby_room11
-  search: NONE
+  search: none
 
 lobby_room12:
   class: Schematic
   schematic: liminal/lobby_room12
-  search: NONE
+  search: none
 
 lobby_room13:
   class: Schematic
   schematic: liminal/lobby_room13
-  search: NONE
+  search: none
