@@ -16,14 +16,12 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
     private IntegerRange gatewaySize;
     private IntegerRange gatewayHeight;
     private IntegerRange position;
-    private IntegerRange yOffset;
     private SearchType searchType = SearchType.AREA_UP_MIN;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
         gatewaySize = IntegerRange.fromConfig(getLogger(), config, "size", 3, 3);
         gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
-        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         return gatewaySize.getMax() > 0;
     }
@@ -43,7 +41,6 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
 
         final int positionX = position.getRandom(random);
         final int positionZ = position.getRandom(random);
-        final int yOffset = this.yOffset.getRandom(random);
         final int floorLevel = world.getGroundLevel();
         final int gatewayWidth = this.gatewaySize.getRandom(random);
         final int gatewayHeight = this.gatewayHeight.getRandom(random);
@@ -60,7 +57,7 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
 
         for (int x = minExitX; x < maxExitX; x++) {
             for (int z = minExitZ; z < maxExitZ; z++) {
-                final int groundY = context.continueSearchArea(searchType, x, startY, z, floorLevel) + yOffset;
+                final int groundY = context.continueSearchArea(searchType, x, startY, z, floorLevel);
                 final int maxExitY = Math.min(context.getMaxHeight() - 1, groundY + gatewayHeight);
                 for (int y = groundY + 1; y <= maxExitY; y++) {
                     context.setBlockData(x, y, z, gatewayBlock);

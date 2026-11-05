@@ -21,11 +21,9 @@ public class SchematicPopulator extends BaseBlockPopulator {
     private String schematicName;
     private Schematic schematic;
     private IntegerRange position;
-    private IntegerRange yOffset;
     private SearchType searchType = SearchType.AREA_UP_MIN;
     private boolean fillAir = false;
-    // TODO: Make this on by default once the offset context is working better
-    private boolean shiftToFit = false;
+    private boolean shiftToFit = true;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -36,7 +34,6 @@ public class SchematicPopulator extends BaseBlockPopulator {
             return false;
         }
         position = IntegerRange.fromConfig(getLogger(), config, "position", 0, 0);
-        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         searchType = ConfigUtils.parseEnum(config, "search", SearchType.AREA_UP_MIN, getLogger());
         fillAir = config.getBoolean("fill_air", fillAir);
         shiftToFit = config.getBoolean("shift_to_fit", shiftToFit);
@@ -69,8 +66,7 @@ public class SchematicPopulator extends BaseBlockPopulator {
         final int sizeX = shiftToFit ? sizeXBase : Math.min(sizeXBase, bounds.getMax().getBlockX() - startX);
         final int sizeZ = shiftToFit ? sizeZBase : Math.min(sizeZBase, bounds.getMax().getBlockZ() - startZ);
         final int groundLevel = world.getGroundLevel();
-        final int startOffsetY = yOffset.getRandom(random);
-        final int startY = 1 + startOffsetY + context.searchArea(searchType, startX, groundLevel, startZ, startX + sizeX, startZ + sizeZ);
+        final int startY = 1 + context.searchArea(searchType, startX, groundLevel, startZ, startX + sizeX, startZ + sizeZ);
         final int maxHeight = context.getMaxHeight();
         for (int dx = 0; dx < sizeX; dx++) {
             for (int dz = 0; dz < sizeZ; dz++) {

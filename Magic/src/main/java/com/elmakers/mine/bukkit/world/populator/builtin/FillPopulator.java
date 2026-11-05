@@ -19,7 +19,6 @@ public class FillPopulator extends BaseBlockPopulator {
     private IntegerRange sizeZ;
     private IntegerRange height;
     private IntegerRange positionX;
-    private IntegerRange yOffset;
     private IntegerRange positionY;
     private IntegerRange positionZ;
     private SearchType searchType = SearchType.AREA_UP_MIN;
@@ -41,7 +40,6 @@ public class FillPopulator extends BaseBlockPopulator {
             sizeX = IntegerRange.fromConfig(getLogger(), config, "size_x", 0, 0);
             sizeZ = IntegerRange.fromConfig(getLogger(), config, "size_z", 0, 0);
         }
-        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         if (config.contains("position_y")) {
             positionY = IntegerRange.fromConfig(getLogger(), config, "position_y", 0, 0);
         }
@@ -58,7 +56,6 @@ public class FillPopulator extends BaseBlockPopulator {
         final int widthX = this.sizeX.getRandom(random);
         final int widthZ = this.sizeZ.getRandom(random);
         final int positionX = this.positionX.getRandom(random);
-        final int yOffset = this.yOffset.getRandom(random);
         final boolean fixedPosition = this.positionY != null;
         final int positionY = fixedPosition ? this.positionY.getRandom(random) : floorLevel;
         final int positionZ = this.positionZ.getRandom(random);
@@ -72,7 +69,7 @@ public class FillPopulator extends BaseBlockPopulator {
 
         for (int x = minX; x < maxX; x++) {
             for (int z = minZ; z < maxZ; z++) {
-                final int groundY = context.continueSearchArea(searchType, x, startY, z, positionY) + yOffset;
+                final int groundY = context.continueSearchArea(searchType, x, startY, z, positionY);
                 final int maxY = Math.min(groundY + height, context.getMaxHeight() - 1);
                 for (int y = groundY + 1; y <= maxY; y++) {
                     context.setBlockData(x, y, z, block);

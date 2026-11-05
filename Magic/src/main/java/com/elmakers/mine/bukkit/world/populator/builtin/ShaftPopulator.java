@@ -18,7 +18,6 @@ public class ShaftPopulator extends BaseBlockPopulator {
     private IntegerRange shaftHeight;
     private IntegerRange position;
     private IntegerRange rimSize;
-    private IntegerRange yOffset;
     private double floorProbability;
     private List<MaterialAndData> wallBlocks = Collections.emptyList();
     private List<MaterialAndData> fillBlocks = Collections.emptyList();
@@ -30,7 +29,6 @@ public class ShaftPopulator extends BaseBlockPopulator {
         shaftHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         rimSize = IntegerRange.fromConfig(getLogger(), config, "rim_size", 0, 0);
-        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         floorProbability = config.getDouble("floor_probability", 0);
         wallBlocks = parseBlocks(config, "blocks", "stones");
         fillBlocks = parseBlocks(config, "fill", "air");
@@ -47,11 +45,10 @@ public class ShaftPopulator extends BaseBlockPopulator {
         final int shaftWidth = this.shaftSize.getRandom(random);
         final int shaftHeight = this.shaftHeight.getRandom(random);
         final int rimSize = this.rimSize.getRandom(random);
-        final int yOffset = this.yOffset.getRandom(random);
         final boolean isFloor = random.nextDouble() < floorProbability;
         final BlockData wallBlock = RandomUtils.getRandom(wallBlocks, random).createBlockData();
         final BlockData fillBlock = RandomUtils.getRandom(fillBlocks, random).createBlockData();
-        final int startY = context.getSolidFloorOrCeiling(isFloor, centerX, world.getBedrockLevel(), centerZ) + yOffset;
+        final int startY = context.getSolidFloorOrCeiling(isFloor, centerX, world.getBedrockLevel(), centerZ);
         final int direction = isFloor ? -1 : 1;
         final int stopY = isFloor ? Math.max(context.getMinHeight() + 1, startY - shaftHeight) : Math.min(context.getMaxHeight() - 1, startY + shaftHeight);
         // This includes the border, so it is width + 1 on both sizes

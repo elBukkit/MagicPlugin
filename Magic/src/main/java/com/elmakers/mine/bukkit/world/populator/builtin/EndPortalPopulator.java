@@ -11,13 +11,11 @@ import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class EndPortalPopulator extends BaseBlockPopulator {
     private IntegerRange portalSize;
-    private IntegerRange yOffset;
     private IntegerRange position;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
         portalSize = IntegerRange.fromConfig(getLogger(), config, "size", 3, 3);
-        yOffset = IntegerRange.fromConfig(getLogger(), config, "y_offset", 0, 0);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
         return true;
     }
@@ -30,7 +28,6 @@ public class EndPortalPopulator extends BaseBlockPopulator {
         final int positionZ = position.getRandom(random);
         final int floorLevel = world.getGroundLevel();
         final int portalWidth = this.portalSize.getRandom(random);
-        final int yOffset = this.yOffset.getRandom(random);
         final int portalLeftX = positionX - (portalWidth / 2);
         final int portalRightX = portalLeftX + portalWidth;
         final int portalLeftZ = positionZ - (portalWidth / 2);
@@ -42,7 +39,7 @@ public class EndPortalPopulator extends BaseBlockPopulator {
 
         for (int x = minPortalX; x < maxPortalX; x++) {
             for (int z = minPortalZ; z < maxPortalZ; z++) {
-                context.setType(x, floorLevel + yOffset, z, Material.END_PORTAL);
+                context.setType(x, floorLevel, z, Material.END_PORTAL);
             }
         }
     }
