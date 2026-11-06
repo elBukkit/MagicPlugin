@@ -1,0 +1,12 @@
+leviathan:
+  name: "&fLeviathan"
+  type: item_display
+  item: leviathan_item
+  transformation:
+    scale: 40
+  passenger_rotation_speed: 8
+  mount:
+    remove_mounts: "*"
+    default_drops: false
+    type: drowned
+    invisible: true

@@ -25,6 +25,8 @@ abyss_barrier:
 abyss:
   class: Sequence
   biome: deep_ocean
+  populators:
+    - abyss_leviathan
   generators:
     - bedrock
     - abyss_water

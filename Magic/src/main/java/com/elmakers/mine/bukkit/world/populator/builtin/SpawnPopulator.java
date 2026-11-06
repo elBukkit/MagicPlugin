@@ -7,6 +7,7 @@ import java.util.Random;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.DistanceWeightedValue;
@@ -17,6 +18,7 @@ import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class SpawnPopulator extends BaseBlockPopulator {
     private List<DistanceWeightedValue<EntityData>> spawns = new ArrayList<>();
+    private MaterialSet allowedBlocks;
     private IntegerRange position;
     private int searchY = 16;
     private int searchX = 2;
@@ -30,6 +32,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
         searchX = config.getInt("search_x", searchX);
         searchY = config.getInt("search_y", searchY);
         searchZ = config.getInt("search_z", searchZ);
+        allowedBlocks = getController().getMaterialSetManager().fromConfigEmpty(config.getString("allowed", "all_air"));
 
         MagicController controller = world.getController();
         ConfigurationSection typeConfigs = config.getConfigurationSection("types");
@@ -78,7 +81,9 @@ public class SpawnPopulator extends BaseBlockPopulator {
             for (int z = positionZ - searchZ; z < positionZ + searchZ && !spawned; z++) {
                 for (int y = baseY - searchY; y < baseY + searchY && !spawned; y++) {
                     if (!context.isInRegion(x, y, z) || !context.isInRegion(x, y + 1, z) || !context.isInRegion(x, y - 1, z)) continue;
-                    if (context.getType(x, y, z).isAir() && context.getType(x, y + 1, z).isAir() && !context.getType(x, y - 1, z).isAir()) {
+                    if (allowedBlocks.testMaterial(context.getType(x, y, z))
+                        && allowedBlocks.testMaterial(context.getType(x, y + 1, z))
+                        && !context.getType(x, y - 1, z).isAir()) {
                         context.spawn(entityData, x, y, z);
                         spawned = true;
                     }

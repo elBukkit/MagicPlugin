@@ -1,0 +1,7 @@
+abyss_leviathan:
+  class: Spawn
+  allowed: all_air,all_water
+  y_offset: 64
+  types:
+    leviathan: 0.01
+    none: 1
