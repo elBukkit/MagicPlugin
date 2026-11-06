@@ -79,3 +79,9 @@ lobby_room13:
   class: Schematic
   schematic: liminal/lobby_room13
   search: none
+
+lobby_bacteria:
+  class: Spawn
+  types:
+    bacteria: 0.005
+    none: 1

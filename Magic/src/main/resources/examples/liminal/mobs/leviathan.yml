@@ -6,6 +6,7 @@ leviathan:
     scale: 40
   passenger_rotation_speed: 8
   mount:
+    name: "&fLeviathan"
     remove_mounts: "*"
     default_drops: false
     type: drowned

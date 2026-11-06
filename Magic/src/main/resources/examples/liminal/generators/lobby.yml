@@ -3,3 +3,4 @@ lobby:
   generators:
     - bedrock
     - lobby_random
+    - lobby_bacteria
