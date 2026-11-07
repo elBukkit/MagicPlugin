@@ -5,6 +5,12 @@ abyss_floor:
   blocks:
     - sand
 
+abyss_magma:
+  class: Random
+  generators:
+    none: 30
+    abyss_magma_block: 1
+
 abyss_water:
   class: Flat
   height: 260
@@ -33,3 +39,4 @@ abyss:
     - abyss_ceiling
     - abyss_barrier
     - abyss_floor
+    - abyss_magma

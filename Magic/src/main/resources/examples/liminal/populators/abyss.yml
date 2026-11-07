@@ -5,3 +5,11 @@ abyss_leviathan:
   types:
     leviathan: 0.01
     none: 1
+
+abyss_magma_block:
+  class: Fill
+  blocks: magma_block
+  size: 1 | 4
+  height: 3 | 12
+  position: 0 | 15
+  search: none

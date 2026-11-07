@@ -11,3 +11,5 @@ leviathan:
     default_drops: false
     type: drowned
     invisible: true
+    entity_attributes:
+      generic_attack_damage: 100
