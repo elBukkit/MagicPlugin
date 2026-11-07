@@ -3,6 +3,10 @@
 
 # 11.3
 
+## Liminal Deep
+
+See: https://youtu.be/idS2AOUqVEI
+
 ## World Generation
 
 - New `liminal` built in example to demonstrate new world gen features
@@ -77,10 +81,10 @@
  - Removed support for the Elementals plugin (not updated since MC 1.7, I assume no one will miss it)
  - Block checks will now check extra block data, if block data was set in the material set
  - The Place spell no longer uses the auto_block_state parameter (this feature is broken on Paper)
- - The `save` spell now outputs structure files (.nbt) instead of schmeatics
+ - The `save` spell now outputs structure files (.nbt) instead of schematics
  - Add `custom_name` and `custom_name_visible` parameters to EntityProjectile action
  - Add `mount_name_visible` parameter to MountArmorStand action
- - Some survival spells now used transparency in their colored particle effects
+ - Some survival spells now use transparency in their colored particle effects
  - Path icons now support using pre-defined icons, and added `upgrade_wand_icon` to allow turning off wand icon changes
 
 ## New Features
