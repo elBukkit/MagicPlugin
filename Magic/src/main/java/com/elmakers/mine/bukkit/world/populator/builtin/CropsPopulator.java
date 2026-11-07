@@ -59,8 +59,8 @@ public class CropsPopulator extends BaseBlockPopulator {
         final BoundingBox bounds = context.getBounds();
         final int startX = Math.min(bounds.getMax().getBlockX() - width - borderWidth, position.getRandom(random));
         final int startZ = Math.min(bounds.getMax().getBlockZ() - width - borderWidth, position.getRandom(random));
-        final int endX = width + borderWidth;
-        final int endZ = width + borderWidth;
+        final int endX = startX + width + borderWidth;
+        final int endZ = startZ + width + borderWidth;
         final int startY = context.searchArea(searchType, startX, groundLevel, startZ, endX, endZ);
 
         BlockData cropData = null;
