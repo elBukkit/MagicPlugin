@@ -62,6 +62,9 @@ public class DoubleRange {
                 } else if (config.isDouble(key)) {
                     double configValue = config.getDouble(key);
                     value = new DoubleRange(singleMin == null ? configValue : singleMin, singleMax == null ? configValue : singleMax);
+                } else if (config.isInt(key)) {
+                    double configValue = config.getInt(key);
+                    value = new DoubleRange(singleMin == null ? configValue : singleMin, singleMax == null ? configValue : singleMax);
                 }
             } catch (Exception ex) {
                 logger.warning("Invalid randomized config value for " + key + ": " + config.get(key));
