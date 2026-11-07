@@ -13,6 +13,10 @@ office_rooms:
       distance: 512 | 2048
       weight: 0.2
       frequency: 4
+    office_lobby_exit:
+      distance: 1024 | 4096
+      weight: 0.2
+      frequency: 4
 
 office_room:
   class: Room
@@ -57,3 +61,20 @@ office_exit:
     - light_gray_concrete
   ceiling_blocks:
     - smooth_stone
+
+office_lobby_exit:
+  class: Room
+  roof_height: 6
+  doorway_height: 6
+  doorway_width: 10
+  wall_probability: 1
+  window_probability: 0
+  double_door_probability: 0.4
+  sunroof_probability: 0
+  populators:
+    - office_lights
+    - office_lobby_portal
+  wall_blocks:
+    - bamboo_mosaic
+  ceiling_blocks:
+    - polished_sulfur

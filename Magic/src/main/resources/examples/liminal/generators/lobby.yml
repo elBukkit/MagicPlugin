@@ -4,3 +4,14 @@ lobby:
     - bedrock
     - lobby_random
     - lobby_bacteria
+    - lobby_exit
+
+lobby_exit:
+  class: Random
+  generators:
+    none:
+      weight: 1
+    lobby_portal:
+      distance: 512 | 2048
+      weight: 0.2
+      frequency: 4

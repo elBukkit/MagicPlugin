@@ -14,3 +14,10 @@ office_portal:
   height: 10
   size: 8
   position: 8
+
+office_lobby_portal:
+  class: EndGateway
+  target_world: world_lobby
+  height: 10
+  size: 2
+  position: 2

@@ -85,3 +85,10 @@ lobby_bacteria:
   types:
     bacteria: 0.005
     none: 1
+
+lobby_portal:
+  class: EndGateway
+  target_world: world_bliss
+  height: 10
+  size: 8
+  position: 8
