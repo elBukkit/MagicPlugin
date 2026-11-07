@@ -8,6 +8,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.world.SearchType;
@@ -45,6 +46,7 @@ public class FillPopulator extends BaseBlockPopulator {
         }
         height = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         blocks = parseBlocks(config, "blocks", "stone");
+        searchType = ConfigUtils.parseEnum(config, "search", SearchType.AREA_UP_MIN, getLogger());
         return sizeX.getMax() > 0 && height.getMax() > 0 && !blocks.isEmpty();
     }
 

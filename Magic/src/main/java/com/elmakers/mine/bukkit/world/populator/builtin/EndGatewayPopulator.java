@@ -7,6 +7,7 @@ import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.random.IntegerRange;
 import com.elmakers.mine.bukkit.world.SearchType;
 import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
@@ -23,6 +24,7 @@ public class EndGatewayPopulator extends BaseBlockPopulator {
         gatewaySize = IntegerRange.fromConfig(getLogger(), config, "size", 3, 3);
         gatewayHeight = IntegerRange.fromConfig(getLogger(), config, "height", 2, 4);
         position = IntegerRange.fromConfig(getLogger(), config, "position", 8, 8);
+        searchType = ConfigUtils.parseEnum(config, "search", SearchType.AREA_UP_MIN, getLogger());
         return gatewaySize.getMax() > 0;
     }
 
