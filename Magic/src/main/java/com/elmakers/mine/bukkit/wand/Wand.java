@@ -2037,6 +2037,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return materialData instanceof MaterialAndData ? (MaterialAndData)materialData : null;
     }
 
+    private static String[] splitIconKeys(String iconKey) {
+        List<String> keys = new ArrayList<>();
+        int depth = 0;
+        int start = 0;
+        for (int i = 0; i < iconKey.length(); i++) {
+            char c = iconKey.charAt(i);
+            if (c == '{' || c == '[') {
+                depth++;
+            } else if (c == '}' || c == ']') {
+                if (depth > 0) depth--;
+            } else if (c == ',' && depth == 0) {
+                if (i > start) keys.add(iconKey.substring(start, i));
+                start = i + 1;
+            }
+        }
+        if (start < iconKey.length()) keys.add(iconKey.substring(start));
+        return keys.toArray(new String[0]);
+    }
+
     protected void loadParameters() {
         // These should only be parameters that are safe (performance-wise in particular)
         // to change on the fly without fully reloading the wand
@@ -2527,7 +2546,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             if (iconKey.contains(",")) {
                 Random r = new Random();
-                String[] keys = StringUtils.split(iconKey, ',');
+                String[] keys = splitIconKeys(iconKey);
                 iconKey = keys[r.nextInt(keys.length)];
             }
             // Port old custom wand icons
@@ -3943,7 +3962,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String iconKey = wandConfig.getIconKey();
                 if (iconKey.contains(",")) {
                     Random r = new Random();
-                    String[] keys = StringUtils.split(iconKey, ',');
+                    String[] keys = splitIconKeys(iconKey);
                     iconKey = keys[r.nextInt(keys.length)];
                 }
                 setIcon(controller.createMaterialAndDataIcon(iconKey, mage));
