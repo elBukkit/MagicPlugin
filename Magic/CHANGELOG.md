@@ -3,6 +3,10 @@
 
 # 11.4
 
+## Additions
+
+ - Add `source_use_control_direction` parameter to `ChangeContext` action
+
 # 11.3
 
 ## Liminal Deep
