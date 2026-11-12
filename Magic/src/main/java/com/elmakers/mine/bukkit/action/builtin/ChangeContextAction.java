@@ -67,6 +67,7 @@ public class ChangeContextAction extends CompoundAction {
     private boolean orientPitch;
     private boolean swapSourceAndTarget;
     private boolean sourceUseMovementDirection;
+    private boolean sourceUseControlDirection;
     private boolean targetUseMovementDirection;
     private boolean useTargetMage;
     private MaterialSet destructible;
@@ -91,6 +92,7 @@ public class ChangeContextAction extends CompoundAction {
         sourceIsTarget = parameters.getBoolean("source_is_target", false);
         sourceUseMovementDirection = parameters.getBoolean("source_use_movement_direction", false);
         targetUseMovementDirection = parameters.getBoolean("target_use_movement_direction", false);
+        sourceUseControlDirection = parameters.getBoolean("source_use_control_direction", false);
         sourceDirectionIsTarget = parameters.getBoolean("source_direction_is_target", false);
         sourceDirectionAtTarget = parameters.getBoolean("source_direction_at_target", false);
         sourcePitch = ConfigurationUtils.getDouble(parameters, "source_pitch", null);
@@ -169,6 +171,15 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (sourceUseMovementDirection && sourceLocation != null) {
             sourceLocation.setDirection(context.getMage().getVelocity());
+        }
+        if (sourceUseControlDirection && sourceLocation != null) {
+            double direction = context.getMage().getVehicleMovementDirection();
+            double strafeDirection = context.getMage().getVehicleStrafeDirection();
+            if (direction != 0 && strafeDirection != 0) {
+                Vector directionVector = new Vector(direction, 0, -strafeDirection);
+                directionVector = VectorUtils.rotateVector(directionVector, sourceLocation);
+                sourceLocation.setDirection(directionVector.normalize());
+            }
         }
         if (sourceDirection != null && sourceLocation != null)
         {
