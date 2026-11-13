@@ -169,17 +169,18 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation.setDirection(targetEntity.getLocation().getDirection());
         }
-        if (sourceUseMovementDirection && sourceLocation != null) {
-            sourceLocation.setDirection(context.getMage().getVelocity());
-        }
         if (sourceUseControlDirection && sourceLocation != null) {
             double direction = context.getMage().getVehicleMovementDirection();
             double strafeDirection = context.getMage().getVehicleStrafeDirection();
-            if (direction != 0 && strafeDirection != 0) {
+            if (direction != 0 || strafeDirection != 0) {
                 Vector directionVector = new Vector(direction, 0, -strafeDirection);
-                directionVector = VectorUtils.rotateVector(directionVector, sourceLocation);
+                directionVector = VectorUtils.rotateVector(directionVector, sourceLocation.getYaw(), 0);
                 sourceLocation.setDirection(directionVector.normalize());
+            } else if (sourceUseMovementDirection) {
+                sourceLocation.setDirection(context.getMage().getVelocity());
             }
+        } else if (sourceUseMovementDirection && sourceLocation != null) {
+            sourceLocation.setDirection(context.getMage().getVelocity());
         }
         if (sourceDirection != null && sourceLocation != null)
         {
