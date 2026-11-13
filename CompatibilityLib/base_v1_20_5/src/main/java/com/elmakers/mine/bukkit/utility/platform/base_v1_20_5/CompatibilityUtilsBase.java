@@ -1114,7 +1114,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean setDisplayName(ItemStack itemStack, String displayName) {
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(displayName);
+        meta.setDisplayName(ChatUtils.toLegacyText(displayName));
         itemStack.setItemMeta(meta);
         return true;
     }
@@ -1341,7 +1341,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
-        player.sendTitle(title, subTitle, fadeIn, stay, fadeOut);
+        player.sendTitle(ChatUtils.toLegacyText(title), ChatUtils.toLegacyText(subTitle), fadeIn, stay, fadeOut);
     }
 
     @SuppressWarnings("deprecation")
@@ -1576,7 +1576,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         size = (int) (Math.ceil((double) size / 9) * 9);
         size = Math.min(size, 54);
         String translatedName = translateColors(name);
-        return Bukkit.createInventory(holder, size, translatedName);
+        return ChatUtils.createInventory(holder, size, translatedName);
     }
 
     @Override

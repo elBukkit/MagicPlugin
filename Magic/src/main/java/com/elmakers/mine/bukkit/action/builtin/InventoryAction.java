@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 
 public class InventoryAction extends BaseSpellAction
 {
@@ -112,7 +113,7 @@ public class InventoryAction extends BaseSpellAction
 
     private void showGenericInventory(Player showPlayer) {
         Inventory inventory = title != null && !title.isEmpty()
-                ? Bukkit.createInventory(showPlayer, inventoryType, title)
+                ? ChatUtils.createInventory(showPlayer, inventoryType, title)
                 : Bukkit.createInventory(showPlayer, inventoryType);
         showPlayer.openInventory(inventory);
     }

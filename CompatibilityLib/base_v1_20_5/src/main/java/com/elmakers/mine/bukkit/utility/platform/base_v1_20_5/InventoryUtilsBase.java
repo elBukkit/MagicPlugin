@@ -26,6 +26,7 @@ import org.bukkit.profile.PlayerProfile;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.MiniMessageText;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
@@ -367,6 +368,11 @@ public class InventoryUtilsBase implements InventoryUtils {
                 continue;
             }
             line = prefix + line;
+
+            if (ChatUtils.hasMiniMessage(line)) {
+                MiniMessageText.wrap(line, maxLength, wrapPrefix, list);
+                continue;
+            }
 
             // Parse escaped chat components
             String[] components = StringUtils.splitPreserveAllTokens(line, "`");
