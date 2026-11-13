@@ -95,7 +95,6 @@ lift:
         undo: 5000
         target_breakables: 1
         bypass_backfire: false
-        cooldown: 1000
         offset: 0,1,0
         delay: 100
         direction: 0,1,0

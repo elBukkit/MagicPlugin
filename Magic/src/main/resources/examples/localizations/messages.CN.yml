@@ -1121,6 +1121,18 @@ examples:
       `<p>`您可以使用`<help topic="examples.all" text="spawnmobs 示例">`使这些生物自然生成。
       `<p>`使用`<command command="mmob spawn warlock" text="mmob spawn">`命令手动生成魔法生物。
       `<p>`还有一些特殊的`<help topic="examples.survival.dragons" text="龙类生物">`，生成它们需要额外的前置条件。
+    instructions: |-
+      &8| &3&n生存 &r
+      &8|   &f请检查新的配方, 或使用 &6/mgive wand &r
+      &8|   &f使用 &6/mgive uberwand &f以获取一个OP法杖 &r
+  instructions_header: |-
+    &8 ----------------------------------------------------
+    &8|
+    &8|   &b&l示例介绍
+    &8|
+  instructions_footer: |-
+    &8|
+    &8 ----------------------------------------------------
   dragons: |-
     `<title text="生存龙怪物">`
     `<p>`&6生存&f示例包括各种颜色的龙怪物，您可以生成它们
@@ -4454,20 +4466,6 @@ classes:
   crown:
     name: 皇冠
     description: 你怎样都尊贵
-examples:
-  survival:
-    instructions: |-
-      &8| &3&n生存 &r
-      &8|   &f请检查新的配方, 或使用 &6/mgive wand &r
-      &8|   &f使用 &6/mgive uberwand &f以获取一个OP法杖 &r
-  instructions_header: |-
-    &8 ----------------------------------------------------
-    &8|
-    &8|   &b&l示例介绍
-    &8|
-  instructions_footer: |-
-    &8|
-    &8 ----------------------------------------------------
 items:
   emerald_sword:
     name: 绿宝石剑

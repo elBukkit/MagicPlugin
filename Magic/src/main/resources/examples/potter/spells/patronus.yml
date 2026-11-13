@@ -52,7 +52,6 @@ patronus:
         target: other_entity
         target_type: Wither
         range: 64
-        type: chicken
         cooldown: 30000
         velocity: 5
         track_range: 8

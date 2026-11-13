@@ -110,8 +110,6 @@ wand:
     hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress Q while your $wand is active"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
-    no_item: No Tienes Ningun Objeto Magico En La Mano
-    player_no_item: $name No Tiene Ningun Objeto Magico En La Mano
     no_wand: Necesitas Tener La Varita En La Mano
     player_no_wand: $name No Tiene La Varita En La Mano
     no_item: Necesitas Tener Un Objeto Magico En La Mano
@@ -225,9 +223,6 @@ categories:
     utility:
         name: Utility
         description: Utility and movement spells
-    utility:
-        name: Utility
-        description: Utility and movement spells
     demolition:
         name: Demolitions
         description: Highly destructive magic
@@ -318,7 +313,7 @@ spells:
     frost:
         name: Frost Requo
         description: Congela El Agua
-        cast_finish: &count Bloques Congelados
+        cast_finish: "&count Bloques Congelados"
         upgrade_description: "&r&b• &6Aumenta El Radio"
     tree:
         name: Orchideous

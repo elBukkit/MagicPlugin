@@ -42,13 +42,6 @@ chidorinagashi:
                 effect_slow: 1
                 duration: 4000
               - class: Delay
-          actions:
-          - class: Damage
-            damage: 2
-          - class: PotionEffect
-            effect_confusion: 5
-            effect_slow: 1
-            duration: 4000
   effects:
     chidorinagashiSFX:
     - class: EffectSingle

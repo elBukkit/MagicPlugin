@@ -24,7 +24,6 @@ protegomaxima:
         brush: stained_glass
         undo: 10000
         reflect_chance: 1
-        bypass_backfire: true
         bypass_confusion: true
         bypass_backfire: true
     costs:

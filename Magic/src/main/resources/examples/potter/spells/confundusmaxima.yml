@@ -42,5 +42,3 @@ confundusmaxima:
         hitbox: true
         fov: .12
         effect_confusion: 5
-        hitbox: true
-

@@ -107,7 +107,6 @@ snake_death:
         target: self
         check_destructible: true
         speed: -0.2
-        undo_speed: 5
         brush: air
         falling: true
         radius: 3

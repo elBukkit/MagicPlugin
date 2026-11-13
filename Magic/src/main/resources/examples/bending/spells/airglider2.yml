@@ -40,7 +40,6 @@ airglider2:
     parameters:
         target: self
         cooldown: 6000
-        direction: 0,1,0
         delay: 750
         return_on_finish: true
         liftoff_duration: 600

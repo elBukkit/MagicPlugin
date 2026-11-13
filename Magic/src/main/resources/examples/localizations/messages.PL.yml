@@ -2952,8 +2952,6 @@ wand:
     &8| &7> &fPowtarzanie rzutów tego samego zaklęcia daje mniej &6SP
     &8| &7> &fSpróbuj &d miksować swoje rzuty &f, a gdy zdobędziesz więcej zaklęć!
 ##################################################################################
-  earn_instructions: '&r&6Zdobyłeś trochę $currency! Jest to wyświetlane nad paskiem many i może być wydawane na stole do zaklinania, aby uczyć się nowych zaklęć. Powtarzanie rzutów daje mniej, spróbuj miksować, gdy masz więcej zaklęć!'
-##################################################################################
   hotbar_changed: ''
   spell_activated: $spell
   upgrade_prefix: '&6'

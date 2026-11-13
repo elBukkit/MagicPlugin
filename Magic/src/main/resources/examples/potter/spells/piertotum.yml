@@ -32,7 +32,5 @@ piertotum:
         name: Animated Statue
         entity_undo: false
     costs:
-        mana: 15
-    costs:
         mana: 150
 

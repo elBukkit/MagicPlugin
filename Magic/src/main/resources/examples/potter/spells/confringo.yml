@@ -45,7 +45,6 @@ confringo:
         bypass_build: true
         target_breakables: 0
         radius: 2
-        cooldown: 1000
         size: 1.25
         spread: 2
         speed: 5

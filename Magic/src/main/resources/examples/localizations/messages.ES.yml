@@ -2988,11 +2988,6 @@ wand:
     &8| &7> &fRepetir lanzamientos del mismo hechizo ganan menos puntos de &6SP&f
     &8| &7> &f¡Prueba &dmezclando tus moldes&f y una vez que tengas más hechizos!
 ##################################################################################
-  earn_instructions: '&r&6Ha ganado algunos $currency! Esto se muestra por encima
-    de su barra de maná, y puede ser gastado en una encantadora mesa para aprender
-    nuevos hechizos. Repita moldes de ganar menos, trate de mezclar una vez que usted
-    tiene más hechizos!'
-##################################################################################
   hotbar_changed: ''
   spell_activated: $spell
   upgrade_prefix: '&6'
