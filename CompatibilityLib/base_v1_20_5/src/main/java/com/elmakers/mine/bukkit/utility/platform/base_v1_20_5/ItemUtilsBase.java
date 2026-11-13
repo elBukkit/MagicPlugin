@@ -226,6 +226,42 @@ public abstract class ItemUtilsBase implements ItemUtils {
     }
 
     @Override
+    public String getArmorModel(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setArmorModel(ItemStack itemStack, String model) {
+    }
+
+    @Override
+    public String getArmorSlot(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setArmorSlot(ItemStack itemStack, String slot) {
+    }
+
+    @Override
+    public String getCameraOverlay(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setCameraOverlay(ItemStack itemStack, String overlay) {
+    }
+
+    @Override
+    public String getTooltipStyle(ItemStack itemStack) {
+        return null;
+    }
+
+    @Override
+    public void setTooltipStyle(ItemStack itemStack, String style) {
+    }
+
+    @Override
     public void loadMeta(MageController controller, ItemMeta itemMeta, ConfigurationSection configuration) {
         String potionKey = configuration.getString("potion");
         if (potionKey != null && !potionKey.isEmpty()) {
