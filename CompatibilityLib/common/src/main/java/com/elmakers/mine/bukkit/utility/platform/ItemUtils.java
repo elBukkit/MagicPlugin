@@ -78,22 +78,6 @@ public interface ItemUtils {
 
     void setEquippable(ItemStack itemStack, Object equippable);
 
-    String getArmorModel(ItemStack itemStack);
-
-    void setArmorModel(ItemStack itemStack, String model);
-
-    String getArmorSlot(ItemStack itemStack);
-
-    void setArmorSlot(ItemStack itemStack, String slot);
-
-    String getCameraOverlay(ItemStack itemStack);
-
-    void setCameraOverlay(ItemStack itemStack, String overlay);
-
-    String getTooltipStyle(ItemStack itemStack);
-
-    void setTooltipStyle(ItemStack itemStack, String style);
-
     void removeCustomData(ItemStack itemStack);
 
     void removeDamage(ItemStack itemStack);
