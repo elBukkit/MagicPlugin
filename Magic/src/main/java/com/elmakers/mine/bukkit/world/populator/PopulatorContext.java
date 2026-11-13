@@ -226,7 +226,7 @@ public class PopulatorContext extends WorldInfoContext {
         return Bukkit.getWorld(worldInfo.getName());
     }
 
-    public Entity spawn(EntityData entityData, int x, int y, int z) {
+    public Entity spawn(EntityData entityData, float x, float y, float z) {
         final World world = getWorld();
         if (world == null) return null;
 

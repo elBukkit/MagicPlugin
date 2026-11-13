@@ -37,15 +37,27 @@ public abstract class WorldContext {
     }
 
     public int getWorldX(int dx) {
-        return worldX + dx;
+        return dx + worldX;
+    }
+
+    public float getWorldX(float dx) {
+        return dx + worldX;
     }
 
     public int getWorldY(int y) {
         return y + offset.y();
     }
 
+    public float getWorldY(float y) {
+        return y + offset.y();
+    }
+
     public int getWorldZ(int dz) {
-        return worldZ + dz;
+        return dz + worldZ;
+    }
+
+    public float getWorldZ(float dz) {
+        return dz + worldZ;
     }
 
     public int getChunkX() {
