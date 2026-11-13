@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -15,4 +16,7 @@ public interface PaperUtils {
     void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer);
 
     void lockFreezeTicks(Entity entity, boolean lock);
+
+    @Nullable
+    MiniMessageUtils getMiniMessageUtils();
 }

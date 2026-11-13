@@ -8555,6 +8555,11 @@ public class MagicController implements MageController, ChunkLoadListener {
 
         logVerbosity = properties.getInt("log_verbosity", 0);
         debugConfigurationFiles = properties.getBoolean("debug_configuration_files", false);
+        boolean useMiniMessage = properties.getBoolean("use_minimessage", false);
+        if (useMiniMessage && CompatibilityLib.getMiniMessageUtils() == null) {
+            logger.warning("MiniMessage is enabled in config, but it is not available on this server (it requires Paper 1.18.2 or newer)");
+        }
+        ChatUtils.initializeMiniMessage(useMiniMessage, CompatibilityLib.getMiniMessageUtils());
         if (debugConfigurationFiles) {
             logger.info("Enabled configuration debugging, config files will be broken up into single nodes and loaded individually for debugging.");
             logger.info("It is not recommended to use this in a production environment!");
