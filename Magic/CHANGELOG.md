@@ -3,6 +3,10 @@
 
 # 11.4
 
+## Fixes
+
+ - Fix errors from concurrent entity spawning in SpawnPopulator
+
 ## Additions
 
  - Add `source_use_control_direction` parameter to `ChangeContext` action

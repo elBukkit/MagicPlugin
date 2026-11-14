@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class SpawnPopulator extends BaseBlockPopulator {
+    private static final Object SPAWN_LOCK = new Object();
     private List<DistanceWeightedValue<EntityData>> spawns = new ArrayList<>();
     private MaterialSet allowedBlocks;
     private IntegerRange position;
@@ -84,7 +85,9 @@ public class SpawnPopulator extends BaseBlockPopulator {
                     if (allowedBlocks.testMaterial(context.getType(x, y, z))
                         && allowedBlocks.testMaterial(context.getType(x, y + 1, z))
                         && !context.getType(x, y - 1, z).isAir()) {
-                        context.spawn(entityData, (float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f);
+                        synchronized (SPAWN_LOCK) {
+                            context.spawn(entityData, (float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f);
+                        }
                         spawned = true;
                     }
                 }
