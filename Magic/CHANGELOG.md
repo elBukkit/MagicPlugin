@@ -10,6 +10,11 @@
 ## Additions
 
  - Add `source_use_control_direction` parameter to `ChangeContext` action
+ - Add `spawn_offset` floating point vector parameter to `Spawn` populator
+
+## Liminal Deep
+
+ - Added furniture to the office level
 
 # 11.3
 

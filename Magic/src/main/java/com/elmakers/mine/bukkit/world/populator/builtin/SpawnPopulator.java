@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -17,6 +18,7 @@ import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 import com.elmakers.mine.bukkit.world.populator.PopulatorContext;
 
 public class SpawnPopulator extends BaseBlockPopulator {
+    private static final Vector DEFAULT_SPAWN_OFFSET = new Vector(0.5, 0, 0.5);
     private static final Object SPAWN_LOCK = new Object();
     private List<DistanceWeightedValue<EntityData>> spawns = new ArrayList<>();
     private MaterialSet allowedBlocks;
@@ -24,6 +26,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
     private int searchY = 16;
     private int searchX = 2;
     private int searchZ = 2;
+    private Vector spawnOffset;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
@@ -33,6 +36,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
         searchX = config.getInt("search_x", searchX);
         searchY = config.getInt("search_y", searchY);
         searchZ = config.getInt("search_z", searchZ);
+        spawnOffset = ConfigUtils.getVector(config, "spawn_offset", DEFAULT_SPAWN_OFFSET);
         allowedBlocks = getController().getMaterialSetManager().fromConfigEmpty(config.getString("allowed", "all_air"));
 
         MagicController controller = world.getController();
@@ -86,7 +90,7 @@ public class SpawnPopulator extends BaseBlockPopulator {
                         && allowedBlocks.testMaterial(context.getType(x, y + 1, z))
                         && !context.getType(x, y - 1, z).isAir()) {
                         synchronized (SPAWN_LOCK) {
-                            context.spawn(entityData, (float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f);
+                            context.spawn(entityData, (float)spawnOffset.getX() + x, (float)spawnOffset.getY() + y, (float)spawnOffset.getZ() + z);
                         }
                         spawned = true;
                     }

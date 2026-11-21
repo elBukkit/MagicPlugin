@@ -29,6 +29,7 @@ office_room:
   sunroof_probability: 0
   populators:
     - office_lights
+    - office_furniture
   wall_blocks:
     - white_concrete
     - gray_concrete
