@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -54,6 +56,7 @@ import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.WordUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -98,6 +101,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected Short data;
     protected int customModelData;
     protected String itemModel;
+    protected String armorModel;
+    protected String armorSlot;
+    protected String cameraOverlay;
+    protected String tooltipStyle;
     protected MaterialExtraData extraData;
     protected GenericExtraData genericExtraData;
     protected String blockData;
@@ -107,6 +114,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected boolean isTargetValid = true;
 
     public static final Material DEFAULT_MATERIAL = Material.AIR;
+    private static final ImmutableSet<String> ARMOR_SLOTS = ImmutableSet.of("head", "chest", "legs", "feet", "hand", "off_hand", "body");
     public static boolean DEBUG = false;
 
     public MaterialAndData() {
@@ -197,6 +205,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             item = CompatibilityLib.getItemUtils().makeReal(item);
             customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
             itemModel = CompatibilityLib.getItemUtils().getItemModel(item);
+            armorModel = CompatibilityLib.getItemUtils().getArmorModel(item);
+            armorSlot = CompatibilityLib.getItemUtils().getArmorSlot(item);
+            cameraOverlay = CompatibilityLib.getItemUtils().getCameraOverlay(item);
+            tooltipStyle = CompatibilityLib.getItemUtils().getTooltipStyle(item);
 
             Object equippable = CompatibilityLib.getItemUtils().getEquippable(item);
             if (equippable != null) {
@@ -230,6 +242,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         // Note: shallow copies!
         other.customModelData = customModelData;
         other.itemModel = itemModel;
+        other.armorModel = armorModel;
+        other.armorSlot = armorSlot;
+        other.cameraOverlay = cameraOverlay;
+        other.tooltipStyle = tooltipStyle;
+        other.genericExtraData = genericExtraData == null ? null : genericExtraData.clone();
         other.extraData = extraData;
         other.setBlockData(blockData);
         other.itemData = itemData;
@@ -242,6 +259,29 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             gson = new Gson();
         }
         return gson;
+    }
+
+    @Nullable
+    private static String parseNamespacedKey(String originalKey, String name, Object value) {
+        NamespacedKey namespacedKey = value == null ? null : NamespacedKey.fromString(value.toString());
+        if (namespacedKey == null) {
+            Bukkit.getLogger().warning("[Magic] [" + originalKey + "] Invalid " + name + " value: " + value);
+            return null;
+        }
+        return namespacedKey.toString();
+    }
+
+    @Nullable
+    private static String parseArmorSlot(String originalKey, Object value) {
+        String slot = value == null ? "" : value.toString().toLowerCase(Locale.ROOT);
+        if (slot.equals("offhand")) {
+            slot = "off_hand";
+        }
+        if (!ARMOR_SLOTS.contains(slot)) {
+            Bukkit.getLogger().warning("[Magic] [" + originalKey + "] Invalid armor_slot value: " + value + ", expected one of: " + ARMOR_SLOTS);
+            return null;
+        }
+        return slot;
     }
 
     public void update(String materialKey) {
@@ -310,6 +350,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                 } else {
                                     Bukkit.getLogger().info("[Magic] [" + originalKey + "] Unsupported CustomModelData value: " + value);
                                 }
+                                break;
+                            case "armor_model":
+                                armorModel = parseNamespacedKey(originalKey, key, value);
+                                break;
+                            case "armor_slot":
+                                armorSlot = parseArmorSlot(originalKey, value);
+                                break;
+                            case "camera_overlay":
+                                cameraOverlay = parseNamespacedKey(originalKey, key, value);
+                                break;
+                            case "tooltip_style":
+                                tooltipStyle = parseNamespacedKey(originalKey, key, value);
                                 break;
                             case "Potion":
                                 try {
@@ -531,7 +583,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return Objects.equal(o.getData(), data)
                 && o.getMaterial() == material
                 && customModelData == o.customModelData
-                && Objects.equal(itemModel, o.itemModel);
+                && Objects.equal(itemModel, o.itemModel)
+                && Objects.equal(armorModel, o.armorModel)
+                && Objects.equal(armorSlot, o.armorSlot)
+                && Objects.equal(cameraOverlay, o.cameraOverlay)
+                && Objects.equal(tooltipStyle, o.tooltipStyle);
     }
 
     @Override
@@ -550,6 +606,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             isValid = o.isValid;
             isTargetValid = o.isTargetValid;
             customModelData = o.customModelData;
+            itemModel = o.itemModel;
+            armorModel = o.armorModel;
+            armorSlot = o.armorSlot;
+            cameraOverlay = o.cameraOverlay;
+            tooltipStyle = o.tooltipStyle;
+            genericExtraData = o.genericExtraData == null ? null : o.genericExtraData.clone();
         }
     }
 
@@ -907,13 +969,38 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else if (itemData != null) {
             materialKey += itemData;
         }
-        if (itemModel != null && !itemModel.isEmpty()) {
-            materialKey += "{item_model:" + itemModel + "}";
-        } else if (customModelData != 0) {
-            materialKey += "{" + customModelData + "}";
-        }
+        materialKey += getComponentKey();
 
         return materialKey;
+    }
+
+    private String getComponentKey() {
+        List<String> entries = new ArrayList<>();
+        if (itemModel != null && !itemModel.isEmpty()) {
+            entries.add("item_model:\"" + itemModel + "\"");
+        }
+        if (customModelData != 0) {
+            entries.add("custom_model_data:" + customModelData);
+        }
+        if (armorModel != null && !armorModel.isEmpty()) {
+            entries.add("armor_model:\"" + armorModel + "\"");
+        }
+        if (armorSlot != null && !armorSlot.isEmpty()) {
+            entries.add("armor_slot:" + armorSlot);
+        }
+        if (cameraOverlay != null && !cameraOverlay.isEmpty()) {
+            entries.add("camera_overlay:\"" + cameraOverlay + "\"");
+        }
+        if (tooltipStyle != null && !tooltipStyle.isEmpty()) {
+            entries.add("tooltip_style:\"" + tooltipStyle + "\"");
+        }
+        if (entries.isEmpty()) {
+            return "";
+        }
+        if (entries.size() == 1 && customModelData != 0) {
+            return "{" + customModelData + "}";
+        }
+        return "{" + String.join(",", entries) + "}";
     }
 
     public String getWildDataKey() {
@@ -1135,6 +1222,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         if (genericExtraData != null) {
             CompatibilityLib.getItemUtils().setEquippable(stack, genericExtraData.getEquippable());
+        }
+        if (armorModel != null) {
+            CompatibilityLib.getItemUtils().setArmorModel(stack, armorModel);
+        }
+        if (armorSlot != null) {
+            CompatibilityLib.getItemUtils().setArmorSlot(stack, armorSlot);
+        }
+        if (cameraOverlay != null) {
+            CompatibilityLib.getItemUtils().setCameraOverlay(stack, cameraOverlay);
+        }
+        if (tooltipStyle != null) {
+            CompatibilityLib.getItemUtils().setTooltipStyle(stack, tooltipStyle);
         }
         if (!asynchronous && callback != null) {
             callback.updated(stack);

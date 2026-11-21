@@ -3,9 +3,11 @@ package com.elmakers.mine.bukkit.utility.platform.base_v26_1;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -21,6 +23,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -428,6 +431,106 @@ public class ItemUtilsBase implements ItemUtils {
             meta.setItemModel(NamespacedKey.fromString(itemModel));
             itemStack.setItemMeta(meta);
         }
+    }
+
+    @Override
+    public String getArmorModel(ItemStack itemStack) {
+        EquippableComponent equippable = getEquippableComponent(itemStack);
+        if (equippable == null) return null;
+        NamespacedKey model = equippable.getModel();
+        return model == null ? null : model.toString();
+    }
+
+    @Override
+    public void setArmorModel(ItemStack itemStack, String model) {
+        NamespacedKey key = NamespacedKey.fromString(model);
+        if (key == null) return;
+        modifyEquippable(itemStack, equippable -> equippable.setModel(key));
+    }
+
+    @Override
+    public String getArmorSlot(ItemStack itemStack) {
+        EquippableComponent equippable = getEquippableComponent(itemStack);
+        if (equippable == null) return null;
+        EquipmentSlot slot = equippable.getSlot();
+        return slot == null ? null : slot.name().toLowerCase(Locale.ROOT);
+    }
+
+    @Override
+    public void setArmorSlot(ItemStack itemStack, String slot) {
+        EquipmentSlot equipmentSlot;
+        try {
+            equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            return;
+        }
+        modifyEquippable(itemStack, equippable -> equippable.setSlot(equipmentSlot));
+    }
+
+    @Override
+    public String getCameraOverlay(ItemStack itemStack) {
+        EquippableComponent equippable = getEquippableComponent(itemStack);
+        if (equippable == null) return null;
+        NamespacedKey overlay = equippable.getCameraOverlay();
+        return overlay == null ? null : overlay.toString();
+    }
+
+    @Override
+    public void setCameraOverlay(ItemStack itemStack, String overlay) {
+        NamespacedKey key = NamespacedKey.fromString(overlay);
+        if (key == null) return;
+        modifyEquippable(itemStack, equippable -> equippable.setCameraOverlay(key));
+    }
+
+    @Override
+    public String getTooltipStyle(ItemStack itemStack) {
+        if (!itemStack.hasItemMeta()) return null;
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null || !itemMeta.hasTooltipStyle()) return null;
+        return itemMeta.getTooltipStyle().toString();
+    }
+
+    @Override
+    public void setTooltipStyle(ItemStack itemStack, String style) {
+        NamespacedKey key = NamespacedKey.fromString(style);
+        if (key == null) return;
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return;
+        itemMeta.setTooltipStyle(key);
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    private EquippableComponent getEquippableComponent(ItemStack itemStack) {
+        if (itemStack == null || !itemStack.hasItemMeta()) return null;
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null || !itemMeta.hasEquippable()) return null;
+        return itemMeta.getEquippable();
+    }
+
+    private void modifyEquippable(ItemStack itemStack, Consumer<EquippableComponent> modifier) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return;
+        boolean hadEquippable = itemMeta.hasEquippable();
+        EquippableComponent equippable = itemMeta.getEquippable();
+        if (equippable == null) return;
+        if (!hadEquippable) {
+            EquipmentSlot defaultSlot = getDefaultArmorSlot(itemStack.getType());
+            if (defaultSlot != null) {
+                equippable.setSlot(defaultSlot);
+            }
+        }
+        modifier.accept(equippable);
+        itemMeta.setEquippable(equippable);
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    private static EquipmentSlot getDefaultArmorSlot(Material material) {
+        String name = material.name();
+        if (name.endsWith("_HELMET")) return EquipmentSlot.HEAD;
+        if (name.endsWith("_CHESTPLATE") || name.equals("ELYTRA")) return EquipmentSlot.CHEST;
+        if (name.endsWith("_LEGGINGS")) return EquipmentSlot.LEGS;
+        if (name.endsWith("_BOOTS")) return EquipmentSlot.FEET;
+        return null;
     }
 
     @Override
