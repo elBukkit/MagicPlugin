@@ -28,6 +28,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
+import me.athlaeos.valhallammo.skills.skills.PerkRegistry;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 
@@ -93,6 +94,10 @@ public class ValhallaManager implements AttributeProvider, Listener {
             PerkRewardRegistry.register(new RecipePerkReward(controller, "discover_recipe"));
             PerkRewardRegistry.register(new PathPerkReward(controller, magicSkill.getMageClass(), "path_upgrade"));
             SkillRegistry.registerSkill(magicSkill);
+
+            // These skills get added after Valhalla initialization, so we need to initilize them ourselves
+            magicSkill.loadConfiguration();
+            magicSkill.getPerks().forEach(PerkRegistry::registerPerk);
 
             Plugin plugin = controller.getPlugin();
             plugin.getServer().getPluginManager().registerEvents(this, plugin);

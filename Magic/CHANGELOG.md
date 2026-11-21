@@ -6,6 +6,7 @@
 ## Fixes
 
  - Fix errors from concurrent entity spawning in SpawnPopulator
+ - Fix ValhallaMMO Magic skill integration
 
 ## Additions
 
