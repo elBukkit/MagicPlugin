@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -18,8 +19,10 @@ import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.MiniMessageUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
@@ -135,6 +138,13 @@ public class CompatibilityLib extends PlatformInterpreter {
 
     public static boolean hasChatComponents() {
         return platform == null ? false : platform.hasChatComponents();
+    }
+
+    @Nullable
+    public static MiniMessageUtils getMiniMessageUtils() {
+        if (platform == null) return null;
+        PaperUtils paperUtils = platform.getPaperUtils();
+        return paperUtils == null ? null : paperUtils.getMiniMessageUtils();
     }
 
     public static boolean hasJumpEvent() {

@@ -9,8 +9,12 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.platform.MiniMessageUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -19,6 +23,8 @@ public class ChatUtils {
     private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("[\\s0-9\\p{Punct}\\p{IsPunctuation}\u2150-\u2BFF\uE000-\uFFFF]"); // Sorry for the unicode escapes
     private static Messages messages;
     private static Gson gson;
+    private static boolean miniMessageEnabled;
+    private static MiniMessageUtils miniMessageUtils;
 
     public static void initialize(Messages messages, Logger logger) {
         ChatUtils.messages = messages;
@@ -109,7 +115,7 @@ public class ChatUtils {
     }
 
     public static String[] getComponents(String containsJson) {
-        return StringUtils.split(containsJson, "`");
+        return StringUtils.split(convertMiniMessage(containsJson), "`");
     }
 
     public static String[] getWords(String text) {
@@ -117,7 +123,41 @@ public class ChatUtils {
     }
 
     public static boolean hasJSON(String text) {
-        return text.contains("`{");
+        return text.contains("`{") || hasMiniMessage(text);
+    }
+
+    public static void initializeMiniMessage(boolean enabled, MiniMessageUtils utils) {
+        miniMessageEnabled = enabled;
+        miniMessageUtils = utils;
+    }
+
+    public static boolean hasMiniMessage(String text) {
+        if (!miniMessageEnabled || miniMessageUtils == null || text == null) return false;
+        return !text.contains("`{") && MiniMessageText.containsTags(text);
+    }
+
+    public static String convertMiniMessage(String text) {
+        if (!hasMiniMessage(text)) return text;
+        return miniMessageUtils.toRichText(MiniMessageText.legacyToMiniMessage(text));
+    }
+
+    public static Inventory createInventory(InventoryHolder holder, int size, String title) {
+        if (hasMiniMessage(title)) {
+            return miniMessageUtils.createInventory(holder, size, MiniMessageText.legacyToMiniMessage(title));
+        }
+        return Bukkit.createInventory(holder, size, title);
+    }
+
+    public static Inventory createInventory(InventoryHolder holder, InventoryType type, String title) {
+        if (hasMiniMessage(title)) {
+            return miniMessageUtils.createInventory(holder, type, MiniMessageText.legacyToMiniMessage(title));
+        }
+        return Bukkit.createInventory(holder, type, title);
+    }
+
+    public static String toLegacyText(String text) {
+        if (!hasMiniMessage(text)) return text;
+        return miniMessageUtils.toLegacyText(MiniMessageText.legacyToMiniMessage(text));
     }
 
     public static boolean isDefaultFont(String font) {

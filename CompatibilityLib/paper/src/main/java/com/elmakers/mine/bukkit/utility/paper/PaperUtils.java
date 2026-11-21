@@ -10,6 +10,9 @@ import org.bukkit.plugin.PluginManager;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class PaperUtils implements com.elmakers.mine.bukkit.utility.platform.PaperUtils {
+    private com.elmakers.mine.bukkit.utility.platform.MiniMessageUtils miniMessageUtils;
+    private boolean checkedMiniMessage;
+
     @Override
     public void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
         world.getChunkAtAsync(x, z, generate, consumer);
@@ -23,5 +26,18 @@ public class PaperUtils implements com.elmakers.mine.bukkit.utility.platform.Pap
     @Override
     public void lockFreezeTicks(Entity entity, boolean lock) {
         entity.lockFreezeTicks(lock);
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.utility.platform.MiniMessageUtils getMiniMessageUtils() {
+        if (!checkedMiniMessage) {
+            checkedMiniMessage = true;
+            try {
+                Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
+                miniMessageUtils = new MiniMessageUtils();
+            } catch (Throwable ignore) {
+            }
+        }
+        return miniMessageUtils;
     }
 }

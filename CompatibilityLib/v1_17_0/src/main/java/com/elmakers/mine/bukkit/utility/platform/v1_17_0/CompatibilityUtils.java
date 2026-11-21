@@ -92,6 +92,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
@@ -200,7 +201,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         size = (int) (Math.ceil((double) size / 9) * 9);
         size = Math.min(size, 54);
         String translatedName = translateColors(name);
-        return Bukkit.createInventory(holder, size, translatedName);
+        return ChatUtils.createInventory(holder, size, translatedName);
     }
 
     @Override
